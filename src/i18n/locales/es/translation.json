@@ -1,0 +1,118 @@
+{
+  "appTitle": "Gestión Dental ",
+  "welcome": "Bienvenido",
+  "patients": "Pacientes",
+  "appointments": "Turnos",
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "dashboard": {
+    "title": "Panel de control",
+    "description": "Resumen y métricas del consultorio",
+    "quickActions": {
+      "title": "Acciones rápidas",
+      "newPatient": "Nuevo paciente",
+      "scheduleAppointment": "Programar turno",
+      "addNote": "Agregar nota",
+      "viewReports": "Ver informes"
+    },
+    "recentActivity": {
+      "title": "Actividad reciente",
+      "refresh": "Actualizar"
+    },
+    "treatmentProgress": {
+      "title": "Progreso del tratamiento",
+      "export": "Exportar",
+      "completed": "Finalizados",
+      "inProgress": "En progreso",
+      "scheduled": "Programados",
+      "months": {
+        "Jan": "Ene",
+        "Feb": "Feb",
+        "Mar": "Mar",
+        "Apr": "Abr",
+        "May": "May",
+        "Jun": "Jun",
+        "Jul": "Jul",
+        "Aug": "Ago",
+        "Sep": "Sep",
+        "Oct": "Oct",
+        "Nov": "Nov",
+        "Dec": "Dic"
+      }
+    }
+  },
+  "directory": {
+    "title": "Directorio de pacientes",
+    "description": "Buscar y administrar pacientes"
+  },
+  "records": {
+    "title": "Historias clínicas",
+    "description": "Historial médico del paciente"
+  },
+  "treatment": {
+    "title": "Planificación de tratamientos",
+    "description": "Programar y planificar tratamientos"
+  },
+  "profile": {
+    "title": "Perfil del paciente",
+    "description": "Información detallada del paciente"
+  },
+  "settings": {
+    "title": "Configuración",
+    "description": "Configuración del sistema"
+  },
+  "sidebar": {
+    "toggle": "Contraer"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "noNotifications": "No hay nuevas notificaciones",
+    "markAllAsRead": "Marcar todas como leídas",
+    "viewAll": "Ver todas las notificaciones"
+  },
+  "search": {
+    "placeholder": "Buscar pacientes, turnos..."
+  },
+  "Profile": {
+    "title": "Mi Perfil",
+    "settings": "Configuración",
+    "help": "Ayuda y Soporte",
+    "signout": "Cerrar Sesión"
+  },
+  "dentist": "Odontólogo",
+  "home": {
+    "welcome": "Bienvenido de nuevo, {{name}}",
+    "overview": "Aquí tienes un resumen de tu práctica hoy."
+  },
+  "breadcrumbs": {
+    "home": "Inicio",
+    "dashboard": "Panel de inicio",
+    "directory": "Directorio de pacientes",
+    "profile": "Perfil del paciente",
+    "records": "Historias clínicas",
+    "treatment": "Planificación de tratamientos",
+    "settings": "Configuración"
+  },
+  "timeFrame": {
+    "today": "Hoy",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes",
+    "thisYear": "Este año"
+  },
+  "appointment": {
+    "titlePanel": "Turnos de hoy",
+    "viewAll": "Ver todos",
+    "status": {
+      "confirmed": "Confirmado",
+      "pending": "Pendiente",
+      "cancelled": "Cancelado"
+    },
+    "priority": {
+      "high": "Alta",
+      "normal": "Normal",
+      "urgent": "Urgente"
+    },
+    "viewDetails": "Ver detalles",
+    "reschedule": "Reprogramar"
+  }
+}

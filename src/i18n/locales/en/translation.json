@@ -1,0 +1,118 @@
+{
+  "appTitle": "Dental Management",
+  "welcome": "Welcome",
+  "patients": "Patients",
+  "appointments": "Appointments",
+  "save": "Save",
+  "cancel": "Cancel",
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Practice overview and metrics",
+    "quickActions": {
+      "title": "Quick Actions",
+      "newPatient": "New Patient",
+      "scheduleAppointment": "Schedule",
+      "addNote": "Add Note",
+      "viewReports": "View Reports"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "refresh": "Refresh"
+    },
+    "treatmentProgress": {
+      "title": "Treatment Progress",
+      "export": "Export",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "scheduled": "Scheduled",
+      "months": {
+        "Jan": "Jan",
+        "Feb": "Feb",
+        "Mar": "Mar",
+        "Apr": "Apr",
+        "May": "May",
+        "Jun": "Jun",
+        "Jul": "Jul",
+        "Aug": "Aug",
+        "Sep": "Sep",
+        "Oct": "Oct",
+        "Nov": "Nov",
+        "Dec": "Dec"
+      }
+    }
+  },
+  "directory": {
+    "title": "Patient Directory",
+    "description": "Search and manage patients"
+  },
+  "profile": {
+    "title": "Patient Profile",
+    "description": "Detailed patient information"
+  },
+  "records": {
+    "title": "Clinical Records",
+    "description": "Patient medical history"
+  },
+  "treatment": {
+    "title": "Treatment Planning",
+    "description": "Schedule and plan treatments"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "System configuration"
+  },
+  "sidebar": {
+    "toggle": "Collapse"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "No new notifications",
+    "markAllAsRead": "Mark all as read",
+    "viewAll": "View all notifications"
+  },
+  "search": {
+    "placeholder": "Search patients, appointments..."
+  },
+  "Profile": {
+    "title": "My Profile",
+    "settings": "Settings",
+    "help": "Help & Support",
+    "signout": "Sign Out"
+  },
+  "dentist": "Dentist",
+  "home": {
+    "welcome": "Welcome back, {{name}}",
+    "overview": "Here's a summary of your practice today."
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "directory": "Patient Directory",
+    "profile": "Patient Profile",
+    "records": "Clinical Records",
+    "treatment": "Treatment Planning",
+    "settings": "Settings"
+  },
+  "timeFrame": {
+    "today": "Today",
+    "thisWeek": "This week",
+    "thisMonth": "This month",
+    "thisYear": "This year"
+  },
+  "appointment": {
+    "titlePanel": "Today's Appointments",
+    "viewAll": "View all",
+    "status": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    },
+    "priority": {
+      "high": "High",
+      "normal": "Normal",
+      "urgent": "Urgent"
+    },
+    "viewDetails": "View details",
+    "reschedule": "Reschedule"
+  }
+}

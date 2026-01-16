@@ -9,12 +9,15 @@
 @layer base {
   :root {
     /* Primary Colors - Medical Trust Blue */
-    --color-primary: #2563eb; /* blue-600 - Medical authority with digital confidence */
+    --color-primary: #b97beb; /* blue-600 - Medical authority with digital confidence */
     --color-primary-foreground: #ffffff; /* white - High contrast for accessibility */
 
     /* Secondary Colors - Healing Teal */
     --color-secondary: #0f766e; /* teal-700 - Healing growth, secondary actions */
     --color-secondary-foreground: #ffffff; /* white - Clear contrast */
+
+    --color-tertiary: #5dc1b9; /* indigo-700 - Healing growth, tertiary actions */
+    --color-tertiary-foreground: #ffffff; /* white - Clear contrast */
 
     /* Accent Colors - Critical Alert Red */
     --color-accent: #dc2626; /* red-600 - Critical alerts, urgent attention */

@@ -8,10 +8,12 @@ import PatientCard from "./components/PatientCard";
 import PatientTable from "./components/PatientTable";
 import BulkActions from "./components/BulkActions";
 import Pagination from "./components/Pagination";
+import AddPatientModal from "./components/AddPatientModal";
 import Icon from "../../components/AppIcon";
 
 const PatientDirectory = () => {
   const [view, setView] = useState("grid");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedPatients, setSelectedPatients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -375,13 +377,13 @@ const PatientDirectory = () => {
           </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <ViewToggle currentView={view} onViewChange={setView} />
-            <Button variant="default" iconName="UserPlus" iconPosition="left" onClick={() => alert("Add new patient functionality")}>
+            <Button variant="default" iconName="UserPlus" iconPosition="left" onClick={() => setIsAddModalOpen(true)}>
               Add New Patient
             </Button>
           </div>
         </div>
 
-        <StatsOverview stats={stats} />
+        {/* <StatsOverview stats={stats} /> */}
 
         <SearchFilters filters={filters} onFilterChange={handleFilterChange} onReset={handleResetFilters} onSearch={() => console.log("Search applied")} />
 
@@ -440,6 +442,15 @@ const PatientDirectory = () => {
         )}
       </div>
       <BulkActions selectedCount={selectedPatients?.length} onAction={handleBulkAction} />
+      <AddPatientModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={(newPatient) => {
+          console.log("Nuevo paciente:", newPatient);
+          alert(`Paciente ${newPatient.name} agregado!`);
+          // Aquí podés agregarlo al estado mockPatients si querés simular la alta
+        }}
+      />
     </MainLayout>
   );
 };

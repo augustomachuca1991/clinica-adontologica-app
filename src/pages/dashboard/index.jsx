@@ -3,19 +3,22 @@ import { useNavigate } from "react-router-dom";
 import MainLayout from "../../components/ui/MainLayout";
 
 import Button from "../../components/ui/Button";
-import StatCard from "./components/StatCard";
+/* import StatCard from "./components/StatCard"; */
 import AppointmentCard from "./components/AppointmentCard";
 import PatientAlertCard from "./components/PatientAlertCard";
 import QuickActionButton from "./components/QuickActionButton";
 import RecentActivityItem from "./components/RecentActivityItem";
 import TreatmentProgressChart from "./components/TreatmentProgressChart";
 import UpcomingTaskCard from "./components/UpcomingTaskCard";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [selectedTimeframe, setSelectedTimeframe] = useState("today");
+  const userName = import.meta.env.VITE_TEST_NAME_USER || "Dr. User";
+  const { t } = useTranslation();
 
-  const stats = [
+  /* const stats = [
     {
       title: "Today's Appointments",
       value: "12",
@@ -53,16 +56,16 @@ const Dashboard = () => {
       iconColor: "var(--color-brand-accent)",
     },
   ];
-
+ */
   const appointments = [
     {
       id: 1,
       patientName: "Sarah Johnson",
-      patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1757e492a-1763293666438.png",
-      patientImageAlt: "Professional headshot of Caucasian woman with blonde hair in white medical coat smiling warmly",
-      treatment: "Root Canal Treatment",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Sarah+Johnson",
+      patientImageAlt: "Retrato profesional de mujer caucásica con cabello rubio, con bata médica blanca, sonriendo cordialmente",
+      treatment: "Tratamiento de conducto",
       time: "09:00 AM",
-      date: "Today",
+      date: "Hoy",
       duration: "60 min",
       status: "confirmed",
       priority: "high",
@@ -70,27 +73,159 @@ const Dashboard = () => {
     {
       id: 2,
       patientName: "Michael Chen",
-      patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_17e3e8a83-1763296144451.png",
-      patientImageAlt: "Professional headshot of Asian man with short black hair in blue shirt with confident expression",
-      treatment: "Dental Cleaning",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Michael+Chen",
+      patientImageAlt: "Retrato profesional de hombre asiático con cabello corto negro, con camisa azul y expresión confiada",
+      treatment: "Limpieza dental",
       time: "10:30 AM",
-      date: "Today",
+      date: "Hoy",
       duration: "30 min",
-      status: "confirmed",
+      status: "cancelled",
       priority: "normal",
     },
     {
       id: 3,
       patientName: "Emily Rodriguez",
-      patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_119848aeb-1763295351165.png",
-      patientImageAlt: "Professional headshot of Hispanic woman with long brown hair in green blouse with friendly smile",
-      treatment: "Crown Placement",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Emily+Rodriguez",
+      patientImageAlt: "Retrato profesional de mujer hispana con cabello largo castaño, con blusa verde y sonrisa amigable",
+      treatment: "Colocación de corona",
       time: "02:00 PM",
-      date: "Today",
+      date: "Hoy",
       duration: "90 min",
       status: "pending",
       priority: "urgent",
     },
+    {
+      id: 4,
+      patientName: "Santino Billordo",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Santino+Billordo",
+      patientImageAlt: "Retrato profesional de hombre hispano con cabello corto negro, con camisa azul y expresión confiada",
+      treatment: "Colocación de corona",
+      time: "06:00 PM",
+      date: "Hoy",
+      duration: "60 min",
+      status: "pending",
+      priority: "normal",
+    },
+    /* {
+      id: 5,
+      patientName: "Laura Martínez",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Laura+Martinez",
+      patientImageAlt: "Retrato profesional de mujer hispana con cabello castaño y sonrisa amable",
+      treatment: "Relleno",
+      time: "08:00 AM",
+      date: "Hoy",
+      duration: "45 min",
+      status: "confirmed",
+      priority: "normal",
+    },
+    {
+      id: 6,
+      patientName: "Carlos Fernández",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Carlos+Fernandez",
+      patientImageAlt: "Retrato profesional de hombre hispano con cabello corto negro y expresión seria",
+      treatment: "Limpieza dental",
+      time: "09:30 AM",
+      date: "Hoy",
+      duration: "30 min",
+      status: "pending",
+      priority: "high",
+    },
+    {
+      id: 7,
+      patientName: "Ana Gómez",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Ana+Gomez",
+      patientImageAlt: "Retrato profesional de mujer latina con cabello negro largo y sonrisa amable",
+      treatment: "Extracción dental",
+      time: "10:15 AM",
+      date: "Hoy",
+      duration: "60 min",
+      status: "confirmed",
+      priority: "urgent",
+    },
+    {
+      id: 8,
+      patientName: "José López",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Jose+Lopez",
+      patientImageAlt: "Retrato profesional de hombre latino con cabello corto castaño y sonrisa",
+      treatment: "Tratamiento de conducto radicular",
+      time: "11:00 AM",
+      date: "Hoy",
+      duration: "75 min",
+      status: "confirmed",
+      priority: "high",
+    },
+    {
+      id: 9,
+      patientName: "Valeria Torres",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Valeria+Torres",
+      patientImageAlt: "Retrato profesional de mujer hispana con cabello rubio y sonrisa amable",
+      treatment: "Colocación de corona",
+      time: "12:00 PM",
+      date: "Hoy",
+      duration: "90 min",
+      status: "pending",
+      priority: "urgent",
+    },
+    {
+      id: 10,
+      patientName: "Miguel Sánchez",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Miguel+Sanchez",
+      patientImageAlt: "Retrato profesional de hombre latino con cabello negro y expresión confiada",
+      treatment: "Limpieza dental",
+      time: "01:00 PM",
+      date: "Hoy",
+      duration: "30 min",
+      status: "cancelled",
+      priority: "normal",
+    },
+    {
+      id: 11,
+      patientName: "Sofía Ruiz",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Sofia+Ruiz",
+      patientImageAlt: "Retrato profesional de mujer hispana con cabello castaño y sonrisa amable",
+      treatment: "Relleno",
+      time: "02:30 PM",
+      date: "Hoy",
+      duration: "45 min",
+      status: "confirmed",
+      priority: "high",
+    },
+    {
+      id: 12,
+      patientName: "Diego Morales",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Diego+Morales",
+      patientImageAlt: "Retrato profesional de hombre latino con cabello castaño y expresión seria",
+      treatment: "Ortodoncia",
+      time: "03:30 PM",
+      date: "Hoy",
+      duration: "60 min",
+      status: "pending",
+      priority: "urgent",
+    },
+    {
+      id: 13,
+      patientName: "Isabella Cruz",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Isabella+Cruz",
+      patientImageAlt: "Retrato profesional de mujer hispana con cabello largo y sonrisa amable",
+      treatment: "Ajustes de aparato ortodóntico",
+      time: "04:30 PM",
+      date: "Hoy",
+      duration: "90 min",
+      status: "confirmed",
+      priority: "normal",
+    },
+    {
+      id: 14,
+      patientName: "Fernando Díaz",
+      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Fernando+Diaz",
+      patientImageAlt: "Retrato profesional de hombre latino con cabello corto y expresión confiada",
+      treatment: "Limpieza dental",
+      time: "05:30 PM",
+      date: "Hoy",
+      duration: "75 min",
+      status: "cancelled",
+      priority: "high",
+    }, */
   ];
 
   const alerts = [
@@ -127,10 +262,10 @@ const Dashboard = () => {
   ];
 
   const quickActions = [
-    { icon: "UserPlus", label: "New Patient", color: "var(--color-primary)" },
-    { icon: "Calendar", label: "Schedule", color: "var(--color-success)" },
-    { icon: "FileText", label: "Add Note", color: "var(--color-warning)" },
-    { icon: "DollarSign", label: "Payment", color: "var(--color-brand-accent)" },
+    { icon: "UserPlus", label: "newPatient", color: "var(--color-primary)" },
+    { icon: "Calendar", label: "scheduleAppointment", color: "var(--color-success)" },
+    { icon: "FileText", label: "addNote", color: "var(--color-warning)" },
+    { icon: "PieChart", label: "viewReports", color: "var(--color-brand-accent)" },
   ];
 
   const recentActivities = [
@@ -139,36 +274,36 @@ const Dashboard = () => {
       type: "treatment",
       userName: "Dr. Sarah Johnson",
       userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1b73223d7-1763296809581.png",
-      userImageAlt: "Professional headshot of female dentist with brown hair in white coat with stethoscope",
-      description: "Completed root canal treatment for patient Michael Chen",
-      time: "10 min ago",
+      userImageAlt: "Retrato profesional de dentista mujer con cabello castaño y bata blanca con estetoscopio",
+      description: "Tratamiento de conducto completado para el paciente Michael Chen",
+      time: "hace 10 min",
     },
     {
       id: 2,
       type: "appointment",
-      userName: "Reception Desk",
+      userName: "Recepción",
       userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1ccaed995-1763294687911.png",
-      userImageAlt: "Professional headshot of receptionist with blonde hair in blue uniform with welcoming smile",
-      description: "New appointment scheduled for Emily Rodriguez - Crown placement",
-      time: "25 min ago",
+      userImageAlt: "Retrato profesional de recepcionista con cabello rubio y uniforme azul con sonrisa amable",
+      description: "Nuevo turno programado para Emily Rodriguez - Colocación de corona",
+      time: "hace 25 min",
     },
     {
       id: 3,
       type: "payment",
-      userName: "Billing Department",
+      userName: "Departamento de Facturación",
       userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1b686b60e-1763292151580.png",
-      userImageAlt: "Professional headshot of male billing specialist with glasses in white shirt with focused expression",
-      description: "Payment received from Robert Williams - $450.00",
-      time: "1 hour ago",
+      userImageAlt: "Retrato profesional de especialista en facturación hombre con gafas y camisa blanca con expresión concentrada",
+      description: "Pago recibido de Robert Williams - $450,00",
+      time: "hace 1 hora",
     },
     {
       id: 4,
       type: "note",
       userName: "Dr. James Wilson",
       userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_13747ffaf-1763301803218.png",
-      userImageAlt: "Professional headshot of male dentist with gray hair in white coat with experienced demeanor",
-      description: "Added clinical notes for Lisa Anderson's follow-up examination",
-      time: "2 hours ago",
+      userImageAlt: "Retrato profesional de dentista hombre con cabello gris y bata blanca con actitud experimentada",
+      description: "Notas clínicas agregadas para el seguimiento de Lisa Anderson",
+      time: "hace 2 horas",
     },
   ];
 
@@ -179,9 +314,15 @@ const Dashboard = () => {
     { month: "Apr", completed: 61, inProgress: 14, scheduled: 30 },
     { month: "May", completed: 55, inProgress: 20, scheduled: 27 },
     { month: "Jun", completed: 67, inProgress: 16, scheduled: 32 },
+    { month: "Jul", completed: 45, inProgress: 12, scheduled: 23 },
+    { month: "Ago", completed: 52, inProgress: 15, scheduled: 28 },
+    { month: "Sep", completed: 48, inProgress: 18, scheduled: 25 },
+    { month: "Oct", completed: 61, inProgress: 14, scheduled: 30 },
+    { month: "Nov", completed: 55, inProgress: 20, scheduled: 27 },
+    { month: "Dec", completed: 67, inProgress: 16, scheduled: 32 },
   ];
 
-  const upcomingTasks = [
+  /* const upcomingTasks = [
     {
       id: 1,
       title: "Review lab results for crown preparation",
@@ -218,7 +359,7 @@ const Dashboard = () => {
       patientName: null,
       completed: true,
     },
-  ];
+  ]; */
 
   const handleViewAppointmentDetails = (appointmentId) => {
     console.log("Viewing appointment:", appointmentId);
@@ -260,18 +401,18 @@ const Dashboard = () => {
       <div className="space-y-6 md:space-y-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">Welcome back, Dr. Sarah Johnson</h1>
-            <p className="text-sm md:text-base text-muted-foreground">Here's what's happening with your practice today</p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("home.welcome", { name: userName })}</h1>
+            <p className="text-sm md:text-base text-muted-foreground">{t("home.overview")}</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant={selectedTimeframe === "today" ? "default" : "outline"} size="sm" onClick={() => setSelectedTimeframe("today")}>
-              Today
+            <Button variant={selectedTimeframe === "today" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("today")}>
+              {t("timeFrame.today")}
             </Button>
-            <Button variant={selectedTimeframe === "week" ? "default" : "outline"} size="sm" onClick={() => setSelectedTimeframe("week")}>
-              This Week
+            <Button variant={selectedTimeframe === "week" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("week")}>
+              {t("timeFrame.thisWeek")}
             </Button>
-            <Button variant={selectedTimeframe === "month" ? "default" : "outline"} size="sm" onClick={() => setSelectedTimeframe("month")}>
-              This Month
+            <Button variant={selectedTimeframe === "month" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("month")}>
+              {t("timeFrame.thisMonth")}
             </Button>
           </div>
         </div>
@@ -286,9 +427,9 @@ const Dashboard = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Today's Appointments</h2>
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("appointment.titlePanel")}</h2>
                 <Button variant="ghost" size="sm" onClick={() => navigate("/treatment-planning")} iconName="Calendar" iconPosition="left">
-                  View All
+                  {t("appointment.viewAll")}
                 </Button>
               </div>
               <div className="space-y-4">
@@ -300,26 +441,39 @@ const Dashboard = () => {
 
             <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Treatment Progress</h2>
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.treatmentProgress.title")}</h2>
                 <Button variant="ghost" size="sm" iconName="Download" iconPosition="left">
-                  Export
+                  {t("dashboard.treatmentProgress.export")}
                 </Button>
               </div>
-              <TreatmentProgressChart data={treatmentData} />
+              <TreatmentProgressChart data={treatmentData} t={t} />
             </div>
           </div>
 
           <div className="space-y-6">
             <div className="clinical-card p-4 md:p-6">
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">Quick Actions</h2>
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">{t("dashboard.quickActions.title")}</h2>
               <div className="grid grid-cols-2 gap-3">
                 {quickActions?.map((action, index) => (
-                  <QuickActionButton key={index} icon={action?.icon} label={action?.label} color={action?.color} onClick={() => handleQuickAction(action?.label)} />
+                  <QuickActionButton key={index} icon={action?.icon} label={t(`dashboard.quickActions.${action?.label}`)} color={action?.color} onClick={() => handleQuickAction(action?.label)} />
+                ))}
+              </div>
+            </div>
+            <div className="clinical-card p-4 md:p-6">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.recentActivity.title")}</h2>
+                <Button variant="ghost" size="sm" iconName="RefreshCw" iconPosition="left">
+                  {t("dashboard.recentActivity.refresh")}
+                </Button>
+              </div>
+              <div className="space-y-2">
+                {recentActivities?.map((activity) => (
+                  <RecentActivityItem key={activity?.id} activity={activity} />
                 ))}
               </div>
             </div>
 
-            <div className="clinical-card p-4 md:p-6">
+            {/* <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Patient Alerts</h2>
                 <span className="status-indicator bg-error/10 text-error text-xs px-2 py-1">{alerts?.filter((a) => a?.type === "critical")?.length} Critical</span>
@@ -338,21 +492,7 @@ const Dashboard = () => {
                   <UpcomingTaskCard key={task?.id} task={task} onToggleComplete={handleToggleTaskComplete} onViewDetails={handleViewTaskDetails} />
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="clinical-card p-4 md:p-6">
-          <div className="flex items-center justify-between mb-4 md:mb-6">
-            <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Recent Activity</h2>
-            <Button variant="ghost" size="sm" iconName="RefreshCw" iconPosition="left">
-              Refresh
-            </Button>
-          </div>
-          <div className="space-y-2">
-            {recentActivities?.map((activity) => (
-              <RecentActivityItem key={activity?.id} activity={activity} />
-            ))}
+            </div> */}
           </div>
         </div>
       </div>

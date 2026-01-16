@@ -1,0 +1,264 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary Colors - Medical Trust Blue */
+    --color-primary: #2563eb; /* blue-600 - Medical authority with digital confidence */
+    --color-primary-foreground: #ffffff; /* white - High contrast for accessibility */
+
+    /* Secondary Colors - Healing Teal */
+    --color-secondary: #0f766e; /* teal-700 - Healing growth, secondary actions */
+    --color-secondary-foreground: #ffffff; /* white - Clear contrast */
+
+    /* Accent Colors - Critical Alert Red */
+    --color-accent: #dc2626; /* red-600 - Critical alerts, urgent attention */
+    --color-accent-foreground: #ffffff; /* white - Maximum visibility */
+
+    /* Background & Surface */
+    --color-background: #fafbfc; /* gray-50 - Clean workspace, reduces eye strain */
+    --color-foreground: #1e293b; /* slate-800 - High contrast, extended reading comfort */
+    --color-card: #ffffff; /* white - Clean card surfaces */
+    --color-card-foreground: #1e293b; /* slate-800 - Readable card content */
+    --color-popover: #ffffff; /* white - Clean popover background */
+    --color-popover-foreground: #1e293b; /* slate-800 - Readable popover text */
+
+    /* Muted & Subtle Elements */
+    --color-muted: #f1f5f9; /* slate-100 - Subtle card elevation, content separation */
+    --color-muted-foreground: #64748b; /* slate-500 - Clear hierarchy, supporting information */
+
+    /* Border & Input */
+    --color-border: #e2e8f0; /* slate-200 - Subtle borders for form inputs and tables */
+    --color-input: #e2e8f0; /* slate-200 - Input field borders */
+    --color-ring: #2563eb; /* blue-600 - Focus ring color */
+
+    /* Status Colors */
+    --color-success: #059669; /* emerald-600 - Treatment completion, positive outcomes */
+    --color-success-foreground: #ffffff; /* white - Clear success messaging */
+
+    --color-warning: #d97706; /* amber-600 - Attention needed, non-critical alerts */
+    --color-warning-foreground: #ffffff; /* white - Visible warning text */
+
+    --color-error: #dc2626; /* red-600 - System issues, requires immediate action */
+    --color-error-foreground: #ffffff; /* white - Critical error visibility */
+
+    --color-destructive: #dc2626; /* red-600 - Destructive actions */
+    --color-destructive-foreground: #ffffff; /* white - Clear destructive action text */
+
+    /* Brand Colors - Clinical Modernism Palette */
+    --color-brand-primary: #2b5a87; /* Deep Clinical Blue - Medical authority and trust */
+    --color-brand-secondary: #4a90a4; /* Calming Teal - Approachable warmth */
+    --color-brand-accent: #e8a547; /* Warm Amber - Urgency without aggression */
+    --color-brand-success: #5b8a72; /* Healthcare Green - Success and growth */
+
+    /* Typography */
+    --font-headline: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-body: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-accent: "JetBrains Mono", "Courier New", monospace;
+
+    /* Spacing Scale - 8px base unit */
+    --spacing-xs: 0.5rem; /* 8px */
+    --spacing-sm: 0.75rem; /* 12px */
+    --spacing-md: 1rem; /* 16px */
+    --spacing-lg: 1.5rem; /* 24px */
+    --spacing-xl: 2rem; /* 32px */
+    --spacing-2xl: 3rem; /* 48px */
+
+    /* Border Radius */
+    --radius-sm: 0.25rem; /* 4px */
+    --radius-md: 0.375rem; /* 6px */
+    --radius-lg: 0.5rem; /* 8px */
+    --radius-xl: 0.75rem; /* 12px */
+
+    /* Shadows - Subtle elevation */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 2px 8px rgba(43, 90, 135, 0.08);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --color-background: #0f172a; /* slate-900 - Dark clinical workspace */
+    --color-foreground: #f1f5f9; /* slate-100 - Light text on dark */
+    --color-card: #1e293b; /* slate-800 - Dark card surfaces */
+    --color-card-foreground: #f1f5f9; /* slate-100 - Readable dark card text */
+    --color-popover: #1e293b; /* slate-800 - Dark popover */
+    --color-popover-foreground: #f1f5f9; /* slate-100 - Light popover text */
+    --color-muted: #334155; /* slate-700 - Dark muted elements */
+    --color-muted-foreground: #94a3b8; /* slate-400 - Muted text on dark */
+    --color-border: #334155; /* slate-700 - Dark borders */
+    --color-input: #334155; /* slate-700 - Dark input borders */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-headline);
+  }
+
+  code,
+  pre {
+    font-family: var(--font-accent);
+  }
+}
+
+@layer components {
+  /* Clinical Data Halo Effect */
+  .data-halo {
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+    transition: box-shadow var(--transition-base);
+  }
+
+  .data-halo-urgent {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.15);
+  }
+
+  .data-halo-success {
+    box-shadow: 0 0 20px rgba(5, 150, 105, 0.15);
+  }
+
+  /* Micro-animations */
+  .fade-in-up {
+    animation: fadeInUp 0.4s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Clinical Card Elevation */
+  .clinical-card {
+    @apply bg-card rounded-lg shadow-md border border-border;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .clinical-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Trust-building hover states */
+  .trust-hover {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .trust-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Contextual status indicators */
+  .status-indicator {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium;
+    transition: all var(--transition-slow);
+  }
+  .status-active {
+    @apply text-success;
+  }
+  .status-pending {
+    @apply text-warning;
+  }
+  .status-critical {
+    @apply text-error;
+  }
+
+  /* Progressive reveal animations */
+  .reveal-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-slow), opacity var(--transition-slow);
+    opacity: 0;
+  }
+
+  .reveal-content.active {
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  /* Clinical timeline visualization */
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-border);
+  }
+
+  .timeline-item::after {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 2px solid var(--color-background);
+  }
+}
+
+@layer utilities {
+  /* Responsive typography with clamp */
+  .text-responsive-sm {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+
+  .text-responsive-base {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+  }
+
+  .text-responsive-lg {
+    font-size: clamp(1.125rem, 3vw, 1.5rem);
+  }
+
+  .text-responsive-xl {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  /* Clinical precision spacing */
+  .clinical-spacing {
+    @apply space-y-6;
+  }
+
+  /* Empathetic color transitions */
+  .color-transition {
+    transition: color var(--transition-slow), background-color var(--transition-slow);
+  }
+
+  /* Focus visible for accessibility */
+  .focus-clinical:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}

@@ -381,9 +381,9 @@ const Dashboard = () => {
 
   const handleQuickAction = (action) => {
     console.log("Quick action:", action);
-    if (action === "New Patient") {
+    if (action === "newPatient") {
       navigate("/patient-directory");
-    } else if (action === "Schedule") {
+    } else if (action === "scheduleAppointment") {
       navigate("/treatment-planning");
     }
   };

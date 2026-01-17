@@ -5,6 +5,50 @@
   "appointments": "Turnos",
   "save": "Guardar",
   "cancel": "Cancelar",
+  "next": "Próximo",
+  "show": "Mostrar",
+  "patient": {
+    "created": "Paciente creado con éxito",
+    "updated": "Información del paciente actualizada con éxito",
+    "form": {
+      "title": "Alta de paciente",
+      "requiredLegend": "Los campos marcados con",
+      "sections": {
+        "personal": "Datos personales",
+        "contact": "Contacto",
+        "insurance": "Cobertura médica",
+        "tags": "Etiquetas"
+      },
+      "fields": {
+        "name": "Nombre completo *",
+        "address": "Domicilio",
+        "email": "Email *",
+        "phone": "Teléfono",
+        "tags": "Etiquetas (separadas por coma)",
+        "insurance": {
+          "placeholder": "Seleccionar obra social"
+        }
+      },
+      "insurance": {
+        "ioscor": "IOSCOR",
+        "swissMedical": "Swiss Medical",
+        "osde": "OSDE",
+        "omint": "Omint",
+        "other": "Otros"
+      },
+      "tags": {
+        "selectedLegend": "Etiquetas seleccionadas",
+        "vip": "VIP",
+        "recommended": "Recomendado",
+        "new": "Nuevo",
+        "family": "Familiar",
+        "other": "Otros"
+      },
+      "validation": {
+        "required": "Completá los campos obligatorios antes de guardar"
+      }
+    }
+  },
   "dashboard": {
     "title": "Panel de control",
     "description": "Resumen y métricas del consultorio",
@@ -43,7 +87,103 @@
   },
   "directory": {
     "title": "Directorio de pacientes",
-    "description": "Buscar y administrar pacientes"
+    "description": "Buscar y administrar pacientes",
+    "subtitle": "Base de datos completa de pacientes con capacidades avanzadas de búsqueda y filtrado",
+    "button": {
+      "addNewPatient": "Nuevo paciente"
+    },
+    "panelFilter": {
+      "title": "Buscar y Filtrar Pacientes",
+      "searchPatientLabel": "Paciente",
+      "searchPlaceholder": "Buscar por nombre, ID o contacto",
+      "patientStatusLabel": "Estado del paciente",
+      "patientStatusOptions": {
+        "all": "Todos",
+        "pending": "Pendiente",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "appointmentStatusLabel": "Estado de la Cita",
+      "appointmentStatusOptions": {
+        "all": "Todos los Turnos",
+        "upcoming": "Próximos",
+        "overdue": "Vencidos",
+        "completed": "Completados",
+        "noAppointments": "Sin Turnos"
+      },
+      "insuranceProviderLabel": "Cobertura Medica",
+      "insuranceProviderOptions": {
+        "all": "Todos",
+        "deltaDental": "Delta Dental",
+        "cignaDental": "Cigna Dental",
+        "aetnaDental": "Aetna Dental",
+        "metLifeDental": "MetLife Dental",
+        "unitedHealthcare": "United Healthcare",
+        "selfPay": "Self-Pay"
+      },
+      "treatmentHistoryLabel": "Historial de Tratamientos",
+      "treatmentHistoryOptions": {
+        "all": "Todos los Tratamientos",
+        "cleaning": "Limpieza",
+        "rootCanal": "Endodoncia",
+        "crown": "Corona",
+        "filling": "Relleno",
+        "extraction": "Extracción",
+        "orthodontics": "Ortodoncia",
+        "implant": "Implante"
+      },
+      "lastVisitFromLabel": "Última Visita desde",
+      "lastVisitToLabel": "Última Visita hasta",
+      "applyButton": "Aplicar Filtros",
+      "resetButton": "Restablecer Filtros",
+      "advancedOptionsFilters": "Opciones Avanzadas",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "ageFromLabel": "Edad Desde",
+      "ageFromPlaceholder": "Min edad",
+      "ageToLabel": "Edad Hasta",
+      "ageToPlaceholder": "Max edad",
+      "customTagsLabel": "Etiquetas Personalizadas",
+      "customTagsPlaceholder": "Ingrese etiquetas..."
+    }
+  },
+  "patientCard": {
+    "status": {
+      "pending": "Pendiente",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "dob": "Nacimiento"
+  },
+  "patientTable": {
+    "noPatients": "No se encontraron pacientes",
+    "tryAdjusting": "Intenta ajustar tu búsqueda o criterios de filtrado",
+    "resetFilters": "Restablecer Filtros",
+    "columns": {
+      "patient": "Paciente",
+      "patientID": "ID Paciente",
+      "contact": "Contacto",
+      "insurance": "Seguro",
+      "status": "Estado",
+      "nextAppointment": "Próxima Cita",
+      "actions": "Acciones"
+    }
+  },
+  "pagination": {
+    "pageof": "página {{current}} de {{total}}",
+    "perPage": "{{count}} por página",
+    "showing": "Mostrando {{paginated}} de {{sorted}} pacientes",
+    "clearSelection": "Borrar Selección"
+  },
+  "bulkActions": {
+    "selectedPatients_one": "{{count}} seleccionado",
+    "selectedPatients_other": "{{count}}  seleccionados",
+    "selectedPatients_zero": "no hay pacientes seleccionados",
+    "export": "Exportar",
+    "email": "Email",
+    "schedule": "Programar",
+    "addTag": "Agregar",
+    "delete": "Eliminar"
   },
   "records": {
     "title": "Historias clínicas",
@@ -102,6 +242,7 @@
   "appointment": {
     "titlePanel": "Turnos de hoy",
     "viewAll": "Ver todos",
+    "overdue": "Vencido",
     "status": {
       "confirmed": "Confirmado",
       "pending": "Pendiente",

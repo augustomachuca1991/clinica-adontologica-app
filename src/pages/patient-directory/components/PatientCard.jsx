@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import Image from "../../../components/AppImage";
 import Icon from "../../../components/AppIcon";
 import Button from "../../../components/ui/Button";
+import { useTranslation } from "react-i18next";
+import { formatDateForUI } from "../../../utils/formatters/date";
 
 const PatientCard = ({ patient, onQuickAction }) => {
+  const { t } = useTranslation();
+
   const getStatusColor = (status) => {
     switch (status) {
       case "active":
@@ -51,7 +55,7 @@ const PatientCard = ({ patient, onQuickAction }) => {
               </Link>
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <span className="text-xs md:text-sm text-muted-foreground">ID: {patient?.patientId}</span>
-                <span className={`status-indicator text-xs ${getStatusColor(patient?.status)}`}>{patient?.status?.charAt(0)?.toUpperCase() + patient?.status?.slice(1)}</span>
+                <span className={`status-indicator text-xs ${getStatusColor(patient?.status)}`}>{t(`patientCard.status.${patient?.status}`)}</span>
               </div>
             </div>
             <div className="flex gap-2">
@@ -63,7 +67,9 @@ const PatientCard = ({ patient, onQuickAction }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
             <div className="flex items-center gap-2 text-xs md:text-sm">
               <Icon name="Calendar" size={16} className="text-muted-foreground flex-shrink-0" />
-              <span className="text-muted-foreground truncate">DOB: {patient?.dateOfBirth}</span>
+              <span className="text-muted-foreground truncate">
+                {t("patientCard.dob")}: {formatDateForUI(patient?.dateOfBirth)}
+              </span>
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm">
               <Icon name="Phone" size={16} className="text-muted-foreground flex-shrink-0" />
@@ -82,15 +88,17 @@ const PatientCard = ({ patient, onQuickAction }) => {
           {patient?.nextAppointment && (
             <div className={`flex items-center gap-2 p-2 md:p-3 rounded-md bg-muted/50 ${getAppointmentStatusColor(patient?.appointmentStatus)}`}>
               <Icon name="Clock" size={16} className="flex-shrink-0" />
-              <span className="text-xs md:text-sm font-medium">Next: {patient?.nextAppointment}</span>
-              {patient?.appointmentStatus === "overdue" && <span className="ml-auto text-xs font-medium">Overdue</span>}
+              <span className="text-xs md:text-sm font-medium">
+                {t("next")}: {patient?.nextAppointment}
+              </span>
+              {patient?.appointmentStatus === "overdue" && <span className="ml-auto text-xs font-medium">{t("appointment.overdue")}</span>}
             </div>
           )}
 
           {patient?.tags && patient?.tags?.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {patient?.tags?.map((tag, index) => (
-                <span key={index} className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
+                <span key={index} className="px-2 py-1 text-xs rounded-full bg-gray-400 text-gray-50">
                   {tag}
                 </span>
               ))}

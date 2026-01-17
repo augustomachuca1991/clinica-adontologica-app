@@ -5,6 +5,50 @@
   "appointments": "Appointments",
   "save": "Save",
   "cancel": "Cancel",
+  "next": "Next",
+  "show": "Show",
+  "patient": {
+    "created": "Patient created successfully",
+    "updated": "Patient information updated successfully",
+    "form": {
+      "title": "Patient Registration",
+      "requiredLegend": "Fields marked with",
+      "sections": {
+        "personal": "Personal Information",
+        "contact": "Contact Information",
+        "insurance": "Medical Insurance",
+        "tags": "Tags"
+      },
+      "fields": {
+        "name": "Full Name *",
+        "address": "Address",
+        "email": "Email *",
+        "phone": "Phone",
+        "tags": "Tags (comma-separated)",
+        "insurance": {
+          "placeholder": "Select insurance provider"
+        }
+      },
+      "insurance": {
+        "ioscor": "IOSCOR",
+        "swissMedical": "Swiss Medical",
+        "osde": "OSDE",
+        "omint": "Omint",
+        "other": "Otros"
+      },
+      "tags": {
+        "selectedLegend": "Selected tags",
+        "vip": "VIP",
+        "recommended": "Recommended",
+        "new": "New",
+        "family": "Family",
+        "other": "Others"
+      },
+      "validation": {
+        "required": "Please complete the required fields before saving"
+      }
+    }
+  },
   "dashboard": {
     "title": "Dashboard",
     "description": "Practice overview and metrics",
@@ -43,7 +87,103 @@
   },
   "directory": {
     "title": "Patient Directory",
-    "description": "Search and manage patients"
+    "description": "Search and manage patients",
+    "subtitle": "Comprehensive patient database with advanced search and filtering capabilities",
+    "button": {
+      "addNewPatient": "Add New Patient"
+    },
+    "panelFilter": {
+      "title": "Search & Filter Patients",
+      "searchPatientLabel": "Patient",
+      "searchPlaceholder": "Search by name, ID, or contact",
+      "patientStatusLabel": "Patient Status",
+      "patientStatusOptions": {
+        "all": "All",
+        "pending": "Pending",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "appointmentStatusLabel": "Appointment Status",
+      "appointmentStatusOptions": {
+        "all": "All Appointments",
+        "upcoming": "upcoming",
+        "overdue": "Overdue",
+        "completed": "Completed",
+        "noAppointments": "No Appointments"
+      },
+      "insuranceProviderLabel": "Insurance Provider",
+      "insuranceProviderOptions": {
+        "all": "All Insurance Providers",
+        "deltaDental": "Delta Dental",
+        "cignaDental": "Cigna Dental",
+        "aetnaDental": "Aetna Dental",
+        "metLifeDental": "MetLife Dental",
+        "unitedHealthcare": "United Healthcare",
+        "selfPay": "Self-Pay"
+      },
+      "treatmentHistoryLabel": "Treatment History",
+      "treatmentHistoryOptions": {
+        "all": "All Treatments",
+        "cleaning": "Cleaning",
+        "rootCanal": "Root Canal",
+        "crown": "Crown",
+        "filling": "Filling",
+        "extraction": "Extraction",
+        "orthodontics": "Orthodontics",
+        "implant": "Implant"
+      },
+      "lastVisitFromLabel": "Last Visit",
+      "lastVisitToLabel": "Last Visit to",
+      "applyButton": "Apply Filters",
+      "resetButton": "Reset Filters",
+      "advancedOptionsFilters": "Advanced Options",
+      "show": "Show",
+      "hide": "Hide",
+      "ageFromLabel": "Age From",
+      "ageFromPlaceholder": "Min age",
+      "ageToLabel": "Age To",
+      "ageToPlaceholder": "Max age",
+      "customTagsLabel": "Custom Tags",
+      "customTagsPlaceholder": "Enter tags..."
+    }
+  },
+  "patientCard": {
+    "status": {
+      "pending": "Pending",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "dob": "DOB"
+  },
+  "patientTable": {
+    "noPatients": "No patients found",
+    "tryAdjusting": "Try adjusting your search or filter criteria",
+    "resetFilters": "Reset Filters",
+    "columns": {
+      "patient": "Patient",
+      "patientID": "Patient ID",
+      "contact": "Contact",
+      "insurance": "Insurance",
+      "status": "Status",
+      "nextAppointment": "Next Appointment",
+      "actions": "Actions"
+    }
+  },
+  "pagination": {
+    "pageof": "page {{current}} of {{total}}",
+    "perPage": "{{count}} per page",
+    "showing": "Showing {{paginated}} of {{sorted}} patients",
+    "clearSelection": "Clear Selection"
+  },
+  "bulkActions": {
+    "selectedPatients_one": "{{count}} selected patient",
+    "selectedPatients_other": "{{count}} selected patients",
+    "selectedPatients_zero": "no patients selected",
+    "export": "Export",
+    "email": "Email",
+    "schedule": "Schedule",
+    "addTag": "Add Tag",
+    "delete": "Delete"
   },
   "profile": {
     "title": "Patient Profile",
@@ -102,6 +242,7 @@
   "appointment": {
     "titlePanel": "Today's Appointments",
     "viewAll": "View all",
+    "overdue": "Overdue",
     "status": {
       "confirmed": "Confirmed",
       "pending": "Pending",

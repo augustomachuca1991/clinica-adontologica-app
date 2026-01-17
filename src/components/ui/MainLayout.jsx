@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Breadcrumbs from "./Breadcrumbs";
+import { Toaster } from "sonner";
 
 const MainLayout = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -24,6 +25,7 @@ const MainLayout = ({ children }) => {
           </div>
         </main>
       </div>
+      <Toaster richColors position="top-right" />
     </div>
   );
 };

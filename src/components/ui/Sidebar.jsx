@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "../AppIcon";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isCollapsed = false, onToggle }) => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const location = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -59,15 +61,20 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
 
   return (
     <>
-      <button onClick={handleMobileToggle} className="fixed top-4 left-4 z-50 lg:hidden bg-card text-foreground p-2 rounded-md shadow-clinical-md focus-clinical" aria-label="Toggle mobile menu">
-        <Icon name={isMobileOpen ? "X" : "Menu"} size={24} />
+      <button onClick={handleMobileToggle} className="fixed top-3.5 left-4 z-50 lg:hidden bg-card text-foreground p-2 rounded-md shadow-clinical-md focus-clinical" aria-label="Toggle mobile menu">
+        <Icon name={isMobileOpen ? "X" : "Menu"} size={18} />
       </button>
       <div
         className={`fixed lg:fixed top-0 left-0 h-full bg-card border-r border-border shadow-clinical-md transition-all duration-slow z-40 ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } ${isCollapsed ? "w-20" : "w-64"}`}
       >
-        <div className="sidebar-header flex items-center justify-center h-16 border-b border-border bg-primary/5 backdrop-blur-sm">
+        <div
+          className="sidebar-header flex items-center justify-center h-16 border-b border-border bg-primary/5 backdrop-blur-sm"
+          onClick={() => navigate("/dashboard")}
+          role="button"
+          aria-label="Go to home"
+        >
           <div className={`sidebar-logo flex items-center justify-center transition-all duration-slow ${isCollapsed ? "w-10 h-10" : "w-12 h-12"} bg-primary/10 rounded-lg`}>
             <Icon name="Activity" size={isCollapsed ? 20 : 24} color="var(--color-primary)" />
           </div>

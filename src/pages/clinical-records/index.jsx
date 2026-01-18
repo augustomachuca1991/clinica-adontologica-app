@@ -7,6 +7,7 @@ import RecordCard from "./components/RecordCard";
 import TimelineView from "./components/TimelineView";
 import AddNoteModal from "./components/AddNoteModal";
 import RecordDetailsModal from "./components/RecordDetailsModal";
+import { useTranslation } from "react-i18next";
 import StatsOverview from "./components/StatsOverview";
 
 const ClinicalRecords = () => {
@@ -23,6 +24,8 @@ const ClinicalRecords = () => {
     dateTo: "",
   });
 
+  const { t } = useTranslation();
+
   const mockRecords = [
     {
       id: 1,
@@ -31,14 +34,15 @@ const ClinicalRecords = () => {
       treatmentName: "Root Canal Therapy",
       treatmentType: "endodontic",
       status: "completed",
-      date: "January 10, 2026",
+      date: "2026-01-10",
+      createdAt: "2026-01-10T09:00:00Z",
       provider: "Dr. Sarah Johnson",
       toothNumber: "#14",
       cost: 1250,
       duration: "90 minutes",
       notes:
         "Root canal treatment completed successfully on tooth #14. Patient tolerated procedure well with local anesthesia. Canal cleaning and shaping performed using rotary instruments. Obturation completed with gutta-percha and sealer. Post-operative radiograph shows excellent fill. Patient advised on post-treatment care and prescribed pain medication.",
-      followUp: "Schedule follow-up in 2 weeks for crown preparation",
+      followUp: "Seguimiento: Prep. corona (2 sem.)",
       attachments: [
         {
           url: "https://images.unsplash.com/photo-1726306529401-d6ac8b1e48fb",
@@ -61,7 +65,8 @@ const ClinicalRecords = () => {
       treatmentName: "Dental Implant Placement",
       treatmentType: "oral-surgery",
       status: "in-progress",
-      date: "January 12, 2026",
+      date: "2026-01-12",
+      createdAt: "2026-01-12T10:30:00Z",
       provider: "Dr. Michael Smith",
       toothNumber: "#19",
       cost: 3500,
@@ -87,7 +92,8 @@ const ClinicalRecords = () => {
       treatmentName: "Composite Filling",
       treatmentType: "restorative",
       status: "completed",
-      date: "January 13, 2026",
+      date: "2026-01-13",
+      createdAt: "2026-01-13T11:15:00Z",
       provider: "Dr. Emily Williams",
       toothNumber: "#30",
       cost: 280,
@@ -112,7 +118,8 @@ const ClinicalRecords = () => {
       treatmentName: "Teeth Whitening",
       treatmentType: "preventive",
       status: "completed",
-      date: "January 14, 2026",
+      date: "2026-01-14",
+      createdAt: "2026-01-14T15:45:00Z",
       provider: "Dr. Sarah Johnson",
       toothNumber: "Full Arch",
       cost: 450,
@@ -137,7 +144,8 @@ const ClinicalRecords = () => {
       treatmentName: "Crown Preparation",
       treatmentType: "prosthodontic",
       status: "in-progress",
-      date: "January 15, 2026",
+      date: "2026-01-15",
+      createdAt: "2026-01-15T12:00:00Z",
       provider: "Dr. David Brown",
       toothNumber: "#3",
       cost: 1800,
@@ -159,7 +167,8 @@ const ClinicalRecords = () => {
       treatmentName: "Periodontal Scaling",
       treatmentType: "periodontic",
       status: "completed",
-      date: "January 16, 2026",
+      date: "2026-01-16",
+      createdAt: "2026-01-16T08:30:00Z",
       provider: "Dr. Emily Williams",
       toothNumber: "Full Mouth",
       cost: 650,
@@ -176,7 +185,8 @@ const ClinicalRecords = () => {
       treatmentName: "Orthodontic Adjustment",
       treatmentType: "orthodontic",
       status: "in-progress",
-      date: "January 17, 2026",
+      date: "2026-01-17",
+      createdAt: "2026-01-17T16:20:00Z",
       provider: "Dr. Michael Smith",
       toothNumber: "Full Arch",
       cost: 150,
@@ -198,7 +208,8 @@ const ClinicalRecords = () => {
       treatmentName: "Tooth Extraction",
       treatmentType: "oral-surgery",
       status: "completed",
-      date: "January 18, 2026",
+      date: "2026-01-18",
+      createdAt: "2026-01-18T14:10:00Z",
       provider: "Dr. David Brown",
       toothNumber: "#32",
       cost: 320,
@@ -271,8 +282,8 @@ const ClinicalRecords = () => {
       <div className="space-y-6 md:space-y-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">Clinical Records</h1>
-            <p className="text-sm md:text-base text-muted-foreground">Comprehensive treatment history and documentation management</p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("records.title")}</h1>
+            <p className="text-sm md:text-base text-muted-foreground">{t("records.subtitle")}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
@@ -292,30 +303,28 @@ const ClinicalRecords = () => {
               </button>
             </div>
             <Button variant="default" iconName="Plus" iconPosition="left">
-              New Record
+              {t("records.button.newRecord")}
             </Button>
           </div>
         </div>
 
-        <StatsOverview stats={stats} />
+        {/* <StatsOverview stats={stats} /> */}
 
         <RecordFilters filters={filters} onFilterChange={handleFilterChange} onClearFilters={handleClearFilters} />
 
         <div className="bg-card border border-border rounded-lg p-4 md:p-6 shadow-clinical-sm">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Treatment Records</h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                {filteredRecords?.length} record{filteredRecords?.length !== 1 ? "s" : ""} found
-              </p>
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("records.treatmentHistoryList.title")}</h2>
+              <p className="text-sm text-muted-foreground mt-1">{t("records.treatmentHistoryList.foundRecords", { count: filteredRecords?.length })}</p>
             </div>
             <Button variant="outline" size="sm" iconName="Download" iconPosition="left">
-              Export All
+              {t("records.treatmentHistoryList.button.export")}
             </Button>
           </div>
 
           {viewMode === "grid" ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-start">
               {filteredRecords?.map((record) => (
                 <RecordCard key={record?.id} record={record} onViewDetails={handleViewDetails} onAddNote={handleAddNote} />
               ))}
@@ -327,10 +336,10 @@ const ClinicalRecords = () => {
           {filteredRecords?.length === 0 && (
             <div className="text-center py-12">
               <Icon name="FileText" size={48} className="mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-headline font-semibold text-foreground mb-2">No Records Found</h3>
-              <p className="text-sm text-muted-foreground mb-6">Try adjusting your filters or search criteria</p>
+              <h3 className="text-lg font-headline font-semibold text-foreground mb-2">{t("records.treatmentHistoryList.foundRecords_zero", { count: filteredRecords?.length })}</h3>
+              <p className="text-sm text-muted-foreground mb-6">{t("records.treatmentHistoryList.tryAdjusting")}</p>
               <Button variant="outline" onClick={handleClearFilters} iconName="RefreshCw" iconPosition="left">
-                Clear Filters
+                {t("records.treatmentHistoryList.button.resetFilters")}
               </Button>
             </div>
           )}

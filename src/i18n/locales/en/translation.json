@@ -7,6 +7,9 @@
   "cancel": "Cancel",
   "next": "Next",
   "show": "Show",
+  "status": "Status",
+  "dentist": "Dentist",
+  "messageSuccess": "Operation completed successfully",
   "patient": {
     "created": "Patient created successfully",
     "updated": "Patient information updated successfully",
@@ -191,7 +194,138 @@
   },
   "records": {
     "title": "Clinical Records",
-    "description": "Patient medical history"
+    "description": "Patient medical history",
+    "subtitle": "Comprehensive treatment history and documentation management",
+    "button": {
+      "newRecord": "New Record"
+    },
+    "panelFilter": {
+      "title": "Filter Records",
+      "recordTypeLabel": "Record Type",
+      "searchPatientLabel": "Patient",
+      "searchPlaceholder": "Patient name or ID...",
+      "treatmentTypeLabel": "Treatment Type",
+      "treatmentTypeOptions": {
+        "all": "All Treatments"
+      },
+      "treatmentStatusLabel": "Status",
+      "treatmentStatusOptions": {
+        "all": "All Statuses",
+        "completed": "Completed",
+        "inProgress": "In Progress",
+        "scheduled": "Scheduled",
+        "cancelled": "Cancelled",
+        "planned": "Planned"
+      },
+      "providerLabel": "Provider",
+      "providerOptions": {
+        "all": "All Providers"
+      },
+      "dateFromLabel": "From Date",
+      "dateToLabel": "To Date",
+      "button": {
+        "resetFilters": "Reset Filters"
+      }
+    },
+    "treatmentHistoryList": {
+      "title": "Treatment History",
+      "button": {
+        "export": "Export",
+        "clearAll": "Clear Filters"
+      },
+      "foundRecords_one": "{{count}} record found",
+      "foundRecords_other": "{{count}} records found",
+      "foundRecords_zero": "No Records Found",
+      "tryAdjusting": "Try adjusting your search or filter criteria"
+    },
+    "card": {
+      "patient": "Patient",
+      "idPatient": "ID",
+      "status": {
+        "completed": "Completed",
+        "inProgress": "In Progress",
+        "scheduled": "Scheduled",
+        "cancelled": "Cancelled",
+        "planned": "Planned"
+      },
+      "provider": "Provider",
+      "tooth": "Tooth",
+      "cost": "Cost",
+      "button": {
+        "viewDetails": "View Details",
+        "addNote": "Add Note",
+        "export": "Export",
+        "view": "View"
+      },
+      "treatmentNotes": "Treatment Notes",
+      "clinicalImages": "Clinical Images",
+      "noImages": "No images available",
+      "followUp": "Follow-Up Required"
+    },
+    "recordsModal": {
+      "tabs": {
+        "overview": {
+          "name": "Overview",
+          "treatmentType": "Treatment Type",
+          "treatmentDate": "Treatment Date",
+          "toothNumber": "Tooth Number",
+          "duration": "Duration"
+        },
+        "clinicalNotes": {
+          "name": "Clinical Note",
+          "addClinicalNote": "Add Clinical Note",
+          "noteType": "Note Type",
+          "noteTypeOptions": {
+            "progress": "Progress",
+            "treatment": "Treatment",
+            "observation": "Observation",
+            "followUp": "Follow-Up"
+          },
+          "quickTemplates": "Quick Templates",
+          "postProcedure": "Post-Procedure",
+          "postProcedureQuick": "Patient tolerated procedure well. No complications noted. Post-operative instructions provided.",
+          "followUp": "Follow-up",
+          "followUpQuick": "Follow-up examination completed. Healing progressing as expected. Continue current care regimen.",
+          "characters_one": "{{count}} character",
+          "characters_other": "{{count}} characters",
+          "placeholder": "Enter detailed clinical observations, treatment progress, or patient feedback...",
+          "attachments": "Attachments",
+          "dragAndDrop": "Click to upload or drag and drop",
+          "typeFile": "Images or PDF files (max 10MB each)",
+          "button": {
+            "cancel": "Cancel",
+            "saveNote": "Save Note"
+          }
+        },
+        "images": {
+          "name": "Images",
+          "noImages": "No clinical images available",
+          "clinicalImages": "Clinical Images",
+          "button": {
+            "uploadImage": "Upload Image"
+          }
+        },
+        "history": {
+          "name": "History",
+          "noHistory": "No treatment history available",
+          "treatmentHistory": "Treatment History",
+          "statusUpdated": "Status Updated",
+          "activity": {
+            "statusLog": "Treatment status changed to {{status}} by {{doctor}}",
+            "status": {
+              "completed": "Completado",
+              "inProgress": "En curso",
+              "planned": "Planificado"
+            }
+          }
+        }
+      },
+      "button": {
+        "close": "Close",
+        "exportPDF": "Export PDF",
+        "print": "Print"
+      }
+    }
   },
   "treatment": {
     "title": "Treatment Planning",
@@ -219,7 +353,7 @@
     "help": "Help & Support",
     "signout": "Sign Out"
   },
-  "dentist": "Dentist",
+
   "home": {
     "welcome": "Welcome back, {{name}}",
     "overview": "Here's a summary of your practice today."

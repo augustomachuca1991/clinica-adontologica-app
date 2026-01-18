@@ -7,6 +7,9 @@
   "cancel": "Cancelar",
   "next": "Próximo",
   "show": "Mostrar",
+  "dentist": "Odontólogo",
+  "status": "Estado",
+  "messageSuccess": "Operación realizada con éxito",
   "patient": {
     "created": "Paciente creado con éxito",
     "updated": "Información del paciente actualizada con éxito",
@@ -187,14 +190,145 @@
   },
   "records": {
     "title": "Historias clínicas",
-    "description": "Historial médico del paciente"
+    "description": "Historial médico del paciente",
+    "subtitle": "Historial de tratamientos completo y gestión de documentación",
+    "button": {
+      "newRecord": "Nuevo Registro"
+    },
+    "panelFilter": {
+      "title": "Buscar y Filtrar Registros Clínicos",
+      "recordTypeLabel": "Tipo de Registro",
+      "searchPatientLabel": "Paciente",
+      "searchPlaceholder": "Nombre o ID del paciente...",
+      "treatmentTypeLabel": "Tipo de Tratamiento",
+      "treatmentTypeOptions": {
+        "all": "Todos"
+      },
+      "treatmentStatusLabel": "Estado",
+      "treatmentStatusOptions": {
+        "all": "Todos los Estados",
+        "completed": "Completado",
+        "inProgress": "En Progreso",
+        "scheduled": "Programado",
+        "cancelled": "Cancelado",
+        "planned": "Planeado"
+      },
+      "providerLabel": "Profesional",
+      "providerOptions": {
+        "all": "Todos"
+      },
+      "dateFromLabel": "Desde",
+      "dateToLabel": "Hasta",
+      "button": {
+        "resetFilters": "Restablecer Filtros"
+      }
+    },
+    "treatmentHistoryList": {
+      "title": "Historial de Tratamientos",
+      "button": {
+        "export": "Exportar",
+        "clearAll": "Limpiar Filtros"
+      },
+      "foundRecords_one": "{{count}} registro encontrado",
+      "foundRecords_other": "{{count}} registros encontrados",
+      "foundRecords_zero": "No se encontraron registros",
+      "tryAdjusting": "Intenta ajustar tu búsqueda o criterios de filtrado"
+    },
+    "card": {
+      "patient": "Paciente",
+      "idPatient": "ID",
+      "status": {
+        "completed": "Completado",
+        "inProgress": "En Progreso",
+        "scheduled": "Programado",
+        "cancelled": "Cancelado",
+        "planned": "Planeado"
+      },
+      "provider": "Especialista",
+      "tooth": "Diente",
+      "cost": "Costo",
+      "button": {
+        "viewDetails": "Ver Detalles",
+        "addNote": "Agregar Nota",
+        "export": "Exportar",
+        "view": "Ver"
+      },
+      "treatmentNotes": "Notas del Tratamiento",
+      "clinicalImages": "Imágenes Clínicas",
+      "noImages": "No hay imágenes disponibles",
+      "followUp": "Seguimiento"
+    },
+    "recordsModal": {
+      "tabs": {
+        "overview": {
+          "name": "Resumen",
+          "treatmentType": "Tipo de Tratamiento",
+          "treatmentDate": "Fecha de Tratamiento",
+          "toothNumber": "Número de Diente",
+          "duration": "Duración"
+        },
+        "clinicalNotes": {
+          "name": "Nota Clínica",
+          "addClinicalNote": "Agregar Nota Clínica",
+          "noteType": "Tipo de Nota",
+          "noteTypeOptions": {
+            "progress": "Progreso",
+            "treatment": "Tratamiento",
+            "observation": "Observación",
+            "followUp": "Seguimiento"
+          },
+          "quickTemplates": "Plantillas Rápidas",
+          "postProcedure": "Post-Procedimiento",
+          "postProcedureQuick": "Paciente toleró bien el procedimiento. No se observaron complicaciones. Se entregaron instrucciones post tratamiento.",
+          "followUp": "Seguimiento",
+          "followUpQuick": "Examen de seguimiento completado. La cicatrización progresa según lo previsto. Continuar con el régimen de cuidado actual.",
+          "characters_one": "{{count}} caracter",
+          "characters_other": "{{count}} caracteres",
+          "placeholder": "Ingrese observaciones clínicas detalladas, evolución del tratamiento o comentarios del paciente...",
+          "attachments": "Adjuntos",
+          "dragAndDrop": "Clic para subir imagen o arrastre y suelte",
+          "typeFile": "Tipo de archivos imagenes o PDF (max 10MB)",
+          "button": {
+            "cancel": "Cancelar",
+            "saveNote": "Guardar Nota"
+          }
+        },
+        "images": {
+          "name": "Imágenes",
+          "noImages": "No hay imágenes disponibles",
+          "clinicalImages": "Imágenes Clínicas",
+          "button": {
+            "uploadImage": "Subir Imagen"
+          }
+        },
+        "history": {
+          "name": "Historial",
+          "noHistory": "No hay historial disponible para este registro",
+          "treatmentHistory": "Historial de Tratamientos",
+          "statusUpdated": "Estado Actualizado",
+          "activity": {
+            "statusLog": "El estado del tratamiento fue cambiado a {{status}} por {{doctor}}",
+            "status": {
+              "completed": "Completado",
+              "inProgress": "En curso",
+              "planned": "Planificado"
+            }
+          }
+        }
+      },
+      "button": {
+        "close": "Cerrar",
+        "exportPDF": "Exportar PDF",
+        "print": "Imprimir"
+      }
+    }
   },
   "treatment": {
     "title": "Planificación de tratamientos",
     "description": "Programar y planificar tratamientos"
   },
   "profile": {
-    "title": "Perfil del paciente",
+    "title": "Ficha del paciente",
     "description": "Información detallada del paciente"
   },
   "settings": {
@@ -219,7 +353,7 @@
     "help": "Ayuda y Soporte",
     "signout": "Cerrar Sesión"
   },
-  "dentist": "Odontólogo",
+
   "home": {
     "welcome": "Bienvenido de nuevo, {{name}}",
     "overview": "Aquí tienes un resumen de tu práctica hoy."

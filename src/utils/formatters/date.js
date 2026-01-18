@@ -49,3 +49,18 @@ export const formatMonthYear = (isoDate) => {
 
   return `${month}/${year}`;
 };
+
+export const formatDateLang = (dateString, language = "es") => {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  // Opciones para mostrar: "10 de enero de 2026" o "January 10, 2026"
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  return new Intl.DateTimeFormat(language, options).format(date);
+};

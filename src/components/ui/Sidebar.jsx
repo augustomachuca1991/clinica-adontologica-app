@@ -77,6 +77,7 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
         >
           <div className={`sidebar-logo flex items-center justify-center transition-all duration-slow ${isCollapsed ? "w-10 h-10" : "w-12 h-12"} bg-primary/10 rounded-lg`}>
             <Icon name="Activity" size={isCollapsed ? 20 : 24} color="var(--color-primary)" />
+            {/* 🦷 */}
           </div>
           {!isCollapsed && <span className="ml-3 text-lg font-headline font-semibold text-foreground">{t("appTitle")}</span>}
         </div>

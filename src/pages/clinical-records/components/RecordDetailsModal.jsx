@@ -7,10 +7,18 @@ import { formatDateLang } from "utils/formatters/date";
 import { useReactToPrint } from "react-to-print";
 import PrintableMedicalRecord from "./PrintableMedicalRecord";
 import { notifySuccess } from "utils/notifications";
+import ImageLightbox from "../../../components/ui/ImageLightBox";
+import { downloadImage } from "../../../utils/downloaderHelper";
+import UploadImageModal from "./UploadImageModal";
+import { supabase } from "../../../lib/supabase";
 
 const RecordDetailsModal = ({ record, onClose }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const contentRef = useRef(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [currentAttachments, setCurrentAttachments] = useState(record?.attachments || []);
+
   const tabs = [
     { id: "overview", label: "overview", icon: "FileText" },
     { id: "notes", label: "clinicalNotes", icon: "MessageSquare" },
@@ -88,12 +96,31 @@ const RecordDetailsModal = ({ record, onClose }) => {
     return colors?.[status] || colors?.planned;
   };
 
-  // 2. Configuramos la función de impresión
   const handlePrint = useReactToPrint({
     contentRef,
     documentTitle: `Ficha_${record?.patientName?.replace(/\s+/g, "_")}_${record?.date}`,
     onAfterPrint: () => notifySuccess(t("messageSuccess")),
   });
+
+  const nextImage = () => {
+    setSelectedImageIndex((prev) => (prev + 1) % currentAttachments.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) => (prev - 1 + currentAttachments.length) % currentAttachments.length);
+  };
+
+  const handleUploadSuccess = async (newAttachment) => {
+    const updatedAttachments = [...currentAttachments, newAttachment];
+
+    // Actualizar en Supabase
+    const { error } = await supabase.from("medical_records").update({ attachments: updatedAttachments }).eq("id", record.id);
+
+    if (!error) {
+      setCurrentAttachments(updatedAttachments); // Esto actualiza la cuadrícula al instante
+      notifySuccess(t("records.recordsModal.tabs.images.uploadSuccess"));
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -227,20 +254,29 @@ const RecordDetailsModal = ({ record, onClose }) => {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-base font-headline font-semibold text-foreground">{t("records.recordsModal.tabs.images.clinicalImages")}</h4>
-                <Button variant="outline" size="sm" iconName="Upload" iconPosition="left">
+                <Button variant="outline" size="sm" iconName="Upload" iconPosition="left" onClick={() => setIsUploadModalOpen(true)}>
                   {t("records.recordsModal.tabs.images.button.uploadImage")}
                 </Button>
               </div>
-              {record?.attachments && record?.attachments?.length > 0 ? (
+              {currentAttachments && currentAttachments.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {record?.attachments?.map((attachment, index) => (
+                  {currentAttachments?.map((attachment, index) => (
                     <div key={index} className="relative group overflow-hidden rounded-lg border border-border">
                       <div className="aspect-[4/3]">
                         <Image src={attachment?.url} alt={attachment?.alt} className="w-full h-full object-cover transition-transform duration-base group-hover:scale-105" />
                       </div>
                       <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-base flex items-center justify-center gap-2">
-                        <Button variant="secondary" size="sm" iconName="Eye" />
-                        <Button variant="secondary" size="sm" iconName="Download" />
+                        <Button variant="secondary" size="sm" iconName="Eye" onClick={() => setSelectedImageIndex(index)} />
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          iconName="Download"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Evita que se abra el lightbox al descargar
+                            downloadImage(attachment.url, `dental_${record?.patientName?.replace(/\s+/g, "_")}_${index + 1}.jpg`);
+                          }}
+                        />
+                        <div className="absolute bottom-2 left-2 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded">#{index + 1}</div>
                       </div>
                     </div>
                   ))}
@@ -293,6 +329,16 @@ const RecordDetailsModal = ({ record, onClose }) => {
           </Button>
         </div>
       </div>
+      <ImageLightbox
+        isOpen={selectedImageIndex !== null}
+        onClose={() => setSelectedImageIndex(null)}
+        images={currentAttachments} // CORREGIDO: Usar currentAttachments
+        currentIndex={selectedImageIndex}
+        onNext={nextImage}
+        onPrev={prevImage}
+      />
+
+      <UploadImageModal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} onUploadSuccess={handleUploadSuccess} recordId={record.id} />
       <div className="hidden">
         <PrintableMedicalRecord ref={contentRef} record={record} treatmentHistory={treatmentHistoryMock} />
       </div>

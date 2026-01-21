@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Icon from "../../../components/AppIcon";
 import Button from "../../../components/ui/Button";
+import { useTranslation } from "react-i18next";
 
 const TreatmentSequence = ({ treatments, onReorder, onRemove, onEdit }) => {
   const [draggedItem, setDraggedItem] = useState(null);
+  const { t } = useTranslation();
 
   const handleDragStart = (e, index) => {
     setDraggedItem(index);
@@ -27,7 +29,7 @@ const TreatmentSequence = ({ treatments, onReorder, onRemove, onEdit }) => {
     setDraggedItem(null);
   };
 
-  const getPriorityColor = (priority) => {
+  /* const getPriorityColor = (priority) => {
     switch (priority) {
       case "urgent":
         return "bg-error/10 text-error border-error/20";
@@ -38,33 +40,33 @@ const TreatmentSequence = ({ treatments, onReorder, onRemove, onEdit }) => {
       default:
         return "bg-muted text-muted-foreground border-border";
     }
-  };
+  }; */
 
-  const getStatusIcon = (status) => {
+  const getStatusIconLabel = (status) => {
     switch (status) {
       case "completed":
-        return "CheckCircle2";
-      case "in-progress":
-        return "Clock";
+        return { icon: "Check", label: t("treatment.status.completed"), classIcon: "text-success" };
+      case "inProgress":
+        return { icon: "Clock", label: t("treatment.status.inProgress"), classIcon: "text-warning" };
       case "planned":
-        return "Calendar";
+        return { icon: "Calendar", label: t("treatment.status.planned"), classIcon: "text-primary" };
       default:
-        return "Circle";
+        return { icon: "Circle" };
     }
   };
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Treatment Sequence</h3>
-        <span className="text-xs md:text-sm text-muted-foreground">Drag to reorder</span>
+        <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">{t("treatment.treatmentSequence")}</h3>
+        <span className="text-xs md:text-sm text-muted-foreground">{t("treatment.dragToReorder")}</span>
       </div>
       <div className="space-y-3">
         {treatments?.length === 0 ? (
           <div className="text-center py-8 md:py-12 bg-muted/50 rounded-lg border-2 border-dashed border-border">
             <Icon name="Calendar" size={32} className="mx-auto mb-3 text-muted-foreground" />
-            <p className="text-sm md:text-base text-muted-foreground">No treatments added yet</p>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1">Select teeth from the chart to add treatments</p>
+            <p className="text-sm md:text-base text-muted-foreground">{t("treatment.noTreatments")}</p>
+            <p className="text-xs md:text-sm text-muted-foreground mt-1">{t("treatment.selectTeethToAddTreatments")}</p>
           </div>
         ) : (
           treatments?.map((treatment, index) => (
@@ -86,25 +88,27 @@ const TreatmentSequence = ({ treatments, onReorder, onRemove, onEdit }) => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-sm md:text-base font-medium text-foreground">{treatment?.procedure}</span>
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${getPriorityColor(treatment?.priority)}`}>{treatment?.priority}</span>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium border text-muted-foreground`}>{treatment?.priority}</span>
                       </div>
                       <div className="flex items-center gap-2 mt-1 text-xs md:text-sm text-muted-foreground">
-                        <span>Tooth #{treatment?.toothNumber}</span>
+                        <span>
+                          {t("tooth")} #{treatment?.toothNumber}
+                        </span>
                         <span>•</span>
                         <span>{treatment?.duration}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-1">
-                      <Button variant="ghost" size="icon" onClick={() => onEdit(treatment)} iconName="Edit2" aria-label="Edit treatment" />
-                      <Button variant="ghost" size="icon" onClick={() => onRemove(treatment?.id)} iconName="Trash2" aria-label="Remove treatment" />
+                      <Button variant="outline" size="icon" onClick={() => onEdit(treatment)} iconName="Edit2" aria-label="Edit treatment" />
+                      <Button variant="outline" size="icon" onClick={() => onRemove(treatment?.id)} iconName="Trash2" aria-label="Remove treatment" />
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2">
-                      <Icon name={getStatusIcon(treatment?.status)} size={16} className="text-muted-foreground" />
-                      <span className="text-xs md:text-sm text-muted-foreground capitalize">{treatment?.status?.replace("-", " ")}</span>
+                      <Icon name={getStatusIconLabel(treatment?.status)?.icon} size={16} className={getStatusIconLabel(treatment?.status)?.classIcon} />
+                      <span className={`text-xs md:text-sm ${getStatusIconLabel(treatment?.status)?.classIcon}`}>{getStatusIconLabel(treatment?.status)?.label}</span>
                     </div>
                     <div className="text-sm md:text-base font-semibold text-foreground">${treatment?.cost?.toLocaleString()}</div>
                   </div>
@@ -119,7 +123,7 @@ const TreatmentSequence = ({ treatments, onReorder, onRemove, onEdit }) => {
       {treatments?.length > 0 && (
         <div className="bg-muted/50 rounded-lg p-3 md:p-4 border border-border">
           <div className="flex items-center justify-between">
-            <span className="text-sm md:text-base font-medium text-foreground">Total Estimated Cost</span>
+            <span className="text-sm md:text-base font-medium text-foreground">{t("treatment.totalEstimatedCost")}</span>
             <span className="text-lg md:text-xl font-headline font-bold text-primary">${treatments?.reduce((sum, t) => sum + t?.cost, 0)?.toLocaleString()}</span>
           </div>
         </div>

@@ -10,6 +10,7 @@
   "status": "Status",
   "dentist": "Dentist",
   "messageSuccess": "Operation completed successfully",
+  "tooth": "Tooth",
   "patient": {
     "created": "Patient created successfully",
     "updated": "Patient information updated successfully",
@@ -190,7 +191,69 @@
   },
   "profile": {
     "title": "Patient Profile",
-    "description": "Detailed patient information"
+    "description": "Detailed patient information",
+    "descriptionSearch": "Search patients by name or ID",
+    "notSpecified": "Not specified",
+    "header": {
+      "age": "Age",
+      "years": "years",
+      "phone": "Phone",
+      "email": "Email",
+      "gender": "Gender",
+      "patientId": "Patient ID",
+      "button": {
+        "editProfile": "Edit Profile",
+        "schedule": "Schedule",
+        "message": "Message"
+      }
+    },
+    "tabs": {
+      "demographics": {
+        "name": "Demographics",
+        "section": {
+          "title": "Demographic Information",
+          "fullName": "Full Name",
+          "dateOfBirth": "Date of Birth",
+          "gender": "Gender",
+          "bloodType": "Blood Type",
+          "maritalStatus": "Marital Status",
+          "contactInformation": "Contact Information",
+          "primaryPhone": "Phone",
+          "emailAddress": "Email",
+          "address": "Address",
+          "city": "City",
+          "state": "State/Province",
+          "zipCode": "Zip/Postal Code",
+          "emergencyContact": "Emergency Contact",
+          "contactName": "Contact Name",
+          "relationship": "Relationship",
+          "contactPhone": "Phone Number",
+          "contactEmail": "Email"
+        }
+      },
+      "medicalHistory": {
+        "name": "Medical History"
+      },
+      "treatmentHistory": {
+        "name": "Treatment History",
+        "section": {
+          "dentist": "Dentist",
+          "location": "Location",
+          "duration": "Duration",
+          "toothNumber": "Tooth Number",
+          "treatmentNotes": "Treatment Notes",
+          "treatmentCost": "Treatment Cost",
+          "clinicalPhotography": "Clinical Photography",
+          "followUpScheduled": "Follow-Up Scheduled"
+        }
+      },
+      "communications": {
+        "name": "Communications"
+      },
+      "billing": {
+        "name": "Billing"
+      }
+    }
   },
   "records": {
     "title": "Clinical Records",
@@ -295,12 +358,23 @@
           "button": {
             "cancel": "Cancel",
             "saveNote": "Save Note"
-          }
+          },
+          "status": {
+            "completed": "Completed",
+            "inProgress": "In progress",
+            "planned": "Planned",
+            "cancelled": "Cancelled"
+          },
+          "attachmentsFiles_one": "{{count}} attachment",
+          "attachmentsFiles_other": "{{count}} attachments"
         },
         "images": {
           "name": "Images",
           "noImages": "No clinical images available",
           "clinicalImages": "Clinical Images",
+          "dropzone": "Click or drag an image here",
+          "uploadSuccess": "Image uploaded successfully",
+
           "button": {
             "uploadImage": "Upload Image"
           }
@@ -329,7 +403,48 @@
   },
   "treatment": {
     "title": "Treatment Planning",
-    "description": "Schedule and plan treatments"
+    "subtitle": "Create comprehensive treatment plans with cost estimation and progress tracking",
+    "description": "Schedule and plan treatments",
+    "comparePlans": "Compare Plans",
+    "presentToPatient": "Present to Patient",
+    "selectPatient": "Select Patient",
+    "lastVisit": "Last Visit: {{date}}",
+    "patientInfo": "Patient Info",
+    "activeIssues": "Active Issues",
+    "treatmentStatus": "Treatment Status",
+    "toothChart": "Tooth Chart Interactive",
+    "age": "Age: {{age}} years",
+    "lastTreatment": "Last Treatment: {{date}}",
+    "insurance": "Insurance: {{insurance}}",
+    "status": {
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "planned": "Planned"
+    },
+    "upperJaw": "Upper Jaw",
+    "lowerJaw": "Lower Jaw",
+    "addTreatment": "Add Treatment",
+    "editTreatment": "Edit Treatment",
+    "updateTreatment": "Update Treatment",
+    "treatmentSequence": "Treatment Sequence",
+    "dragToReorder": "Drag to reorder",
+    "noTreatments": "No treatments added yet",
+    "selectTeethToAddTreatments": "Select teeth from the chart to add treatments",
+    "totalEstimatedCost": "Total Estimated Cost",
+    "formLabel": {
+      "toothNumber": "Tooth Number",
+      "procedure": "Procedure",
+      "estimatedCost": "Estimated Cost",
+      "duration": "Duration (days)",
+      "priority": "Priority",
+      "status": "Status",
+      "notes": "Treatment Notes"
+    },
+    "formPlaceholder": {
+      "estimatedCost": "e.g., 150.00",
+      "duration": "e.g., 7 weeks",
+      "notes": "Additional notes or special considerations..."
+    }
   },
   "settings": {
     "title": "Settings",
@@ -345,9 +460,10 @@
     "viewAll": "View all notifications"
   },
   "search": {
-    "placeholder": "Search patients, appointments..."
+    "placeholder": "Search patients, appointments...",
+    "label": "Search"
   },
-  "Profile": {
+  "profileSetting": {
     "title": "My Profile",
     "settings": "Settings",
     "help": "Help & Support",
@@ -389,5 +505,81 @@
     },
     "viewDetails": "View details",
     "reschedule": "Reschedule"
+  },
+  "printableRecord": {
+    "title": "Dental Medical Record",
+    "generatedAt": "Record generated on",
+    "clinicName": "{{clinicalName}}",
+    "clinicAddress": "{{address}} • {{phone}}",
+    "patientData": {
+      "label": "Patient",
+      "historyId": "Record ID"
+    },
+    "procedureDetails": {
+      "title": "Procedure Details",
+      "treatment": "Treatment",
+      "date": "Date",
+      "doctor": "Doctor",
+      "tooth": "Dental Piece",
+      "type": "Type",
+      "cost": "Cost"
+    },
+    "evolutionNotes": "Evolution Notes",
+    "historyLog": {
+      "title": "Change History",
+      "date": "Date",
+      "status": "Status",
+      "professional": "Professional"
+    },
+    "signatures": {
+      "professional": "Practitioner's Signature",
+      "patient": "Patient / Guardian Signature"
+    }
+  },
+  "subscriptionExpired": {
+    "title": "Subscription Expired",
+    "message": "Hi {{fullname}}, your subscription has expired and access to the system is temporarily suspended.",
+    "instructions": "To continue using the system, please contact the administrator to regularize your membership.",
+    "logout": "Sign out"
+  },
+  "login": {
+    "subtitle": "Dental clinical management",
+    "email": "Email address",
+    "password": "Password",
+    "submit": "Sign in",
+    "continueWith": "or continue with",
+    "welcome": "Welcome back!",
+    "errors": {
+      "emptyFields": "Please enter both email and password"
+    },
+    "footerLogin": {
+      "noAccount": "Don't have an account?",
+      "register": "Sign up here",
+      "forgotPassword": "Forgot your password?",
+      "terms": "By signing in, you agree to our",
+      "privacy": "Terms and Privacy Policies",
+      "rights": "© {{currentYear}} · Developed by {{appName}}"
+    }
+  },
+  "forgotPassword": {
+    "title": "Forgot your password?",
+    "subtitle": "Enter your email and we'll send you a link to regain access to your account.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "email@example.com",
+    "submit": "Send recovery link",
+    "backToLogin": "Back to login",
+    "success": "If the email is registered, you will receive a link shortly.",
+    "error": "There was an error processing your request."
+  },
+  "resetPassword": {
+    "title": "New Password",
+    "subtitle": "Please enter your new access key.",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "placeholder": "••••••••",
+    "submit": "Update Password",
+    "success": "Password updated successfully. You can now log in.",
+    "error": "There was a problem updating the password.",
+    "mismatch": "Passwords do not match"
   }
 }

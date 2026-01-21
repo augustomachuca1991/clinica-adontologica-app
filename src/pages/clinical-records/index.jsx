@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import MainLayout from "../../components/ui/MainLayout";
 import Icon from "../../components/AppIcon";
 import Button from "../../components/ui/Button";
 import RecordFilters from "./components/RecordFilters";
@@ -64,7 +63,7 @@ const ClinicalRecords = () => {
       patientId: "PT-2024-002",
       treatmentName: "Dental Implant Placement",
       treatmentType: "oral-surgery",
-      status: "in-progress",
+      status: "inProgress",
       date: "2026-01-12",
       createdAt: "2026-01-12T10:30:00Z",
       provider: "Dr. Michael Smith",
@@ -143,7 +142,7 @@ const ClinicalRecords = () => {
       patientId: "PT-2024-005",
       treatmentName: "Crown Preparation",
       treatmentType: "prosthodontic",
-      status: "in-progress",
+      status: "planned",
       date: "2026-01-15",
       createdAt: "2026-01-15T12:00:00Z",
       provider: "Dr. David Brown",
@@ -184,7 +183,7 @@ const ClinicalRecords = () => {
       patientId: "PT-2024-007",
       treatmentName: "Orthodontic Adjustment",
       treatmentType: "orthodontic",
-      status: "in-progress",
+      status: "inProgress",
       date: "2026-01-17",
       createdAt: "2026-01-17T16:20:00Z",
       provider: "Dr. Michael Smith",
@@ -207,7 +206,7 @@ const ClinicalRecords = () => {
       patientId: "PT-2024-008",
       treatmentName: "Tooth Extraction",
       treatmentType: "oral-surgery",
-      status: "completed",
+      status: "cancelled",
       date: "2026-01-18",
       createdAt: "2026-01-18T14:10:00Z",
       provider: "Dr. David Brown",
@@ -221,12 +220,12 @@ const ClinicalRecords = () => {
     },
   ];
 
-  const stats = {
+  /* const stats = {
     totalRecords: mockRecords?.length,
     completed: mockRecords?.filter((r) => r?.status === "completed")?.length,
-    inProgress: mockRecords?.filter((r) => r?.status === "in-progress")?.length,
+    inProgress: mockRecords?.filter((r) => r?.status === "inProgress")?.length,
     planned: mockRecords?.filter((r) => r?.status === "planned")?.length,
-  };
+  }; */
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -278,7 +277,7 @@ const ClinicalRecords = () => {
   });
 
   return (
-    <MainLayout>
+    <>
       <div className="space-y-6 md:space-y-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
@@ -347,7 +346,7 @@ const ClinicalRecords = () => {
       </div>
       {showAddNoteModal && selectedRecord && <AddNoteModal record={selectedRecord} onClose={() => setShowAddNoteModal(false)} onSave={handleSaveNote} />}
       {showDetailsModal && selectedRecord && <RecordDetailsModal record={selectedRecord} onClose={() => setShowDetailsModal(false)} />}
-    </MainLayout>
+    </>
   );
 };
 

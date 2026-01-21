@@ -48,7 +48,7 @@ const PatientCard = ({ patient, onQuickAction }) => {
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
             <div className="flex-1 min-w-0">
               <Link
-                to={`/patient-profile?id=${patient?.id}`}
+                to={`/patient-profile/${patient?.patientId}`}
                 className="text-base md:text-lg font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base truncate block"
               >
                 {patient?.name}

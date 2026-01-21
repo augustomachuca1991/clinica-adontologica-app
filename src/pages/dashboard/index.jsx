@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import MainLayout from "../../components/ui/MainLayout";
 
 import Button from "../../components/ui/Button";
 /* import StatCard from "./components/StatCard"; */
@@ -11,11 +10,13 @@ import RecentActivityItem from "./components/RecentActivityItem";
 import TreatmentProgressChart from "./components/TreatmentProgressChart";
 import UpcomingTaskCard from "./components/UpcomingTaskCard";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [selectedTimeframe, setSelectedTimeframe] = useState("today");
-  const userName = import.meta.env.VITE_TEST_NAME_USER || "Dr. User";
+  const { userProfile } = useAuth();
+  const fullname = userProfile?.full_name || "no especified";
   const { t } = useTranslation();
 
   /* const stats = [
@@ -397,83 +398,82 @@ const Dashboard = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="space-y-6 md:space-y-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("home.welcome", { name: userName })}</h1>
-            <p className="text-sm md:text-base text-muted-foreground">{t("home.overview")}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant={selectedTimeframe === "today" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("today")}>
-              {t("timeFrame.today")}
-            </Button>
-            <Button variant={selectedTimeframe === "week" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("week")}>
-              {t("timeFrame.thisWeek")}
-            </Button>
-            <Button variant={selectedTimeframe === "month" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("month")}>
-              {t("timeFrame.thisMonth")}
-            </Button>
-          </div>
+    <div className="space-y-6 md:space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("home.welcome", { name: fullname })}</h1>
+          <p className="text-sm md:text-base text-muted-foreground">{t("home.overview")}</p>
         </div>
+        <div className="flex items-center gap-2">
+          <Button variant={selectedTimeframe === "today" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("today")}>
+            {t("timeFrame.today")}
+          </Button>
+          <Button variant={selectedTimeframe === "week" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("week")}>
+            {t("timeFrame.thisWeek")}
+          </Button>
+          <Button variant={selectedTimeframe === "month" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("month")}>
+            {t("timeFrame.thisMonth")}
+          </Button>
+        </div>
+      </div>
 
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {stats?.map((stat, index) => (
             <StatCard key={index} {...stat} />
           ))}
         </div> */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="clinical-card p-4 md:p-6">
-              <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("appointment.titlePanel")}</h2>
-                <Button variant="ghost" size="sm" onClick={() => navigate("/treatment-planning")} iconName="Calendar" iconPosition="left">
-                  {t("appointment.viewAll")}
-                </Button>
-              </div>
-              <div className="space-y-4">
-                {appointments?.map((appointment) => (
-                  <AppointmentCard key={appointment?.id} appointment={appointment} onViewDetails={handleViewAppointmentDetails} onReschedule={handleRescheduleAppointment} />
-                ))}
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="clinical-card p-4 md:p-6">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("appointment.titlePanel")}</h2>
+              <Button variant="ghost" size="sm" onClick={() => navigate("/treatment-planning")} iconName="Calendar" iconPosition="left">
+                {t("appointment.viewAll")}
+              </Button>
             </div>
-
-            <div className="clinical-card p-4 md:p-6">
-              <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.treatmentProgress.title")}</h2>
-                <Button variant="ghost" size="sm" iconName="Download" iconPosition="left">
-                  {t("dashboard.treatmentProgress.export")}
-                </Button>
-              </div>
-              <TreatmentProgressChart data={treatmentData} t={t} />
+            <div className="space-y-4">
+              {appointments?.map((appointment) => (
+                <AppointmentCard key={appointment?.id} appointment={appointment} onViewDetails={handleViewAppointmentDetails} onReschedule={handleRescheduleAppointment} />
+              ))}
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="clinical-card p-4 md:p-6">
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">{t("dashboard.quickActions.title")}</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {quickActions?.map((action, index) => (
-                  <QuickActionButton key={index} icon={action?.icon} label={t(`dashboard.quickActions.${action?.label}`)} color={action?.color} onClick={() => handleQuickAction(action?.label)} />
-                ))}
-              </div>
+          <div className="clinical-card p-4 md:p-6">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.treatmentProgress.title")}</h2>
+              <Button variant="ghost" size="sm" iconName="Download" iconPosition="left">
+                {t("dashboard.treatmentProgress.export")}
+              </Button>
             </div>
-            <div className="clinical-card p-4 md:p-6">
-              <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.recentActivity.title")}</h2>
-                <Button variant="ghost" size="sm" iconName="RefreshCw" iconPosition="left">
-                  {t("dashboard.recentActivity.refresh")}
-                </Button>
-              </div>
-              <div className="space-y-2">
-                {recentActivities?.map((activity) => (
-                  <RecentActivityItem key={activity?.id} activity={activity} />
-                ))}
-              </div>
-            </div>
+            <TreatmentProgressChart data={treatmentData} t={t} />
+          </div>
+        </div>
 
-            {/* <div className="clinical-card p-4 md:p-6">
+        <div className="space-y-6">
+          <div className="clinical-card p-4 md:p-6">
+            <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">{t("dashboard.quickActions.title")}</h2>
+            <div className="grid grid-cols-2 gap-3">
+              {quickActions?.map((action, index) => (
+                <QuickActionButton key={index} icon={action?.icon} label={t(`dashboard.quickActions.${action?.label}`)} color={action?.color} onClick={() => handleQuickAction(action?.label)} />
+              ))}
+            </div>
+          </div>
+          <div className="clinical-card p-4 md:p-6">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.recentActivity.title")}</h2>
+              <Button variant="ghost" size="sm" iconName="RefreshCw" iconPosition="left">
+                {t("dashboard.recentActivity.refresh")}
+              </Button>
+            </div>
+            <div className="space-y-2">
+              {recentActivities?.map((activity) => (
+                <RecentActivityItem key={activity?.id} activity={activity} />
+              ))}
+            </div>
+          </div>
+
+          {/* <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Patient Alerts</h2>
                 <span className="status-indicator bg-error/10 text-error text-xs px-2 py-1">{alerts?.filter((a) => a?.type === "critical")?.length} Critical</span>
@@ -493,10 +493,9 @@ const Dashboard = () => {
                 ))}
               </div>
             </div> */}
-          </div>
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };
 

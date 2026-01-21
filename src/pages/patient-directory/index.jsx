@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from "react";
-import MainLayout from "../../components/ui/MainLayout";
 import Button from "../../components/ui/Button";
 import SearchFilters from "./components/SearchFilters";
 import StatsOverview from "./components/StatsOverview";
@@ -475,7 +474,7 @@ const PatientDirectory = () => {
   };
 
   return (
-    <MainLayout>
+    <>
       <div className="mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
           <div>
@@ -555,7 +554,7 @@ const PatientDirectory = () => {
           setIsAddModalOpen(false);
         }}
       />
-    </MainLayout>
+    </>
   );
 };
 

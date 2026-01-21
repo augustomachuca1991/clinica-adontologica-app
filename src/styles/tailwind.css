@@ -8,50 +8,48 @@
 
 @layer base {
   :root {
-    /* Primary Colors - Medical Trust Blue */
-    --color-primary: #b97beb; /* blue-600 - Medical authority with digital confidence */
-    --color-primary-foreground: #ffffff; /* white - High contrast for accessibility */
+    /* Primary Color - Tu Indigo Original */
+    --color-primary: #b97beb;
+    --color-primary-foreground: #ffffff;
 
-    /* Secondary Colors - Healing Teal */
-    --color-secondary: #0f766e; /* teal-700 - Healing growth, secondary actions */
-    --color-secondary-foreground: #ffffff; /* white - Clear contrast */
+    /* Secondary Colors - Slate Blue (Ajustado para no competir) */
+    --color-secondary: #64748b;
+    --color-secondary-foreground: #ffffff;
 
-    --color-tertiary: #5dc1b9; /* indigo-700 - Healing growth, tertiary actions */
-    --color-tertiary-foreground: #ffffff; /* white - Clear contrast */
+    /* Tertiary - Lavender (Versión lavada de tu primario) */
+    --color-tertiary: #f5eeff;
+    --color-tertiary-foreground: #7c3aed;
 
-    /* Accent Colors - Critical Alert Red */
-    --color-accent: #dc2626; /* red-600 - Critical alerts, urgent attention */
-    --color-accent-foreground: #ffffff; /* white - Maximum visibility */
+    /* Accent Colors - Rose (Más armónico que el rojo puro) */
+    --color-accent: #f43f5e;
+    --color-accent-foreground: #ffffff;
 
     /* Background & Surface */
-    --color-background: #fafbfc; /* gray-50 - Clean workspace, reduces eye strain */
-    --color-foreground: #1e293b; /* slate-800 - High contrast, extended reading comfort */
-    --color-card: #ffffff; /* white - Clean card surfaces */
-    --color-card-foreground: #1e293b; /* slate-800 - Readable card content */
-    --color-popover: #ffffff; /* white - Clean popover background */
-    --color-popover-foreground: #1e293b; /* slate-800 - Readable popover text */
+    --color-background: #f8fafc;
+    --color-foreground: #1e1b4b;
+    --color-card: #ffffff;
+    --color-card-foreground: #1e1b4b;
+    --color-popover: #ffffff;
+    --color-popover-foreground: #1e1b4b;
 
     /* Muted & Subtle Elements */
-    --color-muted: #f1f5f9; /* slate-100 - Subtle card elevation, content separation */
-    --color-muted-foreground: #64748b; /* slate-500 - Clear hierarchy, supporting information */
+    --color-muted: #f1f5f9;
+    --color-muted-foreground: #64748b;
 
     /* Border & Input */
-    --color-border: #e2e8f0; /* slate-200 - Subtle borders for form inputs and tables */
-    --color-input: #e2e8f0; /* slate-200 - Input field borders */
-    --color-ring: #2563eb; /* blue-600 - Focus ring color */
+    --color-border: #e2e8f0;
+    --color-input: #f1f5f9;
+    --color-ring: #b97beb;
 
     /* Status Colors */
-    --color-success: #059669; /* emerald-600 - Treatment completion, positive outcomes */
-    --color-success-foreground: #ffffff; /* white - Clear success messaging */
-
-    --color-warning: #d97706; /* amber-600 - Attention needed, non-critical alerts */
-    --color-warning-foreground: #ffffff; /* white - Visible warning text */
-
-    --color-error: #dc2626; /* red-600 - System issues, requires immediate action */
-    --color-error-foreground: #ffffff; /* white - Critical error visibility */
-
-    --color-destructive: #dc2626; /* red-600 - Destructive actions */
-    --color-destructive-foreground: #ffffff; /* white - Clear destructive action text */
+    --color-success: #10b981;
+    --color-success-foreground: #ffffff;
+    --color-warning: #f59e0b;
+    --color-warning-foreground: #ffffff;
+    --color-error: #ef4444;
+    --color-error-foreground: #ffffff;
+    --color-destructive: #dc2626;
+    --color-destructive-foreground: #ffffff;
 
     /* Brand Colors - Clinical Modernism Palette */
     --color-brand-primary: #2b5a87; /* Deep Clinical Blue - Medical authority and trust */
@@ -78,11 +76,11 @@
     --radius-lg: 0.5rem; /* 8px */
     --radius-xl: 0.75rem; /* 12px */
 
-    /* Shadows - Subtle elevation */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 2px 8px rgba(43, 90, 135, 0.08);
-    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.12);
+    /* Shadows - Ahora con el matiz de tu color #b97beb */
+    --shadow-sm: 0 1px 3px rgba(185, 123, 235, 0.05);
+    --shadow-md: 0 4px 12px rgba(185, 123, 235, 0.08);
+    --shadow-lg: 0 12px 24px rgba(185, 123, 235, 0.12);
+    --shadow-xl: 0 20px 25px -5px rgba(185, 123, 235, 0.15);
 
     /* Transitions */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -91,16 +89,16 @@
   }
 
   .dark {
-    --color-background: #0f172a; /* slate-900 - Dark clinical workspace */
-    --color-foreground: #f1f5f9; /* slate-100 - Light text on dark */
-    --color-card: #1e293b; /* slate-800 - Dark card surfaces */
-    --color-card-foreground: #f1f5f9; /* slate-100 - Readable dark card text */
-    --color-popover: #1e293b; /* slate-800 - Dark popover */
-    --color-popover-foreground: #f1f5f9; /* slate-100 - Light popover text */
-    --color-muted: #334155; /* slate-700 - Dark muted elements */
-    --color-muted-foreground: #94a3b8; /* slate-400 - Muted text on dark */
-    --color-border: #334155; /* slate-700 - Dark borders */
-    --color-input: #334155; /* slate-700 - Dark input borders */
+    --color-background: #0f0a19;
+    --color-foreground: #f8fafc;
+    --color-card: #1a1425;
+    --color-card-foreground: #f8fafc;
+    --color-popover: #1a1425;
+    --color-popover-foreground: #f8fafc;
+    --color-muted: #2d243d;
+    --color-muted-foreground: #a78bfa;
+    --color-border: #2d243d;
+    --color-input: #2d243d;
   }
 
   * {
@@ -110,7 +108,9 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 
   h1,
@@ -129,18 +129,22 @@
 }
 
 @layer components {
-  /* Clinical Data Halo Effect */
+  /* Clinical Data Halo Effect - Sincronizado con tu Indigo #b97beb */
   .data-halo {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 20px rgba(185, 123, 235, 0.25);
     transition: box-shadow var(--transition-base);
   }
 
+  /* Halo Urgente - Usando el nuevo tono Rose #f43f5e para evitar saturación agresiva */
   .data-halo-urgent {
-    box-shadow: 0 0 20px rgba(220, 38, 38, 0.15);
+    box-shadow: 0 0 20px rgba(244, 63, 94, 0.25);
+    transition: box-shadow var(--transition-base);
   }
 
+  /* Halo Success - Usando el Esmeralda #10b981 */
   .data-halo-success {
-    box-shadow: 0 0 20px rgba(5, 150, 105, 0.15);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+    transition: box-shadow var(--transition-base);
   }
 
   /* Micro-animations */
@@ -162,7 +166,9 @@
   /* Clinical Card Elevation */
   .clinical-card {
     @apply bg-card rounded-lg shadow-md border border-border;
-    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    transition:
+      transform var(--transition-base),
+      box-shadow var(--transition-base);
   }
 
   .clinical-card:hover {
@@ -172,7 +178,9 @@
 
   /* Trust-building hover states */
   .trust-hover {
-    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    transition:
+      transform var(--transition-base),
+      box-shadow var(--transition-base);
   }
 
   .trust-hover:hover {
@@ -199,7 +207,9 @@
   .reveal-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height var(--transition-slow), opacity var(--transition-slow);
+    transition:
+      max-height var(--transition-slow),
+      opacity var(--transition-slow);
     opacity: 0;
   }
 
@@ -257,7 +267,9 @@
 
   /* Empathetic color transitions */
   .color-transition {
-    transition: color var(--transition-slow), background-color var(--transition-slow);
+    transition:
+      color var(--transition-slow),
+      background-color var(--transition-slow);
   }
 
   /* Focus visible for accessibility */

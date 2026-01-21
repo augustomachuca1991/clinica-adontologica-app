@@ -16,6 +16,8 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  const [subscriptionLoading, setSubscriptionLoading] = useState(false);
 
   // Isolated async operations - never called from auth callbacks
   const profileOperations = {
@@ -38,6 +40,35 @@ export const AuthProvider = ({ children }) => {
     },
   };
 
+  const subscriptionOperations = {
+    async load(userId) {
+      if (!userId) return;
+      setSubscriptionLoading(true);
+
+      try {
+        const { data, error } = await supabase.from("subscriptions").select("*").eq("user_id", userId).maybeSingle();
+
+        if (!error) setSubscription(data);
+      } catch (error) {
+        console.error("Subscription load error:", error);
+      } finally {
+        setSubscriptionLoading(false);
+      }
+    },
+
+    clear() {
+      setSubscription(null);
+      setSubscriptionLoading(false);
+    },
+  };
+
+  const hasActiveSubscription = subscription && subscription.status === "active" && new Date(subscription.current_period_end) > new Date();
+
+  const isUserActive = userProfile?.status === "active";
+  const isLoggedIn = !!user && isUserActive;
+
+  const canAccessApp = !!user && isUserActive && hasActiveSubscription;
+
   // Auth state handlers - PROTECTED from async modification
   const authStateHandlers = {
     // This handler MUST remain synchronous - Supabase requirement
@@ -46,9 +77,11 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
 
       if (session?.user) {
-        profileOperations.load(session.user.id); // Fire-and-forget
+        profileOperations.load(session.user.id);
+        subscriptionOperations.load(session.user.id);
       } else {
         profileOperations.clear();
+        subscriptionOperations.clear();
       }
     },
   };
@@ -102,15 +135,41 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const sendPasswordResetEmail = async (email) => {
+    try {
+      const { data, error } = await supabase?.auth?.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      return { data, error };
+    } catch (error) {
+      return { error: { message: "Network error. Please try again." } };
+    }
+  };
+
+  const updatePassword = async (newPassword) => {
+    try {
+      const { data, error } = await supabase?.auth?.updateUser({
+        password: newPassword,
+      });
+      return { data, error };
+    } catch (error) {
+      return { error: { message: "Network error. Please try again." } };
+    }
+  };
+
   const value = {
     user,
     userProfile,
-    loading,
-    profileLoading,
+    subscription,
+    loading: loading || profileLoading || subscriptionLoading,
     signIn,
     signOut,
     updateProfile,
-    isAuthenticated: !!user,
+    isAuthenticated: canAccessApp,
+    hasActiveSubscription,
+    isLoggedIn,
+    sendPasswordResetEmail,
+    updatePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,8 +1,11 @@
 import React from "react";
 import Icon from "../../../components/AppIcon";
 import Image from "../../../components/AppImage";
+import { useTranslation } from "react-i18next";
 
 const TreatmentHistoryTab = ({ treatments }) => {
+  const { t, i18n } = useTranslation();
+
   const getStatusColor = (status) => {
     switch (status) {
       case "Completed":
@@ -31,12 +34,14 @@ const TreatmentHistoryTab = ({ treatments }) => {
                       <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-2">{treatment?.procedure}</h3>
                       <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-3">
                         <span className={`status-indicator ${getStatusColor(treatment?.status)} text-xs md:text-sm`}>{treatment?.status}</span>
-                        <span className="text-xs md:text-sm text-muted-foreground">{new Date(treatment.date)?.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+                        <span className="text-xs md:text-sm text-muted-foreground">
+                          {new Date(treatment.date)?.toLocaleDateString(i18n.language, { year: "numeric", month: "long", day: "numeric" })}
+                        </span>
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
                       <p className="text-lg md:text-xl font-semibold text-foreground whitespace-nowrap">${treatment?.cost?.toLocaleString()}</p>
-                      <p className="text-xs md:text-sm text-muted-foreground">Treatment Cost</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">{t("profile.tabs.treatmentHistory.section.treatmentCost")}</p>
                     </div>
                   </div>
 
@@ -44,35 +49,35 @@ const TreatmentHistoryTab = ({ treatments }) => {
                     <div className="flex items-center gap-2">
                       <Icon name="User" size={16} className="text-primary flex-shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-xs text-muted-foreground">Dentist</p>
+                        <p className="text-xs text-muted-foreground">{t("profile.tabs.treatmentHistory.section.dentist")}</p>
                         <p className="text-sm md:text-base font-medium text-foreground truncate">{treatment?.dentist}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon name="MapPin" size={16} className="text-primary flex-shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-xs text-muted-foreground">Location</p>
+                        <p className="text-xs text-muted-foreground">{t("profile.tabs.treatmentHistory.section.location")}</p>
                         <p className="text-sm md:text-base font-medium text-foreground truncate">{treatment?.location}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon name="Clock" size={16} className="text-primary flex-shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-xs text-muted-foreground">Duration</p>
+                        <p className="text-xs text-muted-foreground">{t("profile.tabs.treatmentHistory.section.duration")}</p>
                         <p className="text-sm md:text-base font-medium text-foreground">{treatment?.duration}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Icon name="FileText" size={16} className="text-primary flex-shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-xs text-muted-foreground">Tooth Number</p>
+                        <p className="text-xs text-muted-foreground">{t("profile.tabs.treatmentHistory.section.toothNumber")}</p>
                         <p className="text-sm md:text-base font-medium text-foreground">{treatment?.toothNumber}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="bg-muted/50 rounded-lg p-3 md:p-4 mb-4">
-                    <p className="text-xs md:text-sm text-muted-foreground mb-2">Treatment Notes</p>
+                    <p className="text-xs md:text-sm text-muted-foreground mb-2">{t("profile.tabs.treatmentHistory.section.treatmentNotes")}</p>
                     <p className="text-sm md:text-base text-foreground">{treatment?.notes}</p>
                   </div>
 
@@ -80,7 +85,8 @@ const TreatmentHistoryTab = ({ treatments }) => {
                     <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg border border-primary/20">
                       <Icon name="Calendar" size={16} className="text-primary flex-shrink-0" />
                       <p className="text-xs md:text-sm text-foreground">
-                        Follow-up scheduled: {new Date(treatment.followUp)?.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                        {t("profile.tabs.treatmentHistory.section.followUpScheduled")}:{" "}
+                        {new Date(treatment.followUp)?.toLocaleDateString(i18n.language, { year: "numeric", month: "long", day: "numeric" })}
                       </p>
                     </div>
                   )}
@@ -88,7 +94,7 @@ const TreatmentHistoryTab = ({ treatments }) => {
 
                 {treatment?.images && treatment?.images?.length > 0 && (
                   <div className="w-full lg:w-64 flex-shrink-0">
-                    <p className="text-xs md:text-sm font-medium text-muted-foreground mb-3">Clinical Photography</p>
+                    <p className="text-xs md:text-sm font-medium text-muted-foreground mb-3">{t("profile.tabs.treatmentHistory.section.clinicalPhotography")}</p>
                     <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-3">
                       {treatment?.images?.map((img, imgIndex) => (
                         <div key={imgIndex} className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border">

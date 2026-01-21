@@ -53,14 +53,32 @@ export const formatMonthYear = (isoDate) => {
 export const formatDateLang = (dateString, language = "es") => {
   if (!dateString) return "";
 
-  const date = new Date(dateString);
+  try {
+    // 1. Limpiamos el string por si viene con hora (ISO 8601 completo)
+    const [onlyDate] = dateString.split("T");
+    const parts = onlyDate.split("-");
 
-  // Opciones para mostrar: "10 de enero de 2026" o "January 10, 2026"
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
+    // Validamos que tengamos las 3 partes necesarias
+    if (parts.length !== 3) return dateString;
 
-  return new Intl.DateTimeFormat(language, options).format(date);
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // Enero es 0 en JS
+    const day = parseInt(parts[2], 10);
+
+    // 2. Creamos el objeto Date local
+    const date = new Date(year, month, day);
+
+    // Validamos que la fecha sea válida (ej. no 31 de febrero)
+    if (isNaN(date.getTime())) return dateString;
+
+    // 3. Formateo con Intl (Estándar moderno de navegación)
+    return new Intl.DateTimeFormat(language, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return dateString; // Fallback al string original si algo falla
+  }
 };

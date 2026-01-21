@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../../components/ui/Button";
+import { t } from "i18next";
 
 const BulkActions = ({ selectedCount, onAction }) => {
   if (selectedCount === 0) return null;
@@ -12,24 +13,24 @@ const BulkActions = ({ selectedCount, onAction }) => {
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
               <span className="text-sm font-semibold text-primary-foreground">{selectedCount}</span>
             </div>
-            <span className="text-sm font-medium text-foreground">{selectedCount === 1 ? "patient" : "patients"} selected</span>
+            <span className="text-sm font-medium text-foreground">{t("bulkActions.selectedPatients", { count: selectedCount })}</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" onClick={() => onAction("export")} iconName="Download" iconPosition="left">
-              Export
+              {t("bulkActions.export")}
             </Button>
             <Button variant="outline" size="sm" onClick={() => onAction("email")} iconName="Mail" iconPosition="left">
-              Email
+              {t("bulkActions.email")}
             </Button>
             <Button variant="outline" size="sm" onClick={() => onAction("schedule")} iconName="Calendar" iconPosition="left">
-              Schedule
+              {t("bulkActions.schedule")}
             </Button>
             <Button variant="outline" size="sm" onClick={() => onAction("tag")} iconName="Tag" iconPosition="left">
-              Add Tag
+              {t("bulkActions.addTag")}
             </Button>
             <Button variant="destructive" size="sm" onClick={() => onAction("delete")} iconName="Trash2" iconPosition="left">
-              Delete
+              {t("bulkActions.delete")}
             </Button>
           </div>
         </div>

@@ -1,42 +1,45 @@
 import React from "react";
 import Icon from "../../../components/AppIcon";
+import { useTranslation } from "react-i18next";
 
 const DemographicsTab = ({ patient }) => {
+  const { t, i18n } = useTranslation();
+
   const demographicSections = [
     {
-      title: "Personal Information",
+      title: t("profile.tabs.demographics.section.title"),
       icon: "User",
       fields: [
-        { label: "Full Name", value: patient?.name },
-        { label: "Date of Birth", value: new Date(patient.dateOfBirth)?.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) },
-        { label: "Gender", value: patient?.gender },
-        { label: "Blood Type", value: patient?.bloodType || "Not specified" },
-        { label: "Marital Status", value: patient?.maritalStatus || "Not specified" },
+        { label: t("profile.tabs.demographics.section.fullName"), value: patient?.name },
+        { label: t("profile.tabs.demographics.section.dateOfBirth"), value: new Date(patient.dateOfBirth)?.toLocaleDateString(i18n.language, { year: "numeric", month: "long", day: "numeric" }) },
+        { label: t("profile.tabs.demographics.section.gender"), value: patient?.gender },
+        { label: t("profile.tabs.demographics.section.bloodType"), value: patient?.bloodType || t("profile.notSpecified") },
+        { label: t("profile.tabs.demographics.section.maritalStatus"), value: patient?.maritalStatus || t("profile.notSpecified") },
       ],
     },
     {
-      title: "Contact Information",
+      title: t("profile.tabs.demographics.section.contactInformation"),
       icon: "Phone",
       fields: [
-        { label: "Primary Phone", value: patient?.phone },
-        { label: "Email Address", value: patient?.email },
-        { label: "Address", value: patient?.address },
-        { label: "City", value: patient?.city },
-        { label: "State", value: patient?.state },
-        { label: "ZIP Code", value: patient?.zipCode },
+        { label: t("profile.tabs.demographics.section.primaryPhone"), value: patient?.phone },
+        { label: t("profile.tabs.demographics.section.emailAddress"), value: patient?.email },
+        { label: t("profile.tabs.demographics.section.address"), value: patient?.address },
+        { label: t("profile.tabs.demographics.section.city"), value: patient?.city },
+        { label: t("profile.tabs.demographics.section.state"), value: patient?.state },
+        { label: t("profile.tabs.demographics.section.zipCode"), value: patient?.zipCode },
       ],
     },
     {
-      title: "Emergency Contact",
+      title: t("profile.tabs.demographics.section.emergencyContact"),
       icon: "AlertCircle",
       fields: [
-        { label: "Contact Name", value: patient?.emergencyContact?.name },
-        { label: "Relationship", value: patient?.emergencyContact?.relationship },
-        { label: "Phone Number", value: patient?.emergencyContact?.phone },
-        { label: "Email", value: patient?.emergencyContact?.email || "Not provided" },
+        { label: t("profile.tabs.demographics.section.contactName"), value: patient?.emergencyContact?.name || t("profile.notSpecified") },
+        { label: t("profile.tabs.demographics.section.relationship"), value: patient?.emergencyContact?.relationship || t("profile.notSpecified") },
+        { label: t("profile.tabs.demographics.section.contactPhone"), value: patient?.emergencyContact?.phone || t("profile.notSpecified") },
+        { label: "Email", value: patient?.emergencyContact?.email || t("profile.notSpecified") },
       ],
     },
-    {
+    /* {
       title: "Insurance Information",
       icon: "Shield",
       fields: [
@@ -45,7 +48,7 @@ const DemographicsTab = ({ patient }) => {
         { label: "Group Number", value: patient?.insuranceGroup || "Not specified" },
         { label: "Coverage Type", value: patient?.coverageType || "Full Coverage" },
       ],
-    },
+    }, */
   ];
 
   return (

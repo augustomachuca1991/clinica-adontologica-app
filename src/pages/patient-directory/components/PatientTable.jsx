@@ -4,9 +4,11 @@ import Image from "../../../components/AppImage";
 import Icon from "../../../components/AppIcon";
 import Button from "../../../components/ui/Button";
 import { Checkbox } from "../../../components/ui/Checkbox";
+import { useTranslation } from "react-i18next";
 
 const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll, onSort, sortConfig }) => {
   const [hoveredRow, setHoveredRow] = useState(null);
+  const { t } = useTranslation();
 
   const getSortIcon = (column) => {
     if (sortConfig?.column !== column) {
@@ -17,12 +19,12 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      active: { bg: "bg-success/10", text: "text-success", label: "Active" },
-      pending: { bg: "bg-warning/10", text: "text-warning", label: "Pending" },
-      inactive: { bg: "bg-muted", text: "text-muted-foreground", label: "Inactive" },
+      active: { bg: "bg-green-50", text: "text-success", label: "active" },
+      pending: { bg: "bg-yellow-50", text: "text-warning", label: "pending" },
+      inactive: { bg: "bg-muted", text: "text-muted-foreground", label: "inactive" },
     };
     const config = statusConfig?.[status] || statusConfig?.inactive;
-    return <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config?.bg} ${config?.text}`}>{config?.label}</span>;
+    return <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config?.bg} ${config?.text}`}>{t(`patientCard.status.${config?.label}`)}</span>;
   };
 
   return (
@@ -43,7 +45,7 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   onClick={() => onSort("name")}
                   className="flex items-center gap-2 text-xs md:text-sm font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base"
                 >
-                  Patient
+                  {t("patientTable.columns.patient")}
                   {getSortIcon("name")}
                 </button>
               </th>
@@ -52,19 +54,19 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   onClick={() => onSort("patientId")}
                   className="flex items-center gap-2 text-xs md:text-sm font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base"
                 >
-                  Patient ID
+                  {t("patientTable.columns.patientID")}
                   {getSortIcon("patientId")}
                 </button>
               </th>
               <th className="px-4 py-3 text-left hidden lg:table-cell">
-                <span className="text-xs md:text-sm font-headline font-semibold text-foreground">Contact</span>
+                <span className="text-xs md:text-sm font-headline font-semibold text-foreground">{t("patientTable.columns.contact")}</span>
               </th>
               <th className="px-4 py-3 text-left hidden xl:table-cell">
                 <button
                   onClick={() => onSort("insurance")}
                   className="flex items-center gap-2 text-xs md:text-sm font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base"
                 >
-                  Insurance
+                  {t("patientTable.columns.insurance")}
                   {getSortIcon("insurance")}
                 </button>
               </th>
@@ -73,7 +75,7 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   onClick={() => onSort("status")}
                   className="flex items-center gap-2 text-xs md:text-sm font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base"
                 >
-                  Status
+                  {t("patientTable.columns.status")}
                   {getSortIcon("status")}
                 </button>
               </th>
@@ -82,12 +84,12 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   onClick={() => onSort("nextAppointment")}
                   className="flex items-center gap-2 text-xs md:text-sm font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base"
                 >
-                  Next Appointment
+                  {t("patientTable.columns.nextAppointment")}
                   {getSortIcon("nextAppointment")}
                 </button>
               </th>
               <th className="px-4 py-3 text-right">
-                <span className="text-xs md:text-sm font-headline font-semibold text-foreground">Actions</span>
+                <span className="text-xs md:text-sm font-headline font-semibold text-foreground">{t("patientTable.columns.actions")}</span>
               </th>
             </tr>
           </thead>
@@ -130,7 +132,7 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   {patient?.nextAppointment ? (
                     <div className="text-sm">
                       <div className="text-foreground">{patient?.nextAppointment}</div>
-                      {patient?.appointmentStatus === "overdue" && <span className="text-xs text-error font-medium">Overdue</span>}
+                      {patient?.appointmentStatus === "overdue" && <span className="text-xs text-error font-medium lowercase">{t("appointment.overdue")}</span>}
                     </div>
                   ) : (
                     <span className="text-sm text-muted-foreground">No appointment</span>

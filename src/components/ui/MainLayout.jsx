@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Breadcrumbs from "./Breadcrumbs";
+import { Outlet } from "react-router-dom";
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleSidebarToggle = () => {
@@ -20,7 +21,7 @@ const MainLayout = ({ children }) => {
         <main className="pt-16">
           <div className="container mx-auto px-6 py-8">
             <Breadcrumbs />
-            {children}
+            <Outlet />
           </div>
         </main>
       </div>

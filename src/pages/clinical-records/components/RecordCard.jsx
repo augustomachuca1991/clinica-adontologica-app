@@ -1,19 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Icon from "../../../components/AppIcon";
 import Image from "../../../components/AppImage";
 import Button from "../../../components/ui/Button";
+import { useTranslation } from "react-i18next";
+import ImageLightbox from "../../../components/ui/ImageLightBox";
 
 const RecordCard = ({ record, onViewDetails, onAddNote }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
+  /* useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (selectedImageIndex === null) return;
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "Escape") setSelectedImageIndex(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImageIndex]); */
+
+  const { t } = useTranslation();
 
   const getStatusColor = (status) => {
     const colors = {
-      completed: "bg-success/10 text-success border-success/20",
-      "in-progress": "bg-warning/10 text-warning border-warning/20",
-      planned: "bg-primary/10 text-primary border-primary/20",
-      cancelled: "bg-muted text-muted-foreground border-border",
+      completed: { classColor: "bg-success/10 text-success border-success/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
+      inProgress: { classColor: "bg-warning/10 text-warning border-warning/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
+      planned: { classColor: "bg-primary/10 text-primary border-primary/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
+      cancelled: { classColor: `bg-muted text-muted-foreground border-border`, label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
     };
     return colors?.[status] || colors?.planned;
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prev) => (prev + 1) % record.attachments.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) => (prev - 1 + record.attachments.length) % record.attachments.length);
   };
 
   const getTreatmentIcon = (type) => {
@@ -30,7 +54,7 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg shadow-clinical-sm hover:shadow-clinical-md transition-all duration-base overflow-hidden">
+    <div className="bg-card border border-border rounded-lg shadow-clinical-sm hover:shadow-clinical-md transition-all duration-base overflow-hidden h-fit">
       <div className="p-4 md:p-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-start gap-3 flex-1 min-w-0">
@@ -40,12 +64,12 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
             <div className="flex-1 min-w-0">
               <h4 className="text-sm md:text-base font-headline font-semibold text-foreground mb-1 truncate">{record?.treatmentName}</h4>
               <p className="text-xs md:text-sm text-muted-foreground mb-2">
-                Patient: {record?.patientName} • ID: {record?.patientId}
+                {t("records.card.patient")}: {record?.patientName} • {t("records.card.idPatient")}: {record?.patientId}
               </p>
               <div className="flex flex-wrap items-center gap-2">
-                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(record?.status)}`}>
+                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(record?.status).classColor}`}>
                   <Icon name="Circle" size={8} className="fill-current" />
-                  {record?.status?.charAt(0)?.toUpperCase() + record?.status?.slice(1)?.replace("-", " ")}
+                  {getStatusColor(record?.status).label}
                 </span>
                 <span className="text-xs text-muted-foreground">{record?.date}</span>
               </div>
@@ -57,16 +81,22 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground">
             <Icon name="User" size={16} />
-            <span>Provider: {record?.provider}</span>
+            <span>
+              {t("records.card.provider")}: {record?.provider}
+            </span>
           </div>
           <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground">
             <Icon name="MapPin" size={16} />
-            <span>Tooth: {record?.toothNumber}</span>
+            <span>
+              {t("records.card.tooth")}: {record?.toothNumber}
+            </span>
           </div>
           {record?.cost && (
             <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground">
               <Icon name="DollarSign" size={16} />
-              <span>Cost: ${record?.cost?.toLocaleString()}</span>
+              <span>
+                {t("records.card.cost")}: ${record?.cost?.toLocaleString()}
+              </span>
             </div>
           )}
         </div>
@@ -74,13 +104,13 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
         {isExpanded && (
           <div className="mt-4 pt-4 border-t border-border space-y-4 fade-in-up">
             <div>
-              <h5 className="text-xs md:text-sm font-medium text-foreground mb-2">Treatment Notes</h5>
+              <h5 className="text-xs md:text-sm font-medium text-foreground mb-2">{t("records.card.treatmentNotes")}</h5>
               <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{record?.notes}</p>
             </div>
 
             {record?.attachments && record?.attachments?.length > 0 && (
               <div>
-                <h5 className="text-xs md:text-sm font-medium text-foreground mb-3">Clinical Images</h5>
+                <h5 className="text-xs md:text-sm font-medium text-foreground mb-3">{t("records.card.clinicalImages")}</h5>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {record?.attachments?.map((attachment, index) => (
                     <div key={index} className="relative group overflow-hidden rounded-lg border border-border">
@@ -88,8 +118,8 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
                         <Image src={attachment?.url} alt={attachment?.alt} className="w-full h-full object-cover transition-transform duration-base group-hover:scale-105" />
                       </div>
                       <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-base flex items-center justify-center">
-                        <Button variant="secondary" size="sm" iconName="Eye" iconPosition="left">
-                          View
+                        <Button variant="secondary" size="sm" iconName="Eye" iconPosition="left" onClick={() => setSelectedImageIndex(index)}>
+                          {t("records.card.button.view")}
                         </Button>
                       </div>
                     </div>
@@ -103,7 +133,7 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
                 <div className="flex items-start gap-2">
                   <Icon name="Calendar" size={16} color="var(--color-warning)" className="flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs md:text-sm font-medium text-warning mb-1">Follow-up Required</p>
+                    <p className="text-xs md:text-sm font-medium text-warning mb-1">{t("records.card.followUp")}</p>
                     <p className="text-xs text-muted-foreground">{record?.followUp}</p>
                   </div>
                 </div>
@@ -114,16 +144,21 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
 
         <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-border">
           <Button variant="outline" size="sm" onClick={() => onViewDetails(record)} iconName="Eye" iconPosition="left">
-            View Details
+            {t("records.card.button.viewDetails")}
           </Button>
           <Button variant="ghost" size="sm" onClick={() => onAddNote(record)} iconName="Plus" iconPosition="left">
-            Add Note
-          </Button>
-          <Button variant="ghost" size="sm" iconName="Download" iconPosition="left">
-            Export
+            {t("records.card.button.addNote")}
           </Button>
         </div>
       </div>
+      <ImageLightbox
+        isOpen={selectedImageIndex !== null}
+        onClose={() => setSelectedImageIndex(null)}
+        images={record.attachments}
+        currentIndex={selectedImageIndex}
+        onNext={nextImage}
+        onPrev={prevImage}
+      />
     </div>
   );
 };

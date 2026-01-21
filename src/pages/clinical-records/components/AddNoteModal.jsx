@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Icon from "../../../components/AppIcon";
 
 import Button from "../../../components/ui/Button";
+import { useTranslation } from "react-i18next";
 
 const AddNoteModal = ({ record, onClose, onSave }) => {
   const [noteData, setNoteData] = useState({
@@ -9,6 +10,8 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
     content: "",
     attachments: [],
   });
+
+  const { t } = useTranslation();
 
   const handleSave = () => {
     if (noteData?.content?.trim()) {
@@ -35,7 +38,7 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
       <div className="bg-card border border-border rounded-lg shadow-clinical-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-card border-b border-border px-6 py-4 flex items-center justify-between">
           <div>
-            <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Add Clinical Note</h3>
+            <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("records.recordsModal.tabs.clinicalNotes.addClinicalNote")}</h3>
             <p className="text-sm text-muted-foreground mt-1">
               {record?.patientName} • {record?.treatmentName}
             </p>
@@ -46,26 +49,31 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
         <div className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Note Type</label>
+              <label className="block text-sm font-medium text-foreground mb-2">{t("records.recordsModal.tabs.clinicalNotes.noteType")}</label>
               <div className="space-y-2">
-                {["progress", "treatment", "observation", "follow-up"]?.map((type) => (
-                  <label key={type} className="flex items-center gap-2 cursor-pointer">
+                {[
+                  { key: "progress", label: "progress" },
+                  { key: "treatment", label: "treatment" },
+                  { key: "observation", label: "observation" },
+                  { key: "followUp", label: "followUp" },
+                ]?.map(({ key, label }) => (
+                  <label key={key} className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
                       name="noteType"
-                      value={type}
-                      checked={noteData?.noteType === type}
+                      value={key}
+                      checked={noteData?.noteType === key}
                       onChange={(e) => setNoteData((prev) => ({ ...prev, noteType: e?.target?.value }))}
                       className="w-4 h-4 text-primary focus:ring-2 focus:ring-ring"
                     />
-                    <span className="text-sm text-foreground capitalize">{type?.replace("-", " ")}</span>
+                    <span className="text-sm text-foreground">{t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.${label}`)}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Quick Templates</label>
+              <label className="block text-sm font-medium text-foreground mb-2">{t("records.recordsModal.tabs.clinicalNotes.quickTemplates")}</label>
               <div className="space-y-2">
                 <Button
                   variant="outline"
@@ -74,11 +82,11 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
                   onClick={() =>
                     setNoteData((prev) => ({
                       ...prev,
-                      content: "Patient tolerated procedure well. No complications noted. Post-operative instructions provided.",
+                      content: t("records.recordsModal.tabs.clinicalNotes.postProcedureQuick"),
                     }))
                   }
                 >
-                  Post-Procedure
+                  {t("records.recordsModal.tabs.clinicalNotes.postProcedure")}
                 </Button>
                 <Button
                   variant="outline"
@@ -87,36 +95,36 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
                   onClick={() =>
                     setNoteData((prev) => ({
                       ...prev,
-                      content: "Follow-up examination completed. Healing progressing as expected. Continue current care regimen.",
+                      content: t("records.recordsModal.tabs.clinicalNotes.followUpQuick"),
                     }))
                   }
                 >
-                  Follow-up
+                  {t("records.recordsModal.tabs.clinicalNotes.followUp")}
                 </Button>
               </div>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Clinical Note</label>
+            <label className="block text-sm font-medium text-foreground mb-2">{t("records.recordsModal.tabs.clinicalNotes.name")}</label>
             <textarea
               value={noteData?.content}
               onChange={(e) => setNoteData((prev) => ({ ...prev, content: e?.target?.value }))}
-              placeholder="Enter detailed clinical observations, treatment progress, or patient feedback..."
+              placeholder={t("records.recordsModal.tabs.clinicalNotes.placeholder")}
               rows={8}
               className="w-full px-4 py-3 bg-muted border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-base resize-none"
             />
-            <p className="text-xs text-muted-foreground mt-2">{noteData?.content?.length} characters</p>
+            <p className="text-xs text-muted-foreground mt-2">{t("records.recordsModal.tabs.clinicalNotes.characters", { count: noteData?.content?.length || 0 })}</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Attachments</label>
+            <label className="block text-sm font-medium text-foreground mb-2">{t("records.recordsModal.tabs.clinicalNotes.attachments")}</label>
             <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors duration-base">
               <input type="file" multiple accept="image/*,.pdf" onChange={handleFileUpload} className="hidden" id="file-upload" />
               <label htmlFor="file-upload" className="cursor-pointer">
                 <Icon name="Upload" size={32} className="mx-auto mb-3 text-muted-foreground" />
-                <p className="text-sm text-foreground mb-1">Click to upload or drag and drop</p>
-                <p className="text-xs text-muted-foreground">Images or PDF files (max 10MB each)</p>
+                <p className="text-sm text-foreground mb-1">{t("records.recordsModal.tabs.clinicalNotes.dragAndDrop")}</p>
+                <p className="text-xs text-muted-foreground">{t("records.recordsModal.tabs.clinicalNotes.typeFile")}</p>
               </label>
             </div>
             {noteData?.attachments?.length > 0 && (
@@ -148,10 +156,10 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
 
         <div className="sticky bottom-0 bg-card border-t border-border px-6 py-4 flex items-center justify-end gap-3">
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            {t("records.recordsModal.tabs.clinicalNotes.button.cancel")}
           </Button>
           <Button variant="default" onClick={handleSave} disabled={!noteData?.content?.trim()} iconName="Save" iconPosition="left">
-            Save Note
+            {t("records.recordsModal.tabs.clinicalNotes.button.saveNote")}
           </Button>
         </div>
       </div>

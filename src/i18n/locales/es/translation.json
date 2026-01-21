@@ -1,0 +1,583 @@
+{
+  "appTitle": "Gestión Dental ",
+  "welcome": "Bienvenido",
+  "patients": "Pacientes",
+  "appointments": "Turnos",
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "next": "Próximo",
+  "show": "Mostrar",
+  "dentist": "Odontólogo",
+  "status": "Estado",
+  "messageSuccess": "Operación realizada con éxito",
+  "tooth": "Diente",
+  "patient": {
+    "created": "Paciente creado con éxito",
+    "updated": "Información del paciente actualizada con éxito",
+    "form": {
+      "title": "Alta de paciente",
+      "requiredLegend": "Los campos marcados con",
+      "sections": {
+        "personal": "Datos personales",
+        "contact": "Contacto",
+        "insurance": "Cobertura médica",
+        "tags": "Etiquetas"
+      },
+      "fields": {
+        "name": "Nombre completo *",
+        "address": "Domicilio",
+        "email": "Email *",
+        "phone": "Teléfono",
+        "tags": "Etiquetas (separadas por coma)",
+        "insurance": {
+          "placeholder": "Seleccionar obra social"
+        }
+      },
+      "insurance": {
+        "ioscor": "IOSCOR",
+        "swissMedical": "Swiss Medical",
+        "osde": "OSDE",
+        "omint": "Omint",
+        "other": "Otros"
+      },
+      "tags": {
+        "selectedLegend": "Etiquetas seleccionadas",
+        "vip": "VIP",
+        "recommended": "Recomendado",
+        "new": "Nuevo",
+        "family": "Familiar",
+        "other": "Otros"
+      },
+      "validation": {
+        "required": "Completá los campos obligatorios antes de guardar"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "description": "Resumen y métricas del consultorio",
+    "quickActions": {
+      "title": "Acciones rápidas",
+      "newPatient": "Nuevo paciente",
+      "scheduleAppointment": "Programar turno",
+      "addNote": "Agregar nota",
+      "viewReports": "Ver informes"
+    },
+    "recentActivity": {
+      "title": "Actividad reciente",
+      "refresh": "Actualizar"
+    },
+    "treatmentProgress": {
+      "title": "Progreso del tratamiento",
+      "export": "Exportar",
+      "completed": "Finalizados",
+      "inProgress": "En progreso",
+      "scheduled": "Programados",
+      "months": {
+        "Jan": "Ene",
+        "Feb": "Feb",
+        "Mar": "Mar",
+        "Apr": "Abr",
+        "May": "May",
+        "Jun": "Jun",
+        "Jul": "Jul",
+        "Aug": "Ago",
+        "Sep": "Sep",
+        "Oct": "Oct",
+        "Nov": "Nov",
+        "Dec": "Dic"
+      }
+    }
+  },
+  "directory": {
+    "title": "Directorio de pacientes",
+    "description": "Buscar y administrar pacientes",
+    "subtitle": "Base de datos completa de pacientes con capacidades avanzadas de búsqueda y filtrado",
+    "button": {
+      "addNewPatient": "Nuevo paciente"
+    },
+    "panelFilter": {
+      "title": "Buscar y Filtrar Pacientes",
+      "searchPatientLabel": "Paciente",
+      "searchPlaceholder": "Buscar por nombre, ID o contacto",
+      "patientStatusLabel": "Estado del paciente",
+      "patientStatusOptions": {
+        "all": "Todos",
+        "pending": "Pendiente",
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+      "appointmentStatusLabel": "Estado de la Cita",
+      "appointmentStatusOptions": {
+        "all": "Todos los Turnos",
+        "upcoming": "Próximos",
+        "overdue": "Vencidos",
+        "completed": "Completados",
+        "noAppointments": "Sin Turnos"
+      },
+      "insuranceProviderLabel": "Cobertura Medica",
+      "insuranceProviderOptions": {
+        "all": "Todos",
+        "deltaDental": "Delta Dental",
+        "cignaDental": "Cigna Dental",
+        "aetnaDental": "Aetna Dental",
+        "metLifeDental": "MetLife Dental",
+        "unitedHealthcare": "United Healthcare",
+        "selfPay": "Self-Pay"
+      },
+      "treatmentHistoryLabel": "Historial de Tratamientos",
+      "treatmentHistoryOptions": {
+        "all": "Todos los Tratamientos",
+        "cleaning": "Limpieza",
+        "rootCanal": "Endodoncia",
+        "crown": "Corona",
+        "filling": "Relleno",
+        "extraction": "Extracción",
+        "orthodontics": "Ortodoncia",
+        "implant": "Implante"
+      },
+      "lastVisitFromLabel": "Última Visita desde",
+      "lastVisitToLabel": "Última Visita hasta",
+      "applyButton": "Aplicar Filtros",
+      "resetButton": "Restablecer Filtros",
+      "advancedOptionsFilters": "Opciones Avanzadas",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "ageFromLabel": "Edad Desde",
+      "ageFromPlaceholder": "Min edad",
+      "ageToLabel": "Edad Hasta",
+      "ageToPlaceholder": "Max edad",
+      "customTagsLabel": "Etiquetas Personalizadas",
+      "customTagsPlaceholder": "Ingrese etiquetas..."
+    }
+  },
+  "patientCard": {
+    "status": {
+      "pending": "Pendiente",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "dob": "Nacimiento"
+  },
+  "patientTable": {
+    "noPatients": "No se encontraron pacientes",
+    "tryAdjusting": "Intenta ajustar tu búsqueda o criterios de filtrado",
+    "resetFilters": "Restablecer Filtros",
+    "columns": {
+      "patient": "Paciente",
+      "patientID": "ID Paciente",
+      "contact": "Contacto",
+      "insurance": "Seguro",
+      "status": "Estado",
+      "nextAppointment": "Próxima Cita",
+      "actions": "Acciones"
+    }
+  },
+  "pagination": {
+    "pageof": "página {{current}} de {{total}}",
+    "perPage": "{{count}} por página",
+    "showing": "Mostrando {{paginated}} de {{sorted}} pacientes",
+    "clearSelection": "Borrar Selección"
+  },
+  "bulkActions": {
+    "selectedPatients_one": "{{count}} seleccionado",
+    "selectedPatients_other": "{{count}}  seleccionados",
+    "selectedPatients_zero": "no hay pacientes seleccionados",
+    "export": "Exportar",
+    "email": "Email",
+    "schedule": "Programar",
+    "addTag": "Agregar",
+    "delete": "Eliminar"
+  },
+  "records": {
+    "title": "Historias clínicas",
+    "description": "Historial médico del paciente",
+    "subtitle": "Historial de tratamientos completo y gestión de documentación",
+    "button": {
+      "newRecord": "Nuevo Registro"
+    },
+    "panelFilter": {
+      "title": "Buscar y Filtrar",
+      "recordTypeLabel": "Tipo de Registro",
+      "searchPatientLabel": "Paciente",
+      "searchPlaceholder": "Nombre o ID del paciente...",
+      "treatmentTypeLabel": "Tipo de Tratamiento",
+      "treatmentTypeOptions": {
+        "all": "Todos"
+      },
+      "treatmentStatusLabel": "Estado",
+      "treatmentStatusOptions": {
+        "all": "Todos los Estados",
+        "completed": "Completado",
+        "inProgress": "En Progreso",
+        "scheduled": "Programado",
+        "cancelled": "Cancelado",
+        "planned": "Planeado"
+      },
+      "providerLabel": "Profesional",
+      "providerOptions": {
+        "all": "Todos"
+      },
+      "dateFromLabel": "Desde",
+      "dateToLabel": "Hasta",
+      "button": {
+        "resetFilters": "Restablecer Filtros"
+      }
+    },
+    "treatmentHistoryList": {
+      "title": "Historial de Tratamientos",
+      "button": {
+        "export": "Exportar",
+        "clearAll": "Limpiar Filtros"
+      },
+      "foundRecords_one": "{{count}} registro encontrado",
+      "foundRecords_other": "{{count}} registros encontrados",
+      "foundRecords_zero": "No se encontraron registros",
+      "tryAdjusting": "Intenta ajustar tu búsqueda o criterios de filtrado"
+    },
+    "card": {
+      "patient": "Paciente",
+      "idPatient": "ID",
+      "status": {
+        "completed": "Completado",
+        "inProgress": "En Progreso",
+        "scheduled": "Programado",
+        "cancelled": "Cancelado",
+        "planned": "Planeado"
+      },
+      "provider": "Especialista",
+      "tooth": "Diente",
+      "cost": "Costo",
+      "button": {
+        "viewDetails": "Ver Detalles",
+        "addNote": "Agregar Nota",
+        "export": "Exportar",
+        "view": "Ver"
+      },
+      "treatmentNotes": "Notas del Tratamiento",
+      "clinicalImages": "Imágenes Clínicas",
+      "noImages": "No hay imágenes disponibles",
+      "followUp": "Seguimiento"
+    },
+    "recordsModal": {
+      "tabs": {
+        "overview": {
+          "name": "Resumen",
+          "treatmentType": "Tipo de Tratamiento",
+          "treatmentDate": "Fecha de Tratamiento",
+          "toothNumber": "Número de Diente",
+          "duration": "Duración"
+        },
+        "clinicalNotes": {
+          "name": "Nota Clínica",
+          "addClinicalNote": "Agregar Nota Clínica",
+          "noteType": "Tipo de Nota",
+          "noteTypeOptions": {
+            "progress": "Progreso",
+            "treatment": "Tratamiento",
+            "observation": "Observación",
+            "followUp": "Seguimiento"
+          },
+          "quickTemplates": "Plantillas Rápidas",
+          "postProcedure": "Post-Procedimiento",
+          "postProcedureQuick": "Paciente toleró bien el procedimiento. No se observaron complicaciones. Se entregaron instrucciones post tratamiento.",
+          "followUp": "Seguimiento",
+          "followUpQuick": "Examen de seguimiento completado. La cicatrización progresa según lo previsto. Continuar con el régimen de cuidado actual.",
+          "characters_one": "{{count}} caracter",
+          "characters_other": "{{count}} caracteres",
+          "placeholder": "Ingrese observaciones clínicas detalladas, evolución del tratamiento o comentarios del paciente...",
+          "attachments": "Adjuntos",
+          "dragAndDrop": "Clic para subir imagen o arrastre y suelte",
+          "typeFile": "Tipo de archivos imagenes o PDF (max 10MB)",
+          "button": {
+            "cancel": "Cancelar",
+            "saveNote": "Guardar Nota"
+          },
+          "status": {
+            "completed": "Completado",
+            "inProgress": "En progreso",
+            "planned": "Planificado",
+            "cancelled": "Cancelado"
+          },
+          "attachmentsFiles_one": "{{count}} adjunto",
+          "attachmentsFiles_other": "{{count}} adjuntos"
+        },
+        "images": {
+          "name": "Imágenes",
+          "noImages": "No hay imágenes disponibles",
+          "clinicalImages": "Imágenes Clínicas",
+          "dropzone": "Haz clic o arrastra una imagen aquí",
+          "uploadSuccess": "Imagen subida correctamente",
+          "button": {
+            "uploadImage": "Subir Imagen"
+          }
+        },
+        "history": {
+          "name": "Historial",
+          "noHistory": "No hay historial disponible para este registro",
+          "treatmentHistory": "Historial de Tratamientos",
+          "statusUpdated": "Estado Actualizado",
+          "activity": {
+            "statusLog": "El estado del tratamiento fue cambiado a {{status}} por {{doctor}}",
+            "status": {
+              "completed": "Completado",
+              "inProgress": "En curso",
+              "planned": "Planificado"
+            }
+          }
+        }
+      },
+      "button": {
+        "close": "Cerrar",
+        "exportPDF": "Exportar PDF",
+        "print": "Imprimir"
+      }
+    }
+  },
+  "treatment": {
+    "title": "Planificación de tratamientos",
+    "subtitle": "Crear planes de tratamiento completos con estimación de costos y seguimiento del progreso",
+    "description": "Programar y planificar tratamientos",
+    "comparePlans": "Comparar planes",
+    "presentToPatient": "Presentar al paciente",
+    "selectPatient": "Seleccionar paciente",
+    "lastVisit": "Última visita: {{date}}",
+    "patientInfo": "Info del paciente",
+    "activeIssues": "Problemas activos",
+    "treatmentStatus": "Estado del tratamiento",
+    "toothChart": "Diagrama dental interactivo",
+    "age": "Edad: {{age}} años",
+    "lastTreatment": "Último Tratamiento: {{date}}",
+    "insurance": "Seguro: {{insurance}}",
+    "status": {
+      "completed": "Completado",
+      "inProgress": "En curso",
+      "planned": "Planificado"
+    },
+    "upperJaw": "Maxilar Superior",
+    "lowerJaw": "Maxilar Inferior",
+    "addTreatment": "Agregar tratamiento",
+    "editTreatment": "Editar tratamiento",
+    "updateTreatment": "Actualizar tratamiento",
+    "treatmentSequence": "Secuencia",
+    "dragToReorder": "Arrastra para reordenar",
+    "noTreatments": "No hay tratamientos agregados aún",
+    "selectTeethToAddTreatments": "Selecciona piezas dentales del diagrama para agregar tratamientos",
+    "totalEstimatedCost": "Total Costo Estimado",
+    "formLabel": {
+      "toothNumber": "# Pieza Dental",
+      "procedure": "Procedimiento",
+      "estimatedCost": "Costo Estimado",
+      "duration": "Duración",
+      "priority": "Prioridad",
+      "status": "Estado",
+      "notes": "Notas del tratamiento"
+    },
+    "formPlaceholder": {
+      "estimatedCost": "ej., 150.00",
+      "duration": "ej., 7 semanas",
+      "notes": "Notas adicionales o consideraciones especiales..."
+    }
+  },
+  "profile": {
+    "title": "Ficha del paciente",
+    "description": "Información detallada del paciente",
+    "descriptionSearch": "Buscar pacientes por nombre o ID",
+    "notSpecified": "No especificado",
+    "header": {
+      "age": "Edad",
+      "years": "Años",
+      "phone": "Teléfono",
+      "email": "Correo Electrónico",
+      "gender": "Género",
+      "patientId": "ID Paciente",
+      "button": {
+        "editProfile": "Editar Perfil",
+        "schedule": "Agendar",
+        "message": "Mensaje"
+      }
+    },
+    "tabs": {
+      "demographics": {
+        "name": "Datos Demográficos",
+        "section": {
+          "title": "Datos Demográficos",
+          "fullName": "Nombre Completo",
+          "dateOfBirth": "Fecha de Nacimiento",
+          "gender": "Género",
+          "bloodType": "Tipo de Sangre",
+          "maritalStatus": "Estado Civil",
+          "contactInformation": "Información de Contacto",
+          "primaryPhone": "Teléfono",
+          "emailAddress": "Correo Electrónico",
+          "address": "Dirección",
+          "city": "Ciudad",
+          "state": "Estado/Provincia",
+          "zipCode": "Código Postal",
+          "emergencyContact": "Contacto de Emergencia",
+          "contactName": "Nombre del Contacto",
+          "relationship": "Relación",
+          "contactPhone": "Número de Teléfono",
+          "contactEmail": "Email"
+        }
+      },
+      "medicalHistory": {
+        "name": "Historial Médico"
+      },
+      "treatmentHistory": {
+        "name": "Historial de Tratamientos",
+        "section": {
+          "dentist": "Dentista",
+          "location": "Ubicación",
+          "duration": "Duración",
+          "toothNumber": "Número de Pieza Dental",
+          "treatmentNotes": "Notas del Tratamiento",
+          "treatmentCost": "Costo del Tratamiento",
+          "clinicalPhotography": "Fotografía Clínica",
+          "followUpScheduled": "Seguimiento Programado"
+        }
+      },
+      "communications": {
+        "name": "Comunicaciones"
+      },
+      "billing": {
+        "name": "Facturación"
+      }
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "description": "Configuración del sistema"
+  },
+  "sidebar": {
+    "toggle": "Contraer"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "noNotifications": "No hay nuevas notificaciones",
+    "markAllAsRead": "Marcar todas como leídas",
+    "viewAll": "Ver todas las notificaciones"
+  },
+  "search": {
+    "label": "Buscar",
+    "placeholder": "Buscar pacientes, turnos..."
+  },
+  "profileSetting": {
+    "title": "Mi Perfil",
+    "settings": "Configuración",
+    "help": "Ayuda y Soporte",
+    "signout": "Cerrar Sesión"
+  },
+  "home": {
+    "welcome": "Bienvenido de nuevo, {{name}}",
+    "overview": "Aquí tienes un resumen de tu práctica hoy."
+  },
+  "breadcrumbs": {
+    "home": "Inicio",
+    "dashboard": "Panel de inicio",
+    "directory": "Directorio de pacientes",
+    "profile": "Perfil del paciente",
+    "records": "Historias clínicas",
+    "treatment": "Planificación de tratamientos",
+    "settings": "Configuración"
+  },
+  "timeFrame": {
+    "today": "Hoy",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes",
+    "thisYear": "Este año"
+  },
+  "appointment": {
+    "titlePanel": "Turnos de hoy",
+    "viewAll": "Ver todos",
+    "overdue": "Vencido",
+    "status": {
+      "confirmed": "Confirmado",
+      "pending": "Pendiente",
+      "cancelled": "Cancelado"
+    },
+    "priority": {
+      "high": "Alta",
+      "normal": "Normal",
+      "urgent": "Urgente"
+    },
+    "viewDetails": "Ver detalles",
+    "reschedule": "Reprogramar"
+  },
+  "printableRecord": {
+    "title": "Ficha Clínica Odontológica",
+    "generatedAt": "Registro generado el",
+    "clinicName": "{{clinicalName}}",
+    "clinicAddress": "{{address}} • {{phone}}",
+    "patientData": {
+      "label": "Paciente",
+      "historyId": "ID Historial"
+    },
+    "procedureDetails": {
+      "title": "Detalle del Procedimiento",
+      "treatment": "Tratamiento",
+      "date": "Fecha",
+      "doctor": "Doctor",
+      "tooth": "Pieza Dental",
+      "type": "Tipo",
+      "cost": "Costo"
+    },
+    "evolutionNotes": "Notas de Evolución",
+    "historyLog": {
+      "title": "Historial de Cambios",
+      "date": "Fecha",
+      "status": "Estado",
+      "professional": "Profesional"
+    },
+    "signatures": {
+      "professional": "Firma del Profesional",
+      "patient": "Firma del Paciente / Tutor"
+    }
+  },
+  "subscriptionExpired": {
+    "title": "Suscripción vencida",
+    "message": "Hola {{fullname}}, tu suscripción ha vencido y el acceso al sistema se encuentra temporalmente suspendido.",
+    "instructions": "Para continuar utilizando el sistema, por favor comunicate con el administrador para regularizar tu membresía.",
+    "logout": "Cerrar sesión"
+  },
+  "login": {
+    "subtitle": "Gestión clínica odontológica",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Iniciar sesión",
+    "continueWith": "o continuar con",
+    "welcome": "¡Bienvenido!",
+    "errors": {
+      "emptyFields": "Debe completar usuario y contraseña"
+    },
+    "footerLogin": {
+      "noAccount": "¿No tienes una cuenta?",
+      "register": "Regístrate aquí",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "terms": "Al iniciar sesión, aceptas nuestros",
+      "privacy": "Términos y Políticas de Privacidad",
+      "rights": "© {{currentYear}} · Desarrollado por {{appName}}"
+    }
+  },
+  "forgotPassword": {
+    "title": "¿Olvidaste tu contraseña?",
+    "subtitle": "Ingresa tu email y te enviaremos un enlace para recuperar el acceso a tu cuenta.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "email@ejemplo.com",
+    "submit": "Enviar enlace de recuperación",
+    "backToLogin": "Volver al inicio de sesión",
+    "success": "Si el correo está registrado, recibirás un enlace en breve.",
+    "error": "Hubo un error al procesar tu solicitud."
+  },
+  "resetPassword": {
+    "title": "Nueva contraseña",
+    "subtitle": "Por favor, ingresa tu nueva clave de acceso.",
+    "newPasswordLabel": "Nueva contraseña",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "placeholder": "••••••••",
+    "submit": "Actualizar contraseña",
+    "success": "Contraseña actualizada con éxito. Ya puedes iniciar sesión.",
+    "error": "Hubo un problema al actualizar la contraseña.",
+    "mismatch": "Las contraseñas no coinciden"
+  }
+}

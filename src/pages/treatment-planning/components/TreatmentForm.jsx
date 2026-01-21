@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
 import Select from "../../../components/ui/Select";
+import { useTranslation } from "react-i18next";
 
 const TreatmentForm = ({ selectedTooth, onSubmit, onCancel, editingTreatment }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState(
     editingTreatment || {
       toothNumber: selectedTooth,
@@ -52,31 +54,44 @@ const TreatmentForm = ({ selectedTooth, onSubmit, onCancel, editingTreatment }) 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input label="Tooth Number" type="text" value={formData?.toothNumber} disabled required />
+        <Input label={t("treatment.formLabel.toothNumber")} type="text" value={formData?.toothNumber} disabled required />
 
-        <Select label="Procedure" options={procedureOptions} value={formData?.procedure} onChange={(value) => setFormData({ ...formData, procedure: value })} required />
+        <Select label={t("treatment.formLabel.procedure")} options={procedureOptions} value={formData?.procedure} onChange={(value) => setFormData({ ...formData, procedure: value })} required />
 
-        <Input label="Estimated Cost" type="number" placeholder="0.00" value={formData?.cost} onChange={(e) => setFormData({ ...formData, cost: e?.target?.value })} required />
+        <Input
+          label={t("treatment.formLabel.estimatedCost")}
+          type="number"
+          placeholder={t("treatment.formPlaceholder.estimatedCost")}
+          value={formData?.cost}
+          onChange={(e) => setFormData({ ...formData, cost: e?.target?.value })}
+          required
+        />
+        <Input
+          label={t("treatment.formLabel.duration")}
+          type="text"
+          placeholder={t("treatment.formPlaceholder.duration")}
+          value={formData?.duration}
+          onChange={(e) => setFormData({ ...formData, duration: e?.target?.value })}
+          required
+        />
 
-        <Input label="Duration" type="text" placeholder="e.g., 2 weeks, 1 month" value={formData?.duration} onChange={(e) => setFormData({ ...formData, duration: e?.target?.value })} required />
+        <Select label={t("treatment.formLabel.priority")} options={priorityOptions} value={formData?.priority} onChange={(value) => setFormData({ ...formData, priority: value })} required />
 
-        <Select label="Priority" options={priorityOptions} value={formData?.priority} onChange={(value) => setFormData({ ...formData, priority: value })} required />
-
-        <Select label="Status" options={statusOptions} value={formData?.status} onChange={(value) => setFormData({ ...formData, status: value })} required />
+        <Select label={t("treatment.formLabel.status")} options={statusOptions} value={formData?.status} onChange={(value) => setFormData({ ...formData, status: value })} required />
       </div>
       <Input
-        label="Treatment Notes"
+        label={t("treatment.formLabel.notes")}
         type="text"
-        placeholder="Additional notes or special considerations"
+        placeholder={t("treatment.formPlaceholder.notes")}
         value={formData?.notes}
         onChange={(e) => setFormData({ ...formData, notes: e?.target?.value })}
       />
       <div className="flex items-center gap-3 pt-4">
         <Button type="submit" variant="default" fullWidth>
-          {editingTreatment ? "Update Treatment" : "Add Treatment"}
+          {editingTreatment ? t("treatment.updateTreatment") : t("treatment.addTreatment")}
         </Button>
         <Button type="button" variant="outline" fullWidth onClick={onCancel}>
-          Cancel
+          {t("cancel")}
         </Button>
       </div>
     </form>

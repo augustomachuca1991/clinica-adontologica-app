@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import MainLayout from "../../components/ui/MainLayout";
 import Icon from "../../components/AppIcon";
 import Button from "../../components/ui/Button";
 import Select from "../../components/ui/Select";
@@ -9,8 +8,11 @@ import TreatmentPlanComparison from "./components/TreatmentPlanComparison";
 import InsuranceVerification from "./components/InsuranceVerification";
 import PatientPresentationMode from "./components/PatientPresentationMode";
 import TreatmentForm from "./components/TreatmentForm";
+import { useTranslation } from "react-i18next";
+import { formatDateLang } from "../../utils/formatters/date";
 
 const TreatmentPlanning = () => {
+  const { t, i18n } = useTranslation();
   const [selectedPatient, setSelectedPatient] = useState("1");
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [treatments, setTreatments] = useState([
@@ -31,7 +33,17 @@ const TreatmentPlanning = () => {
       cost: 250,
       duration: "1 visit",
       priority: "medium",
-      status: "in-progress",
+      status: "inProgress",
+      notes: "Small cavity on occlusal surface",
+    },
+    {
+      id: 3,
+      toothNumber: 27,
+      procedure: "Composite Filling",
+      cost: 2500,
+      duration: "1 visit",
+      priority: "medium",
+      status: "completed",
       notes: "Small cavity on occlusal surface",
     },
   ]);
@@ -151,20 +163,20 @@ const TreatmentPlanning = () => {
   };
 
   return (
-    <MainLayout>
+    <>
       <div className="space-y-6 md:space-y-8">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">Treatment Planning</h1>
-            <p className="text-sm md:text-base text-muted-foreground">Create comprehensive treatment plans with cost estimation and progress tracking</p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("treatment.title")}</h1>
+            <p className="text-sm md:text-base text-muted-foreground">{t("treatment.subtitle")}</p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <Button variant="outline" onClick={() => setShowComparison(!showComparison)} iconName="GitCompare" iconPosition="left">
-              Compare Plans
+              {t("treatment.comparePlans")}
             </Button>
             <Button variant="default" onClick={() => setShowPresentationMode(true)} iconName="Presentation" iconPosition="left" disabled={treatments?.length === 0}>
-              Present to Patient
+              {t("treatment.presentToPatient")}
             </Button>
           </div>
         </div>
@@ -172,12 +184,12 @@ const TreatmentPlanning = () => {
         <div className="bg-card border border-border rounded-lg p-4 md:p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div className="flex-1 max-w-md">
-              <Select label="Select Patient" options={patients} value={selectedPatient} onChange={setSelectedPatient} searchable />
+              <Select label={t("treatment.selectPatient")} options={patients} value={selectedPatient} onChange={setSelectedPatient} searchable />
             </div>
 
             <div className="flex items-center gap-2 text-sm">
               <Icon name="Calendar" size={18} className="text-muted-foreground" />
-              <span className="text-muted-foreground">Last visit: January 10, 2026</span>
+              <span className="text-muted-foreground">{t("treatment.lastVisit", { date: formatDateLang("2026-01-10", i18n.language) })}</span>
             </div>
           </div>
 
@@ -185,19 +197,19 @@ const TreatmentPlanning = () => {
             <div className="bg-muted/50 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-2">
                 <Icon name="User" size={20} className="text-primary" />
-                <span className="text-sm font-medium text-foreground">Patient Info</span>
+                <span className="text-sm font-medium text-foreground">{t("treatment.patientInfo")}</span>
               </div>
               <div className="text-xs text-muted-foreground space-y-1">
-                <div>Age: 42 years</div>
-                <div>Last Treatment: Dec 2025</div>
-                <div>Insurance: Delta Dental</div>
+                <div>{t("treatment.age", { age: 42 })}</div>
+                <div>{t("treatment.lastTreatment", { date: "Dec 2025" })}</div>
+                <div>{t("treatment.insurance", { insurance: "Delta Dental" })}</div>
               </div>
             </div>
 
             <div className="bg-muted/50 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-2">
                 <Icon name="AlertCircle" size={20} className="text-warning" />
-                <span className="text-sm font-medium text-foreground">Active Issues</span>
+                <span className="text-sm font-medium text-foreground">{t("treatment.activeIssues")}</span>
               </div>
               <div className="text-xs text-muted-foreground space-y-1">
                 <div>• Cavity on tooth #16</div>
@@ -209,12 +221,18 @@ const TreatmentPlanning = () => {
             <div className="bg-muted/50 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-2">
                 <Icon name="FileText" size={20} className="text-success" />
-                <span className="text-sm font-medium text-foreground">Treatment Status</span>
+                <span className="text-sm font-medium text-foreground">{t("treatment.treatmentStatus")}</span>
               </div>
               <div className="text-xs text-muted-foreground space-y-1">
-                <div>Planned: {treatments?.filter((t) => t?.status === "planned")?.length}</div>
-                <div>In Progress: {treatments?.filter((t) => t?.status === "in-progress")?.length}</div>
-                <div>Completed: {treatments?.filter((t) => t?.status === "completed")?.length}</div>
+                <div>
+                  {t("treatment.status.planned")}: {treatments?.filter((t) => t?.status === "planned")?.length}
+                </div>
+                <div>
+                  {t("treatment.status.inProgress")}: {treatments?.filter((t) => t?.status === "inProgress")?.length}
+                </div>
+                <div>
+                  {t("treatment.status.completed")}: {treatments?.filter((t) => t?.status === "completed")?.length}
+                </div>
               </div>
             </div>
           </div>
@@ -228,7 +246,7 @@ const TreatmentPlanning = () => {
 
             {showTreatmentForm && selectedTeeth?.length > 0 && (
               <div className="bg-card border border-border rounded-lg p-4 md:p-6">
-                <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-4">{editingTreatment ? "Edit Treatment" : "Add Treatment"}</h3>
+                <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-4">{editingTreatment ? t("treatment.editTreatment") : t("treatment.addTreatment")}</h3>
                 <TreatmentForm
                   selectedTooth={selectedTeeth?.[0]}
                   onSubmit={handleAddTreatment}
@@ -273,7 +291,7 @@ const TreatmentPlanning = () => {
         )}
       </div>
       {showPresentationMode && <PatientPresentationMode treatmentPlan={treatmentPlans?.find((p) => p?.id === selectedPlanId) || treatmentPlans?.[1]} onClose={() => setShowPresentationMode(false)} />}
-    </MainLayout>
+    </>
   );
 };
 

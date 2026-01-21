@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
+  const { t } = useTranslation();
   const [hoveredTooth, setHoveredTooth] = useState(null);
 
   const upperTeeth = [
@@ -53,7 +55,7 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
     switch (status) {
       case "completed":
         return "bg-success text-success-foreground";
-      case "in-progress":
+      case "inProgress":
         return "bg-warning text-warning-foreground";
       case "planned":
         return "bg-primary text-primary-foreground";
@@ -74,7 +76,7 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
         onClick={() => onToothSelect(tooth?.number)}
         onMouseEnter={() => setHoveredTooth(tooth?.number)}
         onMouseLeave={() => setHoveredTooth(null)}
-        className={`relative w-8 h-10 md:w-10 md:h-12 lg:w-12 lg:h-14 rounded-md transition-all duration-base ${colorClass} ${isSelected ? "ring-2 ring-ring ring-offset-2" : ""} focus-clinical`}
+        className={`relative w-8 h-10 md:w-10 md:h-12 lg:w-12 lg:h-14 rounded-md transition-all duration-base hover:scale-110 hover:z-10 ${colorClass} ${isSelected ? "ring-2 ring-ring ring-offset-2" : ""} focus-clinical`}
         aria-label={`Tooth ${tooth?.number}`}
       >
         <span className="text-xs md:text-sm font-medium">{tooth?.number}</span>
@@ -86,26 +88,26 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
   return (
     <div className="space-y-4 md:space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Interactive Tooth Chart</h3>
+        <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">{t("treatment.toothChart")}</h3>
         <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded bg-success" />
-            <span className="text-muted-foreground">Completed</span>
+            <span className="text-muted-foreground">{t("treatment.status.completed")}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded bg-warning" />
-            <span className="text-muted-foreground">In Progress</span>
+            <span className="text-muted-foreground">{t("treatment.status.inProgress")}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded bg-primary" />
-            <span className="text-muted-foreground">Planned</span>
+            <span className="text-muted-foreground">{t("treatment.status.planned")}</span>
           </div>
         </div>
       </div>
       <div className="bg-card border border-border rounded-lg p-4 md:p-6 lg:p-8">
         <div className="space-y-6 md:space-y-8">
           <div>
-            <div className="text-xs md:text-sm text-muted-foreground mb-2 text-center">Upper Jaw</div>
+            <div className="text-xs md:text-sm text-muted-foreground mb-2 text-center">{t("treatment.upperJaw")}</div>
             <div className="flex justify-center gap-1 md:gap-2">
               {upperTeeth?.map((tooth) => (
                 <ToothButton key={tooth?.number} tooth={tooth} />
@@ -116,7 +118,7 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
           <div className="border-t border-border" />
 
           <div>
-            <div className="text-xs md:text-sm text-muted-foreground mb-2 text-center">Lower Jaw</div>
+            <div className="text-xs md:text-sm text-muted-foreground mb-2 text-center">{t("treatment.lowerJaw")}</div>
             <div className="flex justify-center gap-1 md:gap-2">
               {lowerTeeth?.map((tooth) => (
                 <ToothButton key={tooth?.number} tooth={tooth} />
@@ -125,14 +127,14 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
           </div>
         </div>
 
-        {hoveredTooth && (
+        {/* {hoveredTooth && (
           <div className="mt-4 p-3 bg-muted rounded-md">
             <div className="text-sm font-medium text-foreground">Tooth #{hoveredTooth}</div>
             {treatments?.find((t) => t?.toothNumber === hoveredTooth) && (
               <div className="text-xs text-muted-foreground mt-1">{treatments?.find((t) => t?.toothNumber === hoveredTooth)?.procedure}</div>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

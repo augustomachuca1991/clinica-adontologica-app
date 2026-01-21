@@ -25,6 +25,10 @@ module.exports = {
           DEFAULT: "var(--color-secondary)", // teal-700
           foreground: "var(--color-secondary-foreground)", // white
         },
+        tertiary: {
+          DEFAULT: "var(--color-tertiary)", // teal-700
+          foreground: "var(--color-tertiary-foreground)", // white
+        },
         destructive: {
           DEFAULT: "var(--color-destructive)", // red-600
           foreground: "var(--color-destructive-foreground)", // white

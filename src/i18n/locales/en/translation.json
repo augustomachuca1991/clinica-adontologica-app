@@ -1,0 +1,585 @@
+{
+  "appTitle": "Dental Management",
+  "welcome": "Welcome",
+  "patients": "Patients",
+  "appointments": "Appointments",
+  "save": "Save",
+  "cancel": "Cancel",
+  "next": "Next",
+  "show": "Show",
+  "status": "Status",
+  "dentist": "Dentist",
+  "messageSuccess": "Operation completed successfully",
+  "tooth": "Tooth",
+  "patient": {
+    "created": "Patient created successfully",
+    "updated": "Patient information updated successfully",
+    "form": {
+      "title": "Patient Registration",
+      "requiredLegend": "Fields marked with",
+      "sections": {
+        "personal": "Personal Information",
+        "contact": "Contact Information",
+        "insurance": "Medical Insurance",
+        "tags": "Tags"
+      },
+      "fields": {
+        "name": "Full Name *",
+        "address": "Address",
+        "email": "Email *",
+        "phone": "Phone",
+        "tags": "Tags (comma-separated)",
+        "insurance": {
+          "placeholder": "Select insurance provider"
+        }
+      },
+      "insurance": {
+        "ioscor": "IOSCOR",
+        "swissMedical": "Swiss Medical",
+        "osde": "OSDE",
+        "omint": "Omint",
+        "other": "Otros"
+      },
+      "tags": {
+        "selectedLegend": "Selected tags",
+        "vip": "VIP",
+        "recommended": "Recommended",
+        "new": "New",
+        "family": "Family",
+        "other": "Others"
+      },
+      "validation": {
+        "required": "Please complete the required fields before saving"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Practice overview and metrics",
+    "quickActions": {
+      "title": "Quick Actions",
+      "newPatient": "New Patient",
+      "scheduleAppointment": "Schedule",
+      "addNote": "Add Note",
+      "viewReports": "View Reports"
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "refresh": "Refresh"
+    },
+    "treatmentProgress": {
+      "title": "Treatment Progress",
+      "export": "Export",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "scheduled": "Scheduled",
+      "months": {
+        "Jan": "Jan",
+        "Feb": "Feb",
+        "Mar": "Mar",
+        "Apr": "Apr",
+        "May": "May",
+        "Jun": "Jun",
+        "Jul": "Jul",
+        "Aug": "Aug",
+        "Sep": "Sep",
+        "Oct": "Oct",
+        "Nov": "Nov",
+        "Dec": "Dec"
+      }
+    }
+  },
+  "directory": {
+    "title": "Patient Directory",
+    "description": "Search and manage patients",
+    "subtitle": "Comprehensive patient database with advanced search and filtering capabilities",
+    "button": {
+      "addNewPatient": "Add New Patient"
+    },
+    "panelFilter": {
+      "title": "Search & Filter Patients",
+      "searchPatientLabel": "Patient",
+      "searchPlaceholder": "Search by name, ID, or contact",
+      "patientStatusLabel": "Patient Status",
+      "patientStatusOptions": {
+        "all": "All",
+        "pending": "Pending",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "appointmentStatusLabel": "Appointment Status",
+      "appointmentStatusOptions": {
+        "all": "All Appointments",
+        "upcoming": "upcoming",
+        "overdue": "Overdue",
+        "completed": "Completed",
+        "noAppointments": "No Appointments"
+      },
+      "insuranceProviderLabel": "Insurance Provider",
+      "insuranceProviderOptions": {
+        "all": "All Insurance Providers",
+        "deltaDental": "Delta Dental",
+        "cignaDental": "Cigna Dental",
+        "aetnaDental": "Aetna Dental",
+        "metLifeDental": "MetLife Dental",
+        "unitedHealthcare": "United Healthcare",
+        "selfPay": "Self-Pay"
+      },
+      "treatmentHistoryLabel": "Treatment History",
+      "treatmentHistoryOptions": {
+        "all": "All Treatments",
+        "cleaning": "Cleaning",
+        "rootCanal": "Root Canal",
+        "crown": "Crown",
+        "filling": "Filling",
+        "extraction": "Extraction",
+        "orthodontics": "Orthodontics",
+        "implant": "Implant"
+      },
+      "lastVisitFromLabel": "Last Visit",
+      "lastVisitToLabel": "Last Visit to",
+      "applyButton": "Apply Filters",
+      "resetButton": "Reset Filters",
+      "advancedOptionsFilters": "Advanced Options",
+      "show": "Show",
+      "hide": "Hide",
+      "ageFromLabel": "Age From",
+      "ageFromPlaceholder": "Min age",
+      "ageToLabel": "Age To",
+      "ageToPlaceholder": "Max age",
+      "customTagsLabel": "Custom Tags",
+      "customTagsPlaceholder": "Enter tags..."
+    }
+  },
+  "patientCard": {
+    "status": {
+      "pending": "Pending",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "dob": "DOB"
+  },
+  "patientTable": {
+    "noPatients": "No patients found",
+    "tryAdjusting": "Try adjusting your search or filter criteria",
+    "resetFilters": "Reset Filters",
+    "columns": {
+      "patient": "Patient",
+      "patientID": "Patient ID",
+      "contact": "Contact",
+      "insurance": "Insurance",
+      "status": "Status",
+      "nextAppointment": "Next Appointment",
+      "actions": "Actions"
+    }
+  },
+  "pagination": {
+    "pageof": "page {{current}} of {{total}}",
+    "perPage": "{{count}} per page",
+    "showing": "Showing {{paginated}} of {{sorted}} patients",
+    "clearSelection": "Clear Selection"
+  },
+  "bulkActions": {
+    "selectedPatients_one": "{{count}} selected patient",
+    "selectedPatients_other": "{{count}} selected patients",
+    "selectedPatients_zero": "no patients selected",
+    "export": "Export",
+    "email": "Email",
+    "schedule": "Schedule",
+    "addTag": "Add Tag",
+    "delete": "Delete"
+  },
+  "profile": {
+    "title": "Patient Profile",
+    "description": "Detailed patient information",
+    "descriptionSearch": "Search patients by name or ID",
+    "notSpecified": "Not specified",
+    "header": {
+      "age": "Age",
+      "years": "years",
+      "phone": "Phone",
+      "email": "Email",
+      "gender": "Gender",
+      "patientId": "Patient ID",
+      "button": {
+        "editProfile": "Edit Profile",
+        "schedule": "Schedule",
+        "message": "Message"
+      }
+    },
+    "tabs": {
+      "demographics": {
+        "name": "Demographics",
+        "section": {
+          "title": "Demographic Information",
+          "fullName": "Full Name",
+          "dateOfBirth": "Date of Birth",
+          "gender": "Gender",
+          "bloodType": "Blood Type",
+          "maritalStatus": "Marital Status",
+          "contactInformation": "Contact Information",
+          "primaryPhone": "Phone",
+          "emailAddress": "Email",
+          "address": "Address",
+          "city": "City",
+          "state": "State/Province",
+          "zipCode": "Zip/Postal Code",
+          "emergencyContact": "Emergency Contact",
+          "contactName": "Contact Name",
+          "relationship": "Relationship",
+          "contactPhone": "Phone Number",
+          "contactEmail": "Email"
+        }
+      },
+      "medicalHistory": {
+        "name": "Medical History"
+      },
+      "treatmentHistory": {
+        "name": "Treatment History",
+        "section": {
+          "dentist": "Dentist",
+          "location": "Location",
+          "duration": "Duration",
+          "toothNumber": "Tooth Number",
+          "treatmentNotes": "Treatment Notes",
+          "treatmentCost": "Treatment Cost",
+          "clinicalPhotography": "Clinical Photography",
+          "followUpScheduled": "Follow-Up Scheduled"
+        }
+      },
+      "communications": {
+        "name": "Communications"
+      },
+      "billing": {
+        "name": "Billing"
+      }
+    }
+  },
+  "records": {
+    "title": "Clinical Records",
+    "description": "Patient medical history",
+    "subtitle": "Comprehensive treatment history and documentation management",
+    "button": {
+      "newRecord": "New Record"
+    },
+    "panelFilter": {
+      "title": "Filter Records",
+      "recordTypeLabel": "Record Type",
+      "searchPatientLabel": "Patient",
+      "searchPlaceholder": "Patient name or ID...",
+      "treatmentTypeLabel": "Treatment Type",
+      "treatmentTypeOptions": {
+        "all": "All Treatments"
+      },
+      "treatmentStatusLabel": "Status",
+      "treatmentStatusOptions": {
+        "all": "All Statuses",
+        "completed": "Completed",
+        "inProgress": "In Progress",
+        "scheduled": "Scheduled",
+        "cancelled": "Cancelled",
+        "planned": "Planned"
+      },
+      "providerLabel": "Provider",
+      "providerOptions": {
+        "all": "All Providers"
+      },
+      "dateFromLabel": "From Date",
+      "dateToLabel": "To Date",
+      "button": {
+        "resetFilters": "Reset Filters"
+      }
+    },
+    "treatmentHistoryList": {
+      "title": "Treatment History",
+      "button": {
+        "export": "Export",
+        "clearAll": "Clear Filters"
+      },
+      "foundRecords_one": "{{count}} record found",
+      "foundRecords_other": "{{count}} records found",
+      "foundRecords_zero": "No Records Found",
+      "tryAdjusting": "Try adjusting your search or filter criteria"
+    },
+    "card": {
+      "patient": "Patient",
+      "idPatient": "ID",
+      "status": {
+        "completed": "Completed",
+        "inProgress": "In Progress",
+        "scheduled": "Scheduled",
+        "cancelled": "Cancelled",
+        "planned": "Planned"
+      },
+      "provider": "Provider",
+      "tooth": "Tooth",
+      "cost": "Cost",
+      "button": {
+        "viewDetails": "View Details",
+        "addNote": "Add Note",
+        "export": "Export",
+        "view": "View"
+      },
+      "treatmentNotes": "Treatment Notes",
+      "clinicalImages": "Clinical Images",
+      "noImages": "No images available",
+      "followUp": "Follow-Up Required"
+    },
+    "recordsModal": {
+      "tabs": {
+        "overview": {
+          "name": "Overview",
+          "treatmentType": "Treatment Type",
+          "treatmentDate": "Treatment Date",
+          "toothNumber": "Tooth Number",
+          "duration": "Duration"
+        },
+        "clinicalNotes": {
+          "name": "Clinical Note",
+          "addClinicalNote": "Add Clinical Note",
+          "noteType": "Note Type",
+          "noteTypeOptions": {
+            "progress": "Progress",
+            "treatment": "Treatment",
+            "observation": "Observation",
+            "followUp": "Follow-Up"
+          },
+          "quickTemplates": "Quick Templates",
+          "postProcedure": "Post-Procedure",
+          "postProcedureQuick": "Patient tolerated procedure well. No complications noted. Post-operative instructions provided.",
+          "followUp": "Follow-up",
+          "followUpQuick": "Follow-up examination completed. Healing progressing as expected. Continue current care regimen.",
+          "characters_one": "{{count}} character",
+          "characters_other": "{{count}} characters",
+          "placeholder": "Enter detailed clinical observations, treatment progress, or patient feedback...",
+          "attachments": "Attachments",
+          "dragAndDrop": "Click to upload or drag and drop",
+          "typeFile": "Images or PDF files (max 10MB each)",
+          "button": {
+            "cancel": "Cancel",
+            "saveNote": "Save Note"
+          },
+          "status": {
+            "completed": "Completed",
+            "inProgress": "In progress",
+            "planned": "Planned",
+            "cancelled": "Cancelled"
+          },
+          "attachmentsFiles_one": "{{count}} attachment",
+          "attachmentsFiles_other": "{{count}} attachments"
+        },
+        "images": {
+          "name": "Images",
+          "noImages": "No clinical images available",
+          "clinicalImages": "Clinical Images",
+          "dropzone": "Click or drag an image here",
+          "uploadSuccess": "Image uploaded successfully",
+
+          "button": {
+            "uploadImage": "Upload Image"
+          }
+        },
+        "history": {
+          "name": "History",
+          "noHistory": "No treatment history available",
+          "treatmentHistory": "Treatment History",
+          "statusUpdated": "Status Updated",
+          "activity": {
+            "statusLog": "Treatment status changed to {{status}} by {{doctor}}",
+            "status": {
+              "completed": "Completado",
+              "inProgress": "En curso",
+              "planned": "Planificado"
+            }
+          }
+        }
+      },
+      "button": {
+        "close": "Close",
+        "exportPDF": "Export PDF",
+        "print": "Print"
+      }
+    }
+  },
+  "treatment": {
+    "title": "Treatment Planning",
+    "subtitle": "Create comprehensive treatment plans with cost estimation and progress tracking",
+    "description": "Schedule and plan treatments",
+    "comparePlans": "Compare Plans",
+    "presentToPatient": "Present to Patient",
+    "selectPatient": "Select Patient",
+    "lastVisit": "Last Visit: {{date}}",
+    "patientInfo": "Patient Info",
+    "activeIssues": "Active Issues",
+    "treatmentStatus": "Treatment Status",
+    "toothChart": "Tooth Chart Interactive",
+    "age": "Age: {{age}} years",
+    "lastTreatment": "Last Treatment: {{date}}",
+    "insurance": "Insurance: {{insurance}}",
+    "status": {
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "planned": "Planned"
+    },
+    "upperJaw": "Upper Jaw",
+    "lowerJaw": "Lower Jaw",
+    "addTreatment": "Add Treatment",
+    "editTreatment": "Edit Treatment",
+    "updateTreatment": "Update Treatment",
+    "treatmentSequence": "Treatment Sequence",
+    "dragToReorder": "Drag to reorder",
+    "noTreatments": "No treatments added yet",
+    "selectTeethToAddTreatments": "Select teeth from the chart to add treatments",
+    "totalEstimatedCost": "Total Estimated Cost",
+    "formLabel": {
+      "toothNumber": "Tooth Number",
+      "procedure": "Procedure",
+      "estimatedCost": "Estimated Cost",
+      "duration": "Duration (days)",
+      "priority": "Priority",
+      "status": "Status",
+      "notes": "Treatment Notes"
+    },
+    "formPlaceholder": {
+      "estimatedCost": "e.g., 150.00",
+      "duration": "e.g., 7 weeks",
+      "notes": "Additional notes or special considerations..."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "System configuration"
+  },
+  "sidebar": {
+    "toggle": "Collapse"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "No new notifications",
+    "markAllAsRead": "Mark all as read",
+    "viewAll": "View all notifications"
+  },
+  "search": {
+    "placeholder": "Search patients, appointments...",
+    "label": "Search"
+  },
+  "profileSetting": {
+    "title": "My Profile",
+    "settings": "Settings",
+    "help": "Help & Support",
+    "signout": "Sign Out"
+  },
+
+  "home": {
+    "welcome": "Welcome back, {{name}}",
+    "overview": "Here's a summary of your practice today."
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "directory": "Patient Directory",
+    "profile": "Patient Profile",
+    "records": "Clinical Records",
+    "treatment": "Treatment Planning",
+    "settings": "Settings"
+  },
+  "timeFrame": {
+    "today": "Today",
+    "thisWeek": "This week",
+    "thisMonth": "This month",
+    "thisYear": "This year"
+  },
+  "appointment": {
+    "titlePanel": "Today's Appointments",
+    "viewAll": "View all",
+    "overdue": "Overdue",
+    "status": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    },
+    "priority": {
+      "high": "High",
+      "normal": "Normal",
+      "urgent": "Urgent"
+    },
+    "viewDetails": "View details",
+    "reschedule": "Reschedule"
+  },
+  "printableRecord": {
+    "title": "Dental Medical Record",
+    "generatedAt": "Record generated on",
+    "clinicName": "{{clinicalName}}",
+    "clinicAddress": "{{address}} • {{phone}}",
+    "patientData": {
+      "label": "Patient",
+      "historyId": "Record ID"
+    },
+    "procedureDetails": {
+      "title": "Procedure Details",
+      "treatment": "Treatment",
+      "date": "Date",
+      "doctor": "Doctor",
+      "tooth": "Dental Piece",
+      "type": "Type",
+      "cost": "Cost"
+    },
+    "evolutionNotes": "Evolution Notes",
+    "historyLog": {
+      "title": "Change History",
+      "date": "Date",
+      "status": "Status",
+      "professional": "Professional"
+    },
+    "signatures": {
+      "professional": "Practitioner's Signature",
+      "patient": "Patient / Guardian Signature"
+    }
+  },
+  "subscriptionExpired": {
+    "title": "Subscription Expired",
+    "message": "Hi {{fullname}}, your subscription has expired and access to the system is temporarily suspended.",
+    "instructions": "To continue using the system, please contact the administrator to regularize your membership.",
+    "logout": "Sign out"
+  },
+  "login": {
+    "subtitle": "Dental clinical management",
+    "email": "Email address",
+    "password": "Password",
+    "submit": "Sign in",
+    "continueWith": "or continue with",
+    "welcome": "Welcome back!",
+    "errors": {
+      "emptyFields": "Please enter both email and password"
+    },
+    "footerLogin": {
+      "noAccount": "Don't have an account?",
+      "register": "Sign up here",
+      "forgotPassword": "Forgot your password?",
+      "terms": "By signing in, you agree to our",
+      "privacy": "Terms and Privacy Policies",
+      "rights": "© {{currentYear}} · Developed by {{appName}}"
+    }
+  },
+  "forgotPassword": {
+    "title": "Forgot your password?",
+    "subtitle": "Enter your email and we'll send you a link to regain access to your account.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "email@example.com",
+    "submit": "Send recovery link",
+    "backToLogin": "Back to login",
+    "success": "If the email is registered, you will receive a link shortly.",
+    "error": "There was an error processing your request."
+  },
+  "resetPassword": {
+    "title": "New Password",
+    "subtitle": "Please enter your new access key.",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "placeholder": "••••••••",
+    "submit": "Update Password",
+    "success": "Password updated successfully. You can now log in.",
+    "error": "There was a problem updating the password.",
+    "mismatch": "Passwords do not match"
+  }
+}

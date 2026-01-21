@@ -1,18 +1,20 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "../AppIcon";
+import { useTranslation } from "react-i18next";
 
 const Breadcrumbs = () => {
   const location = useLocation();
   const pathnames = location?.pathname?.split("/")?.filter((x) => x);
+  const { t } = useTranslation();
 
   const breadcrumbNameMap = {
-    dashboard: "Dashboard",
-    "patient-directory": "Patient Directory",
-    "clinical-records": "Clinical Records",
-    "treatment-planning": "Treatment Planning",
-    "patient-profile": "Patient Profile",
-    "settings-panel": "Settings",
+    dashboard: "breadcrumbs.dashboard",
+    "patient-directory": "breadcrumbs.directory",
+    "clinical-records": "breadcrumbs.records",
+    "treatment-planning": "breadcrumbs.treatment",
+    "patient-profile": "breadcrumbs.profile",
+    "settings-panel": "breadcrumbs.settings",
   };
 
   if (pathnames?.length === 0) {
@@ -25,13 +27,13 @@ const Breadcrumbs = () => {
         <li>
           <Link to="/dashboard" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-base">
             <Icon name="Home" size={16} />
-            <span>Home</span>
+            <span>{t("breadcrumbs.home")}</span>
           </Link>
         </li>
         {pathnames?.map((value, index) => {
           const to = `/${pathnames?.slice(0, index + 1)?.join("/")}`;
           const isLast = index === pathnames?.length - 1;
-          const label = breadcrumbNameMap?.[value] || value;
+          const label = t(breadcrumbNameMap?.[value] || value);
 
           return (
             <React.Fragment key={to}>

@@ -12,24 +12,27 @@ const Header = ({ sidebarCollapsed = false }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { t } = useTranslation();
-  const { signOut, userProfile } = useAuth();
+  const { signOut, userProfile, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     const { error } = await signOut();
 
     if (error) {
-      notifyError("Error al cerrar sesión");
+      notifyError(t("notifications.logoutError"));
       return;
     }
 
-    notifySuccess("Sesión cerrada");
+    notifySuccess(t("notifications.logoutSuccess"));
     navigate("/login", { replace: true });
   };
 
   const username = userProfile?.username || "no especified";
   const userEmail = userProfile?.email || "no especified";
   const fullname = userProfile?.full_name || "no especified";
+  const displayRole = isAdmin
+    ? t("roles.admin") // O simplemente "Administrador"
+    : t(`roles.${userProfile?.user_roles?.[0]?.roles?.name}`) || t("roles.user");
 
   const notifications = [
     {
@@ -91,7 +94,7 @@ const Header = ({ sidebarCollapsed = false }) => {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="relative">
+          {/* <div className="relative">
             <Button variant="ghost" size="icon" onClick={handleNotificationClick} className="relative" iconName="Bell" aria-label="Notifications" />
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-error text-error-foreground text-xs font-medium rounded-full flex items-center justify-center">{unreadCount}</span>
@@ -123,7 +126,7 @@ const Header = ({ sidebarCollapsed = false }) => {
                 </div>
               </div>
             )}
-          </div>
+          </div> */}
 
           <div className="relative">
             <button onClick={handleUserMenuClick} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-colors duration-base focus-clinical">
@@ -131,8 +134,8 @@ const Header = ({ sidebarCollapsed = false }) => {
                 <Icon name="User" size={18} color="var(--color-primary)" />
               </div>
               <div className="hidden md:block text-left">
-                <div className="text-sm font-medium text-foreground">{fullname}</div>
-                <div className="text-xs text-muted-foreground">{t("dentist")}</div>
+                <div className="text-sm font-medium text-foregroun capitalize">{fullname}</div>
+                <div className="text-xs text-muted-foreground">{displayRole}</div>
               </div>
               <Icon name="ChevronDown" size={16} className="text-muted-foreground" />
             </button>
@@ -148,10 +151,12 @@ const Header = ({ sidebarCollapsed = false }) => {
                     <Icon name="User" size={16} />
                     <span>{t("profileSetting.title")}</span>
                   </Link>
-                  <Link to="/settings-panel" className="flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-base">
-                    <Icon name="Settings" size={16} />
-                    <span>{t("profileSetting.settings")}</span>
-                  </Link>
+                  {isAdmin && (
+                    <Link to="/settings-panel" className="flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-base">
+                      <Icon name="Settings" size={16} />
+                      <span>{t("profileSetting.settings")}</span>
+                    </Link>
+                  )}
                   <button className="flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-base w-full">
                     <Icon name="HelpCircle" size={16} />
                     <span>{t("profileSetting.help")}</span>

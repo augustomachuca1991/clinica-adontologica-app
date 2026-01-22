@@ -105,12 +105,12 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   <Checkbox checked={selectedPatients?.includes(patient?.id)} onChange={(e) => onSelectPatient(patient?.id, e?.target?.checked)} />
                 </td>
                 <td className="px-4 py-3">
-                  <Link to={`/patient-profile?id=${patient?.id}`} className="flex items-center gap-3 hover:text-primary transition-colors duration-base">
+                  <Link to={`/patient-profile/${patient?.id}`} className="flex items-center gap-3 hover:text-primary transition-colors duration-base">
                     <div className="w-10 h-10 rounded-full overflow-hidden border border-border flex-shrink-0">
                       <Image src={patient?.avatar} alt={patient?.avatarAlt} className="w-full h-full object-cover" />
                     </div>
                     <div className="min-w-0">
-                      <div className="text-sm font-medium text-foreground truncate">{patient?.name}</div>
+                      <div className="text-sm font-medium text-foreground truncate capitalize">{patient?.name}</div>
                       <div className="text-xs text-muted-foreground truncate md:hidden">{patient?.patientId}</div>
                     </div>
                   </Link>
@@ -140,8 +140,8 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-2">
-                    <Button variant="ghost" size="icon" iconName="Eye" aria-label="View patient" onClick={() => (window.location.href = `/patient-profile?id=${patient?.id}`)} />
-                    <Button variant="ghost" size="icon" iconName="Edit" aria-label="Edit patient" />
+                    <Button variant="ghost" size="icon" iconName="Eye" aria-label="View patient" onClick={() => (window.location.href = `/patient-profile/${patient?.id}`)} />
+                    {/* <Button variant="ghost" size="icon" iconName="Edit" aria-label="Edit patient" /> */}
                   </div>
                 </td>
               </tr>

@@ -6,7 +6,8 @@ import Icon from "../../components/AppIcon";
 import LanguageSwitch from "../../components/ui/LanguageSwitch";
 import { notifyError, notifySuccess } from "../../utils/notifications";
 import { useAuth } from "../../contexts/AuthContext";
-import { supabase } from "../../lib/supabase";
+/* import Image from "../../components/AppImage";
+import logo from "../../../public/assets/images/logo-orion-software.svg"; */
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -37,9 +38,10 @@ const ResetPassword = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-muted/40 px-4">
-      <div className="absolute top-6 left-6">
-        <LanguageSwitch />
-      </div>
+      {/* <div className="absolute top-6 left-6 inline-flex items-center gap-2">
+        <Image src={logo} alt="App Logo" className="h-10 md:h-14 w-auto object-contain" />
+        <h1 className="text-2xl font-headline font-bold text-foreground tracking-[-0.015em]">Orion Software</h1>
+      </div> */}
 
       <div className="w-full max-w-md bg-card rounded-2xl shadow-clinical-md p-8">
         {/* Header */}
@@ -47,7 +49,7 @@ const ResetPassword = () => {
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
             <Icon name="ShieldCheck" size={24} className="text-primary" />
           </div>
-          <h1 className="text-2xl font-headline font-bold text-foreground">{t("resetPassword.title")}</h1>
+          <h1 className="text-2xl font-headline font-bold text-foreground tracking-[-0.015em]">{t("resetPassword.title")}</h1>
           <p className="text-sm text-muted-foreground mt-2">{t("resetPassword.subtitle")}</p>
         </div>
 

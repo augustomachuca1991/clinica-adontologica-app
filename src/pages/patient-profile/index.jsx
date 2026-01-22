@@ -9,93 +9,32 @@ import Icon from "../../components/AppIcon";
 import Button from "../../components/ui/Button";
 import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
+import EditPatientModal from "../patient-directory/components/EditPatientModal";
+import { usePatients } from "../../hooks/PatientsHooks";
 
 const PatientProfile = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { id } = useParams();
+  const { getPatientById } = usePatients();
 
   const [activeTab, setActiveTab] = useState("demographics");
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPatient, setCurrentPatient] = useState(null);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      fetchPatient(id);
-    } else {
-      setCurrentPatient(null);
-    }
-  }, [id]);
+    const loadPatient = async () => {
+      setIsPageLoading(true);
+      const data = await getPatientById(id);
+      setCurrentPatient(data);
+      setIsPageLoading(false);
+    };
 
-  const fetchPatient = async (patientId) => {
-    setLoading(true);
-    // Aquí harías la consulta real a Supabase
-    // Por ahora simularemos que carga los datos que tenías en 'patientData'
-    setTimeout(() => {
-      // Simulación de carga exitosa
-      setCurrentPatient({
-        patientId: patientId,
-        name: "Sara Beltran",
-        profileImage: "https://img.rocket.new/generatedImages/rocket_gen_img_117c65255-1763296014815.png",
-        profileImageAlt: "Professional headshot of a smiling woman with shoulder-length brown hair wearing a light blue blouse against a neutral background",
-        status: "active",
-        dateOfBirth: "1985-06-15",
-        gender: "Female",
-        bloodType: "A+",
-        maritalStatus: "Married",
-        phone: "(555) 123-4567",
-        email: "sarah.mitchell@email.com",
-        address: "1234 Oak Street, Apartment 5B",
-        city: "San Francisco",
-        state: "California",
-        zipCode: "94102",
-        emergencyContact: {
-          name: "Michael Mitchell",
-          relationship: "Spouse",
-          phone: "(555) 987-6543",
-          email: "michael.mitchell@email.com",
-        },
-        insurance: "BlueCross BlueShield",
-        insurancePolicy: "BC-12345678",
-        insuranceGroup: "GRP-456",
-        coverageType: "Full Coverage",
-        allergies: ["Penicillin", "Latex"],
-        registrationDate: "2020-03-15",
-      });
-      setLoading(false);
-    }, 500);
-  };
-
-  const patientData = {
-    patientId: "PT-2024-1847",
-    name: "Sara Beltran",
-    profileImage: "https://img.rocket.new/generatedImages/rocket_gen_img_117c65255-1763296014815.png",
-    profileImageAlt: "Professional headshot of a smiling woman with shoulder-length brown hair wearing a light blue blouse against a neutral background",
-    status: "active",
-    dateOfBirth: "1985-06-15",
-    gender: "Female",
-    bloodType: "A+",
-    maritalStatus: "Married",
-    phone: "(555) 123-4567",
-    email: "sarah.mitchell@email.com",
-    address: "1234 Oak Street, Apartment 5B",
-    city: "San Francisco",
-    state: "California",
-    zipCode: "94102",
-    emergencyContact: {
-      name: "Michael Mitchell",
-      relationship: "Spouse",
-      phone: "(555) 987-6543",
-      email: "michael.mitchell@email.com",
-    },
-    insurance: "BlueCross BlueShield",
-    insurancePolicy: "BC-12345678",
-    insuranceGroup: "GRP-456",
-    coverageType: "Full Coverage",
-    allergies: ["Penicillin", "Latex"],
-    registrationDate: "2020-03-15",
-  };
+    if (id) loadPatient();
+  }, [id, getPatientById]);
 
   const medicalHistoryData = {
     allergies: [
@@ -428,7 +367,16 @@ const PatientProfile = () => {
   ];
 
   const handleEditProfile = () => {
-    console.log("Edit profile clicked");
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdatePatient = async (updatedData) => {
+    // Aquí iría la lógica de Supabase:
+    // const { error } = await supabase.from('patients').update(updatedData).eq('id', id);
+
+    // Actualización local para que la UI cambie al instante
+    setCurrentPatient((prev) => ({ ...prev, ...updatedData }));
+    setIsEditModalOpen(false);
   };
 
   const handleScheduleAppointment = () => {
@@ -483,7 +431,6 @@ const PatientProfile = () => {
   }
 
   // --- VISTA DE CARGA ---
-  if (loading) return <div className="p-10 text-center">Cargando perfil...</div>;
 
   const renderTabContent = () => {
     if (!currentPatient) return null;
@@ -504,32 +451,38 @@ const PatientProfile = () => {
     }
   };
 
+  if (isPageLoading) return <div>Cargando información del paciente...</div>;
+  if (!currentPatient) return <div>Paciente no encontrado.</div>;
+
   return (
-    <div className="space-y-6 md:space-y-8">
-      <PatientHeader patient={currentPatient} onEdit={handleEditProfile} onSchedule={handleScheduleAppointment} onMessage={handleSendMessage} />
+    <>
+      <div className="space-y-6 md:space-y-8">
+        <PatientHeader patient={currentPatient} onEdit={handleEditProfile} onSchedule={handleScheduleAppointment} onMessage={handleSendMessage} />
 
-      <div className="bg-card rounded-lg shadow-clinical-md border border-border overflow-hidden">
-        <div className="border-b border-border overflow-x-auto">
-          <nav className="flex min-w-max lg:min-w-0" aria-label="Patient profile tabs">
-            {tabs?.map((tab) => (
-              <button
-                key={tab?.id}
-                onClick={() => setActiveTab(tab?.id)}
-                className={`flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-medium transition-all duration-base border-b-2 flex-shrink-0 ${
-                  activeTab === tab?.id ? "border-primary text-primary bg-primary/5" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-              >
-                {/* <span className="text-lg md:text-xl">{tab?.icon}</span> */}
-                <Icon name={tab?.icon} size={16} className={activeTab === tab?.id ? "text-primary" : "text-muted-foreground"} />
-                <span className="whitespace-nowrap">{tab?.label}</span>
-              </button>
-            ))}
-          </nav>
+        <div className="bg-card rounded-lg shadow-clinical-md border border-border overflow-hidden">
+          <div className="border-b border-border overflow-x-auto">
+            <nav className="flex min-w-max lg:min-w-0" aria-label="Patient profile tabs">
+              {tabs?.map((tab) => (
+                <button
+                  key={tab?.id}
+                  onClick={() => setActiveTab(tab?.id)}
+                  className={`flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-medium transition-all duration-base border-b-2 flex-shrink-0 ${
+                    activeTab === tab?.id ? "border-primary text-primary bg-primary/5" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  {/* <span className="text-lg md:text-xl">{tab?.icon}</span> */}
+                  <Icon name={tab?.icon} size={16} className={activeTab === tab?.id ? "text-primary" : "text-muted-foreground"} />
+                  <span className="whitespace-nowrap">{tab?.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div className="p-4 md:p-6 lg:p-8">{renderTabContent()}</div>
         </div>
-
-        <div className="p-4 md:p-6 lg:p-8">{renderTabContent()}</div>
       </div>
-    </div>
+      {isEditModalOpen && <EditPatientModal patient={currentPatient} onClose={() => setIsEditModalOpen(false)} onSave={handleUpdatePatient} />}
+    </>
   );
 };
 

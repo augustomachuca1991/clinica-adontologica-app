@@ -6,6 +6,18 @@ import Button from "../../../components/ui/Button";
 import { useTranslation } from "react-i18next";
 import { formatDateForUI } from "../../../utils/formatters/date";
 
+const STATUS_CONFIG = {
+  active: {
+    color: "text-success",
+  },
+  inactive: {
+    color: "text-muted-foreground",
+  },
+  pending: {
+    color: "text-warning",
+  },
+};
+
 const PatientCard = ({ patient, onQuickAction }) => {
   const { t } = useTranslation();
 
@@ -35,6 +47,8 @@ const PatientCard = ({ patient, onQuickAction }) => {
     }
   };
 
+  const config = STATUS_CONFIG[patient?.status] || STATUS_CONFIG.pending;
+
   return (
     <div className="clinical-card p-4 md:p-5 lg:p-6 fade-in-up">
       <div className="flex flex-col sm:flex-row gap-4">
@@ -48,14 +62,18 @@ const PatientCard = ({ patient, onQuickAction }) => {
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
             <div className="flex-1 min-w-0">
               <Link
-                to={`/patient-profile/${patient?.patientId}`}
-                className="text-base md:text-lg font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base truncate block"
+                to={`/patient-profile/${patient?.id}`}
+                className="text-base md:text-lg font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base truncate block capitalize"
               >
                 {patient?.name}
               </Link>
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <span className="text-xs md:text-sm text-muted-foreground">ID: {patient?.patientId}</span>
-                <span className={`status-indicator text-xs ${getStatusColor(patient?.status)}`}>{t(`patientCard.status.${patient?.status}`)}</span>
+                <span className={`text-xs`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`size-3 ${config.color}`}>
+                    <circle cx="12" cy="12" r="8" />
+                  </svg>
+                </span>
               </div>
             </div>
             <div className="flex gap-2">
@@ -98,7 +116,7 @@ const PatientCard = ({ patient, onQuickAction }) => {
           {patient?.tags && patient?.tags?.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {patient?.tags?.map((tag, index) => (
-                <span key={index} className="px-2 py-1 text-xs rounded-full bg-gray-400 text-gray-50">
+                <span key={index} className="px-2 py-1 text-xs rounded-full bg-brand-secondary/10 text-brand-secondary font-medium uppercase">
                   {tag}
                 </span>
               ))}

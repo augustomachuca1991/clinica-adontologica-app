@@ -11,6 +11,27 @@
   "status": "Estado",
   "messageSuccess": "Operación realizada con éxito",
   "tooth": "Diente",
+  "workspace": "Configurando tu espacio de trabajo...",
+  "roles": {
+    "admin": "Administrador",
+    "user": "Usuario",
+    "receptionist": "Recepcionista",
+    "dentist": "Odontólogo"
+  },
+  "gender": {
+    "male": "Masculino",
+    "female": "Femenino",
+    "other": "Otro",
+    "preferNotToSay": "Prefiero no decirlo"
+  },
+  "maritalStatus": {
+    "single": "Soltero/a",
+    "married": "Casado/a",
+    "divorced": "Divorciado/a",
+    "widowed": "Viudo/a",
+    "separated": "Separado/a",
+    "notSpecified": "No especificado"
+  },
   "patient": {
     "created": "Paciente creado con éxito",
     "updated": "Información del paciente actualizada con éxito",
@@ -456,7 +477,9 @@
     "title": "Notificaciones",
     "noNotifications": "No hay nuevas notificaciones",
     "markAllAsRead": "Marcar todas como leídas",
-    "viewAll": "Ver todas las notificaciones"
+    "viewAll": "Ver todas las notificaciones",
+    "logoutSuccess": "Sesión cerrada con éxito",
+    "logoutError": "Error al cerrar sesión"
   },
   "search": {
     "label": "Buscar",

@@ -4,7 +4,7 @@ import Spinner from "./ui/Spinner";
 
 const PrivateRoute = () => {
   const location = useLocation();
-  const { isAuthenticated, loading, userProfile, hasActiveSubscription, isLoggedIn } = useAuth();
+  const { isAuthenticated, loading, isAdmin, hasActiveSubscription, isLoggedIn } = useAuth();
 
   if (loading) {
     return (
@@ -14,21 +14,26 @@ const PrivateRoute = () => {
     );
   }
 
-  // 1️⃣ Usuario no logueado → login
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
-  }
+  // 2. Si no está logueado, afuera
+  if (!isLoggedIn) return <Navigate to="/login" replace />;
 
-  // 2️⃣ Usuario logueado con subscripción activa
-  if (hasActiveSubscription) {
-    // Evitar que pueda ir a /subscription-expired
+  // 3. SI ES ADMIN: Acceso total (Bypass de suscripción)
+  if (isAdmin) {
     if (location.pathname === "/subscription-expired") {
       return <Navigate to="/dashboard" replace />;
     }
-    return <Outlet />; // rutas privadas normales
+    return <Outlet />;
   }
 
-  // 3️⃣ Usuario logueado sin subscripción activa → solo puede ver /subscription-expired
+  // 4. SI ES DENTISTA/STAFF: Validamos suscripción
+  if (hasActiveSubscription) {
+    if (location.pathname === "/subscription-expired") {
+      return <Navigate to="/dashboard" replace />;
+    }
+    return <Outlet />;
+  }
+
+  // 5. SI NO ES NINGUNO: A la pantalla de error
   if (location.pathname !== "/subscription-expired") {
     return <Navigate to="/subscription-expired" replace />;
   }

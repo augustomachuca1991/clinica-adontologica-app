@@ -11,6 +11,27 @@
   "dentist": "Dentist",
   "messageSuccess": "Operation completed successfully",
   "tooth": "Tooth",
+  "workspace": "Setting up your workspace...",
+  "roles": {
+    "admin": "Administrator",
+    "user": "User",
+    "receptionist": "Receptionist",
+    "dentist": "Dentist"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "preferNotToSay": "Prefer not to say"
+  },
+  "maritalStatus": {
+    "single": "Single",
+    "married": "Married",
+    "divorced": "Divorced",
+    "widowed": "Widowed",
+    "separated": "Separated",
+    "notSpecified": "Not specified"
+  },
   "patient": {
     "created": "Patient created successfully",
     "updated": "Patient information updated successfully",
@@ -457,7 +478,9 @@
     "title": "Notifications",
     "noNotifications": "No new notifications",
     "markAllAsRead": "Mark all as read",
-    "viewAll": "View all notifications"
+    "viewAll": "View all notifications",
+    "logoutSuccess": "Logged out successfully",
+    "logoutError": "Error logging out"
   },
   "search": {
     "placeholder": "Search patients, appointments...",

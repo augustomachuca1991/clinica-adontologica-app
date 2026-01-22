@@ -25,8 +25,25 @@ export const AuthProvider = ({ children }) => {
       if (!userId) return;
       setProfileLoading(true);
       try {
-        const { data, error } = await supabase?.from("user_profiles")?.select("*")?.eq("id", userId)?.single();
-        if (!error) setUserProfile(data);
+        // CAMBIO SENIOR: Pedimos el perfil + la relación con roles
+        const { data, error } = await supabase
+          ?.from("user_profiles")
+          ?.select(
+            `
+            *,
+            user_roles (
+              roles ( name )
+            )
+          `
+          )
+          ?.eq("id", userId)
+          ?.single();
+
+        if (!error) {
+          setUserProfile(data);
+        } else {
+          console.error("❌ ERROR SUPABASE:", error);
+        }
       } catch (error) {
         console.error("Profile load error:", error);
       } finally {
@@ -62,12 +79,17 @@ export const AuthProvider = ({ children }) => {
     },
   };
 
-  const hasActiveSubscription = subscription && subscription.status === "active" && new Date(subscription.current_period_end) > new Date();
+  // LÓGICA DE ROLES
+  const roles = userProfile?.user_roles?.map((ur) => ur.roles?.name) || [];
+  const isAdmin = roles.includes("admin");
 
+  // SUSCRIPCIÓN
+  const hasActiveSubscription = subscription && subscription.status === "active" && new Date(subscription.current_period_end) > new Date();
   const isUserActive = userProfile?.status === "active";
   const isLoggedIn = !!user && isUserActive;
 
-  const canAccessApp = !!user && isUserActive && hasActiveSubscription;
+  // Si es admin, tiene acceso total independientemente de la suscripción
+  const canAccessApp = isLoggedIn && (isAdmin || hasActiveSubscription);
 
   // Auth state handlers - PROTECTED from async modification
   const authStateHandlers = {
@@ -165,6 +187,7 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signOut,
     updateProfile,
+    isAdmin, // Exportamos esto para usarlo en el sidebar o botones
     isAuthenticated: canAccessApp,
     hasActiveSubscription,
     isLoggedIn,

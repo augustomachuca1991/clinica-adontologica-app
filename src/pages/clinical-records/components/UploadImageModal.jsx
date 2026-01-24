@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../../../components/ui/Button";
 import Icon from "../../../components/AppIcon";
-import { supabase } from "../../../lib/supabase";
 import { notifyError, notifySuccess } from "../../../utils/notifications";
+import { uploadFileToStorage } from "../../../utils/helpers/attachments";
 
 const UploadImageModal = ({ isOpen, onClose, onUploadSuccess, recordId }) => {
   const { t } = useTranslation();
@@ -24,21 +24,7 @@ const UploadImageModal = ({ isOpen, onClose, onUploadSuccess, recordId }) => {
     setUploading(true);
 
     try {
-      // 1. Subir a Supabase Storage
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${recordId}/${Math.random()}.${fileExt}`;
-      const filePath = `records/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("medical-attachments") // Asegúrate de que este bucket exista
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      // 2. Obtener URL Pública
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("medical-attachments").getPublicUrl(filePath);
+      const publicUrl = await uploadFileToStorage(file);
 
       const newAttachment = {
         url: publicUrl,
@@ -46,13 +32,13 @@ const UploadImageModal = ({ isOpen, onClose, onUploadSuccess, recordId }) => {
         uploadedAt: new Date().toISOString(),
       };
 
-      onUploadSuccess(newAttachment);
-      notifySuccess(t("records.recordsModal.tabs.images.uploadSuccess"));
+      // 4. Se lo pasamos al padre
+      await onUploadSuccess(newAttachment);
       onClose();
       setFile(null);
       setPreview(null);
     } catch (error) {
-      notifyError(error.message);
+      notifyError("Error: " + error.message);
     } finally {
       setUploading(false);
     }

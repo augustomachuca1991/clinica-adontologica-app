@@ -9,8 +9,9 @@ import PrintableMedicalRecord from "./PrintableMedicalRecord";
 import { notifySuccess } from "utils/notifications";
 import ImageLightbox from "../../../components/ui/ImageLightBox";
 import { downloadImage } from "../../../utils/downloaderHelper";
+import { saveAttachmentToDB } from "../../../utils/helpers/attachments";
+
 import UploadImageModal from "./UploadImageModal";
-import { supabase } from "../../../lib/supabase";
 
 const RecordDetailsModal = ({ record, onClose }) => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -111,14 +112,15 @@ const RecordDetailsModal = ({ record, onClose }) => {
   };
 
   const handleUploadSuccess = async (newAttachment) => {
-    const updatedAttachments = [...currentAttachments, newAttachment];
+    try {
+      await saveAttachmentToDB(record.id, currentAttachments, newAttachment);
+      const updatedAttachments = [...currentAttachments, newAttachment];
+      setCurrentAttachments(updatedAttachments);
 
-    // Actualizar en Supabase
-    const { error } = await supabase.from("medical_records").update({ attachments: updatedAttachments }).eq("id", record.id);
-
-    if (!error) {
-      setCurrentAttachments(updatedAttachments); // Esto actualiza la cuadrícula al instante
       notifySuccess(t("records.recordsModal.tabs.images.uploadSuccess"));
+    } catch (error) {
+      notifyError("Error al guardar en base de datos: " + error.message);
+      console.error(error);
     }
   };
 

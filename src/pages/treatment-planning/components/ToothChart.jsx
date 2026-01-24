@@ -44,31 +44,30 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
   ];
 
   const getToothStatus = (toothNumber) => {
-    const treatment = treatments?.find((t) => t?.toothNumber === toothNumber);
+    const treatment = treatments?.find((t) => String(t?.toothNumber) === String(toothNumber));
     if (treatment) {
       return treatment?.status;
     }
-    return selectedTeeth?.includes(toothNumber) ? "selected" : "normal";
+    return selectedTeeth?.map(String).includes(String(toothNumber)) ? "selected" : "normal";
   };
 
-  const getToothColor = (status) => {
-    switch (status) {
-      case "completed":
-        return "bg-success text-success-foreground";
-      case "inProgress":
-        return "bg-warning text-warning-foreground";
-      case "planned":
-        return "bg-primary text-primary-foreground";
-      case "selected":
-        return "bg-accent text-accent-foreground";
-      default:
-        return "bg-muted text-muted-foreground hover:bg-muted/80";
-    }
+  const getToothColor = (toothNumber) => {
+    const toothTreatments = treatments?.filter((t) => String(t.toothNumber) === String(toothNumber)) || [];
+
+    const isSelected = selectedTeeth?.map(String).includes(String(toothNumber));
+
+    if (toothTreatments.some((t) => t.status === "completed")) return "bg-success text-success-foreground";
+    if (toothTreatments.some((t) => t.status === "inProgress")) return "bg-warning text-warning-foreground";
+    if (toothTreatments.some((t) => t.status === "planned")) return "bg-primary text-primary-foreground";
+
+    if (isSelected) return "bg-accent text-accent-foreground";
+
+    return "bg-muted text-muted-foreground hover:bg-muted/80";
   };
 
   const ToothButton = ({ tooth }) => {
     const status = getToothStatus(tooth?.number);
-    const colorClass = getToothColor(status);
+    const colorClass = getToothColor(tooth?.number);
     const isSelected = selectedTeeth?.includes(tooth?.number);
 
     return (
@@ -126,16 +125,13 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
             </div>
           </div>
         </div>
-
-        {/* {hoveredTooth && (
-          <div className="mt-4 p-3 bg-muted rounded-md">
-            <div className="text-sm font-medium text-foreground">Tooth #{hoveredTooth}</div>
-            {treatments?.find((t) => t?.toothNumber === hoveredTooth) && (
-              <div className="text-xs text-muted-foreground mt-1">{treatments?.find((t) => t?.toothNumber === hoveredTooth)?.procedure}</div>
-            )}
-          </div>
-        )} */}
       </div>
+      {hoveredTooth && (
+        <div className="mt-4 p-3 bg-muted rounded-md">
+          <div className="text-sm font-medium text-foreground">Tooth #{hoveredTooth}</div>
+          {treatments?.find((t) => t?.toothNumber === hoveredTooth) && <div className="text-xs text-muted-foreground mt-1">{treatments?.find((t) => t?.toothNumber === hoveredTooth)?.procedure}</div>}
+        </div>
+      )}
     </div>
   );
 };

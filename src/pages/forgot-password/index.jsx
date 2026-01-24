@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
 import Icon from "../../components/AppIcon";
 import LanguageSwitch from "../../components/ui/LanguageSwitch";
 import { notifyError, notifySuccess } from "../../utils/notifications";
@@ -51,10 +52,10 @@ const ForgotPassword = () => {
             <label className="text-sm font-medium text-foreground">{t("forgotPassword.emailLabel")}</label>
             <div className="relative mt-1">
               <Icon name="Mail" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
+              <Input
                 type="email"
                 placeholder={t("forgotPassword.emailPlaceholder")}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all tracking-[-0.015em]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

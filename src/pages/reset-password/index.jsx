@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
+
 import Icon from "../../components/AppIcon";
 import LanguageSwitch from "../../components/ui/LanguageSwitch";
 import { notifyError, notifySuccess } from "../../utils/notifications";
 import { useAuth } from "../../contexts/AuthContext";
+import { supabase } from "../../lib/supabase";
 /* import Image from "../../components/AppImage";
 import logo from "../../../public/assets/images/logo-orion-software.svg"; */
 
@@ -19,6 +22,25 @@ const ResetPassword = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const { updatePassword } = useAuth();
+  const [isValidToken, setIsValidToken] = useState(false);
+
+  useEffect(() => {
+    // 1. Verificamos si existe una sesión activa (Supabase la crea automáticamente al detectar el token en la URL)
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (data?.session) {
+        setIsValidToken(true);
+      } else {
+        // Si no hay sesión, avisamos y mandamos al login
+        notifyError(t("resetPassword.invalidOrExpired"));
+        navigate("/login", { replace: true });
+      }
+      setLoading(false);
+    };
+
+    checkSession();
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +57,8 @@ const ResetPassword = () => {
     if (error) notifyError(t("resetPassword.error"));
     else notifySuccess(t("resetPassword.success"));
   };
+
+  if (!isValidToken) return null;
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-muted/40 px-4">
@@ -55,32 +79,32 @@ const ResetPassword = () => {
 
         <form onSubmit={handleUpdate} className="space-y-5">
           {/* Nueva Contraseña */}
-          <div>
-            <label className="text-sm font-medium text-foreground">{t("resetPassword.newPasswordLabel")}</label>
-            <input
+          <section>
+            <Input
               type="password"
               name="newPassword"
-              required
+              label={t("resetPassword.newPasswordLabel")}
               placeholder={t("resetPassword.placeholder")}
-              className="mt-1 w-full p-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
+              className="mt-1 w-full p-3 rounded-lg border bg-background text-sm tracking-[-0.015em] focus:ring-2 focus:ring-primary outline-none transition-all"
               value={passwords.newPassword}
               onChange={handleChange}
+              required
             />
-          </div>
+          </section>
 
           {/* Confirmar Contraseña */}
-          <div>
-            <label className="text-sm font-medium text-foreground">{t("resetPassword.confirmPasswordLabel")}</label>
-            <input
+          <section>
+            <Input
               type="password"
               name="confirmPassword"
-              required
+              label={t("resetPassword.confirmPasswordLabel")}
               placeholder={t("resetPassword.placeholder")}
-              className="mt-1 w-full p-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
+              className="mt-1 w-full p-3 rounded-lg border bg-background text-sm tracking-[-0.015em] focus:ring-2 focus:ring-primary outline-none transition-all"
               value={passwords.confirmPassword}
               onChange={handleChange}
+              required
             />
-          </div>
+          </section>
 
           <Button type="submit" variant="default" className="w-full py-6" disabled={isLoading}>
             {isLoading ? "..." : t("resetPassword.submit")}

@@ -14,6 +14,8 @@ import MainLayout from "./components/ui/MainLayout";
 import SubscriptionExpired from "./pages/subscription-expired";
 import ForgotPassword from "./pages/forgot-password";
 import ResetPassword from "./pages/reset-password";
+import Terms from "./pages/terms";
+
 import AdminPanel from "./pages/admin-panel";
 import RoleGuard from "./components/auth/RoleGuard";
 
@@ -27,6 +29,7 @@ const Routes = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/terms" element={<Terms />} />
 
           {/* ================= PRIVATE ================= */}
           <Route element={<PrivateRoute />}>

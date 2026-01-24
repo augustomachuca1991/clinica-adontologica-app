@@ -1,6 +1,7 @@
 import React from "react";
 import Icon from "../../../components/AppIcon";
 import { useTranslation } from "react-i18next";
+import { formatDateLang } from "../../../utils/formatters/date";
 
 const DemographicsTab = ({ patient }) => {
   const { t, i18n } = useTranslation();
@@ -11,7 +12,7 @@ const DemographicsTab = ({ patient }) => {
       icon: "User",
       fields: [
         { label: t("profile.tabs.demographics.section.fullName"), value: patient?.name },
-        { label: t("profile.tabs.demographics.section.dateOfBirth"), value: new Date(patient.dateOfBirth)?.toLocaleDateString(i18n.language, { year: "numeric", month: "long", day: "numeric" }) },
+        { label: t("profile.tabs.demographics.section.dateOfBirth"), value: formatDateLang(patient?.dateOfBirth, i18n.language) },
         { label: t("profile.tabs.demographics.section.gender"), value: t(`gender.${patient?.gender || "preferNotToSay"}`) || t("profile.notSpecified") },
         { label: t("profile.tabs.demographics.section.bloodType"), value: patient?.bloodType || t("profile.notSpecified") },
         { label: t("profile.tabs.demographics.section.maritalStatus"), value: t(`maritalStatus.${patient?.maritalStatus || "notSpecified"}`) || t("profile.notSpecified") },

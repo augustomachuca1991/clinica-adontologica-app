@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Icon from "../../components/AppIcon";
 import Button from "../../components/ui/Button";
 import Select from "../../components/ui/Select";
@@ -10,12 +10,28 @@ import PatientPresentationMode from "./components/PatientPresentationMode";
 import TreatmentForm from "./components/TreatmentForm";
 import { useTranslation } from "react-i18next";
 import { formatDateLang } from "../../utils/formatters/date";
+import { usePatients } from "../../hooks/PatientsHooks";
+import { useTreatmentServices } from "../../hooks/TreatmentServicesHooks";
+import { useClinicalRecords } from "../../hooks/ClinicalRecorsHooks";
+import { notifyError, notifyInfo, notifySuccess } from "../../utils/notifications";
 
 const TreatmentPlanning = () => {
   const { t, i18n } = useTranslation();
-  const [selectedPatient, setSelectedPatient] = useState("1");
+  const [selectedPatient, setSelectedPatient] = useState("");
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-  const [treatments, setTreatments] = useState([
+  const [treatments, setTreatments] = useState([]);
+  const [showTreatmentForm, setShowTreatmentForm] = useState(false);
+  const [editingTreatment, setEditingTreatment] = useState(null);
+  const [showComparison, setShowComparison] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState(null);
+  const [showPresentationMode, setShowPresentationMode] = useState(false);
+  const [insuranceVerified, setInsuranceVerified] = useState(false);
+
+  const { sortedPatients, loading: loadingPatients } = usePatients();
+  const { services, loading: loadingServices } = useTreatmentServices();
+  const { saveTreatmentPlan, fetchPatientSummary, fetchPatientRecords, updateClinicalRecord, summary, records, loading: loadingTreatmentPlan } = useClinicalRecords();
+
+  /* const treatments = [
     {
       id: 1,
       toothNumber: 16,
@@ -46,20 +62,7 @@ const TreatmentPlanning = () => {
       status: "completed",
       notes: "Small cavity on occlusal surface",
     },
-  ]);
-  const [showTreatmentForm, setShowTreatmentForm] = useState(false);
-  const [editingTreatment, setEditingTreatment] = useState(null);
-  const [showComparison, setShowComparison] = useState(false);
-  const [selectedPlanId, setSelectedPlanId] = useState(null);
-  const [showPresentationMode, setShowPresentationMode] = useState(false);
-  const [insuranceVerified, setInsuranceVerified] = useState(false);
-
-  const patients = [
-    { value: "1", label: "John Smith - #PT001" },
-    { value: "2", label: "Sarah Johnson - #PT002" },
-    { value: "3", label: "Michael Brown - #PT003" },
-    { value: "4", label: "Emily Davis - #PT004" },
-  ];
+  ] */
 
   const patientInsurance = {
     provider: "Delta Dental",
@@ -121,7 +124,40 @@ const TreatmentPlanning = () => {
     },
   ];
 
+  useEffect(() => {
+    if (sortedPatients.length > 0 && !selectedPatient) {
+      setSelectedPatient(sortedPatients[0].id.toString());
+    }
+  }, [sortedPatients, selectedPatient]);
+
+  useEffect(() => {
+    if (selectedPatient) {
+      fetchPatientSummary(selectedPatient);
+      fetchPatientRecords(selectedPatient);
+    }
+  }, [selectedPatient, fetchPatientSummary, fetchPatientRecords]);
+
+  const patientOptions = useMemo(() => {
+    return sortedPatients.map((p) => ({
+      value: p.id.toString(),
+      label: `${p.name} - #${p.patient_id || "S/N"}`,
+    }));
+  }, [sortedPatients]);
+
+  const activePatient = useMemo(() => {
+    return sortedPatients.find((p) => p.id.toString() === selectedPatient);
+  }, [selectedPatient, sortedPatients]);
+
+  const allTreatments = useMemo(() => {
+    return [...treatments, ...records];
+  }, [treatments, records]);
+
   const handleToothSelect = (toothNumber) => {
+    if (editingTreatment) {
+      notifyInfo(t("treatment.finishEditingFirst") || "Debes terminar de editar antes de seleccionar");
+      return;
+    }
+
     if (selectedTeeth?.includes(toothNumber)) {
       setSelectedTeeth(selectedTeeth?.filter((t) => t !== toothNumber));
     } else {
@@ -130,13 +166,32 @@ const TreatmentPlanning = () => {
     }
   };
 
-  const handleAddTreatment = (treatmentData) => {
+  const handleAddTreatment = async (treatmentData) => {
     if (editingTreatment) {
-      setTreatments(treatments?.map((t) => (t?.id === editingTreatment?.id ? treatmentData : t)));
+      // CASO A: Es un registro que ya existe en la Base de Datos
+      if (editingTreatment.isPersisted) {
+        const result = await updateClinicalRecord(editingTreatment.id, treatmentData);
+
+        if (result.success) {
+          notifySuccess(t("treatment.updateSuccess") || "Save success");
+          fetchPatientRecords(selectedPatient); // Refrescamos historial
+          fetchPatientSummary(selectedPatient); // Refrescamos contadores
+        } else {
+          notifyError(t("treatment.saveError") + ": " + result.error);
+        }
+      }
+      // CASO B: Es un registro nuevo que aún no se guardó (solo está en el array local)
+      else {
+        setTreatments((prev) => prev.map((t) => (t.id === editingTreatment.id ? treatmentData : t)));
+      }
       setEditingTreatment(null);
     } else {
-      setTreatments([...treatments, treatmentData]);
+      // CASO C: Es un tratamiento nuevo desde cero
+      // Generamos un ID temporal para que React pueda manejarlo en la lista local
+      const newTreatment = { ...treatmentData, id: Date.now(), isPersisted: false };
+      setTreatments((prev) => [...prev, newTreatment]);
     }
+
     setShowTreatmentForm(false);
     setSelectedTeeth([]);
   };
@@ -162,6 +217,20 @@ const TreatmentPlanning = () => {
     setInsuranceVerified(true);
   };
 
+  const handleSaveFullPlan = async () => {
+    const result = await saveTreatmentPlan(selectedPatient, treatments);
+
+    if (result.success) {
+      notifySuccess(t("treatment.saveSuccess"));
+      setTreatments([]);
+      setSelectedTeeth([]);
+      setShowTreatmentForm(false);
+      fetchPatientRecords(selectedPatient);
+    } else {
+      notifyError(t("treatment.saveError") + ": " + result.error);
+    }
+  };
+
   return (
     <>
       <div className="space-y-6 md:space-y-8">
@@ -184,7 +253,15 @@ const TreatmentPlanning = () => {
         <div className="bg-card border border-border rounded-lg p-4 md:p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div className="flex-1 max-w-md">
-              <Select label={t("treatment.selectPatient")} options={patients} value={selectedPatient} onChange={setSelectedPatient} searchable />
+              <Select
+                label={t("treatment.selectPatient")}
+                options={patientOptions}
+                value={selectedPatient}
+                onChange={setSelectedPatient}
+                searchable
+                disabled={loadingPatients}
+                placeholder={loadingPatients && t("loading")}
+              />
             </div>
 
             <div className="flex items-center gap-2 text-sm">
@@ -200,9 +277,9 @@ const TreatmentPlanning = () => {
                 <span className="text-sm font-medium text-foreground">{t("treatment.patientInfo")}</span>
               </div>
               <div className="text-xs text-muted-foreground space-y-1">
-                <div>{t("treatment.age", { age: 42 })}</div>
+                <div>{t("treatment.age", { age: activePatient?.age || "--" })}</div>
                 <div>{t("treatment.lastTreatment", { date: "Dec 2025" })}</div>
-                <div>{t("treatment.insurance", { insurance: "Delta Dental" })}</div>
+                <div>{t("treatment.insurance", { insurance: activePatient?.insurance || "N/A" })}</div>
               </div>
             </div>
 
@@ -225,13 +302,13 @@ const TreatmentPlanning = () => {
               </div>
               <div className="text-xs text-muted-foreground space-y-1">
                 <div>
-                  {t("treatment.status.planned")}: {treatments?.filter((t) => t?.status === "planned")?.length}
+                  {t("treatment.status.planned")}: {summary.planned}
                 </div>
                 <div>
-                  {t("treatment.status.inProgress")}: {treatments?.filter((t) => t?.status === "inProgress")?.length}
+                  {t("treatment.status.inProgress")}: {summary.inProgress}
                 </div>
                 <div>
-                  {t("treatment.status.completed")}: {treatments?.filter((t) => t?.status === "completed")?.length}
+                  {t("treatment.status.completed")}: {summary.completed}
                 </div>
               </div>
             </div>
@@ -242,12 +319,17 @@ const TreatmentPlanning = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           <div className="space-y-6">
-            <ToothChart selectedTeeth={selectedTeeth} onToothSelect={handleToothSelect} treatments={treatments} />
+            <div className={editingTreatment ? "opacity-50 pointer-events-none transition-opacity" : "transition-opacity"}>
+              <ToothChart selectedTeeth={selectedTeeth} onToothSelect={handleToothSelect} treatments={allTreatments} />
+            </div>
 
-            {showTreatmentForm && selectedTeeth?.length > 0 && (
+            {(showTreatmentForm || editingTreatment) && (
               <div className="bg-card border border-border rounded-lg p-4 md:p-6">
                 <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-4">{editingTreatment ? t("treatment.editTreatment") : t("treatment.addTreatment")}</h3>
                 <TreatmentForm
+                  services={services}
+                  isEditingHistory={editingTreatment?.isPersisted}
+                  loading={loadingServices}
                   selectedTooth={selectedTeeth?.[0]}
                   onSubmit={handleAddTreatment}
                   onCancel={() => {
@@ -262,7 +344,7 @@ const TreatmentPlanning = () => {
           </div>
 
           <div className="space-y-6">
-            <TreatmentSequence treatments={treatments} onReorder={handleReorderTreatments} onRemove={handleRemoveTreatment} onEdit={handleEditTreatment} />
+            <TreatmentSequence treatments={allTreatments} services={services} onReorder={handleReorderTreatments} onRemove={handleRemoveTreatment} onEdit={handleEditTreatment} />
           </div>
         </div>
 
@@ -278,8 +360,8 @@ const TreatmentPlanning = () => {
                   Insurance verified and treatment plan finalized. You can now present this plan to the patient or save it for future reference.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button variant="default" iconName="Save" iconPosition="left">
-                    Save Treatment Plan
+                  <Button variant="default" iconName="Save" iconPosition="left" onClick={handleSaveFullPlan} disabled={loadingTreatmentPlan}>
+                    {loadingTreatmentPlan ? t("loading") : t("treatment.savePlan")}
                   </Button>
                   <Button variant="outline" onClick={() => setShowPresentationMode(true)} iconName="Presentation" iconPosition="left">
                     Present to Patient

@@ -91,7 +91,7 @@ const PatientCard = ({ patient, onQuickAction }) => {
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm">
               <Icon name="Phone" size={16} className="text-muted-foreground flex-shrink-0" />
-              <span className="text-muted-foreground truncate">{patient?.phone}</span>
+              <span className="text-muted-foreground truncate">{patient?.phone || "N/A"}</span>
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm">
               <Icon name="Mail" size={16} className="text-muted-foreground flex-shrink-0" />
@@ -99,7 +99,7 @@ const PatientCard = ({ patient, onQuickAction }) => {
             </div>
             <div className="flex items-center gap-2 text-xs md:text-sm">
               <Icon name="CreditCard" size={16} className="text-muted-foreground flex-shrink-0" />
-              <span className="text-muted-foreground truncate">{patient?.insurance}</span>
+              <span className="text-muted-foreground truncate">{patient?.insurance || "N/A"}</span>
             </div>
           </div>
 

@@ -116,14 +116,13 @@ const PatientDirectory = () => {
     }
   };
 
-  const onSavePatient = async (formData) => {
+  const onSavePatient = async (formData, imageFile) => {
     if (!formData.name || !formData.dateOfBirth || !formData.email) {
       notifyError(t("patient.form.validation.required"));
       return;
     }
 
-    const result = await addPatient(formData);
-
+    const result = await addPatient(formData, imageFile);
     if (result.success) {
       await refresh();
       notifySuccess(t("patient.created"));

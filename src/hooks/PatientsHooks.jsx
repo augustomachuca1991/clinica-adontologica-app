@@ -14,7 +14,31 @@ const calculateAge = (isoDate) => {
   return age;
 };
 
-// AGREGAMOS VALORES POR DEFECTO: filters = {}, sortConfig = {}
+export const uploadPatientAvatar = async (file, patientId) => {
+  try {
+    // 1. Extraemos la extensión original
+    const fileExt = file.name.split(".").pop();
+
+    // 2. Creamos un nombre único usando el ID y un timestamp
+    // Esto evita que el navegador use una imagen vieja en caché
+    const fileName = `${patientId}-${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    // 3. Subida al Bucket 'AVATAR' (Tal cual está en tu captura)
+    const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    // 4. Obtenemos la URL pública
+    const { data } = supabase.storage.from("avatar").getPublicUrl(filePath);
+
+    return data.publicUrl;
+  } catch (error) {
+    console.error("Error en uploadPatientAvatar:", error.message);
+    return null;
+  }
+};
+
 export const usePatients = (filters = {}, sortConfig = { column: "name", direction: "asc" }) => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +51,6 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
       dateOfBirth: p.date_of_birth,
       avatar: p.avatar || `https://ui-avatars.com/api/?format=svg&background=f1f5f9&color=475569&font-size=0.33&name=${encodeURIComponent(p.name)}`,
       age: calculateAge(p.date_of_birth),
-      // Mapeo de los campos nuevos que agregaste al SQL
       bloodType: p.blood_type,
       maritalStatus: p.marital_status,
       emergencyContact: p.emergency_contact || {},
@@ -51,7 +74,7 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     if (!user?.id) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase.from("patients").select(`*, appointments(appointment_date, status)`).eq("profile_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("patients").select(`*, appointments(appointment_date, status)`).eq("provider_id", user.id).order("created_at", { ascending: false });
 
       if (error) throw error;
 
@@ -78,7 +101,7 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     }
   }, [user]);
 
-  const addPatient = async (formData) => {
+  const addPatient = async (formData, imageFile) => {
     try {
       if (!user?.id) throw new Error("No hay un usuario autenticado.");
 
@@ -89,20 +112,51 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
         finalTags = formData.tags;
       }
 
+      let avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}`;
+
+      if (imageFile) {
+        // Creamos un nombre único para el archivo (ej: 1706000000-foto.jpg)
+        const fileExt = imageFile.name.split(".").pop();
+        const fileName = `${Math.random()}-${Date.now()}.${fileExt}`;
+        const filePath = `${user.id}/${fileName}`;
+
+        // Subir al bucket 'avatars' (asegúrate de que el bucket sea público)
+        const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, imageFile);
+
+        if (uploadError) throw uploadError;
+
+        // Obtener la URL pública de la imagen subida
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("avatar").getPublicUrl(filePath);
+
+        avatarUrl = publicUrl;
+      }
+
       const { data, error } = await supabase
         .from("patients")
         .insert([
           {
             name: formData.name,
-            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}`,
-            avatar_alt: "Patient avatar",
+            avatar: avatarUrl,
+            avatar_alt: `Patient avatar ${formData?.name || "user"}`,
             email: formData.email,
             phone: formData.phone,
             date_of_birth: formData.dateOfBirth,
             insurance: formData.insurance,
-            status: "active",
+            status: "inactive",
             tags: finalTags,
             profile_id: user.id,
+            provider_id: user.id,
+            gender: formData?.gender,
+            blood_type: formData?.bloodType,
+            marital_status: formData?.maritalStatus,
+            city: formData?.city,
+            state: formData?.state,
+            zip_code: formData?.zipCode,
+            emergency_contact: formData.emergencyContact,
+            allergies: formData?.allergies,
+            address: formData?.address,
           },
         ])
         .select();
@@ -115,13 +169,14 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     }
   };
 
-  // AGREGAMOS LA FUNCIÓN DE UPDATE QUE NECESITABAS
   const updatePatient = async (id, formData) => {
     try {
       const { data, error } = await supabase
         .from("patients")
         .update({
           name: formData.name,
+          avatar: formData.avatar,
+          avatar_alt: formData.avatarAlt,
           email: formData.email,
           phone: formData.phone,
           date_of_birth: formData.dateOfBirth,

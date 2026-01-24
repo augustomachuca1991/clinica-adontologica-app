@@ -1,224 +1,308 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "../../../components/ui/Button";
+import Input from "../../../components/ui/Input";
+import Select from "../../../components/ui/Select";
 import Icon from "../../../components/AppIcon";
+import Image from "../../../components/AppImage";
 import { useTranslation } from "react-i18next";
+import { cn } from "../../../utils/cn";
 
-const INSURANCE_OPTIONS = ["Ioscor", "Swiss Medical", "OSDE", "Omint", "Otros"];
 const QUICK_TAGS = ["vip", "recommended", "new", "family", "other"];
+
+const STATUS_OPTIONS = [
+  { id: "active", label: "Activo", color: "bg-emerald-500" },
+  { id: "pending", label: "Pendiente", color: "bg-amber-500" },
+  { id: "inactive", label: "Inactivo", color: "bg-slate-400" },
+];
+
+const GENDER_OPTIONS = [
+  { value: "female", label: "Femenino" },
+  { value: "male", label: "Masculino" },
+  { value: "other", label: "Otro" },
+];
+
+const BLOOD_OPTIONS = [
+  { value: "a+", label: "A+" },
+  { value: "a-", label: "A-" },
+  { value: "b+", label: "B+" },
+  { value: "b-", label: "B-" },
+  { value: "ab+", label: "AB+" },
+  { value: "ab-", label: "AB-" },
+  { value: "o+", label: "O+" },
+  { value: "o-", label: "O-" },
+];
+
+const MARITAL_STATUS_OPTIONS = [
+  { value: "single", label: "Soltero/a" },
+  { value: "married", label: "Casado/a" },
+  { value: "divorced", label: "Divorciado/a" },
+  { value: "widowed", label: "Viudo/a" },
+  { value: "separated", label: "Separado/a" },
+  { value: "notSpecified", label: "No especificado" },
+];
 
 const INITIAL_FORM_STATE = {
   name: "",
+  status: "inactive",
   dateOfBirth: "",
-  address: "",
-  phone: "",
+  gender: "",
+  bloodType: "",
+  maritalStatus: "",
   email: "",
+  phone: "",
+  address: "",
+  city: "",
+  state: "",
+  zipCode: "",
   insurance: "",
+  allergies: [],
   tags: [],
+  emergencyContact: { name: "", relationship: "", phone: "", email: "" },
 };
 
 const AddPatientModal = ({ isOpen, onClose, onSave }) => {
-  const [form, setForm] = useState(INITIAL_FORM_STATE);
-
   const { t } = useTranslation();
+  const fileInputRef = useRef(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const [form, setForm] = useState(INITIAL_FORM_STATE);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleInputChange = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleAddTag = (tag) => {
     setForm((prev) => {
-      if (prev.tags.includes(tag)) return prev;
+      // Verificamos que prev.tags exista antes de usar includes
+      const currentTags = prev.tags || [];
+      if (currentTags.includes(tag)) return prev;
       return {
         ...prev,
-        tags: [...prev.tags, tag],
+        tags: [...currentTags, tag],
       };
     });
   };
 
-  const handleSubmit = () => {
-    onSave(form);
-    setForm(INITIAL_FORM_STATE);
-    onClose();
+  const handleEmergencyChange = (field, value) => {
+    setForm((prev) => ({
+      ...prev,
+      emergencyContact: { ...prev.emergencyContact, [field]: value },
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert("La imagen es demasiado grande (máximo 2MB)");
+        return;
+      }
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(form, imageFile);
+    handleClose();
   };
 
   const handleClose = () => {
     setForm(INITIAL_FORM_STATE);
+    setPreviewImage(null);
+    setImageFile(null);
     onClose();
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-card rounded-2xl shadow-clinical-md w-full max-w-2xl p-6 md:p-8 relative">
-        {/* Cerrar */}
-        <button onClick={handleClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
-          <Icon name="X" size={20} />
-        </button>
-
-        {/* Título */}
-        <div className="flex items-center gap-2 mb-6">
-          <Icon name="UserPlus" size={20} className="text-primary" />
-          <h3 className="text-xl font-headline font-semibold">{t("patient.form.title")}</h3>
-        </div>
-
-        {/* Leyenda obligatorios */}
-        <p className="text-sm text-muted-foreground mb-6">
-          {t("patient.form.requiredLegend")} <span className="text-primary">*</span>
-        </p>
-
-        {/* ===================== DATOS PERSONALES ===================== */}
-        <section className="mb-6">
-          <h4 className="text-sm font-semibold text-foreground mb-3">{t("patient.form.sections.personal")}</h4>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Nombre */}
-            <div className="relative md:col-span-2">
-              <Icon name="User" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder={t("patient.form.fields.name")}
-                className="w-full pl-10 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            {/* Fecha nacimiento */}
-            <div className="relative">
-              <Icon name="Calendar" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} className="w-full pl-10 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-primary" />
-            </div>
-
-            {/* Domicilio */}
-            <div className="relative md:col-span-3">
-              <Icon name="MapPin" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                name="address"
-                value={form.address}
-                onChange={handleChange}
-                placeholder={t("patient.form.fields.address")}
-                className="w-full pl-10 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-primary"
-              />
-            </div>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 md:p-6">
+      <div className="bg-card rounded-3xl shadow-clinical-xl w-full max-w-3xl flex flex-col max-h-[90vh] border border-border overflow-hidden animate-in fade-in zoom-in duration-200">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
+          {/* HEADER */}
+          <div className="p-6 border-b border-border flex justify-between items-center bg-background/50">
+            <h3 className="text-xl font-headline font-semibold text-foreground flex items-center gap-2">{t("modal.newPatient")}</h3>
+            <Button type="button" onClick={handleClose} className="bg-muted text-muted-foreground hover:bg-accent hover:text-muted p-2 rounded-lg transition-colors">
+              <Icon name="X" size={20} />
+            </Button>
           </div>
-        </section>
 
-        {/* ===================== CONTACTO ===================== */}
-        <section className="mb-6">
-          <h4 className="text-sm font-semibold text-foreground mb-3">{t("patient.form.sections.contact")}</h4>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Email */}
-            <div className="relative">
-              <Icon name="Mail" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder={t("patient.form.fields.email")}
-                className="w-full pl-10 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-primary"
-              />
+          {/* BODY */}
+          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 scrollbar-thin">
+            <div className="flex flex-col md:flex-row gap-8 items-center border-b border-border pb-8">
+              <div className="relative group flex flex-row items-start gap-2">
+                <div className="flex flex-col">
+                  <Image src={previewImage ? previewImage : "default"} alt="Profile" className="w-48 h-48 rounded-lg object-cover" />
+                  {imageFile && (
+                    <div className="flex flex-col text-xs text-muted-foreground bg-muted/30 p-2 rounded-md">
+                      <span className="font-medium truncate max-w-[140px]" title={imageFile.name}>
+                        {imageFile.name}
+                      </span>
+                      <span>{(imageFile.size / (1024 * 1024)).toFixed(2)} MB</span>
+                    </div>
+                  )}
+                </div>
+                <Button variant={previewImage ? "outline" : "default"} type="button" className="text-xs" onClick={() => fileInputRef.current.click()}>
+                  {previewImage ? (
+                    <div className="flex items-center gap-2">
+                      <Icon name="RefreshCw" size={16} />
+                      <span>{t("change")}</span>
+                    </div>
+                  ) : (
+                    t("choosePhoto")
+                  )}
+                </Button>
+                <input type="file" ref={fileInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
+              </div>
             </div>
 
-            {/* Teléfono */}
-            <div className="relative">
-              <Icon name="Phone" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                placeholder={t("patient.form.fields.phone")}
-                className="w-full pl-10 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-primary"
-              />
-            </div>
-          </div>
-        </section>
+            {/* SECCIÓN 1: DATOS PERSONALES */}
+            <section className="space-y-5">
+              {/* <h4 className="text-xs font-bold uppercase tracking-widest text-primary/80 flex items-center gap-2">
+                <Icon name="Info" size={14} /> INFORMACIÓN PERSONAL
+              </h4> */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div className="md:col-span-2">
+                  <Input label="Nombre Completo" value={form.name} onChange={(e) => handleInputChange("name", e.target.value)} required />
+                </div>
+                <Input label="Fecha Nacimiento" type="date" value={form.dateOfBirth} onChange={(e) => handleInputChange("dateOfBirth", e.target.value)} required />
+                <Select label="Género" options={GENDER_OPTIONS} value={form.gender} onChange={(val) => handleInputChange("gender", val)} />
+                <Select label="Grupo Sanguíneo" options={BLOOD_OPTIONS} value={form.bloodType} onChange={(val) => handleInputChange("bloodType", val)} />
+                <Select label="Estado Civil" options={MARITAL_STATUS_OPTIONS} value={form.maritalStatus} onChange={(val) => handleInputChange("maritalStatus", val)} />
+              </div>
+            </section>
 
-        {/* ===================== COBERTURA ===================== */}
-        <section className="mb-6">
-          <h4 className="text-sm font-semibold text-foreground mb-3">{t("patient.form.sections.insurance")}</h4>
+            {/* SECCIÓN 2: CONTACTO Y UBICACIÓN */}
+            <section className="space-y-5">
+              {/* <h4 className="text-xs font-bold uppercase tracking-widest text-primary/80 flex items-center gap-2">
+                <Icon name="MapPin" size={14} /> CONTACTO Y UBICACIÓN
+              </h4> */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <Input label="Email" type="email" value={form.email} onChange={(e) => handleInputChange("email", e.target.value)} required />
+                <Input label="Teléfono" value={form.phone} onChange={(e) => handleInputChange("phone", e.target.value)} />
+                <div className="md:col-span-2">
+                  <Input label="Dirección" value={form.address} onChange={(e) => handleInputChange("address", e.target.value)} />
+                </div>
+                <Input label="Ciudad" value={form.city} onChange={(e) => handleInputChange("city", e.target.value)} />
+                <div className="grid grid-cols-2 gap-5">
+                  <Input label="Estado/Prov." value={form.state} onChange={(e) => handleInputChange("state", e.target.value)} />
+                  <Input label="Cód. Postal" value={form.zipCode} onChange={(e) => handleInputChange("zipCode", e.target.value)} />
+                </div>
+              </div>
+            </section>
 
-          <div className="relative max-w-md">
-            <Icon name="Shield" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <select name="insurance" value={form.insurance} onChange={handleChange} className="w-full pl-10 p-3 border rounded-lg text-sm bg-card focus:ring-2 focus:ring-primary">
-              <option value="">{t("patient.form.fields.insurance.placeholder")}</option>
-              {INSURANCE_OPTIONS.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        </section>
+            {/* SECCIÓN 3: EMERGENCIA Y SEGURO */}
+            <section className="space-y-5">
+              {/* <h4 className="text-xs font-bold uppercase tracking-widest text-primary/80 flex items-center gap-2">
+                <Icon name="ShieldAlert" size={14} /> EMERGENCIA Y SEGURO
+              </h4> */}
+              <div className="p-6 bg-muted/20 rounded-2xl border border-border space-y-5">
+                <p className="text-sm font-semibold text-foreground">Contacto de Emergencia</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <Input label="Nombre Contacto" value={form.emergencyContact.name} onChange={(e) => handleEmergencyChange("name", e.target.value)} />
+                  <Input label="Relación" value={form.emergencyContact.relationship} onChange={(e) => handleEmergencyChange("relationship", e.target.value)} />
+                  <Input label="Teléfono" value={form.emergencyContact.phone} onChange={(e) => handleEmergencyChange("phone", e.target.value)} />
+                  <Input label="Email" value={form.emergencyContact.email} onChange={(e) => handleEmergencyChange("email", e.target.value)} />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <Input label="Cobertura Médica" value={form.insurance} onChange={(e) => handleInputChange("insurance", e.target.value)} />
+                <Input
+                  label="Alergias"
+                  placeholder="Separadas por comas"
+                  value={form.allergies.join(", ")}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "allergies",
+                      e.target.value.split(", ").filter((a) => a !== "")
+                    )
+                  }
+                />
+              </div>
+            </section>
 
-        {/* ===================== TAGS ===================== */}
-        <section>
-          <h4 className="text-sm font-semibold text-foreground mb-2">{t("patient.form.sections.tags")}</h4>
+            {/* ===================== TAGS ===================== */}
 
-          {/* TAGS DISPONIBLES */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {QUICK_TAGS.filter((tag) => !form.tags.includes(tag)).map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => handleAddTag(tag)}
-                className="text-xs px-3 py-1 rounded-full
-                   border border-border
-                   bg-muted text-foreground
-                   hover:bg-primary hover:text-white
-                   transition"
-              >
-                {t(`patient.form.tags.${tag}`)}
-              </button>
-            ))}
-          </div>
-          {form.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                <Icon name="CheckCircle" size={12} />
-                {t("patient.form.tags.selectedLegend")}
-              </p>
+            <section>
+              <h4 className="text-sm font-semibold text-foreground mb-2">{t("patient.form.sections.tags")}</h4>
 
-              {form.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="flex items-center gap-1 px-3 py-1 rounded-full
-                     text-xs bg-primary text-primary-foreground"
-                >
-                  {t(`patient.form.tags.${tag}`)}
+              {/* TAGS DISPONIBLES */}
+
+              <div className="flex flex-wrap gap-2 mb-4">
+                {QUICK_TAGS.filter((tag) => !form.tags.includes(tag)).map((tag) => (
                   <button
+                    key={tag}
                     type="button"
-                    onClick={() =>
-                      setForm((prev) => ({
-                        ...prev,
-                        tags: prev.tags.filter((t) => t !== tag),
-                      }))
-                    }
-                    className="text-primary-foreground/80 hover:text-primary-foreground"
-                  >
-                    ✕
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
-        </section>
+                    onClick={() => handleAddTag(tag)}
+                    className="text-xs px-3 py-1 rounded-full
 
-        {/* Acciones */}
-        <div className="mt-8 flex justify-end gap-3">
-          <Button variant="outline" onClick={handleClose}>
-            {t("cancel")}
-          </Button>
-          <Button variant="default" onClick={handleSubmit}>
-            {t("save")}
-          </Button>
-        </div>
+                   border border-border
+
+                   bg-muted text-foreground
+
+                   hover:bg-primary hover:text-white
+
+                   transition"
+                  >
+                    {t(`patient.form.tags.${tag}`)}
+                  </button>
+                ))}
+              </div>
+
+              {form.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                    <Icon name="CheckCircle" size={12} />
+
+                    {t("patient.form.tags.selectedLegend")}
+                  </p>
+
+                  {form.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="flex items-center gap-1 px-3 py-1 rounded-full
+
+                     text-xs bg-primary text-primary-foreground"
+                    >
+                      {t(`patient.form.tags.${tag}`)}
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setForm((prev) => ({
+                            ...prev,
+
+                            tags: prev.tags.filter((t) => t !== tag),
+                          }))
+                        }
+                        className="text-primary-foreground/80 hover:text-primary-foreground"
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </section>
+          </div>
+
+          {/* FOOTER */}
+          <div className="p-6 border-t border-border bg-background/50 flex justify-end gap-3">
+            <Button variant="outline" type="button" onClick={handleClose} className="px-6">
+              Cancelar
+            </Button>
+            <Button variant="default" type="submit" className="px-8 shadow-lg shadow-primary/20">
+              Crear Paciente
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

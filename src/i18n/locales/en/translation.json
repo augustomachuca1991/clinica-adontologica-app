@@ -12,6 +12,15 @@
   "messageSuccess": "Operation completed successfully",
   "tooth": "Tooth",
   "workspace": "Setting up your workspace...",
+  "selectAnOption": "Select an option",
+  "loading": "loading ...",
+  "searchOption": "Search options...",
+  "itemsSelected_one": "{{count}} item selected",
+  "itemsSelected_other": "{{count}} items selected",
+  "noOptionsFound": "No options found",
+  "noOptionsAvailable ": "No options available",
+  "change": "Change",
+  "choosePhoto": "Choose profile photo",
   "roles": {
     "admin": "Administrator",
     "user": "User",
@@ -465,7 +474,20 @@
       "estimatedCost": "e.g., 150.00",
       "duration": "e.g., 7 weeks",
       "notes": "Additional notes or special considerations..."
-    }
+    },
+    "priority": {
+      "low": "Low",
+      "high": "High",
+      "medium": "Medium",
+      "urgent": "Urgent"
+    },
+    "saveSuccess": "Treatment plan saved successfully",
+    "saveError": "Error while saving the treatment plan",
+    "savePlan": "Save Plan",
+    "updateSuccess": "Treatment updated successfully",
+    "finishEditingFirst": "Please finish or cancel the current edit before selecting another tooth.",
+    "patientHistory": "Patient History",
+    "currentPlan": "Current Plan"
   },
   "settings": {
     "title": "Settings",
@@ -480,11 +502,16 @@
     "markAllAsRead": "Mark all as read",
     "viewAll": "View all notifications",
     "logoutSuccess": "Logged out successfully",
-    "logoutError": "Error logging out"
+    "logoutError": "Error logging out",
+    "patientUpdated": "Patient information updated successfully",
+    "errorUpdatingPatient": "Error updating patient information"
   },
   "search": {
     "placeholder": "Search patients, appointments...",
-    "label": "Search"
+    "label": "Search",
+    "patient": {
+      "placeholder": "Search by name, email or ID"
+    }
   },
   "profileSetting": {
     "title": "My Profile",
@@ -522,6 +549,7 @@
       "cancelled": "Cancelled"
     },
     "priority": {
+      "low": "Low",
       "high": "High",
       "normal": "Normal",
       "urgent": "Urgent"
@@ -572,6 +600,7 @@
     "submit": "Sign in",
     "continueWith": "or continue with",
     "welcome": "Welcome back!",
+    "rememberMe": "Remember me",
     "errors": {
       "emptyFields": "Please enter both email and password"
     },
@@ -603,6 +632,59 @@
     "submit": "Update Password",
     "success": "Password updated successfully. You can now log in.",
     "error": "There was a problem updating the password.",
-    "mismatch": "Passwords do not match"
+    "mismatch": "Passwords do not match",
+    "invalidOrExpired": "The recovery link is invalid or has expired."
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "last_update": "Last updated: January 22, 2026",
+    "back_to_login": "Back to login",
+    "accept_button": "I have read and understood",
+    "legal_footer": "For legal inquiries, please contact us at legal@orionsoftware.com",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing and using this dental management platform, you agree to comply with these terms and conditions. If you do not agree, please refrain from using the service."
+      },
+      "privacy": {
+        "title": "2. Privacy and Medical Data",
+        "content": "All patient information is handled under strict confidentiality standards and local health data protection regulations."
+      },
+      "responsibility": {
+        "title": "3. Professional Responsibility",
+        "content": "The professional is responsible for the accuracy of diagnoses. The platform is a support tool and does not substitute professional clinical judgment."
+      },
+      "data_ownership": {
+        "title": "4. Propiedad de los Datos",
+        "content": "Usted conserva todos los derechos sobre los datos de sus pacientes. Nuestra plataforma solo actúa como custodio y procesador de dicha información."
+      },
+      "subscription": {
+        "title": "5. Pagos y Suscripciones",
+        "content": "El acceso a las funciones avanzadas requiere una suscripción activa. El incumplimiento en el pago resultará en la restricción del acceso a las funciones de edición."
+      },
+      "backups": {
+        "title": "6. Copias de Seguridad",
+        "content": "Realizamos copias de seguridad automáticas diariamente. Sin embargo, se recomienda al profesional exportar sus reportes críticos periódicamente."
+      },
+      "termination": {
+        "title": "7. Terminación del Servicio",
+        "content": "Usted puede cancelar su cuenta en cualquier momento. En caso de cierre, se le otorgará un período de 30 días para exportar la información clínica antes de su eliminación definitiva."
+      }
+    }
+  },
+  "404": {
+    "404_title": "Page Not Found",
+    "404_description": "We're sorry, the page you're looking for doesn't exist or has been moved.",
+    "go_back": "Go Back",
+    "go_home": "Back to Home"
+  },
+  "error_boundary": {
+    "title": "Something went wrong",
+    "description": "The application encountered an unexpected error in this component.",
+    "retry": "Try again",
+    "home": "Back to Home"
+  },
+  "modal": {
+    "newPatient": "New Patient"
   }
 }

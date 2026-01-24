@@ -59,14 +59,14 @@ const PatientHeader = ({ patient, onEdit, onSchedule, onMessage }) => {
                   <Icon name="User" size={16} className="text-primary flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="text-xs text-muted-foreground">{t("profile.header.gender")}</p>
-                    <p className="text-sm md:text-base font-medium text-foreground truncate">{t(`gender.${patient?.gender}`)}</p>
+                    <p className="text-sm md:text-base font-medium text-foreground truncate">{patient?.gender ? t(`gender.${patient?.gender}`) : "N/A"}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Icon name="Phone" size={16} className="text-primary flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="text-xs text-muted-foreground">{t("profile.header.phone")}</p>
-                    <p className="text-sm md:text-base font-medium text-foreground truncate">{patient?.phone}</p>
+                    <p className="text-sm md:text-base font-medium text-foreground truncate">{patient?.phone || "N/A"}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

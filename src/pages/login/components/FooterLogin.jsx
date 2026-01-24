@@ -7,13 +7,13 @@ const FooterLogin = () => {
   const currentYear = new Date().getFullYear();
 
   // Obtiene el nombre de la clínica desde el .env o usa uno por defecto
-  const appName = import.meta.env.VITE_APP_NAME || "Dental Care";
+  const appName = import.meta.env.VITE_APP_NAME || "App Name";
 
   return (
     <div className="mt-8 space-y-4 text-center">
       {/* Enlace de Olvido de contraseña */}
       <div className="mb-2">
-        <Link to="/forgot-password" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">
+        <Link to="/forgot-password" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
           {t("login.footerLogin.forgotPassword")}
         </Link>
       </div>

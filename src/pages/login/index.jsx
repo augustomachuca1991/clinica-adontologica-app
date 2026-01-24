@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
+import { Checkbox } from "../../components/ui/Checkbox";
 import FooterLogin from "./components/FooterLogin";
 import { notifyError, notifySuccess } from "../../utils/notifications";
 import { useAuth } from "../../contexts/AuthContext";
@@ -31,6 +33,7 @@ const Login = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
 
   const handleChange = (e) => {
@@ -38,7 +41,8 @@ const Login = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     const { email, password } = form;
     if (!email || !password) {
       notifyError(t("login.errors.missingFields"));
@@ -97,35 +101,50 @@ const Login = () => {
         </div>
 
         {/* Form */}
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium text-foreground">Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder={"email@ejemplo.com"}
-              className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary"
-              value={form.email}
-              onChange={handleChange}
-            />
-          </div>
+        <form className="space-y-6" onSubmit={handleLogin}>
+          <div className="space-y-4">
+            <section>
+              <Input
+                label="Email"
+                name="email"
+                type="email"
+                placeholder="email@ejemplo.com"
+                className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary tracking-[-0.015em]"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </section>
 
-          <div>
-            <label className="text-sm font-medium text-foreground">{t("login.password")}</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary"
-              value={form.password}
-              onChange={handleChange}
-            />
-          </div>
+            <section>
+              <Input
+                label={t("login.password")}
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary tracking-[-0.015em]"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </section>
 
-          <Button variant="default" className="w-full" onClick={handleLogin}>
-            {t("login.submit")}
-          </Button>
-        </div>
+            <div className="flex items-center justify-between">
+              <Checkbox
+                label={t("login.rememberMe")}
+                id="rememberMe"
+                name="rememberMe"
+                checked={form.rememberMe}
+                className="mt-1 focus:ring-2 focus:ring-primary tracking-[-0.015em]"
+                onChange={(e) => setForm((prev) => ({ ...prev, rememberMe: e.target.checked }))}
+              />
+            </div>
+
+            <Button variant="default" className="w-full" type="submit" disabled={isRedirecting}>
+              {t("login.submit")}
+            </Button>
+          </div>
+        </form>
 
         {/* Divider */}
         <div className="my-6 flex items-center gap-3">

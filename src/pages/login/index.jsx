@@ -1,31 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button";
-import Icon from "../../components/AppIcon";
+import Input from "../../components/ui/Input";
+import { Checkbox } from "../../components/ui/Checkbox";
 import FooterLogin from "./components/FooterLogin";
 import { notifyError, notifySuccess } from "../../utils/notifications";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
+import { supabase } from "../../lib/supabase";
+import Spinner from "../../components/ui/Spinner";
+import Image from "../../components/AppImage";
+import logo from "../../../public/assets/images/logo-orion-software.svg";
 
 const Login = () => {
   const navigate = useNavigate();
   const { isAuthenticated, signIn, isLoggedIn, hasActiveSubscription } = useAuth();
   const { t } = useTranslation();
+
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const APP_NAME = import.meta.env.VITE_APP_NAME || "Dental Care";
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && !isRedirecting) {
       if (hasActiveSubscription) {
         navigate("/dashboard", { replace: true });
       } else {
         navigate("/subscription-expired", { replace: true });
       }
     }
-  }, [isLoggedIn, hasActiveSubscription]);
+  }, [isLoggedIn, hasActiveSubscription, isRedirecting, navigate]);
 
   const [form, setForm] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
 
   const handleChange = (e) => {
@@ -33,66 +41,110 @@ const Login = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     const { email, password } = form;
-
     if (!email || !password) {
       notifyError(t("login.errors.missingFields"));
       return;
     }
 
-    const { error } = await signIn(email, password);
+    // Iniciamos estado de carga/redirección
+    setIsRedirecting(true);
 
-    if (error) {
-      notifyError(error.message);
-      return;
+    try {
+      const { data, error } = await signIn(email, password);
+      if (error) {
+        notifyError(error.message);
+        setIsRedirecting(false); // Detenemos si hay error
+        return;
+      }
+
+      // Consultamos roles
+      const { data: profileData } = await supabase.from("user_profiles").select(`user_roles ( roles ( name ) )`).eq("id", data.user.id).single();
+
+      const roles = profileData?.user_roles?.map((ur) => ur.roles?.name) || [];
+
+      // Notificamos éxito antes de movernos
+      notifySuccess(t("welcome"));
+
+      if (roles.includes("admin")) {
+        navigate("/admin-panel", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    } catch (err) {
+      console.error(err);
+      setIsRedirecting(false);
     }
-
-    notifySuccess(t("login.welcome"));
   };
+
+  if (isRedirecting) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-muted/40">
+        <Spinner size={56} />
+        <p className="mt-4 text-muted-foreground animate-pulse">{t("workspace")}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/40 px-4">
       <div className="w-full max-w-md bg-card rounded-2xl shadow-clinical-md p-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-            <Icon name="Stethoscope" size={24} className="text-primary" />
+          <div className="mx-auto mb-3 flex items-center justify-center rounded-xl bg-primary/10">
+            <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
           </div>
-          <h1 className="text-2xl font-headline font-bold text-foreground">{APP_NAME}</h1>
+          <h1 className="text-2xl font-headline font-bold tracking-[-0.015em] text-foreground">{APP_NAME}</h1>
           <p className="text-sm text-muted-foreground">{t("login.subtitle")}</p>
         </div>
 
         {/* Form */}
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium text-foreground">Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder={"email@ejemplo.com"}
-              className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary"
-              value={form.email}
-              onChange={handleChange}
-            />
-          </div>
+        <form className="space-y-6" onSubmit={handleLogin}>
+          <div className="space-y-4">
+            <section>
+              <Input
+                label="Email"
+                name="email"
+                type="email"
+                placeholder="email@ejemplo.com"
+                className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary tracking-[-0.015em]"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </section>
 
-          <div>
-            <label className="text-sm font-medium text-foreground">{t("login.password")}</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary"
-              value={form.password}
-              onChange={handleChange}
-            />
-          </div>
+            <section>
+              <Input
+                label={t("login.password")}
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary tracking-[-0.015em]"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </section>
 
-          <Button variant="default" className="w-full" onClick={handleLogin}>
-            {t("login.submit")}
-          </Button>
-        </div>
+            <div className="flex items-center justify-between">
+              <Checkbox
+                label={t("login.rememberMe")}
+                id="rememberMe"
+                name="rememberMe"
+                checked={form.rememberMe}
+                className="mt-1 focus:ring-2 focus:ring-primary tracking-[-0.015em]"
+                onChange={(e) => setForm((prev) => ({ ...prev, rememberMe: e.target.checked }))}
+              />
+            </div>
+
+            <Button variant="default" className="w-full" type="submit" disabled={isRedirecting}>
+              {t("login.submit")}
+            </Button>
+          </div>
+        </form>
 
         {/* Divider */}
         <div className="my-6 flex items-center gap-3">

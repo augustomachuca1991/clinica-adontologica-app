@@ -9,93 +9,34 @@ import Icon from "../../components/AppIcon";
 import Button from "../../components/ui/Button";
 import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
+import EditPatientModal from "../patient-directory/components/EditPatientModal";
+import { usePatients, uploadPatientAvatar } from "../../hooks/PatientsHooks";
+import { notifyError, notifySuccess } from "utils/notifications";
+import { supabase } from "../../lib/supabase";
 
 const PatientProfile = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { id } = useParams();
+  const { getPatientById, updatePatient } = usePatients();
 
   const [activeTab, setActiveTab] = useState("demographics");
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false);
   const [currentPatient, setCurrentPatient] = useState(null);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      fetchPatient(id);
-    } else {
-      setCurrentPatient(null);
-    }
-  }, [id]);
+    const loadPatient = async () => {
+      setIsPageLoading(true);
+      const data = await getPatientById(id);
+      setCurrentPatient(data);
+      setIsPageLoading(false);
+    };
 
-  const fetchPatient = async (patientId) => {
-    setLoading(true);
-    // Aquí harías la consulta real a Supabase
-    // Por ahora simularemos que carga los datos que tenías en 'patientData'
-    setTimeout(() => {
-      // Simulación de carga exitosa
-      setCurrentPatient({
-        patientId: patientId,
-        name: "Sara Beltran",
-        profileImage: "https://img.rocket.new/generatedImages/rocket_gen_img_117c65255-1763296014815.png",
-        profileImageAlt: "Professional headshot of a smiling woman with shoulder-length brown hair wearing a light blue blouse against a neutral background",
-        status: "active",
-        dateOfBirth: "1985-06-15",
-        gender: "Female",
-        bloodType: "A+",
-        maritalStatus: "Married",
-        phone: "(555) 123-4567",
-        email: "sarah.mitchell@email.com",
-        address: "1234 Oak Street, Apartment 5B",
-        city: "San Francisco",
-        state: "California",
-        zipCode: "94102",
-        emergencyContact: {
-          name: "Michael Mitchell",
-          relationship: "Spouse",
-          phone: "(555) 987-6543",
-          email: "michael.mitchell@email.com",
-        },
-        insurance: "BlueCross BlueShield",
-        insurancePolicy: "BC-12345678",
-        insuranceGroup: "GRP-456",
-        coverageType: "Full Coverage",
-        allergies: ["Penicillin", "Latex"],
-        registrationDate: "2020-03-15",
-      });
-      setLoading(false);
-    }, 500);
-  };
-
-  const patientData = {
-    patientId: "PT-2024-1847",
-    name: "Sara Beltran",
-    profileImage: "https://img.rocket.new/generatedImages/rocket_gen_img_117c65255-1763296014815.png",
-    profileImageAlt: "Professional headshot of a smiling woman with shoulder-length brown hair wearing a light blue blouse against a neutral background",
-    status: "active",
-    dateOfBirth: "1985-06-15",
-    gender: "Female",
-    bloodType: "A+",
-    maritalStatus: "Married",
-    phone: "(555) 123-4567",
-    email: "sarah.mitchell@email.com",
-    address: "1234 Oak Street, Apartment 5B",
-    city: "San Francisco",
-    state: "California",
-    zipCode: "94102",
-    emergencyContact: {
-      name: "Michael Mitchell",
-      relationship: "Spouse",
-      phone: "(555) 987-6543",
-      email: "michael.mitchell@email.com",
-    },
-    insurance: "BlueCross BlueShield",
-    insurancePolicy: "BC-12345678",
-    insuranceGroup: "GRP-456",
-    coverageType: "Full Coverage",
-    allergies: ["Penicillin", "Latex"],
-    registrationDate: "2020-03-15",
-  };
+    if (id) loadPatient();
+  }, [id, getPatientById]);
 
   const medicalHistoryData = {
     allergies: [
@@ -428,7 +369,47 @@ const PatientProfile = () => {
   ];
 
   const handleEditProfile = () => {
-    console.log("Edit profile clicked");
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdatePatient = async (updatedData, imageFile) => {
+    try {
+      let finalAvatarUrl = updatedData.avatar;
+
+      // 1. Si hay un archivo de imagen nuevo, lo subimos primero al Storage
+      if (imageFile) {
+        // Usamos el ID del paciente para nombrar el archivo
+        const uploadedUrl = await uploadPatientAvatar(imageFile, id);
+
+        if (uploadedUrl) {
+          finalAvatarUrl = uploadedUrl;
+        } else {
+          // Si falla la subida, podrías decidir si cancelar o seguir
+          console.warn("La imagen no se pudo subir, se mantendrá la anterior o ninguna.");
+        }
+      }
+
+      // 2. Preparamos el objeto final con la nueva URL del avatar
+      const dataToSave = {
+        ...updatedData,
+        avatar: finalAvatarUrl,
+      };
+
+      // 3. Llamamos a la función de actualización del hook
+      const result = await updatePatient(id, dataToSave);
+
+      if (result.success) {
+        // Actualización local para que la UI cambie al instante
+        setCurrentPatient(dataToSave);
+        setIsEditModalOpen(false);
+        notifySuccess(t("notifications.patientUpdated"));
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error("No se pudo actualizar:", error.message);
+      notifyError(t("notifications.errorUpdatingPatient"));
+    }
   };
 
   const handleScheduleAppointment = () => {
@@ -439,51 +420,30 @@ const PatientProfile = () => {
     console.log("Send message clicked");
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
+    setSearchResults([]);
+    setIsPageLoading(true);
+    try {
+      const { data, error } = await supabase.from("patients").select("id").or(`name.ilike.%${searchTerm}%,patient_id.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%`).single();
 
-    // Simulación: Buscamos un paciente y obtenemos su ID (ej: 123)
-    // En la vida real, aquí harías un fetch a Supabase
-    const foundId = "PT-2024-1847";
+      if (error || !data) {
+        notifyError(t("notifications.patientNotFound") || "Paciente no encontrado");
+        setIsPageLoading(false);
+        return;
+      }
 
-    // 2. Al encontrarlo, navegamos a la ruta dinámica
-    navigate(`/patient-profile/${foundId}`);
+      // Si lo encuentra, navegamos a su perfil usando el UUID de la tabla
+      navigate(`/patient-profile/${data.id}`);
+      setSearchTerm(""); // Limpiamos el buscador
+    } catch (err) {
+      console.error("Error en la búsqueda:", err);
+      notifyError(t("notifications.errorSearch"));
+    } finally {
+      setIsPageLoading(false);
+    }
   };
-
-  // --- VISTA DE BÚSQUEDA (Si no hay ID) ---
-  if (!id && !currentPatient) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-8">
-        <div className="text-center space-y-2">
-          <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Icon name="Search" size={32} className="text-primary" />
-          </div>
-          <h2 className="text-2xl font-semibold">{t("profile.title") || "Buscar Paciente"}</h2>
-          <p className="text-muted-foreground">{t("profile.descriptionSearch")}</p>
-        </div>
-
-        <form onSubmit={handleSearch} className="flex w-full max-w-md gap-2">
-          <div className="relative flex-1">
-            <Icon name="User" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg focus:ring-2 focus:ring-primary outline-none"
-              placeholder={t("search.placeholder")}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <Button type="submit" variant="default">
-            {t("search.label")}
-          </Button>
-        </form>
-      </div>
-    );
-  }
-
-  // --- VISTA DE CARGA ---
-  if (loading) return <div className="p-10 text-center">Cargando perfil...</div>;
 
   const renderTabContent = () => {
     if (!currentPatient) return null;
@@ -506,29 +466,69 @@ const PatientProfile = () => {
 
   return (
     <div className="space-y-6 md:space-y-8">
-      <PatientHeader patient={currentPatient} onEdit={handleEditProfile} onSchedule={handleScheduleAppointment} onMessage={handleSendMessage} />
-
-      <div className="bg-card rounded-lg shadow-clinical-md border border-border overflow-hidden">
-        <div className="border-b border-border overflow-x-auto">
-          <nav className="flex min-w-max lg:min-w-0" aria-label="Patient profile tabs">
-            {tabs?.map((tab) => (
-              <button
-                key={tab?.id}
-                onClick={() => setActiveTab(tab?.id)}
-                className={`flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-medium transition-all duration-base border-b-2 flex-shrink-0 ${
-                  activeTab === tab?.id ? "border-primary text-primary bg-primary/5" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-              >
-                {/* <span className="text-lg md:text-xl">{tab?.icon}</span> */}
-                <Icon name={tab?.icon} size={16} className={activeTab === tab?.id ? "text-primary" : "text-muted-foreground"} />
-                <span className="whitespace-nowrap">{tab?.label}</span>
-              </button>
-            ))}
-          </nav>
+      {/* 1. ESTADO: CARGANDO */}
+      {isPageLoading && id ? (
+        <div className="flex flex-col items-center justify-center min-h-[40vh] animate-pulse">
+          <Icon name="Loader2" className="animate-spin text-primary mb-4" size={32} />
+          <p className="text-muted-foreground">{t("common.loading") || "Cargando información..."}</p>
         </div>
+      ) : /* 2. ESTADO: BÚSQUEDA (Si no hay ID o el paciente no existe) */
+      !id || !currentPatient ? (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-8 animate-in fade-in zoom-in duration-300">
+          <div className="text-center space-y-2">
+            <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Icon name="Search" size={32} className="text-primary" />
+            </div>
+            <h2 className="text-2xl font-semibold">{t("profile.title") || "Buscar Paciente"}</h2>
+            <p className="text-muted-foreground">{t("profile.descriptionSearch")}</p>
+          </div>
 
-        <div className="p-4 md:p-6 lg:p-8">{renderTabContent()}</div>
-      </div>
+          <form onSubmit={handleSearch} className="flex w-full max-w-md gap-2">
+            <div className="relative flex-1">
+              <Icon name="User" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                placeholder={t("search.patient.placeholder")}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Button type="submit" variant="default">
+              {t("search.label")}
+            </Button>
+          </form>
+        </div>
+      ) : (
+        /* 3. ESTADO: PERFIL DEL PACIENTE (Renderizado principal) */
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <PatientHeader patient={currentPatient} onEdit={handleEditProfile} onSchedule={handleScheduleAppointment} onMessage={handleSendMessage} />
+
+          <div className="bg-card rounded-lg shadow-clinical-md border border-border overflow-hidden mt-6 md:mt-8">
+            <div className="border-b border-border overflow-x-auto">
+              <nav className="flex min-w-max lg:min-w-0" aria-label="Patient profile tabs">
+                {tabs?.map((tab) => (
+                  <button
+                    key={tab?.id}
+                    onClick={() => setActiveTab(tab?.id)}
+                    className={`flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-medium transition-all duration-base border-b-2 flex-shrink-0 ${
+                      activeTab === tab?.id ? "border-primary text-primary bg-primary/5" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    }`}
+                  >
+                    <Icon name={tab?.icon} size={16} className={activeTab === tab?.id ? "text-primary" : "text-muted-foreground"} />
+                    <span className="whitespace-nowrap">{tab?.label}</span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            <div className="p-4 md:p-6 lg:p-8">{renderTabContent()}</div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL (Fuera de la lógica condicional principal para que no se desmonte bruscamente) */}
+      {isEditModalOpen && <EditPatientModal patient={currentPatient} onClose={() => setIsEditModalOpen(false)} onSave={handleUpdatePatient} />}
     </div>
   );
 };

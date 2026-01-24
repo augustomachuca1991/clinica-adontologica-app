@@ -23,41 +23,17 @@ const SettingsPanel = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "users":
-        return (
-          <SettingsSection title="User Management" description="Manage staff accounts, roles, and permissions" icon="Users">
-            <UserManagementCard />
-          </SettingsSection>
-        );
+        return <UserManagementCard />;
       case "practice":
-        return (
-          <SettingsSection title="Practice Customization" description="Configure practice information and workflow settings" icon="Building">
-            <PracticeCustomization />
-          </SettingsSection>
-        );
+        return <PracticeCustomization />;
       case "security":
-        return (
-          <SettingsSection title="Security & Compliance" description="HIPAA compliance, security settings, and audit logs" icon="Shield">
-            <SecurityCompliance />
-          </SettingsSection>
-        );
+        return <SecurityCompliance />;
       case "integrations":
-        return (
-          <SettingsSection title="Integration Marketplace" description="Connect and manage third-party integrations" icon="Plug">
-            <IntegrationMarketplace />
-          </SettingsSection>
-        );
+        return <IntegrationMarketplace />;
       case "notifications":
-        return (
-          <SettingsSection title="Notification Preferences" description="Configure how and when you receive notifications" icon="Bell">
-            <NotificationPreferences />
-          </SettingsSection>
-        );
+        return <NotificationPreferences />;
       case "backup":
-        return (
-          <SettingsSection title="Backup & Restore" description="Manage data backups and restoration" icon="Database">
-            <BackupRestore />
-          </SettingsSection>
-        );
+        return <BackupRestore />;
       default:
         return null;
     }

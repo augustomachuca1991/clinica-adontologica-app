@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
 import Select from "../../../components/ui/Select";
 import { useTranslation } from "react-i18next";
+/* import { useTreatmentServices } from "../../../hooks/TreatmentServicesHooks"; */
 
-const TreatmentForm = ({ selectedTooth, onSubmit, onCancel, editingTreatment }) => {
+const TreatmentForm = ({ services, loading, selectedTooth, onSubmit, onCancel, editingTreatment, isEditingHistory }) => {
   const { t } = useTranslation();
+
   const [formData, setFormData] = useState(
     editingTreatment || {
       toothNumber: selectedTooth,
@@ -18,17 +20,6 @@ const TreatmentForm = ({ selectedTooth, onSubmit, onCancel, editingTreatment }) 
     }
   );
 
-  const procedureOptions = [
-    { value: "cleaning", label: "Professional Cleaning" },
-    { value: "filling", label: "Composite Filling" },
-    { value: "crown", label: "Dental Crown" },
-    { value: "root-canal", label: "Root Canal Treatment" },
-    { value: "extraction", label: "Tooth Extraction" },
-    { value: "implant", label: "Dental Implant" },
-    { value: "bridge", label: "Dental Bridge" },
-    { value: "veneer", label: "Porcelain Veneer" },
-  ];
-
   const priorityOptions = [
     { value: "urgent", label: "Urgent" },
     { value: "high", label: "High Priority" },
@@ -37,10 +28,53 @@ const TreatmentForm = ({ selectedTooth, onSubmit, onCancel, editingTreatment }) 
   ];
 
   const statusOptions = [
-    { value: "planned", label: "Planned" },
-    { value: "in-progress", label: "In Progress" },
-    { value: "completed", label: "Completed" },
+    { value: "planned", label: t("records.card.status.planned") },
+    { value: "inProgress", label: t("records.card.status.inProgress") },
+    { value: "completed", label: t("records.card.status.completed") },
   ];
+
+  useEffect(() => {
+    if (editingTreatment) {
+      // Normalizamos los datos: si viene de la DB trae service_id,
+      // pero el formulario usa la propiedad 'procedure'
+      setFormData({
+        ...editingTreatment,
+        procedure: (editingTreatment.procedure || editingTreatment.service_id)?.toString() || "",
+        // También nos aseguramos de que el status coincida con el formato de tus statusOptions
+        // (Si en la DB es 'in-progress', convertirlo a 'inProgress' si es necesario)
+        status: editingTreatment.status === "in-progress" ? "inProgress" : editingTreatment.status,
+      });
+    } else {
+      setFormData({
+        toothNumber: selectedTooth,
+        procedure: "",
+        cost: "",
+        duration: "",
+        priority: "medium",
+        status: "planned",
+        notes: "",
+      });
+    }
+  }, [editingTreatment, selectedTooth]);
+
+  const procedureOptions = useMemo(() => {
+    return services.map((s) => ({
+      value: s.id.toString(), // El valor será el ID del servicio
+      label: s.name, // La etiqueta será el nombre del tratamiento
+    }));
+  }, [services]);
+
+  const handleProcedureChange = (serviceId) => {
+    const idStr = serviceId.toString(); // Forzamos string
+    const selectedService = services.find((s) => s.id.toString() === idStr);
+
+    setFormData({
+      ...formData,
+      procedure: idStr,
+      cost: selectedService ? selectedService.base_cost : "",
+      duration: selectedService ? `${selectedService.estimated_duration_min}` : "",
+    });
+  };
 
   const handleSubmit = (e) => {
     e?.preventDefault();
@@ -56,13 +90,21 @@ const TreatmentForm = ({ selectedTooth, onSubmit, onCancel, editingTreatment }) 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input label={t("treatment.formLabel.toothNumber")} type="text" value={formData?.toothNumber} disabled required />
 
-        <Select label={t("treatment.formLabel.procedure")} options={procedureOptions} value={formData?.procedure} onChange={(value) => setFormData({ ...formData, procedure: value })} required />
+        <Select
+          label={loading ? t("loading") : t("treatment.formLabel.procedure")}
+          options={procedureOptions}
+          value={formData?.procedure}
+          onChange={handleProcedureChange}
+          disabled={loading || isEditingHistory}
+          required
+        />
 
         <Input
           label={t("treatment.formLabel.estimatedCost")}
           type="number"
           placeholder={t("treatment.formPlaceholder.estimatedCost")}
           value={formData?.cost}
+          disabled={isEditingHistory}
           onChange={(e) => setFormData({ ...formData, cost: e?.target?.value })}
           required
         />

@@ -11,6 +11,36 @@
   "status": "Estado",
   "messageSuccess": "Operación realizada con éxito",
   "tooth": "Diente",
+  "workspace": "Configurando tu espacio de trabajo...",
+  "selectAnOption": "Seleccione una opción",
+  "loading": "cargando ...",
+  "searchOption": "Buscar una opción...",
+  "itemsSelected_one": "{{count}} item seleccionado",
+  "itemsSelected_other": "{{count}} items seleccionados",
+  "NoOptionsFound": "No se encontraron resultados",
+  "noOptionsAvailable": "No hay opciones disponibles",
+  "change": "Cambiar",
+  "choosePhoto": "Elegir foto de perfil",
+  "roles": {
+    "admin": "Administrador",
+    "user": "Usuario",
+    "receptionist": "Recepcionista",
+    "dentist": "Odontólogo"
+  },
+  "gender": {
+    "male": "Masculino",
+    "female": "Femenino",
+    "other": "Otro",
+    "preferNotToSay": "Prefiero no decirlo"
+  },
+  "maritalStatus": {
+    "single": "Soltero/a",
+    "married": "Casado/a",
+    "divorced": "Divorciado/a",
+    "widowed": "Viudo/a",
+    "separated": "Separado/a",
+    "notSpecified": "No especificado"
+  },
   "patient": {
     "created": "Paciente creado con éxito",
     "updated": "Información del paciente actualizada con éxito",
@@ -240,7 +270,7 @@
       "idPatient": "ID",
       "status": {
         "completed": "Completado",
-        "inProgress": "En Progreso",
+        "inProgress": "En curso",
         "scheduled": "Programado",
         "cancelled": "Cancelado",
         "planned": "Planeado"
@@ -348,7 +378,7 @@
     "toothChart": "Diagrama dental interactivo",
     "age": "Edad: {{age}} años",
     "lastTreatment": "Último Tratamiento: {{date}}",
-    "insurance": "Seguro: {{insurance}}",
+    "insurance": "Cobertura Médica: {{insurance}}",
     "status": {
       "completed": "Completado",
       "inProgress": "En curso",
@@ -377,7 +407,20 @@
       "estimatedCost": "ej., 150.00",
       "duration": "ej., 7 semanas",
       "notes": "Notas adicionales o consideraciones especiales..."
-    }
+    },
+    "priority": {
+      "low": "Baja",
+      "high": "Alta",
+      "medium": "Normal",
+      "urgent": "Urgente"
+    },
+    "saveSuccess": "El plan de tratamiento ha sido registrado con éxito",
+    "saveError": "No se pudo completar el registro del plan de tratamiento",
+    "savePlan": "Guardar Plan de Tratamientos",
+    "updateSuccess": "Tratamiento actualizado correctamente",
+    "finishEditingFirst": "Por favor, finaliza o cancela la edición actual antes de seleccionar otro diente.",
+    "patientHistory": "Historico",
+    "currentPlan": "Plan Actual"
   },
   "profile": {
     "title": "Ficha del paciente",
@@ -456,11 +499,18 @@
     "title": "Notificaciones",
     "noNotifications": "No hay nuevas notificaciones",
     "markAllAsRead": "Marcar todas como leídas",
-    "viewAll": "Ver todas las notificaciones"
+    "viewAll": "Ver todas las notificaciones",
+    "logoutSuccess": "Sesión cerrada con éxito",
+    "logoutError": "Error al cerrar sesión",
+    "patientUpdated": "Información del paciente actualizada con éxito",
+    "errorUpdatingPatient": "Error al actualizar la información del paciente"
   },
   "search": {
     "label": "Buscar",
-    "placeholder": "Buscar pacientes, turnos..."
+    "placeholder": "Buscar pacientes, turnos...",
+    "patient": {
+      "placeholder": "Buscar por nombre, email o ID"
+    }
   },
   "profileSetting": {
     "title": "Mi Perfil",
@@ -545,8 +595,9 @@
     "email": "Correo electrónico",
     "password": "Contraseña",
     "submit": "Iniciar sesión",
-    "continueWith": "o continuar con",
+    "continueWith": "Continuar con",
     "welcome": "¡Bienvenido!",
+    "rememberMe": "Recordame",
     "errors": {
       "emptyFields": "Debe completar usuario y contraseña"
     },
@@ -578,6 +629,59 @@
     "submit": "Actualizar contraseña",
     "success": "Contraseña actualizada con éxito. Ya puedes iniciar sesión.",
     "error": "Hubo un problema al actualizar la contraseña.",
-    "mismatch": "Las contraseñas no coinciden"
+    "mismatch": "Las contraseñas no coinciden",
+    "invalidOrExpired": "Enlace de recuperación inválido o expirado."
+  },
+  "terms": {
+    "title": "Términos y Condiciones",
+    "last_update": "Última actualización: 22 de Enero, 2026",
+    "back_to_login": "Volver al inicio",
+    "accept_button": "He leído y comprendido",
+    "legal_footer": "Para dudas legales, por favor contáctenos en legal@orionsoftware.com",
+    "sections": {
+      "acceptance": {
+        "title": "1. Aceptación de los Términos",
+        "content": "Al acceder y utilizar esta plataforma de gestión odontológica, usted acepta cumplir con estos términos y condiciones. Si no está de acuerdo, por favor absténgase de utilizar el servicio."
+      },
+      "privacy": {
+        "title": "2. Privacidad y Datos Médicos",
+        "content": "Toda la información del paciente se maneja bajo estrictos estándares de confidencialidad y normativas locales de protección de datos de salud."
+      },
+      "responsibility": {
+        "title": "3. Responsabilidad Profesional",
+        "content": "El profesional es responsable de la exactitud de los diagnósticos. La plataforma es una herramienta de apoyo y no sustituye el juicio clínico."
+      },
+      "data_ownership": {
+        "title": "4. Data Ownership",
+        "content": "You retain all rights to your patient data. Our platform only acts as a custodian and processor of said information."
+      },
+      "subscription": {
+        "title": "5. Payments and Subscriptions",
+        "content": "Access to advanced features requires an active subscription. Failure to pay will result in restricted access to editing functions."
+      },
+      "backups": {
+        "title": "6. Backups",
+        "content": "We perform automatic daily backups. However, it is recommended that professionals export their critical reports periodically."
+      },
+      "termination": {
+        "title": "7. Termination of Service",
+        "content": "You may cancel your account at any time. In case of closure, you will be granted a 30-day period to export clinical information before its permanent deletion."
+      }
+    }
+  },
+  "404": {
+    "404_title": "Página no encontrada",
+    "404_description": "Lo sentimos, la página que buscas no existe o ha sido movida.",
+    "go_back": "Volver atrás",
+    "go_home": "Ir al inicio"
+  },
+  "error_boundary": {
+    "title": "Algo no salió como esperábamos",
+    "description": "La aplicación encontró un error inesperado en este componente.",
+    "retry": "Reintentar",
+    "home": "Ir al inicio"
+  },
+  "modal": {
+    "newPatient": "Nuevo Paciente"
   }
 }

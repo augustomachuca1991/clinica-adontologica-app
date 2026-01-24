@@ -1,6 +1,7 @@
 import React from "react";
 import Icon from "../../../components/AppIcon";
 import { useTranslation } from "react-i18next";
+import { formatDateLang } from "../../../utils/formatters/date";
 
 const DemographicsTab = ({ patient }) => {
   const { t, i18n } = useTranslation();
@@ -11,22 +12,22 @@ const DemographicsTab = ({ patient }) => {
       icon: "User",
       fields: [
         { label: t("profile.tabs.demographics.section.fullName"), value: patient?.name },
-        { label: t("profile.tabs.demographics.section.dateOfBirth"), value: new Date(patient.dateOfBirth)?.toLocaleDateString(i18n.language, { year: "numeric", month: "long", day: "numeric" }) },
-        { label: t("profile.tabs.demographics.section.gender"), value: patient?.gender },
+        { label: t("profile.tabs.demographics.section.dateOfBirth"), value: formatDateLang(patient?.dateOfBirth, i18n.language) },
+        { label: t("profile.tabs.demographics.section.gender"), value: t(`gender.${patient?.gender || "preferNotToSay"}`) || t("profile.notSpecified") },
         { label: t("profile.tabs.demographics.section.bloodType"), value: patient?.bloodType || t("profile.notSpecified") },
-        { label: t("profile.tabs.demographics.section.maritalStatus"), value: patient?.maritalStatus || t("profile.notSpecified") },
+        { label: t("profile.tabs.demographics.section.maritalStatus"), value: t(`maritalStatus.${patient?.maritalStatus || "notSpecified"}`) || t("profile.notSpecified") },
       ],
     },
     {
       title: t("profile.tabs.demographics.section.contactInformation"),
       icon: "Phone",
       fields: [
-        { label: t("profile.tabs.demographics.section.primaryPhone"), value: patient?.phone },
+        { label: t("profile.tabs.demographics.section.primaryPhone"), value: patient?.phone || t("profile.notSpecified") },
         { label: t("profile.tabs.demographics.section.emailAddress"), value: patient?.email },
-        { label: t("profile.tabs.demographics.section.address"), value: patient?.address },
-        { label: t("profile.tabs.demographics.section.city"), value: patient?.city },
-        { label: t("profile.tabs.demographics.section.state"), value: patient?.state },
-        { label: t("profile.tabs.demographics.section.zipCode"), value: patient?.zipCode },
+        { label: t("profile.tabs.demographics.section.address"), value: patient?.address || t("profile.notSpecified") },
+        { label: t("profile.tabs.demographics.section.city"), value: patient?.city || t("profile.notSpecified") },
+        { label: t("profile.tabs.demographics.section.state"), value: patient?.state || t("profile.notSpecified") },
+        { label: t("profile.tabs.demographics.section.zipCode"), value: patient?.zipCode || t("profile.notSpecified") },
       ],
     },
     {

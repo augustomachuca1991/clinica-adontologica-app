@@ -1,14 +1,24 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "../AppIcon";
+import Image from "../AppImage";
+import logo from "../../../public/assets/images/logo-orion-software.svg";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Sidebar = ({ isCollapsed = false, onToggle }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const location = useLocation();
+  const { userProfile, isAdmin } = useAuth();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  const appName = import.meta.env.VITE_APP_NAME || "Orion Software";
+
+  // Extraemos roles para saber qué mostrar
+  const roles = userProfile?.user_roles?.map((ur) => ur.roles?.name) || [];
+  const isDentist = roles.includes("dentist"); // Asegúrate que el nombre coincida con tu DB
 
   const navigationItems = [
     {
@@ -16,38 +26,46 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
       label: "dashboard.title",
       icon: "LayoutDashboard",
       description: "dashboard.description",
+      roles: ["dentist"],
     },
     {
       path: "/patient-directory",
       label: "directory.title",
       icon: "Users",
       description: "directory.description",
+      roles: ["dentist"],
     },
     {
       path: "/clinical-records",
       label: "records.title",
       icon: "FileText",
       description: "records.description",
+      roles: ["dentist"],
     },
     {
       path: "/treatment-planning",
       label: "treatment.title",
       icon: "Calendar",
       description: "treatment.description",
+      roles: ["dentist"],
     },
     {
       path: "/patient-profile",
       label: "profile.title",
       icon: "User",
       description: "profile.description",
+      roles: ["dentist"],
     },
     {
       path: "/settings-panel",
       label: "settings.title",
       icon: "Settings",
       description: "settings.description",
+      roles: ["admin"],
     },
   ];
+
+  const visibleItems = navigationItems.filter((item) => item.roles.some((role) => roles.includes(role)));
 
   const isActive = (path) => location?.pathname === path;
 
@@ -71,20 +89,20 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
       >
         <div
           className="sidebar-header flex items-center justify-center h-16 border-b border-border bg-primary/5 backdrop-blur-sm"
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate(isAdmin ? "/admin-panel" : "/dashboard")}
           role="button"
           aria-label="Go to home"
         >
           <div className={`sidebar-logo flex items-center justify-center transition-all duration-slow ${isCollapsed ? "w-10 h-10" : "w-12 h-12"} bg-primary/10 rounded-lg`}>
-            <Icon name="Activity" size={isCollapsed ? 20 : 24} color="var(--color-primary)" />
-            {/* 🦷 */}
+            {/* <Icon name="Activity" size={isCollapsed ? 20 : 24} color="var(--color-primary)" /> */}
+            <Image src={logo} alt="App Logo" className={`object-contain ${isCollapsed ? "h-14 w-14" : "h-10 w-10"}`} />
           </div>
-          {!isCollapsed && <span className="ml-3 text-lg font-headline font-semibold text-foreground">{t("appTitle")}</span>}
+          {!isCollapsed && <span className="ml-1 text-lg font-headline font-bold text-foreground tracking-[-0.015em]">{appName}</span>}
         </div>
 
         <nav className="flex-1 overflow-y-auto py-4 px-2">
           <ul className="space-y-1">
-            {navigationItems?.map((item) => (
+            {visibleItems?.map((item) => (
               <li key={item?.path}>
                 <Link
                   to={item?.path}

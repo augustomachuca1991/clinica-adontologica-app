@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
 import Icon from "../../components/AppIcon";
 import LanguageSwitch from "../../components/ui/LanguageSwitch";
 import { notifyError, notifySuccess } from "../../utils/notifications";
 import { useAuth } from "../../contexts/AuthContext";
-import { supabase } from "../../lib/supabase";
+import Image from "../../components/AppImage";
+import logo from "../../../public/assets/images/logo-orion-software.svg";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -30,17 +32,17 @@ const ForgotPassword = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-muted/40 px-4 font-sans">
       {/* Selector de idiomas */}
-      <div className="absolute top-6 left-6">
+      {/* <div className="absolute top-6 left-6">
         <LanguageSwitch />
-      </div>
+      </div> */}
 
       <div className="w-full max-w-md bg-card rounded-2xl shadow-clinical-md p-8">
         {/* Header con temática clínica */}
         <div className="text-center mb-8">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-            <Icon name="Key" size={24} className="text-primary" />
+          <div className="mx-auto mb-3 flex items-center justify-center rounded-xl bg-primary/10">
+            <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
           </div>
-          <h1 className="text-2xl font-headline font-bold text-foreground">{t("forgotPassword.title")}</h1>
+          <h1 className="text-2xl font-headline font-bold text-foreground tracking-[-0.015em]">{t("forgotPassword.title")}</h1>
           <p className="text-sm text-muted-foreground mt-2">{t("forgotPassword.subtitle")}</p>
         </div>
 
@@ -50,10 +52,10 @@ const ForgotPassword = () => {
             <label className="text-sm font-medium text-foreground">{t("forgotPassword.emailLabel")}</label>
             <div className="relative mt-1">
               <Icon name="Mail" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
+              <Input
                 type="email"
                 placeholder={t("forgotPassword.emailPlaceholder")}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all tracking-[-0.015em]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

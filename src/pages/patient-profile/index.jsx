@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PatientHeader from "./components/PatientHeader";
 import DemographicsTab from "./components/DemographicsTab";
 import MedicalHistoryTab from "./components/MedicalHistoryTab";
@@ -7,26 +7,26 @@ import CommunicationsTab from "./components/CommunicationsTab";
 import BillingTab from "./components/BillingTab";
 import Icon from "../../components/AppIcon";
 import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
+import Select from "../../components/ui/Select";
 import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPatientModal from "../patient-directory/components/EditPatientModal";
 import { usePatients, uploadPatientAvatar } from "../../hooks/PatientsHooks";
 import { notifyError, notifySuccess } from "utils/notifications";
-import { supabase } from "../../lib/supabase";
+import { usePatientTreatments } from "../../hooks/PatientTreatmentsHooks";
 
 const PatientProfile = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { id } = useParams();
-  const { getPatientById, updatePatient } = usePatients();
+  const { sortedPatients, getPatientById, updatePatient, loading: loadingPatients } = usePatients();
+  const { treatments, loading: loadingTreatments } = usePatientTreatments(id);
 
   const [activeTab, setActiveTab] = useState("demographics");
-  const [searchTerm, setSearchTerm] = useState("");
   const [currentPatient, setCurrentPatient] = useState(null);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
+  const [selectedPatientId, setSelectedPatientId] = useState("");
 
   useEffect(() => {
     const loadPatient = async () => {
@@ -38,6 +38,13 @@ const PatientProfile = () => {
 
     if (id) loadPatient();
   }, [id, getPatientById]);
+
+  const patientOptions = useMemo(() => {
+    return sortedPatients.map((p) => ({
+      value: p.id.toString(),
+      label: `${p.name} - ${p.patient_id || "S/N"}`,
+    }));
+  }, [sortedPatients]);
 
   const medicalHistoryData = {
     allergies: [
@@ -423,27 +430,7 @@ const PatientProfile = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchTerm.trim()) return;
-    setSearchResults([]);
-    setIsPageLoading(true);
-    try {
-      const { data, error } = await supabase.from("patients").select("id").or(`name.ilike.%${searchTerm}%,patient_id.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%`).single();
-
-      if (error || !data) {
-        notifyError(t("notifications.patientNotFound") || "Paciente no encontrado");
-        setIsPageLoading(false);
-        return;
-      }
-
-      // Si lo encuentra, navegamos a su perfil usando el UUID de la tabla
-      navigate(`/patient-profile/${data.id}`);
-      setSearchTerm(""); // Limpiamos el buscador
-    } catch (err) {
-      console.error("Error en la búsqueda:", err);
-      notifyError(t("notifications.errorSearch"));
-    } finally {
-      setIsPageLoading(false);
-    }
+    if (selectedPatientId) navigate(`/patient-profile/${selectedPatientId}`);
   };
 
   const renderTabContent = () => {
@@ -455,7 +442,7 @@ const PatientProfile = () => {
       case "medical-history":
         return <MedicalHistoryTab medicalHistory={medicalHistoryData} />;
       case "treatment-history":
-        return <TreatmentHistoryTab treatments={treatmentHistoryData} />;
+        return <TreatmentHistoryTab treatments={treatments} loading={loadingTreatments} />;
       case "communications":
         return <CommunicationsTab communications={communicationsData} />;
       case "billing":
@@ -484,24 +471,31 @@ const PatientProfile = () => {
             <p className="text-muted-foreground">{t("profile.descriptionSearch")}</p>
           </div>
 
-          <form onSubmit={handleSearch} className="flex w-full max-w-md gap-2">
-            <div className="relative flex-1">
-              <Icon name="User" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="text"
-                className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg focus:ring-2 focus:ring-primary outline-none"
-                placeholder={t("search.patient.placeholder")}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+          <form onSubmit={handleSearch} className="flex w-full max-w-md gap-3 items-end">
+            <div className="flex-1">
+              <Select
+                label={t("treatment.selectPatient")}
+                options={patientOptions}
+                value={selectedPatientId} // Usamos el ID seleccionado
+                onChange={(value) => setSelectedPatientId(value)} // Guardamos el ID
+                searchable
+                disabled={loadingPatients}
+                placeholder={loadingPatients && t("loading")}
               />
             </div>
-            <Button type="submit" variant="default">
-              {t("search.label")}
+
+            <Button
+              type="submit"
+              variant="default"
+              disabled={!selectedPatientId}
+              iconName="Search"
+              className="mb-[2px]" // Ajuste visual para alinear con el Select
+            >
+              {t("search.label") || "Buscar"}
             </Button>
           </form>
         </div>
       ) : (
-        /* 3. ESTADO: PERFIL DEL PACIENTE (Renderizado principal) */
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <PatientHeader patient={currentPatient} onEdit={handleEditProfile} onSchedule={handleScheduleAppointment} onMessage={handleSendMessage} />
 

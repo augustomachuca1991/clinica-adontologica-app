@@ -4,6 +4,7 @@
   "patients": "Pacientes",
   "appointments": "Turnos",
   "save": "Guardar",
+  "saving": "Guardando",
   "cancel": "Cancelar",
   "next": "Próximo",
   "show": "Mostrar",
@@ -21,6 +22,12 @@
   "noOptionsAvailable": "No hay opciones disponibles",
   "change": "Cambiar",
   "choosePhoto": "Elegir foto de perfil",
+  "download": "Dercargar",
+  "delete": "Eliminar",
+  "confirmDeleteImage": {
+    "title": "¿Eliminar imagen?",
+    "description": "Esta acción quitará la imagen del registro médico."
+  },
   "roles": {
     "admin": "Administrador",
     "user": "Usuario",
@@ -296,12 +303,18 @@
           "treatmentType": "Tipo de Tratamiento",
           "treatmentDate": "Fecha de Tratamiento",
           "toothNumber": "Número de Diente",
-          "duration": "Duración"
+          "duration": "Duración",
+          "status": {
+            "completed": "Completado",
+            "inProgress": "En curso",
+            "planned": "Planificado"
+          }
         },
         "clinicalNotes": {
           "name": "Nota Clínica",
           "addClinicalNote": "Agregar Nota Clínica",
           "noteType": "Tipo de Nota",
+          "noNotes": "No hay notas",
           "noteTypeOptions": {
             "progress": "Progreso",
             "treatment": "Tratamiento",
@@ -339,7 +352,8 @@
           "dropzone": "Haz clic o arrastra una imagen aquí",
           "uploadSuccess": "Imagen subida correctamente",
           "button": {
-            "uploadImage": "Subir Imagen"
+            "uploadImage": "Subir Imagen",
+            "uploading": "Subiendo"
           }
         },
         "history": {
@@ -348,7 +362,8 @@
           "treatmentHistory": "Historial de Tratamientos",
           "statusUpdated": "Estado Actualizado",
           "activity": {
-            "statusLog": "El estado del tratamiento fue cambiado a {{status}} por {{doctor}}",
+            "actionLabel": "El estado cambió a",
+            "by": "por",
             "status": {
               "completed": "Completado",
               "inProgress": "En curso",

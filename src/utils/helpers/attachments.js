@@ -32,3 +32,10 @@ export const saveAttachmentToDB = async (recordId, currentAttachments, newUrl) =
   if (error) throw error;
   return data;
 };
+
+export const removeAttachmentFromDB = async (recordId, updatedAttachments) => {
+  const { data, error } = await supabase.from("clinical_records").update({ attachments: updatedAttachments }).eq("id", recordId);
+
+  if (error) throw error;
+  return data;
+};

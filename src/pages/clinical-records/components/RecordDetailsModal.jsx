@@ -1,24 +1,37 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useReactToPrint } from "react-to-print";
 import Icon from "../../../components/AppIcon";
 import Image from "../../../components/AppImage";
 import Button from "../../../components/ui/Button";
-import { useTranslation } from "react-i18next";
-import { formatDateLang } from "utils/formatters/date";
-import { useReactToPrint } from "react-to-print";
 import PrintableMedicalRecord from "./PrintableMedicalRecord";
-import { notifySuccess } from "utils/notifications";
+import { notifySuccess, notifyError, notifyConfirm } from "../../../utils/notifications";
 import ImageLightbox from "../../../components/ui/ImageLightBox";
+import { formatDateLang } from "../../../utils/formatters/date";
 import { downloadImage } from "../../../utils/downloaderHelper";
-import { saveAttachmentToDB } from "../../../utils/helpers/attachments";
+import { saveAttachmentToDB, uploadFileToStorage, removeAttachmentFromDB } from "../../../utils/helpers/attachments";
+import { useClinicalRecords } from "../../../hooks/ClinicalRecorsHooks";
 
-import UploadImageModal from "./UploadImageModal";
-
-const RecordDetailsModal = ({ record, onClose }) => {
+const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
   const [activeTab, setActiveTab] = useState("overview");
-  const contentRef = useRef(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [currentAttachments, setCurrentAttachments] = useState(record?.attachments || []);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const contentRef = useRef(null);
+  const fileInputRef = useRef(null); // Nueva referencia para el input oculto
+
+  const { fetchPatientRecords, records: history, loading: isLoadingHistory } = useClinicalRecords();
+  /* const { addNote, loading: isSavingNote } = useClinicalNotes(); */
+  const { t, i18n } = useTranslation();
+
+  const currentRecordData = history?.find((r) => r.id === record.id) || record;
+
+  useEffect(() => {
+    if (record?.patient_id) {
+      fetchPatientRecords(record.patient_id);
+    }
+  }, [record, fetchPatientRecords]);
 
   const tabs = [
     { id: "overview", label: "overview", icon: "FileText" },
@@ -27,71 +40,11 @@ const RecordDetailsModal = ({ record, onClose }) => {
     { id: "history", label: "history", icon: "Clock" },
   ];
 
-  const treatmentHistoryMock = [
-    {
-      id: "TR-2026-001",
-      createdAt: "2026-01-10T09:15:00Z",
-      updatedAt: "2026-01-10T10:45:00Z",
-      date: "2026-01-10",
-      status: "completed",
-      treatmentName: "Root Canal Therapy",
-      provider: {
-        id: "DOC-001",
-        name: "Dr. Sarah Johnson",
-        especialidad: "Endodontist",
-      },
-      cost: 1250,
-    },
-    {
-      id: "TR-2026-002",
-      createdAt: "2026-01-12T11:00:00Z",
-      updatedAt: "2026-01-12T13:00:00Z",
-      date: "2026-01-12",
-      status: "inProgress",
-      treatmentName: "Dental Implant Placement",
-      provider: {
-        id: "DOC-002",
-        name: "Dr. Michael Chen",
-        especialidad: "Oral Surgeon",
-      },
-      cost: 3500,
-    },
-    {
-      id: "TR-2026-003",
-      createdAt: "2026-01-15T08:30:00Z",
-      updatedAt: "2026-01-15T08:30:00Z",
-      date: "2026-01-15",
-      status: "planned",
-      treatmentName: "Full Arch Cleaning & Scaling",
-      provider: {
-        id: "DOC-003",
-        name: "Dr. Emily Rodriguez",
-        especialidad: "Periodontist",
-      },
-      cost: 450,
-    },
-    {
-      id: "TR-2026-004",
-      createdAt: "2026-01-17T14:20:00Z",
-      updatedAt: "2026-01-17T15:00:00Z",
-      date: "2026-01-17",
-      status: "completed",
-      treatmentName: "Composite Filling",
-      provider: {
-        id: "DOC-004",
-        name: "Dr. David Thompson",
-        especialidad: "General Dentist",
-      },
-      cost: 280,
-    },
-  ];
-
-  const { t, i18n } = useTranslation();
   const getStatusColor = (status) => {
     const colors = {
-      completed: "bg-success/10 text-success border-success/20",
-      "in-progress": "bg-warning/10 text-warning border-warning/20",
-      planned: "bg-primary/10 text-primary border-primary/20",
+      completed: "bg-success/10 text-success border-success",
+      inProgress: "bg-warning/10 text-warning border-warning",
+      planned: "bg-primary/10 text-primary border-primary",
       cancelled: "bg-muted text-muted-foreground border-border",
     };
     return colors?.[status] || colors?.planned;
@@ -111,18 +64,56 @@ const RecordDetailsModal = ({ record, onClose }) => {
     setSelectedImageIndex((prev) => (prev - 1 + currentAttachments.length) % currentAttachments.length);
   };
 
-  const handleUploadSuccess = async (newAttachment) => {
+  const handleDirectUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsUploading(true);
     try {
+      const publicUrl = await uploadFileToStorage(file);
+      const newAttachment = {
+        url: publicUrl,
+        alt: file.name,
+      };
       await saveAttachmentToDB(record.id, currentAttachments, newAttachment);
       const updatedAttachments = [...currentAttachments, newAttachment];
       setCurrentAttachments(updatedAttachments);
-
       notifySuccess(t("records.recordsModal.tabs.images.uploadSuccess"));
     } catch (error) {
-      notifyError("Error al guardar en base de datos: " + error.message);
-      console.error(error);
+      notifyError("Error: " + error.message);
+    } finally {
+      setIsUploading(false);
+      e.target.value = "";
     }
   };
+
+  const handleDeleteImage = async (indexToDelete) => {
+    notifyConfirm(t("confirmDeleteImage.title"), t("confirmDeleteImage.description"), async () => {
+      const updatedAttachments = currentAttachments.filter((_, index) => index !== indexToDelete);
+
+      try {
+        await removeAttachmentFromDB(record.id, updatedAttachments);
+        setCurrentAttachments(updatedAttachments);
+        notifySuccess(t("delete"));
+      } catch (error) {
+        notifyError("error" + error.message);
+      }
+    });
+  };
+
+  /* const handleSaveNote = async () => {
+    if (!newNote.trim()) return;
+
+    const result = await addNote(record.id, newNote, noteType);
+
+    if (result.success) {
+      setNewNote(""); // Limpiamos el textarea
+      notifySuccess(t("records.notes.saveSuccess") || "Nota agregada");
+      fetchPatientRecords(record.patient_id);
+    } else {
+      notifyError(result.error);
+    }
+  }; */
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -160,9 +151,9 @@ const RecordDetailsModal = ({ record, onClose }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium border mt-2 ${getStatusColor(record?.status)}`}>
+                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium border mt-2 uppercase ${getStatusColor(record?.status)}`}>
                       <Icon name="Circle" size={8} className="fill-current" />
-                      {record?.status?.charAt(0)?.toUpperCase() + record?.status?.slice(1)?.replace("-", " ")}
+                      {t(`records.recordsModal.tabs.overview.status.${currentRecordData?.status}`)}
                     </span>
                   </div>
                   <div>
@@ -171,29 +162,29 @@ const RecordDetailsModal = ({ record, onClose }) => {
                   </div>
                   <div>
                     <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("records.card.provider")}</label>
-                    <p className="text-sm text-foreground mt-1">{record?.provider}</p>
+                    <p className="text-sm text-foreground mt-1">{currentRecordData?.provider?.name || currentRecordData?.provider}</p>
                   </div>
                   <div>
                     <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("records.recordsModal.tabs.overview.toothNumber")}</label>
-                    <p className="text-sm text-foreground mt-1">{record?.toothNumber}</p>
+                    <p className="text-sm text-foreground mt-1">{`# ${currentRecordData?.toothNumber}`}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("records.recordsModal.tabs.overview.treatmentType")}</label>
-                    <p className="text-sm text-foreground mt-1 capitalize">{record?.treatmentType?.replace("-", " ")}</p>
+                    <p className="text-sm text-foreground mt-1 capitalize">{currentRecordData?.treatmentName || t("common.notAvailable")}</p>
                   </div>
-                  {record?.cost && (
+                  {currentRecordData?.cost && (
                     <div>
                       <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("records.card.cost")}</label>
-                      <p className="text-sm text-foreground mt-1">${record?.cost?.toLocaleString()}</p>
+                      <p className="text-sm text-foreground mt-1">${currentRecordData?.cost?.toLocaleString()}</p>
                     </div>
                   )}
-                  {record?.duration && (
+                  {currentRecordData?.duration && (
                     <div>
                       <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("records.recordsModal.tabs.overview.duration")}</label>
-                      <p className="text-sm text-foreground mt-1">{record?.duration}</p>
+                      <p className="text-sm text-foreground mt-1">{currentRecordData?.duration} min</p>
                     </div>
                   )}
                 </div>
@@ -202,17 +193,24 @@ const RecordDetailsModal = ({ record, onClose }) => {
               <div>
                 <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2 block">{t("records.card.treatmentNotes")}</label>
                 <div className="bg-muted border border-border rounded-lg p-4">
-                  <p className="text-sm text-foreground leading-relaxed">{record?.notes}</p>
+                  {currentRecordData?.clinical_notes?.length > 0 ? (
+                    <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
+                      {/* Mostramos la nota más reciente que es la [0] por el orden del hook */}
+                      {currentRecordData.clinical_notes[0].content}
+                    </p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground italic">{t("records.recordsModal.tabs.clinicalNotes.noNotes")}</p>
+                  )}
                 </div>
               </div>
 
-              {record?.followUp && (
+              {currentRecordData?.clinical_notes?.find((n) => n.type === "followUp") && (
                 <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <Icon name="Calendar" size={20} color="var(--color-warning)" className="flex-shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-sm font-medium text-warning mb-1">{t("records.card.followUp")}</h4>
-                      <p className="text-sm text-foreground">{record?.followUp}</p>
+                      <p className="text-sm text-foreground">{currentRecordData.clinical_notes.find((n) => n.type === "followUp").content}</p>
                     </div>
                   </div>
                 </div>
@@ -223,32 +221,55 @@ const RecordDetailsModal = ({ record, onClose }) => {
           {activeTab === "notes" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
-                <h4 className="text-base font-headline font-semibold text-foreground">Clinical Notes</h4>
+                <h4 className="text-base font-headline font-semibold text-foreground">{t("records.recordsModal.tabs.clinicalNotes.name")}</h4>
                 <Button variant="outline" size="sm" iconName="Plus" iconPosition="left">
-                  Add Note
+                  {t("records.recordsModal.tabs.clinicalNotes.addClinicalNote")}
                 </Button>
               </div>
-              {[1, 2, 3]?.map((note) => (
-                <div key={note} className="bg-muted border border-border rounded-lg p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                        <Icon name="User" size={14} color="var(--color-primary)" />
+              {currentRecordData?.clinical_notes?.length > 0 ? (
+                currentRecordData.clinical_notes.map((note) => (
+                  <div key={note} className="bg-muted border border-border rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Icon name="User" size={18} color="var(--color-primary)" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-foreground">{note?.provider?.user_profiles?.full_name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(note.created_at).toLocaleDateString(i18n.language, {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-foreground">Dr. Sarah Johnson</p>
-                        <p className="text-xs text-muted-foreground">
-                          January {15 - note}, 2026 • 10:{30 + note * 15} AM
-                        </p>
-                      </div>
+                      <span
+                        className={`text-xs px-2 py-1 bg-primary/10 text-primary rounded-full ${
+                          note.type === "followUp"
+                            ? "border-purple-200 bg-purple-100 text-gray-700"
+                            : note.type === "treatment"
+                              ? "border-green-200 bg-green-100 text-gray-700"
+                              : note.type === "observation"
+                                ? "border-amber-200 bg-amber-100 text-gray-700"
+                                : "border-blue-200 bg-blue-100 text-gray-700"
+                        } `}
+                      >
+                        {t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.${note?.type}`)}
+                      </span>
                     </div>
-                    <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">Progress Note</span>
+                    <p className="text-sm text-foreground leading-relaxed">{note?.content}</p>
                   </div>
-                  <p className="text-sm text-foreground leading-relaxed">
-                    Patient showing excellent progress. Treatment area healing well with no signs of complications. Continue current care regimen and schedule follow-up in 2 weeks.
-                  </p>
+                ))
+              ) : (
+                <div className="text-center py-10 bg-muted/20 border-2 border-dashed border-border rounded-lg">
+                  <Icon name="Clipboard" size={32} className="mx-auto mb-2 text-muted-foreground/40" />
+                  <p className="text-sm text-muted-foreground italic">{t("records.recordsModal.tabs.clinicalNotes.noNotes") || "No notes recorded for this procedure."}</p>
                 </div>
-              ))}
+              )}
             </div>
           )}
 
@@ -256,36 +277,52 @@ const RecordDetailsModal = ({ record, onClose }) => {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h4 className="text-base font-headline font-semibold text-foreground">{t("records.recordsModal.tabs.images.clinicalImages")}</h4>
-                <Button variant="outline" size="sm" iconName="Upload" iconPosition="left" onClick={() => setIsUploadModalOpen(true)}>
-                  {t("records.recordsModal.tabs.images.button.uploadImage")}
+                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleDirectUpload} />
+                <Button variant="outline" size="sm" iconName={isUploading ? "Loader2" : "Upload"} iconPosition="left" onClick={() => fileInputRef.current.click()} disabled={isUploading}>
+                  {isUploading ? t("records.recordsModal.tabs.images.button.uploading") : t("records.recordsModal.tabs.images.button.uploadImage")}
                 </Button>
               </div>
               {currentAttachments && currentAttachments.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {currentAttachments?.map((attachment, index) => (
-                    <div key={index} className="relative group overflow-hidden rounded-lg border border-border">
+                    <div key={index} className="relative group overflow-hidden rounded-lg border border-border" onClick={() => setSelectedImageIndex(index)}>
                       <div className="aspect-[4/3]">
                         <Image src={attachment?.url} alt={attachment?.alt} className="w-full h-full object-cover transition-transform duration-base group-hover:scale-105" />
                       </div>
-                      <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-base flex items-center justify-center gap-2">
-                        <Button variant="secondary" size="sm" iconName="Eye" onClick={() => setSelectedImageIndex(index)} />
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          iconName="Download"
-                          onClick={(e) => {
-                            e.stopPropagation(); // Evita que se abra el lightbox al descargar
-                            downloadImage(attachment.url, `dental_${record?.patientName?.replace(/\s+/g, "_")}_${index + 1}.jpg`);
-                          }}
-                        />
+                      <div className="absolute inset-0 bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity duration-base flex items-center justify-center gap-2">
+                        <div className="absolute top-2 right-2 flex gap-2">
+                          {/* Botón Descargar */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Importante: evita que se abra el visor
+                              downloadImage(attachment.url, `dental_${record?.patientName?.replace(/\s+/g, "_")}_${index + 1}.jpg`);
+                            }}
+                            className="bg-black/50 hover:bg-black/70 text-white p-1.5 rounded backdrop-blur-sm transition-colors"
+                            title={t("download")}
+                          >
+                            <Icon name="Download" size={16} />
+                          </button>
+
+                          {/* Botón Eliminar */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Importante: evita que se abra el visor
+                              handleDeleteImage(index);
+                            }}
+                            className="bg-black/50 hover:bg-black/70 text-white p-1.5 rounded backdrop-blur-sm transition-colors"
+                            title={t("delete")}
+                          >
+                            <Icon name="X" size={16} />
+                          </button>
+                        </div>
                         <div className="absolute bottom-2 left-2 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded">#{index + 1}</div>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 bg-muted rounded-lg border border-border">
-                  <Icon name="Image" size={48} className="mx-auto mb-3 text-muted-foreground" />
+                <div className="text-center py-12 hover:bg-muted cursor-pointer rounded-lg border-border border-2 border-dashed" onClick={() => fileInputRef.current.click()}>
+                  <Icon name="ImageUp" size={48} className="mx-auto mb-3 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">{t("records.recordsModal.tabs.images.noImages")}</p>
                 </div>
               )}
@@ -295,26 +332,39 @@ const RecordDetailsModal = ({ record, onClose }) => {
           {activeTab === "history" && (
             <div className="space-y-4">
               <h4 className="text-base font-headline font-semibold text-foreground mb-4">{t("records.recordsModal.tabs.history.treatmentHistory")}</h4>
-              <div className="relative">
-                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-border" />
-                {treatmentHistoryMock?.map((item) => (
-                  <div key={item} className="relative pl-12 pb-6">
-                    <div className="absolute left-2.5 top-2 w-3 h-3 rounded-full bg-primary border-2 border-card" />
-                    <div className="bg-muted border border-border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-sm font-medium text-foreground">{t("records.recordsModal.tabs.history.statusUpdated")}</p>
-                        <p className="text-xs text-muted-foreground">{formatDateLang(item?.date, i18n.language)}</p>
+
+              {isLoadingHistory ? (
+                <div className="flex justify-center py-10">
+                  <Icon name="Loader2" className="animate-spin text-primary" size={32} />
+                </div>
+              ) : (
+                <div className="relative">
+                  <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-border" />
+                  {history?.length > 0 ? (
+                    history.map((item) => (
+                      <div key={item.id} className="relative pl-12 pb-6">
+                        <div className={`absolute left-2.5 top-2 w-3 h-3 rounded-full bg-primary border-2 border-card ${item.id === record.id ? "bg-primary scale-125" : "bg-muted-foreground/40"}`} />
+                        <div className="bg-muted border border-border rounded-lg p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <p className="text-sm font-medium text-foreground">{item.treatmentName}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {t("records.recordsModal.tabs.history.statusUpdated")} {formatDateLang(item?.date, i18n.language)}
+                            </p>
+                          </div>
+                          <span className="text-sm text-muted-foreground">{t("records.recordsModal.tabs.history.activity.actionLabel") || "El estado cambió a"}</span>
+                          <span className={`font-bold px-2 py-0.5 rounded-full text-[10px] border ${getStatusColor(item.status)}`}>
+                            &nbsp;{t(`records.recordsModal.tabs.history.activity.status.${item?.status}`).toUpperCase()}&nbsp;
+                          </span>
+                          <span className="text-sm text-muted-foreground">{t("records.recordsModal.tabs.history.activity.by") || "por"}</span> {/* Nombre del doctor resaltado */}
+                          <span className="text-sm text-foreground font-medium">{item?.provider?.name}</span>
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        {t("records.recordsModal.tabs.history.activity.statusLog", {
-                          status: item?.status,
-                          doctor: item?.provider?.name,
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    ))
+                  ) : (
+                    <div className="pl-12 py-4 text-sm text-muted-foreground italic">{t("records.recordsModal.tabs.history.noHistory")}</div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -339,10 +389,8 @@ const RecordDetailsModal = ({ record, onClose }) => {
         onNext={nextImage}
         onPrev={prevImage}
       />
-
-      <UploadImageModal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} onUploadSuccess={handleUploadSuccess} recordId={record.id} />
       <div className="hidden">
-        <PrintableMedicalRecord ref={contentRef} record={record} treatmentHistory={treatmentHistoryMock} />
+        <PrintableMedicalRecord ref={contentRef} record={currentRecordData} treatmentHistory={history} />
       </div>
     </div>
   );

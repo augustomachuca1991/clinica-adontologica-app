@@ -50,7 +50,29 @@ export const useClinicalRecords = () => {
         date,
         created_at,
         estimated_duration,
-        priority
+        priority,
+        patient_id,
+        patients (
+          patient_id,
+          name
+        ),
+        treatment_services (name),
+        providers!provider_id (
+          license_number,
+          specialty,
+          user_profiles (
+            full_name
+          )
+        ),
+        clinical_notes (
+            id,
+            content,
+            type,
+            created_at,
+            providers (
+              user_profiles (full_name)
+            )
+          )
       `
         )
         .eq("patient_id", patientId)
@@ -69,6 +91,16 @@ export const useClinicalRecords = () => {
         isPersisted: true,
         duration: r.estimated_duration,
         priority: r.priority,
+        date: r.date,
+        patientId: r.patients?.patient_id,
+        patientName: r.patients?.name || "Name Patient",
+        treatmentName: r.treatment_services?.name || "N/A",
+        provider: {
+          license: r.providers?.license_number || "N/A",
+          name: r.providers?.user_profiles?.full_name || "N/A",
+          especialidad: r.providers?.specialty || "N/A",
+        },
+        clinical_notes: r.clinical_notes || [],
       }));
 
       setRecords(formattedRecords);

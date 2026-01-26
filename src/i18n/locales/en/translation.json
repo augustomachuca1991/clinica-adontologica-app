@@ -4,6 +4,7 @@
   "patients": "Patients",
   "appointments": "Appointments",
   "save": "Save",
+  "saving": "Saving",
   "cancel": "Cancel",
   "next": "Next",
   "show": "Show",
@@ -21,6 +22,12 @@
   "noOptionsAvailable ": "No options available",
   "change": "Change",
   "choosePhoto": "Choose profile photo",
+  "download": "Download",
+  "delete": "Delete",
+  "confirmDeleteImage": {
+    "title": "Delete image?",
+    "description": "This action will remove the image from the medical record."
+  },
   "roles": {
     "admin": "Administrator",
     "user": "User",
@@ -362,12 +369,18 @@
           "treatmentType": "Treatment Type",
           "treatmentDate": "Treatment Date",
           "toothNumber": "Tooth Number",
-          "duration": "Duration"
+          "duration": "Duration",
+          "status": {
+            "completed": "Completed",
+            "inProgress": "In Progress",
+            "planned": "Planned"
+          }
         },
         "clinicalNotes": {
           "name": "Clinical Note",
           "addClinicalNote": "Add Clinical Note",
           "noteType": "Note Type",
+          "noNotes": "No Notes",
           "noteTypeOptions": {
             "progress": "Progress",
             "treatment": "Treatment",
@@ -406,7 +419,8 @@
           "uploadSuccess": "Image uploaded successfully",
 
           "button": {
-            "uploadImage": "Upload Image"
+            "uploadImage": "Upload Image",
+            "uploading": "Uploading,"
           }
         },
         "history": {
@@ -415,7 +429,8 @@
           "treatmentHistory": "Treatment History",
           "statusUpdated": "Status Updated",
           "activity": {
-            "statusLog": "Treatment status changed to {{status}} by {{doctor}}",
+            "actionLabel": "Status changed to",
+            "by": "by",
             "status": {
               "completed": "Completado",
               "inProgress": "En curso",

@@ -8,30 +8,27 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
   const [noteData, setNoteData] = useState({
     noteType: "progress",
     content: "",
-    attachments: [],
   });
+
+  const [isSaving, setIsSaving] = useState(false);
 
   const { t } = useTranslation();
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (noteData?.content?.trim()) {
-      onSave({
-        ...noteData,
-        recordId: record?.id,
-        timestamp: new Date()?.toISOString(),
-        author: "Dr. Sarah Johnson",
-      });
-      onClose();
+      setIsSaving(true);
+      await onSave(noteData.content, noteData.noteType);
+      setIsSaving(false);
     }
   };
 
-  const handleFileUpload = (e) => {
+  /* const handleFileUpload = (e) => {
     const files = Array.from(e?.target?.files);
     setNoteData((prev) => ({
       ...prev,
       attachments: [...prev?.attachments, ...files?.map((f) => f?.name)],
     }));
-  };
+  }; */
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -52,11 +49,11 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
               <label className="block text-sm font-medium text-foreground mb-2">{t("records.recordsModal.tabs.clinicalNotes.noteType")}</label>
               <div className="space-y-2">
                 {[
-                  { key: "progress", label: "progress" },
-                  { key: "treatment", label: "treatment" },
-                  { key: "observation", label: "observation" },
-                  { key: "followUp", label: "followUp" },
-                ]?.map(({ key, label }) => (
+                  { key: "progress", label: t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.progress`), icon: "Activity" },
+                  { key: "treatment", label: t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.treatment`), icon: "Stethoscope" },
+                  { key: "observation", label: t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.observation`), icon: "Eye" },
+                  { key: "followUp", label: t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.followUp`), icon: "CalendarDays" },
+                ]?.map(({ key, label, icon }) => (
                   <label key={key} className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
@@ -66,7 +63,8 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
                       onChange={(e) => setNoteData((prev) => ({ ...prev, noteType: e?.target?.value }))}
                       className="w-4 h-4 text-primary focus:ring-2 focus:ring-ring"
                     />
-                    <span className="text-sm text-foreground">{t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.${label}`)}</span>
+                    <span className="text-sm text-foreground">{label}</span>
+                    <Icon name={icon} size={16} />
                   </label>
                 ))}
               </div>
@@ -117,7 +115,7 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
             <p className="text-xs text-muted-foreground mt-2">{t("records.recordsModal.tabs.clinicalNotes.characters", { count: noteData?.content?.length || 0 })}</p>
           </div>
 
-          <div>
+          {/*   <div>
             <label className="block text-sm font-medium text-foreground mb-2">{t("records.recordsModal.tabs.clinicalNotes.attachments")}</label>
             <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors duration-base">
               <input type="file" multiple accept="image/*,.pdf" onChange={handleFileUpload} className="hidden" id="file-upload" />
@@ -151,15 +149,22 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
 
         <div className="sticky bottom-0 bg-card border-t border-border px-6 py-4 flex items-center justify-end gap-3">
           <Button variant="outline" onClick={onClose}>
             {t("records.recordsModal.tabs.clinicalNotes.button.cancel")}
           </Button>
-          <Button variant="default" onClick={handleSave} disabled={!noteData?.content?.trim()} iconName="Save" iconPosition="left">
-            {t("records.recordsModal.tabs.clinicalNotes.button.saveNote")}
+          <Button
+            variant="default"
+            onClick={handleSave}
+            disabled={!noteData.content.trim() || isSaving}
+            iconName={isSaving ? "Loader2" : "Save"}
+            iconPosition="left"
+            className={isSaving ? "animate-pulse" : ""}
+          >
+            {isSaving ? t("saving") : t("records.recordsModal.tabs.clinicalNotes.button.saveNote")}
           </Button>
         </div>
       </div>

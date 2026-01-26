@@ -24,6 +24,12 @@ export const useGlobalClinicalRegistry = (filters) => {
           providers (
             specialty,
            user_profiles (full_name)
+          ),
+          clinical_notes (
+            id,
+            content,
+            type,
+            created_at
           )
         `
         )
@@ -39,6 +45,8 @@ export const useGlobalClinicalRegistry = (filters) => {
         // Extraemos el perfil (array [0])
         const profileData = Array.isArray(providerData?.user_profiles) ? providerData.user_profiles[0] : providerData?.user_profiles;
 
+        const sortedNotes = item.clinical_notes ? [...item.clinical_notes].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) : [];
+
         return {
           ...item,
           patientName: item.patients?.name || "patient not found",
@@ -50,6 +58,8 @@ export const useGlobalClinicalRegistry = (filters) => {
           toothNumber: item.tooth_number || "N/A",
           date: item.created_at ? item.created_at.split("T")[0] : "",
           attachments: item.attachments || [],
+          clinical_notes: sortedNotes,
+          followUp: sortedNotes.find((n) => n.type === "followUp")?.content || null,
         };
       });
 

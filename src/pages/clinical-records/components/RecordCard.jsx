@@ -8,25 +8,13 @@ import ImageLightbox from "../../../components/ui/ImageLightBox";
 const RecordCard = ({ record, onViewDetails, onAddNote }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-
-  /* useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (selectedImageIndex === null) return;
-      if (e.key === "ArrowRight") nextImage();
-      if (e.key === "ArrowLeft") prevImage();
-      if (e.key === "Escape") setSelectedImageIndex(null);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImageIndex]); */
-
   const { t } = useTranslation();
 
   const getStatusColor = (status) => {
     const colors = {
-      completed: { classColor: "bg-success/10 text-success border-success/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
-      inProgress: { classColor: "bg-warning/10 text-warning border-warning/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
-      planned: { classColor: "bg-primary/10 text-primary border-primary/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
+      completed: { classColor: "bg-success/10 text-success border-success", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
+      inProgress: { classColor: "bg-warning/10 text-warning border-warning", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
+      planned: { classColor: "bg-primary/10 text-primary border-primary", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
       cancelled: { classColor: `bg-muted text-muted-foreground border-border`, label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
     };
     return colors?.[status] || colors?.planned;
@@ -67,7 +55,7 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
                 {t("records.card.patient")}: {record?.patientName} • {t("records.card.idPatient")}: {record?.patientId}
               </p>
               <div className="flex flex-wrap items-center gap-2">
-                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(record?.status).classColor}`}>
+                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border uppercase ${getStatusColor(record?.status).classColor}`}>
                   <Icon name="Circle" size={8} className="fill-current" />
                   {getStatusColor(record?.status).label}
                 </span>
@@ -75,7 +63,14 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
               </div>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setIsExpanded(!isExpanded)} iconName={isExpanded ? "ChevronUp" : "ChevronDown"} aria-label={isExpanded ? "Collapse" : "Expand"} />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsExpanded(!isExpanded)}
+            iconName={isExpanded ? "ChevronUp" : "ChevronDown"}
+            aria-label={isExpanded ? "Collapse" : "Expand"}
+            className="border"
+          />
         </div>
 
         <div className="space-y-3">
@@ -105,7 +100,9 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
           <div className="mt-4 pt-4 border-t border-border space-y-4 fade-in-up">
             <div>
               <h5 className="text-xs md:text-sm font-medium text-foreground mb-2">{t("records.card.treatmentNotes")}</h5>
-              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{record?.notes}</p>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                {record?.clinical_notes?.length > 0 ? record.clinical_notes[0].content : t("records.recordsModal.tabs.clinicalNotes.noNotes")}
+              </p>
             </div>
 
             {record?.attachments && record?.attachments?.length > 0 && (
@@ -134,7 +131,7 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
                   <Icon name="Calendar" size={16} color="var(--color-warning)" className="flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-xs md:text-sm font-medium text-warning mb-1">{t("records.card.followUp")}</p>
-                    <p className="text-xs text-muted-foreground">{record?.followUp}</p>
+                    <p className="text-xs text-muted-foreground">{record?.clinical_notes?.find((n) => n.type === "followUp")?.content}</p>
                   </div>
                 </div>
               </div>

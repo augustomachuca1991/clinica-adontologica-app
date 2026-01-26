@@ -146,7 +146,6 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
             insurance: formData.insurance,
             status: "inactive",
             tags: finalTags,
-            profile_id: user.id,
             provider_id: user.id,
             gender: formData?.gender,
             blood_type: formData?.bloodType,

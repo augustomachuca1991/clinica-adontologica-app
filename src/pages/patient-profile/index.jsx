@@ -7,6 +7,7 @@ import CommunicationsTab from "./components/CommunicationsTab";
 import BillingTab from "./components/BillingTab";
 import Icon from "../../components/AppIcon";
 import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
 import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
 import EditPatientModal from "../patient-directory/components/EditPatientModal";
@@ -486,7 +487,7 @@ const PatientProfile = () => {
           <form onSubmit={handleSearch} className="flex w-full max-w-md gap-2">
             <div className="relative flex-1">
               <Icon name="User" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
+              <Input
                 type="text"
                 className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg focus:ring-2 focus:ring-primary outline-none"
                 placeholder={t("search.patient.placeholder")}

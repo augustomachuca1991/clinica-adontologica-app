@@ -9,6 +9,7 @@ import RecordDetailsModal from "./components/RecordDetailsModal";
 import { useTranslation } from "react-i18next";
 import StatsOverview from "./components/StatsOverview";
 import { useGlobalClinicalRegistry } from "../../hooks/GlobalClinicalRegistryHooks";
+import { useClinicalNotes } from "../../hooks/ClinicalNotesHooks";
 
 const ClinicalRecords = () => {
   const [viewMode, setViewMode] = useState("grid");
@@ -26,6 +27,7 @@ const ClinicalRecords = () => {
 
   const { t } = useTranslation();
   const { records, loading, stats, refresh } = useGlobalClinicalRegistry(filters);
+  const { addNote } = useClinicalNotes();
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -49,32 +51,23 @@ const ClinicalRecords = () => {
 
   const handleAddNote = (record) => {
     setSelectedRecord(record);
+    setShowDetailsModal(false);
     setShowAddNoteModal(true);
   };
 
-  const handleSaveNote = (noteData) => {
-    console.log("Note saved:", noteData);
-  };
+  const handleSaveNote = async (content, type) => {
+    if (!selectedRecord) return;
 
-  /* const filteredRecords = records?.filter((record) => {
-    if (
-      filters?.searchQuery &&
-      !record?.patientName?.toLowerCase()?.includes(filters?.searchQuery?.toLowerCase()) &&
-      !record?.patientId?.toLowerCase()?.includes(filters?.searchQuery?.toLowerCase())
-    ) {
-      return false;
+    const result = await addNote(selectedRecord.id, content, type);
+
+    if (result.success) {
+      setShowAddNoteModal(false);
+      refresh(); // Esto recarga los records de Supabase con la nueva nota
+      notifySuccess(t("records.notes.saveSuccess"));
+    } else {
+      notifyError(result.error);
     }
-    if (filters?.treatmentType !== "all" && record?.treatmentType !== filters?.treatmentType) {
-      return false;
-    }
-    if (filters?.status !== "all" && record?.status !== filters?.status) {
-      return false;
-    }
-    if (filters?.provider !== "all" && record?.provider?.toLowerCase()?.replace(/\s+/g, "-")?.replace("dr.-", "dr-") !== filters?.provider) {
-      return false;
-    }
-    return true;
-  }); */
+  };
 
   return (
     <>
@@ -158,7 +151,7 @@ const ClinicalRecords = () => {
         </div>
       </div>
       {showAddNoteModal && selectedRecord && <AddNoteModal record={selectedRecord} onClose={() => setShowAddNoteModal(false)} onSave={handleSaveNote} />}
-      {showDetailsModal && selectedRecord && <RecordDetailsModal record={selectedRecord} onClose={() => setShowDetailsModal(false)} />}
+      {showDetailsModal && selectedRecord && <RecordDetailsModal record={selectedRecord} onClose={() => setShowDetailsModal(false)} onAddNote={() => handleAddNote(selectedRecord)} />}
     </>
   );
 };

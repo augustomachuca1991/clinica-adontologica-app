@@ -3,7 +3,7 @@ import Icon from "../../../components/AppIcon";
 import Image from "../../../components/AppImage";
 import { useTranslation } from "react-i18next";
 
-const TreatmentHistoryTab = ({ treatments }) => {
+const TreatmentHistoryTab = ({ treatments, loading }) => {
   const { t, i18n } = useTranslation();
 
   const getStatusColor = (status) => {

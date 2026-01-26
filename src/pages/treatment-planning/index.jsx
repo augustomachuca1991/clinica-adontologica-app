@@ -31,39 +31,6 @@ const TreatmentPlanning = () => {
   const { services, loading: loadingServices } = useTreatmentServices();
   const { saveTreatmentPlan, fetchPatientSummary, fetchPatientRecords, updateClinicalRecord, summary, records, loading: loadingTreatmentPlan } = useClinicalRecords();
 
-  /* const treatments = [
-    {
-      id: 1,
-      toothNumber: 16,
-      procedure: "Dental Crown",
-      cost: 1200,
-      duration: "2 weeks",
-      priority: "high",
-      status: "planned",
-      notes: "Porcelain crown recommended due to extensive decay",
-    },
-    {
-      id: 2,
-      toothNumber: 21,
-      procedure: "Composite Filling",
-      cost: 250,
-      duration: "1 visit",
-      priority: "medium",
-      status: "inProgress",
-      notes: "Small cavity on occlusal surface",
-    },
-    {
-      id: 3,
-      toothNumber: 27,
-      procedure: "Composite Filling",
-      cost: 2500,
-      duration: "1 visit",
-      priority: "medium",
-      status: "completed",
-      notes: "Small cavity on occlusal surface",
-    },
-  ] */
-
   const patientInsurance = {
     provider: "Delta Dental",
     policyNumber: "DD123456789",
@@ -315,7 +282,7 @@ const TreatmentPlanning = () => {
           </div>
         </div>
 
-        {showComparison && <TreatmentPlanComparison plans={treatmentPlans} onSelectPlan={handleSelectPlan} selectedPlanId={selectedPlanId} />}
+        {/* {showComparison && <TreatmentPlanComparison plans={treatmentPlans} onSelectPlan={handleSelectPlan} selectedPlanId={selectedPlanId} />} */}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           <div className="space-y-6">

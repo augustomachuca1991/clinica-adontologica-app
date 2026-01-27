@@ -296,10 +296,10 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
           {/* FOOTER */}
           <div className="p-6 border-t border-border bg-background/50 flex justify-end gap-3">
             <Button variant="outline" type="button" onClick={handleClose} className="px-6">
-              Cancelar
+              {t("cancel")}
             </Button>
             <Button variant="default" type="submit" className="px-8 shadow-lg shadow-primary/20">
-              Crear Paciente
+              {t("dashboard.quickActions.newPatient")}
             </Button>
           </div>
         </form>

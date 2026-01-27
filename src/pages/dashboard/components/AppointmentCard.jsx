@@ -46,7 +46,7 @@ const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
             </div>
             <div className="flex items-center gap-1">
               <Icon name="Calendar" size={14} />
-              <span>{appointment?.date}</span>
+              <span>{appointment.date instanceof Date ? appointment.date.toLocaleDateString() : appointment.date}</span>
             </div>
             {appointment?.duration && (
               <div className="flex items-center gap-1">

@@ -95,10 +95,11 @@
     "description": "Resumen y métricas del consultorio",
     "quickActions": {
       "title": "Acciones rápidas",
-      "newPatient": "Nuevo paciente",
-      "scheduleAppointment": "Programar turno",
-      "addNote": "Agregar nota",
-      "viewReports": "Ver informes"
+      "newPatient": "Nuevo Paciente",
+      "scheduleAppointment": "Programar Turno",
+      "addNote": "Agregar Nota",
+      "viewReports": "Ver informes",
+      "weekly": "Turnero Semanal"
     },
     "recentActivity": {
       "title": "Actividad reciente",
@@ -736,5 +737,19 @@
   },
   "modal": {
     "newPatient": "Nuevo Paciente"
+  },
+  "calendar": {
+    "title": "Agenda Semanal",
+    "subtitle": "Gestione sus horarios clínicos y citas",
+    "newAppointment": "Nuevo Turno",
+    "view": "Vista semanal"
+  },
+  "days": {
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado"
   }
 }

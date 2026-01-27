@@ -9,7 +9,10 @@ export const useAppointments = () => {
 
   const mapAppointments = (data) => {
     return data.map((appt) => {
-      const appointmentDate = new Date(appt.appointment_date);
+      const pureDateString = appt.appointment_date.substring(0, 19).replace(" ", "T");
+
+      // 3. Creamos la fecha. Al no tener "+00" ni "Z", JS la toma como LOCAL
+      const appointmentDate = new Date(pureDateString);
 
       return {
         id: appt.id,
@@ -18,11 +21,7 @@ export const useAppointments = () => {
         patientImage: appt.patients?.avatar || `https://ui-avatars.com/api/?background=b97beb&color=fff&name=${encodeURIComponent(appt.patients?.name || "P")}`,
         patientImageAlt: `Retrato de ${appt.patients?.name}`,
         treatment: appt.reason, // O appt.treatment_services?.name si hiciste el join
-        time: appointmentDate.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        }),
+        time: `${String(appointmentDate.getHours()).padStart(2, "0")}:${String(appointmentDate.getMinutes()).padStart(2, "0")}`,
         date: appointmentDate,
         duration: `${appt.duration_min} min`,
         status: appt.status || "confirmed",
@@ -68,6 +67,8 @@ export const useAppointments = () => {
     setLoading(true);
     try {
       if (!user?.id) throw new Error("No hay un usuario autenticado.");
+
+      /* const dateToSave = appointmentData.date.replace("Z", ""); */
 
       const { data, error } = await supabase.from("appointments").insert([
         {

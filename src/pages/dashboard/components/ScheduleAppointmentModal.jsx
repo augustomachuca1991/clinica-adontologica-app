@@ -18,7 +18,7 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
   const { searchPatients } = usePatients();
   const { services, loading: loadingServices } = useTreatmentServices();
 
-  const isEditing = !!initialData;
+  const isEditing = !!initialData?.id; // Es edición real si tiene un ID de base de datos
 
   const getCurrentDate = () => new Date().toISOString().split("T")[0];
   const getCurrentTime = () => {
@@ -68,7 +68,7 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
     [t]
   );
 
-  // Buscador de pacientes en tiempo real
+  // --- 1. BUSCADOR DE PACIENTES ---
   useEffect(() => {
     const performSearch = async () => {
       if (searchTerm.length < 2) {
@@ -76,37 +76,50 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
         return;
       }
       setIsSearching(true);
-      const results = await searchPatients(searchTerm);
-      setPatients(results);
-      setIsSearching(false);
+      try {
+        const results = await searchPatients(searchTerm);
+        setPatients(results || []);
+      } catch (error) {
+        console.error("Error buscando pacientes:", error);
+      } finally {
+        setIsSearching(false);
+      }
     };
+
     const delayDebounce = setTimeout(performSearch, 300);
     return () => clearTimeout(delayDebounce);
   }, [searchTerm, searchPatients]);
 
+  // Buscador de pacientes en tiempo real
   useEffect(() => {
     if (isOpen) {
       if (initialData) {
-        // MODO EDICIÓN: Cargamos lo que viene de la base de datos
-        const d = new Date(initialData.date);
+        // Caso A: Seleccionamos un slot vacío en la grilla (pasa date y time)
+        // Caso B: Editamos una cita existente (pasa objeto de cita completo)
+
+        const dateValue = initialData.date || getCurrentDate();
+        const timeValue = initialData.time || getCurrentTime();
+
         setFormData({
           patientId: initialData.patientId || "",
-          date: d.toISOString().split("T")[0],
-          time: d.toTimeString().slice(0, 5),
-          duration: initialData.duration?.replace(" min", "") || "30",
+          date: dateValue,
+          time: timeValue,
+          duration: initialData.duration?.toString().replace(" min", "") || "30",
           reason: initialData.treatment || "",
           notes: initialData.notes || "",
           status: initialData.status || "scheduled",
           serviceId: initialData.serviceId || null,
         });
-        // Importante: Marcar el paciente como seleccionado
-        setSelectedPatient({
-          id: initialData.patientId,
-          name: initialData.patientName,
-          avatar: initialData.patientImage,
-        });
+
+        if (initialData.patientId) {
+          setSelectedPatient({
+            id: initialData.patientId,
+            name: initialData.patientName,
+            avatar: initialData.patientImage,
+          });
+        }
       } else {
-        // MODO NUEVO: Valores por defecto
+        // RESET TOTAL para cita nueva desde el botón "Nuevo"
         setFormData({
           patientId: "",
           date: getCurrentDate(),
@@ -119,13 +132,17 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
         });
         setSelectedPatient(null);
         setSearchTerm("");
+        setPatients([]); // Limpia la lista de búsqueda
       }
+    } else {
+      // Limpiar búsqueda al cerrar para que no aparezca al reabrir
+      setSearchTerm("");
+      setPatients([]);
     }
   }, [initialData, isOpen]);
 
   const handleServiceChange = (selectedName) => {
     const serviceInfo = serviceOptions.find((s) => s.value === selectedName);
-
     setFormData((prev) => ({
       ...prev,
       reason: selectedName,
@@ -134,30 +151,21 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
     }));
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      setFormData((prev) => ({
-        ...prev,
-        date: getCurrentDate(),
-        time: getCurrentTime(),
-      }));
-    }
-  }, [isOpen]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedPatient) return alert(t("appointment.errorNoPatient"));
 
-    const appointmentDateTime = new Date(`${formData.date}T${formData.time}`).toISOString();
+    // IMPORTANTE: Construimos el ISO Local (sin Z) para que tu lógica de handleSave funcione
+    const localDateTime = `${formData.date}T${formData.time}:00`;
 
     onSave({
       patientId: selectedPatient.id,
-      date: appointmentDateTime,
+      date: localDateTime,
       duration: formData.duration,
       reason: formData.reason,
       serviceId: formData.serviceId,
       notes: formData.notes,
-      status: formData.status, // <--- No olvides el status aquí
+      status: formData.status,
     });
   };
 

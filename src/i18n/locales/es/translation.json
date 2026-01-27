@@ -553,21 +553,59 @@
     "thisYear": "Este año"
   },
   "appointment": {
-    "titlePanel": "Turnos de hoy",
+    "noAppointments": {
+      "today": "No tienes citas programadas para hoy.",
+      "week": "No hay citas registradas para esta semana.",
+      "month": "No se encontraron citas para este mes."
+    },
+    "timeFrame": {
+      "today": "Turnos de hoy",
+      "week": "Turnos de la semana",
+      "month": "Turnos del mes",
+      "all": "Todos"
+    },
     "viewAll": "Ver todos",
     "overdue": "Vencido",
     "status": {
       "confirmed": "Confirmado",
       "pending": "Pendiente",
-      "cancelled": "Cancelado"
+      "cancelled": "Cancelado",
+      "scheduled": "Programado",
+      "in-progress": "En curso",
+      "completed": "Finalizado",
+      "no-show": "No asistió"
     },
     "priority": {
       "high": "Alta",
       "normal": "Normal",
       "urgent": "Urgente"
     },
+    "editTitle": "Reprogramar turno",
+    "statusLabel": "Estado del turno",
     "viewDetails": "Ver detalles",
-    "reschedule": "Reprogramar"
+    "reschedule": "Reprogramar",
+    "scheduleTitle": "Agendar Cita",
+    "searchPatient": "Buscar paciente",
+    "patientPlaceholder": "Buscar por nombre...",
+    "changePatient": "Cambiar",
+    "date": "Fecha",
+    "time": "Hora",
+    "procedure": "Procedimiento",
+    "duration": "Duración",
+    "selectService": "Seleccione un servicio",
+    "loadingServices": "Cargando servicios...",
+    "confirm": "Confirmar Cita",
+    "scheduling": "Agendando...",
+    "notes": "Notas Adicionales",
+    "notesPlaceholder": "Ej: Alérgico a la anestesia, traer radiografías...",
+    "errorNoPatient": "Por favor selecciona un paciente",
+    "msgSuccess": "Cita agendada correctamente",
+    "msgError": "No se pudo agendar la cita"
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "error": "Error",
+    "select": "Seleccionar"
   },
   "printableRecord": {
     "title": "Ficha Clínica Odontológica",

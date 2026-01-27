@@ -555,13 +555,27 @@
     "thisYear": "This year"
   },
   "appointment": {
-    "titlePanel": "Today's Appointments",
+    "noAppointments": {
+      "today": "No appointments scheduled for today.",
+      "week": "No appointments registered for this week.",
+      "month": "No appointments found for this month."
+    },
+    "timeFrame": {
+      "today": "Today's appointments",
+      "week": "This week's appointments",
+      "month": "This month's appointments",
+      "all": "All"
+    },
     "viewAll": "View all",
     "overdue": "Overdue",
     "status": {
       "confirmed": "Confirmed",
       "pending": "Pending",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "scheduled": "Scheduled",
+      "in-progress": "In progress",
+      "completed": "Completed",
+      "no-show": "No show"
     },
     "priority": {
       "low": "Low",
@@ -569,8 +583,32 @@
       "normal": "Normal",
       "urgent": "Urgent"
     },
+    "editTitle": "Reschedule Appointment",
+    "statusLabel": "Appointment Status",
     "viewDetails": "View details",
-    "reschedule": "Reschedule"
+    "reschedule": "Reschedule",
+    "scheduleTitle": "Schedule Appointment",
+    "searchPatient": "Search patient",
+    "patientPlaceholder": "Search by name...",
+    "changePatient": "Change",
+    "date": "Date",
+    "time": "Time",
+    "procedure": "Procedure",
+    "duration": "Duration",
+    "selectService": "Select a service",
+    "loadingServices": "Loading services...",
+    "confirm": "Confirm Appointment",
+    "scheduling": "Scheduling...",
+    "notes": "Additional Notes",
+    "notesPlaceholder": "E.g., Allergic to anesthesia, bring X-rays...",
+    "errorNoPatient": "Please select a patient",
+    "msgSuccess": "Appointment scheduled successfully",
+    "msgError": "Could not schedule the appointment"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "error": "Error",
+    "select": "Select"
   },
   "printableRecord": {
     "title": "Dental Medical Record",

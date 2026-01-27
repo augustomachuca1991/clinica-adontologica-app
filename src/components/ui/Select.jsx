@@ -63,7 +63,9 @@ const Select = React.forwardRef(
       return selectedOption ? selectedOption?.label : finalPlaceholder;
     };
 
-    const handleToggle = () => {
+    const handleToggle = (e) => {
+      e.preventDefault(); // <-- Agrega esto
+      e.stopPropagation(); // <-- Agrega esto
       if (!disabled) {
         const newIsOpen = !isOpen;
         setIsOpen(newIsOpen);

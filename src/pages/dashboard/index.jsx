@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../../components/ui/Button";
+import Skeleton from "../../components/ui/Skeleton";
 /* import StatCard from "./components/StatCard"; */
 import AppointmentCard from "./components/AppointmentCard";
 import PatientAlertCard from "./components/PatientAlertCard";
@@ -11,13 +12,25 @@ import TreatmentProgressChart from "./components/TreatmentProgressChart";
 import UpcomingTaskCard from "./components/UpcomingTaskCard";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
+import AddPatientModal from "../patient-directory/components/AddPatientModal";
+import { usePatients } from "../../hooks/PatientsHooks";
+import { useAppointments } from "../../hooks/AppointmentsHooks";
+import ScheduleAppointmentModal from "../dashboard/components/ScheduleAppointmentModal";
+import { notifyError, notifySuccess } from "../../utils/notifications";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [selectedTimeframe, setSelectedTimeframe] = useState("today");
+  const [isSaving, setIsSaving] = useState(false);
   const { userProfile } = useAuth();
-  const fullname = userProfile?.full_name || "no especified";
   const { t } = useTranslation();
+  const [isAddPatientModalOpen, setIsAddPatientModalOpen] = useState(false);
+  const fullname = userProfile?.full_name || "no especified";
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+  const { appointments, fetchAppointments, addAppointment, updateAppointment, loading: isSavingAppt } = useAppointments();
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  const { addPatient } = usePatients();
 
   /* const stats = [
     {
@@ -58,176 +71,10 @@ const Dashboard = () => {
     },
   ];
  */
-  const appointments = [
-    {
-      id: 1,
-      patientName: "Sarah Johnson",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Sarah+Johnson",
-      patientImageAlt: "Retrato profesional de mujer caucásica con cabello rubio, con bata médica blanca, sonriendo cordialmente",
-      treatment: "Tratamiento de conducto",
-      time: "09:00 AM",
-      date: "Hoy",
-      duration: "60 min",
-      status: "confirmed",
-      priority: "high",
-    },
-    {
-      id: 2,
-      patientName: "Michael Chen",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Michael+Chen",
-      patientImageAlt: "Retrato profesional de hombre asiático con cabello corto negro, con camisa azul y expresión confiada",
-      treatment: "Limpieza dental",
-      time: "10:30 AM",
-      date: "Hoy",
-      duration: "30 min",
-      status: "cancelled",
-      priority: "normal",
-    },
-    {
-      id: 3,
-      patientName: "Emily Rodriguez",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Emily+Rodriguez",
-      patientImageAlt: "Retrato profesional de mujer hispana con cabello largo castaño, con blusa verde y sonrisa amigable",
-      treatment: "Colocación de corona",
-      time: "02:00 PM",
-      date: "Hoy",
-      duration: "90 min",
-      status: "pending",
-      priority: "urgent",
-    },
-    {
-      id: 4,
-      patientName: "Santino Billordo",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Santino+Billordo",
-      patientImageAlt: "Retrato profesional de hombre hispano con cabello corto negro, con camisa azul y expresión confiada",
-      treatment: "Colocación de corona",
-      time: "06:00 PM",
-      date: "Hoy",
-      duration: "60 min",
-      status: "pending",
-      priority: "normal",
-    },
-    /* {
-      id: 5,
-      patientName: "Laura Martínez",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Laura+Martinez",
-      patientImageAlt: "Retrato profesional de mujer hispana con cabello castaño y sonrisa amable",
-      treatment: "Relleno",
-      time: "08:00 AM",
-      date: "Hoy",
-      duration: "45 min",
-      status: "confirmed",
-      priority: "normal",
-    },
-    {
-      id: 6,
-      patientName: "Carlos Fernández",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Carlos+Fernandez",
-      patientImageAlt: "Retrato profesional de hombre hispano con cabello corto negro y expresión seria",
-      treatment: "Limpieza dental",
-      time: "09:30 AM",
-      date: "Hoy",
-      duration: "30 min",
-      status: "pending",
-      priority: "high",
-    },
-    {
-      id: 7,
-      patientName: "Ana Gómez",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Ana+Gomez",
-      patientImageAlt: "Retrato profesional de mujer latina con cabello negro largo y sonrisa amable",
-      treatment: "Extracción dental",
-      time: "10:15 AM",
-      date: "Hoy",
-      duration: "60 min",
-      status: "confirmed",
-      priority: "urgent",
-    },
-    {
-      id: 8,
-      patientName: "José López",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Jose+Lopez",
-      patientImageAlt: "Retrato profesional de hombre latino con cabello corto castaño y sonrisa",
-      treatment: "Tratamiento de conducto radicular",
-      time: "11:00 AM",
-      date: "Hoy",
-      duration: "75 min",
-      status: "confirmed",
-      priority: "high",
-    },
-    {
-      id: 9,
-      patientName: "Valeria Torres",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Valeria+Torres",
-      patientImageAlt: "Retrato profesional de mujer hispana con cabello rubio y sonrisa amable",
-      treatment: "Colocación de corona",
-      time: "12:00 PM",
-      date: "Hoy",
-      duration: "90 min",
-      status: "pending",
-      priority: "urgent",
-    },
-    {
-      id: 10,
-      patientName: "Miguel Sánchez",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Miguel+Sanchez",
-      patientImageAlt: "Retrato profesional de hombre latino con cabello negro y expresión confiada",
-      treatment: "Limpieza dental",
-      time: "01:00 PM",
-      date: "Hoy",
-      duration: "30 min",
-      status: "cancelled",
-      priority: "normal",
-    },
-    {
-      id: 11,
-      patientName: "Sofía Ruiz",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Sofia+Ruiz",
-      patientImageAlt: "Retrato profesional de mujer hispana con cabello castaño y sonrisa amable",
-      treatment: "Relleno",
-      time: "02:30 PM",
-      date: "Hoy",
-      duration: "45 min",
-      status: "confirmed",
-      priority: "high",
-    },
-    {
-      id: 12,
-      patientName: "Diego Morales",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Diego+Morales",
-      patientImageAlt: "Retrato profesional de hombre latino con cabello castaño y expresión seria",
-      treatment: "Ortodoncia",
-      time: "03:30 PM",
-      date: "Hoy",
-      duration: "60 min",
-      status: "pending",
-      priority: "urgent",
-    },
-    {
-      id: 13,
-      patientName: "Isabella Cruz",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Isabella+Cruz",
-      patientImageAlt: "Retrato profesional de mujer hispana con cabello largo y sonrisa amable",
-      treatment: "Ajustes de aparato ortodóntico",
-      time: "04:30 PM",
-      date: "Hoy",
-      duration: "90 min",
-      status: "confirmed",
-      priority: "normal",
-    },
-    {
-      id: 14,
-      patientName: "Fernando Díaz",
-      patientImage: "https://ui-avatars.com/api/?background=b97beb&color=fff&name=Fernando+Diaz",
-      patientImageAlt: "Retrato profesional de hombre latino con cabello corto y expresión confiada",
-      treatment: "Limpieza dental",
-      time: "05:30 PM",
-      date: "Hoy",
-      duration: "75 min",
-      status: "cancelled",
-      priority: "high",
-    }, */
-  ];
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [fetchAppointments]);
 
   const alerts = [
     {
@@ -368,7 +215,14 @@ const Dashboard = () => {
   };
 
   const handleRescheduleAppointment = (appointmentId) => {
-    console.log("Rescheduling appointment:", appointmentId);
+    const apptToEdit = appointments.find((a) => a.id === appointmentId);
+    setSelectedAppointment(apptToEdit);
+    setIsScheduleModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsScheduleModalOpen(false);
+    setSelectedAppointment(null);
   };
 
   const handleDismissAlert = (alertId) => {
@@ -383,9 +237,12 @@ const Dashboard = () => {
   const handleQuickAction = (action) => {
     console.log("Quick action:", action);
     if (action === "newPatient") {
-      navigate("/patient-directory");
+      setIsAddPatientModalOpen(true);
+      /* navigate("/patient-directory"); */
     } else if (action === "scheduleAppointment") {
-      navigate("/treatment-planning");
+      setIsScheduleModalOpen(true);
+    } else if (action === "addNote") {
+      navigate("/clinical-records");
     }
   };
 
@@ -393,87 +250,215 @@ const Dashboard = () => {
     console.log("Task completion toggled:", taskId, completed);
   };
 
+  const handleAddPatient = async (formData, imageFile) => {
+    setIsSaving(true);
+    const result = await addPatient(formData, imageFile);
+    setIsSaving(false);
+
+    if (result.success) {
+      // 1. Cerramos el modal
+      setIsAddPatientModalOpen(false);
+
+      // 2. Opcional: Mostrar una notificación de éxito
+      console.log("¡Paciente guardado con éxito!");
+
+      // 3. Opcional: Si quieres que el doctor vea al paciente recién creado
+      // navigate('/patient-directory');
+    } else {
+      // Manejo de error si algo falla en el hook
+      console.error("Error al guardar:", result.error);
+      alert(t("common.errorSaving") + ": " + result.error);
+    }
+  };
+
   const handleViewTaskDetails = (taskId) => {
     console.log("Viewing task:", taskId);
   };
 
-  return (
-    <div className="space-y-6 md:space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("home.welcome", { name: fullname })}</h1>
-          <p className="text-sm md:text-base text-muted-foreground">{t("home.overview")}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant={selectedTimeframe === "today" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("today")}>
-            {t("timeFrame.today")}
-          </Button>
-          <Button variant={selectedTimeframe === "week" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("week")}>
-            {t("timeFrame.thisWeek")}
-          </Button>
-          <Button variant={selectedTimeframe === "month" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("month")}>
-            {t("timeFrame.thisMonth")}
-          </Button>
+  const handleSaveAppointment = async (appointmentData) => {
+    try {
+      const result = await addAppointment(appointmentData);
+
+      if (result.success) {
+        setIsScheduleModalOpen(false);
+        notifySuccess(t("appointment.msgSuccess"));
+        await fetchAppointments();
+      } else {
+        console.error("Error:", result.error);
+        notifyError(t("appointment.msgError") + ": " + (result.error || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("error:", error);
+      notifyError(t("appointment.msgError"));
+    }
+  };
+
+  const handleUpdate = async (appointmentData) => {
+    try {
+      // 1. Extraemos la función updateAppointment de tu hook
+      // (Asegúrate de agregarla a la desestructuración de useAppointments arriba)
+      const result = await updateAppointment(selectedAppointment.id, appointmentData);
+
+      if (result.success) {
+        handleCloseModal(); // Esto cierra y limpia el selectedAppointment
+        notifySuccess(t("appointment.msgUpdateSuccess") || "Cita actualizada correctamente");
+        await fetchAppointments(); // Refresca la lista para ver los cambios
+      } else {
+        notifyError(result.error || t("appointment.msgError"));
+      }
+    } catch (error) {
+      console.error("Error en update:", error);
+      notifyError(t("appointment.msgError"));
+    }
+  };
+
+  const filteredAppointments = useMemo(() => {
+    if (!appointments || appointments.length === 0) return [];
+
+    if (selectedTimeframe === "all") return appointments;
+
+    const now = new Date();
+    const todayStr = now.toDateString();
+
+    return appointments.filter((appt) => {
+      // appt.date ya es un objeto Date según tu hook, no hace falta hacer new Date()
+      const apptDate = appt.date;
+
+      if (selectedTimeframe === "today") {
+        return apptDate.toDateString() === todayStr;
+      }
+
+      if (selectedTimeframe === "week") {
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(23, 59, 59, 999);
+
+        return apptDate >= startOfWeek && apptDate <= endOfWeek;
+      }
+
+      if (selectedTimeframe === "month") {
+        return apptDate.getMonth() === now.getMonth() && apptDate.getFullYear() === now.getFullYear();
+      }
+
+      return true;
+    });
+  }, [appointments, selectedTimeframe]);
+
+  const AppointmentSkeleton = () => (
+    <div className="flex items-center justify-between p-3 border-b border-border last:border-0">
+      <div className="flex items-center gap-3">
+        {/* Círculo del Avatar */}
+        <Skeleton className="w-10 h-10 rounded-full" />
+        <div className="space-y-2">
+          {/* Nombre del paciente */}
+          <Skeleton className="h-4 w-32" />
+          {/* Tratamiento/Razón */}
+          <Skeleton className="h-3 w-24" />
         </div>
       </div>
+      <div className="flex flex-col items-end space-y-2">
+        {/* Hora */}
+        <Skeleton className="h-4 w-16" />
+        {/* Duración */}
+        <Skeleton className="h-3 w-12" />
+      </div>
+    </div>
+  );
 
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+  return (
+    <>
+      <div className="space-y-6 md:space-y-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("home.welcome", { name: fullname })}</h1>
+            <p className="text-sm md:text-base text-muted-foreground">{t("home.overview")}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant={selectedTimeframe === "today" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("today")}>
+              {t("timeFrame.today")}
+            </Button>
+            <Button variant={selectedTimeframe === "week" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("week")}>
+              {t("timeFrame.thisWeek")}
+            </Button>
+            <Button variant={selectedTimeframe === "month" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("month")}>
+              {t("timeFrame.thisMonth")}
+            </Button>
+          </div>
+        </div>
+
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {stats?.map((stat, index) => (
             <StatCard key={index} {...stat} />
           ))}
         </div> */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="clinical-card p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4 md:mb-6">
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("appointment.titlePanel")}</h2>
-              <Button variant="ghost" size="sm" onClick={() => navigate("/treatment-planning")} iconName="Calendar" iconPosition="left">
-                {t("appointment.viewAll")}
-              </Button>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="clinical-card p-4 md:p-6">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t(`appointment.timeFrame.${selectedTimeframe}`)}</h2>
+                <Button variant="ghost" size="sm" onClick={() => setSelectedTimeframe("all")} iconName="Calendar" iconPosition="left">
+                  {t("appointment.viewAll")}
+                </Button>
+              </div>
+              <div className="space-y-4">
+                {isSavingAppt ? (
+                  // Mostramos 4 esqueletos mientras carga
+                  <>
+                    <AppointmentSkeleton />
+                    <AppointmentSkeleton />
+                    <AppointmentSkeleton />
+                    <AppointmentSkeleton />
+                  </>
+                ) : filteredAppointments.length === 0 ? (
+                  <p className="text-muted-foreground p-4 text-center">{t(`appointment.noAppointments.${selectedTimeframe}`)}</p>
+                ) : (
+                  filteredAppointments?.map((appointment) => (
+                    <AppointmentCard key={appointment.id} appointment={appointment} onViewDetails={handleViewAppointmentDetails} onReschedule={handleRescheduleAppointment} />
+                  ))
+                )}
+              </div>
             </div>
-            <div className="space-y-4">
-              {appointments?.map((appointment) => (
-                <AppointmentCard key={appointment?.id} appointment={appointment} onViewDetails={handleViewAppointmentDetails} onReschedule={handleRescheduleAppointment} />
-              ))}
+
+            <div className="clinical-card p-4 md:p-6">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.treatmentProgress.title")}</h2>
+                <Button variant="ghost" size="sm" iconName="Download" iconPosition="left">
+                  {t("dashboard.treatmentProgress.export")}
+                </Button>
+              </div>
+              <TreatmentProgressChart data={treatmentData} t={t} />
             </div>
           </div>
 
-          <div className="clinical-card p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4 md:mb-6">
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.treatmentProgress.title")}</h2>
-              <Button variant="ghost" size="sm" iconName="Download" iconPosition="left">
-                {t("dashboard.treatmentProgress.export")}
-              </Button>
+          <div className="space-y-6">
+            <div className="clinical-card p-4 md:p-6">
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">{t("dashboard.quickActions.title")}</h2>
+              <div className="grid grid-cols-2 gap-3">
+                {quickActions?.map((action, index) => (
+                  <QuickActionButton key={index} icon={action?.icon} label={t(`dashboard.quickActions.${action?.label}`)} color={action?.color} onClick={() => handleQuickAction(action?.label)} />
+                ))}
+              </div>
             </div>
-            <TreatmentProgressChart data={treatmentData} t={t} />
-          </div>
-        </div>
+            <div className="clinical-card p-4 md:p-6">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.recentActivity.title")}</h2>
+                <Button variant="ghost" size="sm" iconName="RefreshCw" iconPosition="left">
+                  {t("dashboard.recentActivity.refresh")}
+                </Button>
+              </div>
+              <div className="space-y-2">
+                {recentActivities?.map((activity) => (
+                  <RecentActivityItem key={activity?.id} activity={activity} />
+                ))}
+              </div>
+            </div>
 
-        <div className="space-y-6">
-          <div className="clinical-card p-4 md:p-6">
-            <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">{t("dashboard.quickActions.title")}</h2>
-            <div className="grid grid-cols-2 gap-3">
-              {quickActions?.map((action, index) => (
-                <QuickActionButton key={index} icon={action?.icon} label={t(`dashboard.quickActions.${action?.label}`)} color={action?.color} onClick={() => handleQuickAction(action?.label)} />
-              ))}
-            </div>
-          </div>
-          <div className="clinical-card p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4 md:mb-6">
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.recentActivity.title")}</h2>
-              <Button variant="ghost" size="sm" iconName="RefreshCw" iconPosition="left">
-                {t("dashboard.recentActivity.refresh")}
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {recentActivities?.map((activity) => (
-                <RecentActivityItem key={activity?.id} activity={activity} />
-              ))}
-            </div>
-          </div>
-
-          {/* <div className="clinical-card p-4 md:p-6">
+            {/* <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Patient Alerts</h2>
                 <span className="status-indicator bg-error/10 text-error text-xs px-2 py-1">{alerts?.filter((a) => a?.type === "critical")?.length} Critical</span>
@@ -493,9 +478,18 @@ const Dashboard = () => {
                 ))}
               </div>
             </div> */}
+          </div>
         </div>
       </div>
-    </div>
+      <ScheduleAppointmentModal
+        isOpen={isScheduleModalOpen}
+        onClose={handleCloseModal}
+        onSave={selectedAppointment ? handleUpdate : handleSaveAppointment}
+        initialData={selectedAppointment}
+        isLoading={isSavingAppt}
+      />
+      <AddPatientModal isOpen={isAddPatientModalOpen} onClose={() => setIsAddPatientModalOpen(false)} onSave={handleAddPatient} />
+    </>
   );
 };
 

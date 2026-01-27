@@ -111,9 +111,9 @@ const Dashboard = () => {
 
   const quickActions = [
     { icon: "UserPlus", label: "newPatient", color: "var(--color-primary)" },
-    { icon: "Calendar", label: "scheduleAppointment", color: "var(--color-success)" },
+    { icon: "AlarmClockCheck", label: "scheduleAppointment", color: "var(--color-success)" },
     { icon: "FileText", label: "addNote", color: "var(--color-warning)" },
-    { icon: "PieChart", label: "viewReports", color: "var(--color-brand-accent)" },
+    { icon: "Calendar", label: "weekly", color: "var(--color-accent)" },
   ];
 
   const recentActivities = [
@@ -235,14 +235,16 @@ const Dashboard = () => {
   };
 
   const handleQuickAction = (action) => {
-    console.log("Quick action:", action);
     if (action === "newPatient") {
       setIsAddPatientModalOpen(true);
-      /* navigate("/patient-directory"); */
     } else if (action === "scheduleAppointment") {
       setIsScheduleModalOpen(true);
     } else if (action === "addNote") {
       navigate("/clinical-records");
+    } else if (action === "weekly") {
+      navigate("/weekly-calendar");
+    } else {
+      navigate("/dashboard");
     }
   };
 

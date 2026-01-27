@@ -98,7 +98,8 @@
       "newPatient": "New Patient",
       "scheduleAppointment": "Schedule",
       "addNote": "Add Note",
-      "viewReports": "View Reports"
+      "viewReports": "View Reports",
+      "weekly": "Weekly Calendar"
     },
     "recentActivity": {
       "title": "Recent Activity",
@@ -739,5 +740,19 @@
   },
   "modal": {
     "newPatient": "New Patient"
+  },
+  "calendar": {
+    "title": "Weekly Planner",
+    "subtitle": "Manage your clinical hours and appointments",
+    "newAppointment": "New Appointment",
+    "view": "Weekly view"
+  },
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
   }
 }

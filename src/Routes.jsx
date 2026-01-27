@@ -14,6 +14,8 @@ import MainLayout from "./components/ui/MainLayout";
 import SubscriptionExpired from "./pages/subscription-expired";
 import ForgotPassword from "./pages/forgot-password";
 import ResetPassword from "./pages/reset-password";
+import WeeklyCalendar from "./pages/weekly-calendar";
+
 import Terms from "./pages/terms";
 
 import AdminPanel from "./pages/admin-panel";
@@ -41,6 +43,7 @@ const Routes = () => {
                 <Route path="/patient-profile/:id?" element={<PatientProfile />} />
                 <Route path="/treatment-planning" element={<TreatmentPlanning />} />
                 <Route path="/clinical-records" element={<ClinicalRecords />} />
+                <Route path="/weekly-calendar" element={<WeeklyCalendar />} />
               </Route>
 
               {/* GRUPO ADMINISTRATIVO: Solo para Admins */}

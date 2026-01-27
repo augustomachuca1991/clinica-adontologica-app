@@ -3,9 +3,11 @@ import Icon from "../../../components/AppIcon";
 import Image from "../../../components/AppImage";
 import Button from "../../../components/ui/Button";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const getStatusColor = () => {
     switch (appointment?.status) {
       case "confirmed":
@@ -58,7 +60,7 @@ const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
         </div>
       </div>
       <div className="flex gap-2 pt-3 border-t border-border">
-        <Button variant="tertiary" size="sm" onClick={() => onViewDetails(appointment?.id)} iconName="Eye" iconPosition="left" className="flex-1">
+        <Button variant="tertiary" size="sm" onClick={() => navigate("/weekly-calendar")} iconName="Eye" iconPosition="left" className="flex-1">
           {t("appointment.viewDetails")}
         </Button>
         <Button variant="default" size="sm" onClick={() => onReschedule(appointment?.id)} iconName="Calendar" iconPosition="left" className="flex-1">

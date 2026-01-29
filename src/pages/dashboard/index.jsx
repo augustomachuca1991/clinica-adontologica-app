@@ -210,7 +210,6 @@ const Dashboard = () => {
   ]; */
 
   const handleViewAppointmentDetails = (appointmentId) => {
-    console.log("Viewing appointment:", appointmentId);
     navigate("/treatment-planning");
   };
 

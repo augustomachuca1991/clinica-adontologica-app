@@ -10,3 +10,23 @@ body {
   font-family: inherit;
   margin: unset;
 }
+
+.custom-datetime-input::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+/* Opcional: Estilizar el input para que el texto no pise el icono */
+input[type="date"].custom-datetime-input,
+input[type="time"].custom-datetime-input {
+  appearance: none;
+  -webkit-appearance: none;
+}

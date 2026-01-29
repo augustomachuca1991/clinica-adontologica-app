@@ -14,7 +14,8 @@ import logo from "../../../public/assets/images/logo-orion-software.svg";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, signIn, isLoggedIn, hasActiveSubscription } = useAuth();
+  const { isAuthenticated, signIn, isLoggedIn, hasActiveSubscription } =
+    useAuth();
   const { t } = useTranslation();
 
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -61,7 +62,11 @@ const Login = () => {
       }
 
       // Consultamos roles
-      const { data: profileData } = await supabase.from("user_profiles").select(`user_roles ( roles ( name ) )`).eq("id", data.user.id).single();
+      const { data: profileData } = await supabase
+        .from("user_profiles")
+        .select(`user_roles ( roles ( name ) )`)
+        .eq("id", data.user.id)
+        .single();
 
       const roles = profileData?.user_roles?.map((ur) => ur.roles?.name) || [];
 
@@ -83,7 +88,9 @@ const Login = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-muted/40">
         <Spinner size={56} />
-        <p className="mt-4 text-muted-foreground animate-pulse">{t("workspace")}</p>
+        <p className="mt-4 text-muted-foreground animate-pulse">
+          {t("workspace")}
+        </p>
       </div>
     );
   }
@@ -94,9 +101,15 @@ const Login = () => {
         {/* Header */}
         <div className="text-center mb-6">
           <div className="mx-auto mb-3 flex items-center justify-center rounded-xl bg-primary/10">
-            <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
+            <Image
+              src={logo}
+              alt="App Logo"
+              className="h-14 md:h-18 w-auto object-contain"
+            />
           </div>
-          <h1 className="text-2xl font-headline font-bold tracking-[-0.015em] text-foreground">{APP_NAME}</h1>
+          <h1 className="text-2xl font-headline font-bold tracking-[-0.015em] text-foreground">
+            {APP_NAME}
+          </h1>
           <p className="text-sm text-muted-foreground">{t("login.subtitle")}</p>
         </div>
 
@@ -136,22 +149,29 @@ const Login = () => {
                 name="rememberMe"
                 checked={form.rememberMe}
                 className="mt-1 focus:ring-2 focus:ring-primary tracking-[-0.015em]"
-                onChange={(e) => setForm((prev) => ({ ...prev, rememberMe: e.target.checked }))}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, rememberMe: e.target.checked }))
+                }
               />
             </div>
 
-            <Button variant="default" className="w-full" type="submit" disabled={isRedirecting}>
+            <Button
+              variant="default"
+              className="w-full"
+              type="submit"
+              disabled={isRedirecting}
+            >
               {t("login.submit")}
             </Button>
           </div>
         </form>
 
         {/* Divider */}
-        <div className="my-6 flex items-center gap-3">
+        {/* <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-border" />
           <span className="text-xs text-muted-foreground">{t("login.continueWith")}</span>
           <div className="h-px flex-1 bg-border" />
-        </div>
+        </div> */}
 
         {/* Social login */}
         {/* <div className="grid grid-cols-2 gap-3">

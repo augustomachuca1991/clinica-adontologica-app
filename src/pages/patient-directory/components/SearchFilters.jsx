@@ -7,10 +7,22 @@ import { useTranslation } from "react-i18next";
 const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   const { t } = useTranslation();
   const statusOptions = [
-    { value: "all", label: "All Status" },
-    { value: "active", label: "Active" },
-    { value: "pending", label: "Pending" },
-    { value: "inactive", label: "Inactive" },
+    {
+      value: "all",
+      label: t("directory.panelFilter.patientStatusOptions.all"),
+    },
+    {
+      value: "active",
+      label: t("directory.panelFilter.patientStatusOptions.active"),
+    },
+    {
+      value: "pending",
+      label: t("directory.panelFilter.patientStatusOptions.pending"),
+    },
+    {
+      value: "inactive",
+      label: t("directory.panelFilter.patientStatusOptions.inactive"),
+    },
   ];
 
   const appointmentOptions = [
@@ -44,8 +56,16 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   return (
     <div className="clinical-card p-4 md:p-5 lg:p-6 mb-6">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
-        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("directory.panelFilter.title")}</h2>
-        <Button variant="outline" size="sm" onClick={onReset} iconName="RotateCcw" iconPosition="left">
+        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+          {t("directory.panelFilter.title")}
+        </h2>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onReset}
+          iconName="RotateCcw"
+          iconPosition="left"
+        >
           {t("directory.panelFilter.resetButton")}
         </Button>
       </div>
@@ -59,7 +79,12 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
           className="col-span-1 md:col-span-2 lg:col-span-3"
         />
 
-        <Select label={t("directory.panelFilter.patientStatusLabel")} options={statusOptions} value={filters?.status} onChange={(value) => onFilterChange("status", value)} />
+        <Select
+          label={t("directory.panelFilter.patientStatusLabel")}
+          options={statusOptions}
+          value={filters?.status}
+          onChange={(value) => onFilterChange("status", value)}
+        />
 
         <Select
           label={t("directory.panelFilter.appointmentStatusLabel")}
@@ -68,9 +93,20 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
           onChange={(value) => onFilterChange("appointmentStatus", value)}
         />
 
-        <Select label={t("directory.panelFilter.insuranceProviderLabel")} options={insuranceOptions} value={filters?.insurance} onChange={(value) => onFilterChange("insurance", value)} searchable />
+        <Select
+          label={t("directory.panelFilter.insuranceProviderLabel")}
+          options={insuranceOptions}
+          value={filters?.insurance}
+          onChange={(value) => onFilterChange("insurance", value)}
+          searchable
+        />
 
-        <Select label={t("directory.panelFilter.treatmentHistoryLabel")} options={treatmentOptions} value={filters?.treatment} onChange={(value) => onFilterChange("treatment", value)} />
+        <Select
+          label={t("directory.panelFilter.treatmentHistoryLabel")}
+          options={treatmentOptions}
+          value={filters?.treatment}
+          onChange={(value) => onFilterChange("treatment", value)}
+        />
         <div className="flex items-end">
           <Input
             type="date"
@@ -82,11 +118,23 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
         </div>
 
         <div className="flex items-end">
-          <Input type="date" label={t("directory.panelFilter.lastVisitToLabel")} value={filters?.lastVisitTo} onChange={(e) => onFilterChange("lastVisitTo", e?.target?.value)} className="w-full" />
+          <Input
+            type="date"
+            label={t("directory.panelFilter.lastVisitToLabel")}
+            value={filters?.lastVisitTo}
+            onChange={(e) => onFilterChange("lastVisitTo", e?.target?.value)}
+            className="w-full"
+          />
         </div>
       </div>
       <div className="flex flex-col sm:flex-row gap-3">
-        <Button variant="default" onClick={onSearch} iconName="Search" iconPosition="left" className="sm:w-auto">
+        <Button
+          variant="default"
+          onClick={onSearch}
+          iconName="Search"
+          iconPosition="left"
+          className="sm:w-auto"
+        >
           {t("directory.panelFilter.applyButton")}
         </Button>
         <Button
@@ -96,7 +144,10 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
           iconPosition="right"
           className="sm:w-auto"
         >
-          {filters?.showAdvanced ? t("directory.panelFilter.hide") : t("directory.panelFilter.show")} {t("directory.panelFilter.advancedOptionsFilters")}
+          {filters?.showAdvanced
+            ? t("directory.panelFilter.hide")
+            : t("directory.panelFilter.show")}{" "}
+          {t("directory.panelFilter.advancedOptionsFilters")}
         </Button>
       </div>
       {filters?.showAdvanced && (

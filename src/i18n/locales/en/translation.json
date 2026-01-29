@@ -604,7 +604,17 @@
     "notesPlaceholder": "E.g., Allergic to anesthesia, bring X-rays...",
     "errorNoPatient": "Please select a patient",
     "msgSuccess": "Appointment scheduled successfully",
-    "msgError": "Could not schedule the appointment"
+    "msgError": "Could not schedule the appointment",
+    "msgSaveSuccess": "Appointment rescheduled",
+    "error": {
+      "slotOccupied": "Time slot occupied: Patient {{patient}} already has an appointment at this time.",
+      "insufficientTime": "Conflict: You only have {{available}} min available before the next appointment."
+    },
+    "msgDeleteSuccess": "Appointment deleted successfully",
+    "msgErrorDelete": "The appointment could not be deleted",
+    "confirmDeleteTitle": "Confirm Deletion",
+    "confirmDeleteDescription": "Are you sure you want to delete this appointment?",
+    "rescheduled": "Rescheduled"
   },
   "common": {
     "cancel": "Cancel",

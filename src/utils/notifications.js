@@ -9,6 +9,9 @@ export const notifyWarning = (message) => toast.warning(message);
 export const notifyConfirm = (title, description, onConfirm) => {
   toast(title, {
     description: description,
+    duration: Infinity,
+    position: "top-center",
+    important: true,
     action: {
       label: i18n.t("delete"),
       onClick: onConfirm,

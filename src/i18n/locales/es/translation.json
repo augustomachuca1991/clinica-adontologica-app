@@ -601,7 +601,17 @@
     "notesPlaceholder": "Ej: Alérgico a la anestesia, traer radiografías...",
     "errorNoPatient": "Por favor selecciona un paciente",
     "msgSuccess": "Cita agendada correctamente",
-    "msgError": "No se pudo agendar la cita"
+    "msgError": "No se pudo agendar la cita",
+    "msgSaveSuccess": "Cita Reprogramada exitosamente",
+    "error": {
+      "slotOccupied": "Horario ocupado: El paciente {{patient}} ya tiene turno a esa hora.",
+      "insufficientTime": "Conflicto: Solo tienes {{available}} min disponibles antes del siguiente turno."
+    },
+    "msgDeleteSuccess": "Cita eliminada correctamente",
+    "msgErrorDelete": "No se pudo eliminar la cita",
+    "confirmDeleteTitle": "Confirmar Eliminación",
+    "confirmDeleteDescription": "¿Estás seguro de que deseas eliminar esta cita?",
+    "rescheduled": "Reprogramada"
   },
   "common": {
     "cancel": "Cancelar",

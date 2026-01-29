@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
+import { t } from "i18next";
 
 export const useAppointments = () => {
   const [loading, setLoading] = useState(false);
@@ -9,7 +10,9 @@ export const useAppointments = () => {
 
   const mapAppointments = (data) => {
     return data.map((appt) => {
-      const pureDateString = appt.appointment_date.substring(0, 19).replace(" ", "T");
+      const pureDateString = appt.appointment_date
+        .substring(0, 19)
+        .replace(" ", "T");
 
       // 3. Creamos la fecha. Al no tener "+00" ni "Z", JS la toma como LOCAL
       const appointmentDate = new Date(pureDateString);
@@ -18,8 +21,11 @@ export const useAppointments = () => {
         id: appt.id,
         patientName: appt.patients?.name || "Paciente desconocido",
         // Si el avatar es null, usamos ui-avatars como fallback
-        patientImage: appt.patients?.avatar || `https://ui-avatars.com/api/?background=b97beb&color=fff&name=${encodeURIComponent(appt.patients?.name || "P")}`,
+        patientImage:
+          appt.patients?.avatar ||
+          `https://ui-avatars.com/api/?background=b97beb&color=fff&name=${encodeURIComponent(appt.patients?.name || "P")}`,
         patientImageAlt: `Retrato de ${appt.patients?.name}`,
+        patientId: appt.patient_id,
         treatment: appt.reason, // O appt.treatment_services?.name si hiciste el join
         time: `${String(appointmentDate.getHours()).padStart(2, "0")}:${String(appointmentDate.getMinutes()).padStart(2, "0")}`,
         date: appointmentDate,
@@ -43,7 +49,9 @@ export const useAppointments = () => {
           reason,
           status,
           notes,
+          patient_id,
           patients (
+            id,
             name,
             avatar,
             patient_id
@@ -105,8 +113,8 @@ export const useAppointments = () => {
           appointment_date: updatedData.date,
           duration_min: parseInt(updatedData.duration),
           reason: updatedData.reason,
-          status: updatedData.status, // Aquí permitimos cambiar el estado
-          notes: updatedData.notes,
+          status: updatedData.status,
+          notes: updatedData.notes || t("appointment.rescheduled") || "",
         })
         .eq("id", id)
         .eq("provider_id", user.id) // SEGURIDAD: Solo el dueño puede editar
@@ -123,5 +131,33 @@ export const useAppointments = () => {
     }
   };
 
-  return { appointments, fetchAppointments, addAppointment, updateAppointment, loading };
+  const deleteAppointment = async (id) => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from("appointments")
+        .delete()
+        .eq("id", id)
+        .eq("provider_id", user.id); // Seguridad: solo el dueño borra
+
+      if (error) throw error;
+      setAppointments((prev) => prev.filter((appt) => appt.id !== id));
+
+      return { success: true };
+    } catch (err) {
+      console.error("Error al eliminar:", err.message);
+      return { success: false, error: err.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    appointments,
+    fetchAppointments,
+    addAppointment,
+    updateAppointment,
+    deleteAppointment,
+    loading,
+  };
 };

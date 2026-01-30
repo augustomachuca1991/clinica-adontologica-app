@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
-import Select from "../../../components/ui/Select";
-import { Checkbox } from "../../../components/ui/Checkbox";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 const BackupRestore = () => {
   const [backupFrequency, setBackupFrequency] = useState("daily");
@@ -93,8 +93,20 @@ const BackupRestore = () => {
             </div>
           </div>
           <div className="space-y-4">
-            <Select label="Backup Frequency" options={frequencyOptions} value={backupFrequency} onChange={setBackupFrequency} description="How often backups are created" />
-            <Select label="Retention Period" options={retentionOptions} value={retentionPeriod} onChange={setRetentionPeriod} description="How long backups are kept" />
+            <Select
+              label="Backup Frequency"
+              options={frequencyOptions}
+              value={backupFrequency}
+              onChange={setBackupFrequency}
+              description="How often backups are created"
+            />
+            <Select
+              label="Retention Period"
+              options={retentionOptions}
+              value={retentionPeriod}
+              onChange={setRetentionPeriod}
+              description="How long backups are kept"
+            />
             <div className="pt-2">
               <Button variant="default" className="w-full" iconName="Save">
                 Save Configuration
@@ -225,7 +237,8 @@ const BackupRestore = () => {
           <div>
             <h5 className="font-medium text-sm text-foreground mb-1">Restore Warning</h5>
             <p className="text-xs text-muted-foreground mb-3">
-              Restoring from a backup will replace all current data with the backup data. This action cannot be undone. Always create a manual backup before restoring.
+              Restoring from a backup will replace all current data with the backup data. This action cannot be undone. Always create a
+              manual backup before restoring.
             </p>
             <Button variant="outline" size="sm" iconName="RotateCcw">
               Restore from Backup

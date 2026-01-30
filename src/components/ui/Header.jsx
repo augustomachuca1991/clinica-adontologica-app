@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Icon from "../AppIcon";
-import Button from "./Button";
-import LanguageSwitch from "./LanguageSwitch";
+import Icon from "@/components/AppIcon";
+import LanguageSwitch from "@/components/ui/LanguageSwitch";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../contexts/AuthContext";
-import { notifyError, notifySuccess } from "../../utils/notifications";
+import { useAuth } from "@/contexts/AuthContext";
+import { notifyError, notifySuccess } from "@/utils/notifications";
+//import Button from "@/components/ui/Button";
 
 const Header = ({ sidebarCollapsed = false }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,7 +32,8 @@ const Header = ({ sidebarCollapsed = false }) => {
   const fullname = userProfile?.full_name || "no especified";
   const displayRole = isAdmin
     ? t("roles.admin") // O simplemente "Administrador"
-    : t(`roles.${userProfile?.user_roles?.[0]?.roles?.name}`) || t("roles.user");
+    : t(`roles.${userProfile?.user_roles?.[0]?.roles?.name}`) ||
+      t("roles.user");
 
   const notifications = [
     {
@@ -76,12 +77,18 @@ const Header = ({ sidebarCollapsed = false }) => {
   };
 
   return (
-    <header className={`fixed top-0 right-0 h-16 bg-card border-b border-border shadow-clinical-sm z-30 transition-all duration-slow ${sidebarCollapsed ? "left-20" : "left-0 lg:left-64"}`}>
+    <header
+      className={`fixed top-0 right-0 h-16 bg-card border-b border-border shadow-clinical-sm z-30 transition-all duration-slow ${sidebarCollapsed ? "left-20" : "left-0 lg:left-64"}`}
+    >
       <div className="h-full flex items-center justify-between px-6">
         <div className="flex items-center gap-4 flex-1 max-w-2xl">
           <form onSubmit={handleSearch} className="flex-1">
             <div className="relative">
-              <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Icon
+                name="Search"
+                size={18}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
               <input
                 type="search"
                 placeholder={t("search.placeholder")}
@@ -129,30 +136,51 @@ const Header = ({ sidebarCollapsed = false }) => {
           </div> */}
 
           <div className="relative">
-            <button onClick={handleUserMenuClick} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-colors duration-base focus-clinical">
+            <button
+              onClick={handleUserMenuClick}
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-colors duration-base focus-clinical"
+            >
               <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                 <Icon name="User" size={18} color="var(--color-primary)" />
               </div>
               <div className="hidden md:block text-left">
-                <div className="text-sm font-medium text-foregroun capitalize">{fullname}</div>
-                <div className="text-xs text-muted-foreground">{displayRole}</div>
+                <div className="text-sm font-medium text-foregroun capitalize">
+                  {fullname}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {displayRole}
+                </div>
               </div>
-              <Icon name="ChevronDown" size={16} className="text-muted-foreground" />
+              <Icon
+                name="ChevronDown"
+                size={16}
+                className="text-muted-foreground"
+              />
             </button>
 
             {showUserMenu && (
               <div className="absolute right-0 top-full mt-2 w-56 bg-card border border-border rounded-lg shadow-clinical-lg overflow-hidden">
                 <div className="px-4 py-3 border-b border-border bg-muted/50">
-                  <div className="font-medium text-sm text-foreground">{username}</div>
-                  <div className="text-xs text-muted-foreground">{userEmail}</div>
+                  <div className="font-medium text-sm text-foreground">
+                    {username}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {userEmail}
+                  </div>
                 </div>
                 <div className="py-2">
-                  <Link to="/patient-profile" className="flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-base">
+                  <Link
+                    to="/patient-profile"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-base"
+                  >
                     <Icon name="User" size={16} />
                     <span>{t("profileSetting.title")}</span>
                   </Link>
                   {isAdmin && (
-                    <Link to="/settings-panel" className="flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-base">
+                    <Link
+                      to="/settings-panel"
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-base"
+                    >
                       <Icon name="Settings" size={16} />
                       <span>{t("profileSetting.settings")}</span>
                     </Link>
@@ -163,7 +191,10 @@ const Header = ({ sidebarCollapsed = false }) => {
                   </button>
                 </div>
                 <div className="border-t border-border py-2">
-                  <button className="flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors duration-base w-full" onClick={handleLogout}>
+                  <button
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors duration-base w-full"
+                    onClick={handleLogout}
+                  >
                     <Icon name="LogOut" size={16} />
                     <span>{t("profileSetting.signout")}</span>
                   </button>

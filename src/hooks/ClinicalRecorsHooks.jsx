@@ -1,11 +1,15 @@
 import { useState, useCallback } from "react";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useClinicalRecords = () => {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
-  const [summary, setSummary] = useState({ planned: 0, inProgress: 0, completed: 0 });
+  const [summary, setSummary] = useState({
+    planned: 0,
+    inProgress: 0,
+    completed: 0,
+  });
   const [records, setRecords] = useState([]); // Nuevo estado para la lista real
 
   // Función para obtener el resumen de estados del paciente
@@ -13,14 +17,18 @@ export const useClinicalRecords = () => {
     if (!patientId) return;
 
     try {
-      const { data, error } = await supabase.from("clinical_records").select("status").eq("patient_id", patientId);
+      const { data, error } = await supabase
+        .from("clinical_records")
+        .select("status")
+        .eq("patient_id", patientId);
 
       if (error) throw error;
 
       // Agrupamos los resultados por estado
       const stats = data.reduce(
         (acc, curr) => {
-          const key = curr.status === "in-progress" ? "inProgress" : curr.status;
+          const key =
+            curr.status === "in-progress" ? "inProgress" : curr.status;
           acc[key] = (acc[key] || 0) + 1;
           return acc;
         },
@@ -113,7 +121,8 @@ export const useClinicalRecords = () => {
 
   // Guardado masivo de un plan de tratamiento
   const saveTreatmentPlan = async (patientId, treatments) => {
-    if (!user?.id || !patientId || treatments.length === 0) return { success: false, error: "Missing data" };
+    if (!user?.id || !patientId || treatments.length === 0)
+      return { success: false, error: "Missing data" };
 
     setLoading(true);
     try {
@@ -130,7 +139,10 @@ export const useClinicalRecords = () => {
         priority: t.priority,
       }));
 
-      const { data, error } = await supabase.from("clinical_records").insert(recordsToSave).select();
+      const { data, error } = await supabase
+        .from("clinical_records")
+        .insert(recordsToSave)
+        .select();
 
       if (error) throw error;
       return { success: true, data };
@@ -168,5 +180,13 @@ export const useClinicalRecords = () => {
     }
   };
 
-  return { saveTreatmentPlan, fetchPatientSummary, fetchPatientRecords, updateClinicalRecord, records, summary, loading };
+  return {
+    saveTreatmentPlan,
+    fetchPatientSummary,
+    fetchPatientRecords,
+    updateClinicalRecord,
+    records,
+    summary,
+    loading,
+  };
 };

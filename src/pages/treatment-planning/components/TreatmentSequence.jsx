@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 
 const TreatmentSequence = ({ treatments, services, onReorder, onRemove, onEdit }) => {
@@ -80,7 +80,11 @@ const TreatmentSequence = ({ treatments, services, onReorder, onRemove, onEdit }
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm md:text-base font-medium text-foreground">{getProcedureName(treatment?.procedure)}</span>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${priorityBadgeStyles[treatment?.priority] || ""}`}>{treatment?.priority}</span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${priorityBadgeStyles[treatment?.priority] || ""}`}
+              >
+                {treatment?.priority}
+              </span>
             </div>
             <div className="flex items-center gap-2 mt-1 text-xs md:text-sm text-muted-foreground">
               <span>
@@ -99,8 +103,14 @@ const TreatmentSequence = ({ treatments, services, onReorder, onRemove, onEdit }
 
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2">
-            <Icon name={getStatusIconLabel(treatment?.status)?.icon} size={16} className={getStatusIconLabel(treatment?.status)?.classIcon} />
-            <span className={`text-xs md:text-sm ${getStatusIconLabel(treatment?.status)?.classIcon}`}>{getStatusIconLabel(treatment?.status)?.label}</span>
+            <Icon
+              name={getStatusIconLabel(treatment?.status)?.icon}
+              size={16}
+              className={getStatusIconLabel(treatment?.status)?.classIcon}
+            />
+            <span className={`text-xs md:text-sm ${getStatusIconLabel(treatment?.status)?.classIcon}`}>
+              {getStatusIconLabel(treatment?.status)?.label}
+            </span>
           </div>
           <div className="text-sm md:text-base font-semibold text-foreground">${treatment?.cost?.toLocaleString()}</div>
         </div>
@@ -114,7 +124,9 @@ const TreatmentSequence = ({ treatments, services, onReorder, onRemove, onEdit }
       {/* SECCIÓN 1: PLAN ACTUAL */}
       <div className="space-y-4">
         <div className="flex items-center justify-between border-b border-border pb-2">
-          <h3 className="text-sm md:text-base font-headline font-bold text-primary uppercase tracking-tight">{t("treatment.currentPlan")}</h3>
+          <h3 className="text-sm md:text-base font-headline font-bold text-primary uppercase tracking-tight">
+            {t("treatment.currentPlan")}
+          </h3>
           <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">{currentPlan.length}</span>
         </div>
 
@@ -146,12 +158,17 @@ const TreatmentSequence = ({ treatments, services, onReorder, onRemove, onEdit }
       {history.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-border pb-2">
-            <h3 className="text-sm md:text-base font-headline font-bold text-muted-foreground uppercase tracking-tight">{t("treatment.patientHistory")}</h3>
+            <h3 className="text-sm md:text-base font-headline font-bold text-muted-foreground uppercase tracking-tight">
+              {t("treatment.patientHistory")}
+            </h3>
             <Icon name="History" size={16} className="text-muted-foreground" />
           </div>
           <div className="space-y-3 opacity-90">
             {history.map((treatment) => (
-              <div key={treatment.id} className={`bg-muted/40 border border-border/50 rounded-lg p-3 md:p-4 ${statusBorderStyles[treatment.status]}`}>
+              <div
+                key={treatment.id}
+                className={`bg-muted/40 border border-border/50 rounded-lg p-3 md:p-4 ${statusBorderStyles[treatment.status]}`}
+              >
                 <TreatmentCard treatment={treatment} isDraggable={false} />
               </div>
             ))}

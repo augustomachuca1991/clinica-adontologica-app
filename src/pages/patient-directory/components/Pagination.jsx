@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "../../../components/ui/Button";
-import Select from "../../../components/ui/Select";
 import { useTranslation } from "react-i18next";
+import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
 
 const Pagination = ({ currentPage, totalPages, pageSize, onPageChange, onPageSizeChange }) => {
   const { t } = useTranslation();
@@ -50,11 +50,23 @@ const Pagination = ({ currentPage, totalPages, pageSize, onPageChange, onPageSiz
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">{t("show")}</span>
-          <Select options={pageSizeOptions} value={pageSize?.toString()} onChange={(value) => onPageSizeChange(parseInt(value))} className="w-32" />
+          <Select
+            options={pageSizeOptions}
+            value={pageSize?.toString()}
+            onChange={(value) => onPageSizeChange(parseInt(value))}
+            className="w-32"
+          />
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} iconName="ChevronLeft" aria-label="Previous page" />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            iconName="ChevronLeft"
+            aria-label="Previous page"
+          />
 
           <div className="flex items-center gap-1">
             {getPageNumbers()?.map((page, index) => (
@@ -62,7 +74,12 @@ const Pagination = ({ currentPage, totalPages, pageSize, onPageChange, onPageSiz
                 {page === "..." ? (
                   <span className="px-3 py-1 text-sm text-muted-foreground">...</span>
                 ) : (
-                  <Button variant={currentPage === page ? "default" : "ghost"} size="sm" onClick={() => onPageChange(page)} className="min-w-[2.5rem]">
+                  <Button
+                    variant={currentPage === page ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => onPageChange(page)}
+                    className="min-w-[2.5rem]"
+                  >
                     {page}
                   </Button>
                 )}
@@ -70,7 +87,14 @@ const Pagination = ({ currentPage, totalPages, pageSize, onPageChange, onPageSiz
             ))}
           </div>
 
-          <Button variant="outline" size="sm" onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages} iconName="ChevronRight" aria-label="Next page" />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            iconName="ChevronRight"
+            aria-label="Next page"
+          />
         </div>
 
         <div className="text-sm text-muted-foreground">{t("pagination.pageof", { current: currentPage, total: totalPages })}</div>

@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "../contexts/AuthContext";
-import { formatDateForUI } from "../utils/formatters/date";
-import { formatCurrency } from "../utils/formatters/currency";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatDateForUI } from "@/utils/formatters/date";
+import { formatCurrency } from "@/utils/formatters/currency";
 
 export const useGlobalClinicalRegistry = (filters) => {
   const [allData, setAllData] = useState([]);
@@ -40,12 +40,20 @@ export const useGlobalClinicalRegistry = (filters) => {
 
       const normalized = (data || []).map((item) => {
         // Extraemos provider (array [0])
-        const providerData = Array.isArray(item.providers) ? item.providers[0] : item.providers;
+        const providerData = Array.isArray(item.providers)
+          ? item.providers[0]
+          : item.providers;
 
         // Extraemos el perfil (array [0])
-        const profileData = Array.isArray(providerData?.user_profiles) ? providerData.user_profiles[0] : providerData?.user_profiles;
+        const profileData = Array.isArray(providerData?.user_profiles)
+          ? providerData.user_profiles[0]
+          : providerData?.user_profiles;
 
-        const sortedNotes = item.clinical_notes ? [...item.clinical_notes].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) : [];
+        const sortedNotes = item.clinical_notes
+          ? [...item.clinical_notes].sort(
+              (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            )
+          : [];
 
         return {
           ...item,
@@ -59,7 +67,8 @@ export const useGlobalClinicalRegistry = (filters) => {
           date: item.created_at ? item.created_at.split("T")[0] : "",
           attachments: item.attachments || [],
           clinical_notes: sortedNotes,
-          followUp: sortedNotes.find((n) => n.type === "followUp")?.content || null,
+          followUp:
+            sortedNotes.find((n) => n.type === "followUp")?.content || null,
         };
       });
 
@@ -79,10 +88,16 @@ export const useGlobalClinicalRegistry = (filters) => {
     return allData.filter((record) => {
       const searchLower = filters.searchQuery?.toLowerCase();
       const matchesSearch =
-        !searchLower || record.patientName?.toLowerCase().includes(searchLower) || record.patientId?.toLowerCase().includes(searchLower) || record.treatmentName?.toLowerCase().includes(searchLower);
+        !searchLower ||
+        record.patientName?.toLowerCase().includes(searchLower) ||
+        record.patientId?.toLowerCase().includes(searchLower) ||
+        record.treatmentName?.toLowerCase().includes(searchLower);
 
-      const matchesType = filters.treatmentType === "all" || record.category === filters.treatmentType;
-      const matchesStatus = filters.status === "all" || record.status === filters.status;
+      const matchesType =
+        filters.treatmentType === "all" ||
+        record.category === filters.treatmentType;
+      const matchesStatus =
+        filters.status === "all" || record.status === filters.status;
 
       return matchesSearch && matchesType && matchesStatus;
     });
@@ -92,7 +107,9 @@ export const useGlobalClinicalRegistry = (filters) => {
     () => ({
       totalRecords: filteredRecords.length,
       completed: filteredRecords.filter((r) => r.status === "completed").length,
-      inProgress: filteredRecords.filter((r) => r.status === "in-progress" || r.status === "inProgress").length,
+      inProgress: filteredRecords.filter(
+        (r) => r.status === "in-progress" || r.status === "inProgress"
+      ).length,
       planned: filteredRecords.filter((r) => r.status === "planned").length,
     }),
     [filteredRecords]

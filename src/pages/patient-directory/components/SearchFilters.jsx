@@ -1,7 +1,7 @@
 import React from "react";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Button from "../../../components/ui/Button";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 
 const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
@@ -56,16 +56,8 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   return (
     <div className="clinical-card p-4 md:p-5 lg:p-6 mb-6">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
-        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
-          {t("directory.panelFilter.title")}
-        </h2>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onReset}
-          iconName="RotateCcw"
-          iconPosition="left"
-        >
+        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("directory.panelFilter.title")}</h2>
+        <Button variant="outline" size="sm" onClick={onReset} iconName="RotateCcw" iconPosition="left">
           {t("directory.panelFilter.resetButton")}
         </Button>
       </div>
@@ -128,13 +120,7 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
         </div>
       </div>
       <div className="flex flex-col sm:flex-row gap-3">
-        <Button
-          variant="default"
-          onClick={onSearch}
-          iconName="Search"
-          iconPosition="left"
-          className="sm:w-auto"
-        >
+        <Button variant="default" onClick={onSearch} iconName="Search" iconPosition="left" className="sm:w-auto">
           {t("directory.panelFilter.applyButton")}
         </Button>
         <Button
@@ -144,9 +130,7 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
           iconPosition="right"
           className="sm:w-auto"
         >
-          {filters?.showAdvanced
-            ? t("directory.panelFilter.hide")
-            : t("directory.panelFilter.show")}{" "}
+          {filters?.showAdvanced ? t("directory.panelFilter.hide") : t("directory.panelFilter.show")}{" "}
           {t("directory.panelFilter.advancedOptionsFilters")}
         </Button>
       </div>

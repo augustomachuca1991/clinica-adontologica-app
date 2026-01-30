@@ -1,6 +1,6 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 
 const BillingTab = ({ billingInfo }) => {
   const getPaymentStatusColor = (status) => {
@@ -107,10 +107,14 @@ const BillingTab = ({ billingInfo }) => {
                     <p className="text-xs md:text-sm text-foreground">{invoice?.description}</p>
                   </td>
                   <td className="py-3 px-2 text-right">
-                    <p className="text-sm md:text-base font-medium text-foreground whitespace-nowrap">${invoice?.totalAmount?.toLocaleString()}</p>
+                    <p className="text-sm md:text-base font-medium text-foreground whitespace-nowrap">
+                      ${invoice?.totalAmount?.toLocaleString()}
+                    </p>
                   </td>
                   <td className="py-3 px-2 text-right">
-                    <p className="text-sm md:text-base font-medium text-success whitespace-nowrap">${invoice?.amountPaid?.toLocaleString()}</p>
+                    <p className="text-sm md:text-base font-medium text-success whitespace-nowrap">
+                      ${invoice?.amountPaid?.toLocaleString()}
+                    </p>
                   </td>
                   <td className="py-3 px-2 text-right">
                     <p className="text-sm md:text-base font-medium text-error whitespace-nowrap">${invoice?.balance?.toLocaleString()}</p>

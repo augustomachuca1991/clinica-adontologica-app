@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 
 const PatientPresentationMode = ({ treatmentPlan, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -58,7 +58,9 @@ const PatientPresentationMode = ({ treatmentPlan, onClose }) => {
 
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground">{slides?.[currentSlide]?.title}</h3>
 
-              <p className="text-base md:text-lg lg:text-xl text-muted-foreground whitespace-pre-line max-w-2xl mx-auto">{slides?.[currentSlide]?.content}</p>
+              <p className="text-base md:text-lg lg:text-xl text-muted-foreground whitespace-pre-line max-w-2xl mx-auto">
+                {slides?.[currentSlide]?.content}
+              </p>
 
               {currentSlide === slides?.length - 1 && (
                 <div className="bg-muted/50 rounded-lg p-4 md:p-6 space-y-3">
@@ -73,7 +75,9 @@ const PatientPresentationMode = ({ treatmentPlan, onClose }) => {
                   <div className="border-t border-border pt-3">
                     <div className="flex items-center justify-between text-base md:text-lg">
                       <span className="font-medium text-foreground">Your Investment</span>
-                      <span className="text-xl md:text-2xl font-headline font-bold text-primary">${treatmentPlan?.outOfPocket?.toLocaleString()}</span>
+                      <span className="text-xl md:text-2xl font-headline font-bold text-primary">
+                        ${treatmentPlan?.outOfPocket?.toLocaleString()}
+                      </span>
                     </div>
                   </div>
                 </div>

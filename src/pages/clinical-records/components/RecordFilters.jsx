@@ -1,8 +1,8 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Button from "../../../components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 
 const RecordFilters = ({ filters, onFilterChange, onClearFilters }) => {
@@ -55,14 +55,39 @@ const RecordFilters = ({ filters, onFilterChange, onClearFilters }) => {
           onChange={(e) => onFilterChange("searchQuery", e?.target?.value)}
         />
 
-        <Select label={t("records.panelFilter.treatmentTypeLabel")} options={treatmentTypeOptions} value={filters?.treatmentType} onChange={(value) => onFilterChange("treatmentType", value)} />
+        <Select
+          label={t("records.panelFilter.treatmentTypeLabel")}
+          options={treatmentTypeOptions}
+          value={filters?.treatmentType}
+          onChange={(value) => onFilterChange("treatmentType", value)}
+        />
 
-        <Select label={t("records.panelFilter.treatmentStatusLabel")} options={statusOptions} value={filters?.status} onChange={(value) => onFilterChange("status", value)} />
-        <Select label={t("records.panelFilter.providerLabel")} options={providerOptions} value={filters?.provider} onChange={(value) => onFilterChange("provider", value)} />
+        <Select
+          label={t("records.panelFilter.treatmentStatusLabel")}
+          options={statusOptions}
+          value={filters?.status}
+          onChange={(value) => onFilterChange("status", value)}
+        />
+        <Select
+          label={t("records.panelFilter.providerLabel")}
+          options={providerOptions}
+          value={filters?.provider}
+          onChange={(value) => onFilterChange("provider", value)}
+        />
 
-        <Input type="date" label={t("records.panelFilter.dateFromLabel")} value={filters?.dateFrom} onChange={(e) => onFilterChange("dateFrom", e?.target?.value)} />
+        <Input
+          type="date"
+          label={t("records.panelFilter.dateFromLabel")}
+          value={filters?.dateFrom}
+          onChange={(e) => onFilterChange("dateFrom", e?.target?.value)}
+        />
 
-        <Input type="date" label={t("records.panelFilter.dateToLabel")} value={filters?.dateTo} onChange={(e) => onFilterChange("dateTo", e?.target?.value)} />
+        <Input
+          type="date"
+          label={t("records.panelFilter.dateToLabel")}
+          value={filters?.dateTo}
+          onChange={(e) => onFilterChange("dateTo", e?.target?.value)}
+        />
       </div>
     </div>
   );

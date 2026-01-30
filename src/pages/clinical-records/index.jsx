@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import Icon from "../../components/AppIcon";
-import Button from "../../components/ui/Button";
-import RecordFilters from "./components/RecordFilters";
-import RecordCard from "./components/RecordCard";
-import TimelineView from "./components/TimelineView";
-import AddNoteModal from "./components/AddNoteModal";
-import RecordDetailsModal from "./components/RecordDetailsModal";
 import { useTranslation } from "react-i18next";
-import StatsOverview from "./components/StatsOverview";
-import { useGlobalClinicalRegistry } from "../../hooks/GlobalClinicalRegistryHooks";
-import { useClinicalNotes } from "../../hooks/ClinicalNotesHooks";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import RecordFilters from "@/pages/clinical-records/components/RecordFilters";
+import RecordCard from "@/pages/clinical-records/components/RecordCard";
+import TimelineView from "@/pages/clinical-records/components/TimelineView";
+import AddNoteModal from "@/pages/clinical-records/components/AddNoteModal";
+import RecordDetailsModal from "@/pages/clinical-records/components/RecordDetailsModal";
+import StatsOverview from "@/pages/clinical-records/components/StatsOverview";
+import { useGlobalClinicalRegistry } from "@/hooks/GlobalClinicalRegistryHooks";
+import { useClinicalNotes } from "@/hooks/ClinicalNotesHooks";
 
 const ClinicalRecords = () => {
   const [viewMode, setViewMode] = useState("grid");
@@ -26,7 +26,8 @@ const ClinicalRecords = () => {
   });
 
   const { t } = useTranslation();
-  const { records, loading, stats, refresh } = useGlobalClinicalRegistry(filters);
+  const { records, loading, stats, refresh } =
+    useGlobalClinicalRegistry(filters);
   const { addNote } = useClinicalNotes();
 
   const handleFilterChange = (key, value) => {
@@ -74,8 +75,12 @@ const ClinicalRecords = () => {
       <div className="space-y-6 md:space-y-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("records.title")}</h1>
-            <p className="text-sm md:text-base text-muted-foreground">{t("records.subtitle")}</p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
+              {t("records.title")}
+            </h1>
+            <p className="text-sm md:text-base text-muted-foreground">
+              {t("records.subtitle")}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
@@ -102,15 +107,30 @@ const ClinicalRecords = () => {
 
         {!loading && <StatsOverview stats={stats} />}
 
-        <RecordFilters filters={filters} onFilterChange={handleFilterChange} onClearFilters={handleClearFilters} />
+        <RecordFilters
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onClearFilters={handleClearFilters}
+        />
 
         <div className="bg-card border border-border rounded-lg p-4 md:p-6 shadow-clinical-sm">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("records.treatmentHistoryList.title")}</h2>
-              <p className="text-sm text-muted-foreground mt-1">{t("records.treatmentHistoryList.foundRecords", { count: records?.length })}</p>
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+                {t("records.treatmentHistoryList.title")}
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                {t("records.treatmentHistoryList.foundRecords", {
+                  count: records?.length,
+                })}
+              </p>
             </div>
-            <Button variant="outline" size="sm" iconName="Download" iconPosition="left">
+            <Button
+              variant="outline"
+              size="sm"
+              iconName="Download"
+              iconPosition="left"
+            >
               {t("records.treatmentHistoryList.button.export")}
             </Button>
           </div>
@@ -128,7 +148,12 @@ const ClinicalRecords = () => {
               {viewMode === "grid" ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-start">
                   {records?.map((record) => (
-                    <RecordCard key={record.id} record={record} onViewDetails={handleViewDetails} onAddNote={handleAddNote} />
+                    <RecordCard
+                      key={record.id}
+                      record={record}
+                      onViewDetails={handleViewDetails}
+                      onAddNote={handleAddNote}
+                    />
                   ))}
                 </div>
               ) : (
@@ -138,10 +163,23 @@ const ClinicalRecords = () => {
               {/* CAMBIO: Si después de cargar, la lista está vacía, mostramos el estado Empty */}
               {records?.length === 0 && (
                 <div className="text-center py-12">
-                  <Icon name="FileText" size={48} className="mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-headline font-semibold text-foreground mb-2">{t("records.treatmentHistoryList.foundRecords_zero")}</h3>
-                  <p className="text-sm text-muted-foreground mb-6">{t("records.treatmentHistoryList.tryAdjusting")}</p>
-                  <Button variant="outline" onClick={handleClearFilters} iconName="RefreshCw" iconPosition="left">
+                  <Icon
+                    name="FileText"
+                    size={48}
+                    className="mx-auto mb-4 text-muted-foreground"
+                  />
+                  <h3 className="text-lg font-headline font-semibold text-foreground mb-2">
+                    {t("records.treatmentHistoryList.foundRecords_zero")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    {t("records.treatmentHistoryList.tryAdjusting")}
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={handleClearFilters}
+                    iconName="RefreshCw"
+                    iconPosition="left"
+                  >
                     {t("records.treatmentHistoryList.button.resetFilters")}
                   </Button>
                 </div>
@@ -150,8 +188,20 @@ const ClinicalRecords = () => {
           )}
         </div>
       </div>
-      {showAddNoteModal && selectedRecord && <AddNoteModal record={selectedRecord} onClose={() => setShowAddNoteModal(false)} onSave={handleSaveNote} />}
-      {showDetailsModal && selectedRecord && <RecordDetailsModal record={selectedRecord} onClose={() => setShowDetailsModal(false)} onAddNote={() => handleAddNote(selectedRecord)} />}
+      {showAddNoteModal && selectedRecord && (
+        <AddNoteModal
+          record={selectedRecord}
+          onClose={() => setShowAddNoteModal(false)}
+          onSave={handleSaveNote}
+        />
+      )}
+      {showDetailsModal && selectedRecord && (
+        <RecordDetailsModal
+          record={selectedRecord}
+          onClose={() => setShowDetailsModal(false)}
+          onAddNote={() => handleAddNote(selectedRecord)}
+        />
+      )}
     </>
   );
 };

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Icon from "@/components/AppIcon";
+import { notifyError, notifySuccess } from "@/utils/notifications";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
-import Icon from "../../components/AppIcon";
-import LanguageSwitch from "../../components/ui/LanguageSwitch";
-import { notifyError, notifySuccess } from "../../utils/notifications";
-import { useAuth } from "../../contexts/AuthContext";
-import { supabase } from "../../lib/supabase";
-/* import Image from "../../components/AppImage";
-import logo from "../../../public/assets/images/logo-orion-software.svg"; */
+//import LanguageSwitch from "@/components/ui/LanguageSwitch";
+//import Image from "@/components/AppImage";
+//import logo from "@/assets/images/logo-orion-software.svg";
 
 const ResetPassword = () => {
   const navigate = useNavigate();

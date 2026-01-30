@@ -1,6 +1,6 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
-import Image from "../../../components/AppImage";
+import Icon from "@/components/AppIcon";
+import Image from "@/components/AppImage";
 import { useTranslation } from "react-i18next";
 
 const TreatmentHistoryTab = ({ treatments, loading }) => {
@@ -33,14 +33,18 @@ const TreatmentHistoryTab = ({ treatments, loading }) => {
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-2">{treatment?.procedure}</h3>
                       <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-3">
-                        <span className={`status-indicator ${getStatusColor(treatment?.status)} text-xs md:text-sm`}>{treatment?.status}</span>
+                        <span className={`status-indicator ${getStatusColor(treatment?.status)} text-xs md:text-sm`}>
+                          {treatment?.status}
+                        </span>
                         <span className="text-xs md:text-sm text-muted-foreground">
                           {new Date(treatment.date)?.toLocaleDateString(i18n.language, { year: "numeric", month: "long", day: "numeric" })}
                         </span>
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="text-lg md:text-xl font-semibold text-foreground whitespace-nowrap">${treatment?.cost?.toLocaleString()}</p>
+                      <p className="text-lg md:text-xl font-semibold text-foreground whitespace-nowrap">
+                        ${treatment?.cost?.toLocaleString()}
+                      </p>
                       <p className="text-xs md:text-sm text-muted-foreground">{t("profile.tabs.treatmentHistory.section.treatmentCost")}</p>
                     </div>
                   </div>
@@ -77,7 +81,9 @@ const TreatmentHistoryTab = ({ treatments, loading }) => {
                   </div>
 
                   <div className="bg-muted/50 rounded-lg p-3 md:p-4 mb-4">
-                    <p className="text-xs md:text-sm text-muted-foreground mb-2">{t("profile.tabs.treatmentHistory.section.treatmentNotes")}</p>
+                    <p className="text-xs md:text-sm text-muted-foreground mb-2">
+                      {t("profile.tabs.treatmentHistory.section.treatmentNotes")}
+                    </p>
                     <p className="text-sm md:text-base text-foreground">{treatment?.notes}</p>
                   </div>
 
@@ -86,7 +92,11 @@ const TreatmentHistoryTab = ({ treatments, loading }) => {
                       <Icon name="Calendar" size={16} className="text-primary flex-shrink-0" />
                       <p className="text-xs md:text-sm text-foreground">
                         {t("profile.tabs.treatmentHistory.section.followUpScheduled")}:{" "}
-                        {new Date(treatment.followUp)?.toLocaleDateString(i18n.language, { year: "numeric", month: "long", day: "numeric" })}
+                        {new Date(treatment.followUp)?.toLocaleDateString(i18n.language, {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
                       </p>
                     </div>
                   )}
@@ -94,11 +104,17 @@ const TreatmentHistoryTab = ({ treatments, loading }) => {
 
                 {treatment?.images && treatment?.images?.length > 0 && (
                   <div className="w-full lg:w-64 flex-shrink-0">
-                    <p className="text-xs md:text-sm font-medium text-muted-foreground mb-3">{t("profile.tabs.treatmentHistory.section.clinicalPhotography")}</p>
+                    <p className="text-xs md:text-sm font-medium text-muted-foreground mb-3">
+                      {t("profile.tabs.treatmentHistory.section.clinicalPhotography")}
+                    </p>
                     <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-3">
                       {treatment?.images?.map((img, imgIndex) => (
                         <div key={imgIndex} className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border">
-                          <Image src={img?.url} alt={img?.alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-base cursor-pointer" />
+                          <Image
+                            src={img?.url}
+                            alt={img?.alt}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-base cursor-pointer"
+                          />
                         </div>
                       ))}
                     </div>

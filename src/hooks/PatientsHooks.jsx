@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 const calculateAge = (isoDate) => {
   if (!isoDate) return null;
@@ -25,7 +25,9 @@ export const uploadPatientAvatar = async (file, patientId) => {
     const filePath = `${fileName}`;
 
     // 3. Subida al Bucket 'AVATAR' (Tal cual está en tu captura)
-    const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, file);
+    const { error: uploadError } = await supabase.storage
+      .from("avatar")
+      .upload(filePath, file);
 
     if (uploadError) throw uploadError;
 
@@ -39,7 +41,10 @@ export const uploadPatientAvatar = async (file, patientId) => {
   }
 };
 
-export const usePatients = (filters = {}, sortConfig = { column: "name", direction: "asc" }) => {
+export const usePatients = (
+  filters = {},
+  sortConfig = { column: "name", direction: "asc" }
+) => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const { isLoggedIn, user } = useAuth();
@@ -49,7 +54,9 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
       ...p,
       patientId: p.patient_id,
       dateOfBirth: p.date_of_birth,
-      avatar: p.avatar || `https://ui-avatars.com/api/?format=svg&background=f1f5f9&color=475569&font-size=0.33&name=${encodeURIComponent(p.name)}`,
+      avatar:
+        p.avatar ||
+        `https://ui-avatars.com/api/?format=svg&background=f1f5f9&color=475569&font-size=0.33&name=${encodeURIComponent(p.name)}`,
       age: calculateAge(p.date_of_birth),
       bloodType: p.blood_type,
       maritalStatus: p.marital_status,
@@ -60,7 +67,11 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
 
   const getPatientById = useCallback(async (id) => {
     try {
-      const { data, error } = await supabase.from("patients").select(`*, appointments(appointment_date, status)`).eq("id", id).single();
+      const { data, error } = await supabase
+        .from("patients")
+        .select(`*, appointments(appointment_date, status)`)
+        .eq("id", id)
+        .single();
 
       if (error) throw error;
       return mapPatientData(data);
@@ -74,18 +85,29 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     if (!user?.id) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase.from("patients").select(`*, appointments(appointment_date, status)`).eq("provider_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("patients")
+        .select(`*, appointments(appointment_date, status)`)
+        .eq("provider_id", user.id)
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
 
       const formatted = data.map((p) => {
-        const nextApp = p.appointments?.filter((a) => new Date(a.appointment_date) > new Date()).sort((a, b) => new Date(a.appointment_date) - new Date(b.appointment_date))[0];
+        const nextApp = p.appointments
+          ?.filter((a) => new Date(a.appointment_date) > new Date())
+          .sort(
+            (a, b) =>
+              new Date(a.appointment_date) - new Date(b.appointment_date)
+          )[0];
 
         return {
           ...p,
           patientId: p.patient_id,
           dateOfBirth: p.date_of_birth,
-          avatar: p.avatar || `https://ui-avatars.com/api/?format=svg&background=f1f5f9&color=475569&font-size=0.33&name=${encodeURIComponent(p.name)}`,
+          avatar:
+            p.avatar ||
+            `https://ui-avatars.com/api/?format=svg&background=f1f5f9&color=475569&font-size=0.33&name=${encodeURIComponent(p.name)}`,
           age: calculateAge(p.date_of_birth),
           avatarAlt: p.avatar_alt || `Perfil de ${p.name}`,
           nextAppointment: nextApp?.appointment_date || null,
@@ -121,7 +143,9 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
         const filePath = `${user.id}/${fileName}`;
 
         // Subir al bucket 'avatars' (asegúrate de que el bucket sea público)
-        const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, imageFile);
+        const { error: uploadError } = await supabase.storage
+          .from("avatar")
+          .upload(filePath, imageFile);
 
         if (uploadError) throw uploadError;
 
@@ -208,7 +232,12 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     if (!searchTerm || searchTerm.length < 2) return [];
 
     try {
-      const { data, error } = await supabase.from("patients").select("id, name, avatar, patient_id").eq("provider_id", user.id).ilike("name", `%${searchTerm}%`).limit(5);
+      const { data, error } = await supabase
+        .from("patients")
+        .select("id, name, avatar, patient_id")
+        .eq("provider_id", user.id)
+        .ilike("name", `%${searchTerm}%`)
+        .limit(5);
 
       if (error) throw error;
       return data;
@@ -227,7 +256,11 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     // USAMOS ENCADENAMIENTO OPCIONAL (?.) PARA EVITAR EL ERROR
     if (filters?.searchQuery) {
       const q = filters.searchQuery.toLowerCase();
-      result = result.filter((p) => p.name?.toLowerCase().includes(q) || p.patientId?.toLowerCase().includes(q));
+      result = result.filter(
+        (p) =>
+          p.name?.toLowerCase().includes(q) ||
+          p.patientId?.toLowerCase().includes(q)
+      );
     }
     // AQUÍ ESTABA EL ERROR: agregamos el check de filters?.status
     if (filters?.status && filters.status !== "all") {
@@ -251,5 +284,13 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     return sorted;
   }, [filteredPatients, sortConfig]);
 
-  return { sortedPatients, loading, refresh: fetchPatients, addPatient, updatePatient, getPatientById, searchPatients };
+  return {
+    sortedPatients,
+    loading,
+    refresh: fetchPatients,
+    addPatient,
+    updatePatient,
+    getPatientById,
+    searchPatients,
+  };
 };

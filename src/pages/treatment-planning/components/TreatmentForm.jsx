@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
-import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
 import { useTranslation } from "react-i18next";
-/* import { useTreatmentServices } from "../../../hooks/TreatmentServicesHooks"; */
+/* import { useTreatmentServices } from "@/hooks/TreatmentServicesHooks"; */
 
 const TreatmentForm = ({ services, loading, selectedTooth, onSubmit, onCancel, editingTreatment, isEditingHistory }) => {
   const { t } = useTranslation();
@@ -117,9 +117,21 @@ const TreatmentForm = ({ services, loading, selectedTooth, onSubmit, onCancel, e
           required
         />
 
-        <Select label={t("treatment.formLabel.priority")} options={priorityOptions} value={formData?.priority} onChange={(value) => setFormData({ ...formData, priority: value })} required />
+        <Select
+          label={t("treatment.formLabel.priority")}
+          options={priorityOptions}
+          value={formData?.priority}
+          onChange={(value) => setFormData({ ...formData, priority: value })}
+          required
+        />
 
-        <Select label={t("treatment.formLabel.status")} options={statusOptions} value={formData?.status} onChange={(value) => setFormData({ ...formData, status: value })} required />
+        <Select
+          label={t("treatment.formLabel.status")}
+          options={statusOptions}
+          value={formData?.status}
+          onChange={(value) => setFormData({ ...formData, status: value })}
+          required
+        />
       </div>
       <Input
         label={t("treatment.formLabel.notes")}

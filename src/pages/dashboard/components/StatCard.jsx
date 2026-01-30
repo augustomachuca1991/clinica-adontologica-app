@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
+import Icon from "@/components/AppIcon";
 
 const StatCard = ({ title, value, change, changeType, icon, iconColor, trend }) => {
   const getChangeColor = () => {
@@ -21,7 +21,10 @@ const StatCard = ({ title, value, change, changeType, icon, iconColor, trend }) 
           <p className="text-sm md:text-base text-muted-foreground mb-1">{title}</p>
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground">{value}</h3>
         </div>
-        <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${iconColor}15` }}>
+        <div
+          className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center flex-shrink-0"
+          style={{ backgroundColor: `${iconColor}15` }}
+        >
           <Icon name={icon} size={20} color={iconColor} />
         </div>
       </div>

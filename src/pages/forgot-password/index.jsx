@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
-import Icon from "../../components/AppIcon";
-import LanguageSwitch from "../../components/ui/LanguageSwitch";
-import { notifyError, notifySuccess } from "../../utils/notifications";
-import { useAuth } from "../../contexts/AuthContext";
-import Image from "../../components/AppImage";
-import logo from "../../../public/assets/images/logo-orion-software.svg";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Icon from "@/components/AppIcon";
+import LanguageSwitch from "@/components/ui/LanguageSwitch";
+import { notifyError, notifySuccess } from "@/utils/notifications";
+import { useAuth } from "@/contexts/AuthContext";
+import Image from "@/components/AppImage";
+import logo from "@/assets/images/logo-orion-software.svg";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -70,7 +70,10 @@ const ForgotPassword = () => {
 
         {/* Footer del card */}
         <div className="mt-8 text-center">
-          <Link to="/login" className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
             <Icon name="ArrowLeft" size={16} />
             {t("forgotPassword.backToLogin")}
           </Link>

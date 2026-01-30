@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Image from "../../../components/AppImage";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
-import { Checkbox } from "../../../components/ui/Checkbox";
+import Image from "@/components/AppImage";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { useTranslation } from "react-i18next";
 
 const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll, onSort, sortConfig }) => {
@@ -14,7 +14,11 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
     if (sortConfig?.column !== column) {
       return <Icon name="ChevronsUpDown" size={16} className="text-muted-foreground" />;
     }
-    return sortConfig?.direction === "asc" ? <Icon name="ChevronUp" size={16} className="text-primary" /> : <Icon name="ChevronDown" size={16} className="text-primary" />;
+    return sortConfig?.direction === "asc" ? (
+      <Icon name="ChevronUp" size={16} className="text-primary" />
+    ) : (
+      <Icon name="ChevronDown" size={16} className="text-primary" />
+    );
   };
 
   const getStatusBadge = (status) => {
@@ -24,7 +28,11 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
       inactive: { bg: "bg-muted", text: "text-muted-foreground", label: "inactive" },
     };
     const config = statusConfig?.[status] || statusConfig?.inactive;
-    return <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config?.bg} ${config?.text}`}>{t(`patientCard.status.${config?.label}`)}</span>;
+    return (
+      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config?.bg} ${config?.text}`}>
+        {t(`patientCard.status.${config?.label}`)}
+      </span>
+    );
   };
 
   return (
@@ -102,10 +110,16 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                 className={`border-b border-border transition-colors duration-base ${hoveredRow === patient?.id ? "bg-muted/30" : ""} ${selectedPatients?.includes(patient?.id) ? "bg-primary/5" : ""}`}
               >
                 <td className="px-4 py-3">
-                  <Checkbox checked={selectedPatients?.includes(patient?.id)} onChange={(e) => onSelectPatient(patient?.id, e?.target?.checked)} />
+                  <Checkbox
+                    checked={selectedPatients?.includes(patient?.id)}
+                    onChange={(e) => onSelectPatient(patient?.id, e?.target?.checked)}
+                  />
                 </td>
                 <td className="px-4 py-3">
-                  <Link to={`/patient-profile/${patient?.id}`} className="flex items-center gap-3 hover:text-primary transition-colors duration-base">
+                  <Link
+                    to={`/patient-profile/${patient?.id}`}
+                    className="flex items-center gap-3 hover:text-primary transition-colors duration-base"
+                  >
                     <div className="w-10 h-10 rounded-full overflow-hidden border border-border flex-shrink-0">
                       <Image src={patient?.avatar} alt={patient?.avatarAlt} className="w-full h-full object-cover" />
                     </div>
@@ -132,7 +146,9 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   {patient?.nextAppointment ? (
                     <div className="text-sm">
                       <div className="text-foreground">{patient?.nextAppointment}</div>
-                      {patient?.appointmentStatus === "overdue" && <span className="text-xs text-error font-medium lowercase">{t("appointment.overdue")}</span>}
+                      {patient?.appointmentStatus === "overdue" && (
+                        <span className="text-xs text-error font-medium lowercase">{t("appointment.overdue")}</span>
+                      )}
                     </div>
                   ) : (
                     <span className="text-sm text-muted-foreground">No appointment</span>
@@ -140,7 +156,13 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-end gap-2">
-                    <Button variant="ghost" size="icon" iconName="Eye" aria-label="View patient" onClick={() => (window.location.href = `/patient-profile/${patient?.id}`)} />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      iconName="Eye"
+                      aria-label="View patient"
+                      onClick={() => (window.location.href = `/patient-profile/${patient?.id}`)}
+                    />
                     {/* <Button variant="ghost" size="icon" iconName="Edit" aria-label="Edit patient" /> */}
                   </div>
                 </td>

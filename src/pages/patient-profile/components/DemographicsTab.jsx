@@ -1,7 +1,7 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
 import { useTranslation } from "react-i18next";
-import { formatDateLang } from "../../../utils/formatters/date";
+import Icon from "@/components/AppIcon";
+import { formatDateLang } from "@/utils/formatters/date";
 
 const DemographicsTab = ({ patient }) => {
   const { t, i18n } = useTranslation();
@@ -13,9 +13,15 @@ const DemographicsTab = ({ patient }) => {
       fields: [
         { label: t("profile.tabs.demographics.section.fullName"), value: patient?.name },
         { label: t("profile.tabs.demographics.section.dateOfBirth"), value: formatDateLang(patient?.dateOfBirth, i18n.language) },
-        { label: t("profile.tabs.demographics.section.gender"), value: t(`gender.${patient?.gender || "preferNotToSay"}`) || t("profile.notSpecified") },
+        {
+          label: t("profile.tabs.demographics.section.gender"),
+          value: t(`gender.${patient?.gender || "preferNotToSay"}`) || t("profile.notSpecified"),
+        },
         { label: t("profile.tabs.demographics.section.bloodType"), value: patient?.bloodType || t("profile.notSpecified") },
-        { label: t("profile.tabs.demographics.section.maritalStatus"), value: t(`maritalStatus.${patient?.maritalStatus || "notSpecified"}`) || t("profile.notSpecified") },
+        {
+          label: t("profile.tabs.demographics.section.maritalStatus"),
+          value: t(`maritalStatus.${patient?.maritalStatus || "notSpecified"}`) || t("profile.notSpecified"),
+        },
       ],
     },
     {
@@ -35,8 +41,14 @@ const DemographicsTab = ({ patient }) => {
       icon: "AlertCircle",
       fields: [
         { label: t("profile.tabs.demographics.section.contactName"), value: patient?.emergencyContact?.name || t("profile.notSpecified") },
-        { label: t("profile.tabs.demographics.section.relationship"), value: patient?.emergencyContact?.relationship || t("profile.notSpecified") },
-        { label: t("profile.tabs.demographics.section.contactPhone"), value: patient?.emergencyContact?.phone || t("profile.notSpecified") },
+        {
+          label: t("profile.tabs.demographics.section.relationship"),
+          value: patient?.emergencyContact?.relationship || t("profile.notSpecified"),
+        },
+        {
+          label: t("profile.tabs.demographics.section.contactPhone"),
+          value: patient?.emergencyContact?.phone || t("profile.notSpecified"),
+        },
         { label: "Email", value: patient?.emergencyContact?.email || t("profile.notSpecified") },
       ],
     },
@@ -64,7 +76,10 @@ const DemographicsTab = ({ patient }) => {
           </div>
           <div className="space-y-3 md:space-y-4">
             {section?.fields?.map((field, fieldIndex) => (
-              <div key={fieldIndex} className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2 pb-3 border-b border-border last:border-0 last:pb-0">
+              <div
+                key={fieldIndex}
+                className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2 pb-3 border-b border-border last:border-0 last:pb-0"
+              >
                 <span className="text-sm text-muted-foreground">{field?.label}</span>
                 <span className="text-sm md:text-base font-medium text-foreground break-words">{field?.value}</span>
               </div>

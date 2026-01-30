@@ -1,6 +1,6 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
-import Image from "../../../components/AppImage";
+import Icon from "@/components/AppIcon";
+import Image from "@/components/AppImage";
 
 const RecentActivityItem = ({ activity }) => {
   const getActivityIcon = () => {
@@ -35,7 +35,10 @@ const RecentActivityItem = ({ activity }) => {
 
   return (
     <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-base">
-      <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${getActivityColor()}15` }}>
+      <div
+        className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+        style={{ backgroundColor: `${getActivityColor()}15` }}
+      >
         <Icon name={getActivityIcon()} size={18} color={getActivityColor()} />
       </div>
       <div className="flex-1 min-w-0">

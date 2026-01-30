@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 
 const SecurityCompliance = () => {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
@@ -118,7 +118,10 @@ const SecurityCompliance = () => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {securityFeatures?.map((feature) => (
-          <div key={feature?.id} className="bg-card border border-border rounded-lg p-4 hover:shadow-clinical-md transition-all duration-base">
+          <div
+            key={feature?.id}
+            className="bg-card border border-border rounded-lg p-4 hover:shadow-clinical-md transition-all duration-base"
+          >
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Icon name={feature?.icon} size={20} color="var(--color-primary)" />
@@ -126,7 +129,9 @@ const SecurityCompliance = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2 mb-1">
                   <h4 className="font-medium text-sm text-foreground">{feature?.title}</h4>
-                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${feature?.enabled ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"}`}>
+                  <span
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${feature?.enabled ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"}`}
+                  >
                     <span className={`w-1.5 h-1.5 rounded-full ${feature?.enabled ? "bg-success" : "bg-muted-foreground"}`} />
                     {feature?.status}
                   </span>
@@ -213,7 +218,8 @@ const SecurityCompliance = () => {
           <div>
             <h5 className="font-medium text-sm text-foreground mb-1">Security Recommendation</h5>
             <p className="text-xs text-muted-foreground">
-              Regular security audits are recommended every 90 days. Your next audit is scheduled for 04/15/2026. Ensure all staff complete security training before the audit date.
+              Regular security audits are recommended every 90 days. Your next audit is scheduled for 04/15/2026. Ensure all staff complete
+              security training before the audit date.
             </p>
           </div>
         </div>

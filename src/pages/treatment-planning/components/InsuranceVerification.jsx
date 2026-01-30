@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 const InsuranceVerification = ({ patientInsurance, onVerify }) => {
   const [isVerifying, setIsVerifying] = useState(false);
@@ -57,7 +57,9 @@ const InsuranceVerification = ({ patientInsurance, onVerify }) => {
         {verificationResult && (
           <div className="space-y-4 pt-4 border-t border-border">
             <div className="flex items-center gap-2">
-              <div className={`px-3 py-1 rounded-full text-xs font-medium ${verificationResult?.status === "active" ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}>
+              <div
+                className={`px-3 py-1 rounded-full text-xs font-medium ${verificationResult?.status === "active" ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}
+              >
                 {verificationResult?.status === "active" ? "Active Coverage" : "Inactive"}
               </div>
               <span className="text-xs md:text-sm text-muted-foreground">

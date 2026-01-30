@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import Button from "../../../components/ui/Button";
-import Icon from "../../../components/AppIcon";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
+import Button from "@/components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
 import { useTranslation } from "react-i18next";
 
 const STATUS_OPTIONS = [
@@ -127,14 +127,22 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
                   {STATUS_OPTIONS.map((opt) => (
                     <label key={opt.id} className="inline-flex items-center cursor-pointer group">
                       <div className="relative flex items-center">
-                        <input type="radio" name="status" className="sr-only" checked={form.status === opt.id} onChange={() => handleInputChange("status", opt.id)} />
+                        <input
+                          type="radio"
+                          name="status"
+                          className="sr-only"
+                          checked={form.status === opt.id}
+                          onChange={() => handleInputChange("status", opt.id)}
+                        />
                         <div
                           className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${form.status === opt.id ? `${opt.color} border-transparent shadow-sm shadow-${opt.id}` : "border-border bg-background group-hover:border-primary/50"}`}
                         >
                           {form.status === opt.id && <Icon name="Check" size={12} className="text-white" />}
                         </div>
                       </div>
-                      <span className={`ml-2 text-sm font-medium ${form.status === opt.id ? "text-foreground" : "text-muted-foreground"}`}>{opt.label}</span>
+                      <span className={`ml-2 text-sm font-medium ${form.status === opt.id ? "text-foreground" : "text-muted-foreground"}`}>
+                        {opt.label}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -147,10 +155,25 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
                 <div className="md:col-span-2">
                   <Input label="Nombre Completo" value={form.name} onChange={(e) => handleInputChange("name", e.target.value)} />
                 </div>
-                <Input label="Fecha Nacimiento" type="date" value={form.dateOfBirth} onChange={(e) => handleInputChange("dateOfBirth", e.target.value)} />
+                <Input
+                  label="Fecha Nacimiento"
+                  type="date"
+                  value={form.dateOfBirth}
+                  onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                />
                 <Select label="Género" options={GENDER_OPTIONS} value={form.gender} onChange={(val) => handleInputChange("gender", val)} />
-                <Select label="Grupo Sanguíneo" options={BLOOD_OPTIONS} value={form.bloodType} onChange={(val) => handleInputChange("bloodType", val)} />
-                <Select label="Estado Civil" options={MARITAL_STATUS_OPTIONS} value={form.maritalStatus} onChange={(val) => handleInputChange("maritalStatus", val)} />
+                <Select
+                  label="Grupo Sanguíneo"
+                  options={BLOOD_OPTIONS}
+                  value={form.bloodType}
+                  onChange={(val) => handleInputChange("bloodType", val)}
+                />
+                <Select
+                  label="Estado Civil"
+                  options={MARITAL_STATUS_OPTIONS}
+                  value={form.maritalStatus}
+                  onChange={(val) => handleInputChange("maritalStatus", val)}
+                />
                 {/* <Input label="Estado Civil" value={form.maritalStatus} onChange={(e) => handleInputChange("maritalStatus", e.target.value)} /> */}
               </div>
             </section>
@@ -176,15 +199,36 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
               <div className="p-6 bg-muted/20 rounded-2xl border border-border space-y-5">
                 <p className="text-sm font-semibold text-foreground">Contacto de Emergencia</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <Input label="Nombre Contacto" value={form.emergencyContact.name} onChange={(e) => handleEmergencyChange("name", e.target.value)} />
-                  <Input label="Relación" value={form.emergencyContact.relationship} onChange={(e) => handleEmergencyChange("relationship", e.target.value)} />
-                  <Input label="Teléfono" value={form.emergencyContact.phone} onChange={(e) => handleEmergencyChange("phone", e.target.value)} />
-                  <Input label="Email" value={form.emergencyContact.email} onChange={(e) => handleEmergencyChange("email", e.target.value)} />
+                  <Input
+                    label="Nombre Contacto"
+                    value={form.emergencyContact.name}
+                    onChange={(e) => handleEmergencyChange("name", e.target.value)}
+                  />
+                  <Input
+                    label="Relación"
+                    value={form.emergencyContact.relationship}
+                    onChange={(e) => handleEmergencyChange("relationship", e.target.value)}
+                  />
+                  <Input
+                    label="Teléfono"
+                    value={form.emergencyContact.phone}
+                    onChange={(e) => handleEmergencyChange("phone", e.target.value)}
+                  />
+                  <Input
+                    label="Email"
+                    value={form.emergencyContact.email}
+                    onChange={(e) => handleEmergencyChange("email", e.target.value)}
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <Input label="Cobertura Médica" value={form.insurance} onChange={(e) => handleInputChange("insurance", e.target.value)} />
-                <Input label="Alergias" placeholder="Separadas por comas" value={form.allergies.join(", ")} onChange={(e) => handleInputChange("allergies", e.target.value.split(", "))} />
+                <Input
+                  label="Alergias"
+                  placeholder="Separadas por comas"
+                  value={form.allergies.join(", ")}
+                  onChange={(e) => handleInputChange("allergies", e.target.value.split(", "))}
+                />
               </div>
             </section>
           </div>

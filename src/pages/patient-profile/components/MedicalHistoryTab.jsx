@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
+import Icon from "@/components/AppIcon";
 
 const MedicalHistoryTab = ({ medicalHistory }) => {
   const getConditionSeverity = (severity) => {
@@ -31,7 +31,9 @@ const MedicalHistoryTab = ({ medicalHistory }) => {
               <div className="flex-1 min-w-0">
                 <p className="text-sm md:text-base font-medium text-foreground mb-1">{allergy?.allergen}</p>
                 <p className="text-xs md:text-sm text-muted-foreground">Reaction: {allergy?.reaction}</p>
-                <span className={`inline-block mt-2 px-2 py-1 rounded text-xs font-medium ${getConditionSeverity(allergy?.severity)}`}>{allergy?.severity} Severity</span>
+                <span className={`inline-block mt-2 px-2 py-1 rounded text-xs font-medium ${getConditionSeverity(allergy?.severity)}`}>
+                  {allergy?.severity} Severity
+                </span>
               </div>
             </div>
           ))}
@@ -46,17 +48,28 @@ const MedicalHistoryTab = ({ medicalHistory }) => {
         </div>
         <div className="space-y-3 md:space-y-4">
           {medicalHistory?.conditions?.map((condition, index) => (
-            <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 md:p-4 bg-muted/50 rounded-lg border border-border">
+            <div
+              key={index}
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 md:p-4 bg-muted/50 rounded-lg border border-border"
+            >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
                   <p className="text-sm md:text-base font-medium text-foreground">{condition?.name}</p>
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${getConditionSeverity(condition?.severity)}`}>{condition?.severity}</span>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${getConditionSeverity(condition?.severity)}`}>
+                    {condition?.severity}
+                  </span>
                 </div>
-                <p className="text-xs md:text-sm text-muted-foreground mb-1">Diagnosed: {new Date(condition.diagnosedDate)?.toLocaleDateString("en-US", { year: "numeric", month: "short" })}</p>
+                <p className="text-xs md:text-sm text-muted-foreground mb-1">
+                  Diagnosed: {new Date(condition.diagnosedDate)?.toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                </p>
                 {condition?.notes && <p className="text-xs md:text-sm text-muted-foreground">Notes: {condition?.notes}</p>}
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <Icon name={condition?.status === "Active" ? "CheckCircle" : "Circle"} size={18} className={condition?.status === "Active" ? "text-success" : "text-muted-foreground"} />
+                <Icon
+                  name={condition?.status === "Active" ? "CheckCircle" : "Circle"}
+                  size={18}
+                  className={condition?.status === "Active" ? "text-success" : "text-muted-foreground"}
+                />
                 <span className="text-xs md:text-sm font-medium text-foreground whitespace-nowrap">{condition?.status}</span>
               </div>
             </div>
@@ -75,10 +88,14 @@ const MedicalHistoryTab = ({ medicalHistory }) => {
             <div key={index} className="p-3 md:p-4 bg-muted/50 rounded-lg border border-border">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <p className="text-sm md:text-base font-medium text-foreground">{medication?.name}</p>
-                <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium whitespace-nowrap">{medication?.frequency}</span>
+                <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium whitespace-nowrap">
+                  {medication?.frequency}
+                </span>
               </div>
               <p className="text-xs md:text-sm text-muted-foreground mb-1">Dosage: {medication?.dosage}</p>
-              <p className="text-xs md:text-sm text-muted-foreground">Started: {new Date(medication.startDate)?.toLocaleDateString("en-US", { year: "numeric", month: "short" })}</p>
+              <p className="text-xs md:text-sm text-muted-foreground">
+                Started: {new Date(medication.startDate)?.toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+              </p>
               {medication?.prescribedBy && <p className="text-xs text-muted-foreground mt-2">Prescribed by: {medication?.prescribedBy}</p>}
             </div>
           ))}

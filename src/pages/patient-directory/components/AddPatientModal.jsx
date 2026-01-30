@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Icon from "../../../components/AppIcon";
-import Image from "../../../components/AppImage";
 import { useTranslation } from "react-i18next";
-import { cn } from "../../../utils/cn";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Icon from "@/components/AppIcon";
+import Image from "@/components/AppImage";
+import { cn } from "@/utils/cn";
 
 const QUICK_TAGS = ["vip", "recommended", "new", "family", "other"];
 
@@ -129,7 +129,11 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
           {/* HEADER */}
           <div className="p-6 border-b border-border flex justify-between items-center bg-background/50">
             <h3 className="text-xl font-headline font-semibold text-foreground flex items-center gap-2">{t("modal.newPatient")}</h3>
-            <Button type="button" onClick={handleClose} className="bg-muted text-muted-foreground hover:bg-accent hover:text-muted p-2 rounded-lg transition-colors">
+            <Button
+              type="button"
+              onClick={handleClose}
+              className="bg-muted text-muted-foreground hover:bg-accent hover:text-muted p-2 rounded-lg transition-colors"
+            >
               <Icon name="X" size={20} />
             </Button>
           </div>
@@ -149,7 +153,12 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
                     </div>
                   )}
                 </div>
-                <Button variant={previewImage ? "outline" : "default"} type="button" className="text-xs" onClick={() => fileInputRef.current.click()}>
+                <Button
+                  variant={previewImage ? "outline" : "default"}
+                  type="button"
+                  className="text-xs"
+                  onClick={() => fileInputRef.current.click()}
+                >
                   {previewImage ? (
                     <div className="flex items-center gap-2">
                       <Icon name="RefreshCw" size={16} />
@@ -172,10 +181,26 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
                 <div className="md:col-span-2">
                   <Input label="Nombre Completo" value={form.name} onChange={(e) => handleInputChange("name", e.target.value)} required />
                 </div>
-                <Input label="Fecha Nacimiento" type="date" value={form.dateOfBirth} onChange={(e) => handleInputChange("dateOfBirth", e.target.value)} required />
+                <Input
+                  label="Fecha Nacimiento"
+                  type="date"
+                  value={form.dateOfBirth}
+                  onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                  required
+                />
                 <Select label="Género" options={GENDER_OPTIONS} value={form.gender} onChange={(val) => handleInputChange("gender", val)} />
-                <Select label="Grupo Sanguíneo" options={BLOOD_OPTIONS} value={form.bloodType} onChange={(val) => handleInputChange("bloodType", val)} />
-                <Select label="Estado Civil" options={MARITAL_STATUS_OPTIONS} value={form.maritalStatus} onChange={(val) => handleInputChange("maritalStatus", val)} />
+                <Select
+                  label="Grupo Sanguíneo"
+                  options={BLOOD_OPTIONS}
+                  value={form.bloodType}
+                  onChange={(val) => handleInputChange("bloodType", val)}
+                />
+                <Select
+                  label="Estado Civil"
+                  options={MARITAL_STATUS_OPTIONS}
+                  value={form.maritalStatus}
+                  onChange={(val) => handleInputChange("maritalStatus", val)}
+                />
               </div>
             </section>
 
@@ -185,7 +210,13 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
                 <Icon name="MapPin" size={14} /> CONTACTO Y UBICACIÓN
               </h4> */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <Input label="Email" type="email" value={form.email} onChange={(e) => handleInputChange("email", e.target.value)} required />
+                <Input
+                  label="Email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  required
+                />
                 <Input label="Teléfono" value={form.phone} onChange={(e) => handleInputChange("phone", e.target.value)} />
                 <div className="md:col-span-2">
                   <Input label="Dirección" value={form.address} onChange={(e) => handleInputChange("address", e.target.value)} />
@@ -206,10 +237,26 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
               <div className="p-6 bg-muted/20 rounded-2xl border border-border space-y-5">
                 <p className="text-sm font-semibold text-foreground">Contacto de Emergencia</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <Input label="Nombre Contacto" value={form.emergencyContact.name} onChange={(e) => handleEmergencyChange("name", e.target.value)} />
-                  <Input label="Relación" value={form.emergencyContact.relationship} onChange={(e) => handleEmergencyChange("relationship", e.target.value)} />
-                  <Input label="Teléfono" value={form.emergencyContact.phone} onChange={(e) => handleEmergencyChange("phone", e.target.value)} />
-                  <Input label="Email" value={form.emergencyContact.email} onChange={(e) => handleEmergencyChange("email", e.target.value)} />
+                  <Input
+                    label="Nombre Contacto"
+                    value={form.emergencyContact.name}
+                    onChange={(e) => handleEmergencyChange("name", e.target.value)}
+                  />
+                  <Input
+                    label="Relación"
+                    value={form.emergencyContact.relationship}
+                    onChange={(e) => handleEmergencyChange("relationship", e.target.value)}
+                  />
+                  <Input
+                    label="Teléfono"
+                    value={form.emergencyContact.phone}
+                    onChange={(e) => handleEmergencyChange("phone", e.target.value)}
+                  />
+                  <Input
+                    label="Email"
+                    value={form.emergencyContact.email}
+                    onChange={(e) => handleEmergencyChange("email", e.target.value)}
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

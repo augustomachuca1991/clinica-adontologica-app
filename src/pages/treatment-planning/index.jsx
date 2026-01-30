@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Icon from "../../components/AppIcon";
-import Button from "../../components/ui/Button";
-import Select from "../../components/ui/Select";
-import ToothChart from "./components/ToothChart";
-import TreatmentSequence from "./components/TreatmentSequence";
-import TreatmentPlanComparison from "./components/TreatmentPlanComparison";
-import InsuranceVerification from "./components/InsuranceVerification";
-import PatientPresentationMode from "./components/PatientPresentationMode";
-import TreatmentForm from "./components/TreatmentForm";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
+import { formatDateLang } from "@/utils/formatters/date";
+import { usePatients } from "@/hooks/PatientsHooks";
+import { useTreatmentServices } from "@/hooks/TreatmentServicesHooks";
+import { useClinicalRecords } from "@/hooks/ClinicalRecorsHooks";
+import { notifyError, notifyInfo, notifySuccess } from "@/utils/notifications";
+import ToothChart from "@/pages/treatment-planning/components/ToothChart";
+import TreatmentSequence from "@/pages/treatment-planning/components/TreatmentSequence";
+import InsuranceVerification from "@/pages/treatment-planning/components/InsuranceVerification";
+import PatientPresentationMode from "@/pages/treatment-planning/components/PatientPresentationMode";
+import TreatmentForm from "@/pages/treatment-planning/components/TreatmentForm";
 import { useTranslation } from "react-i18next";
-import { formatDateLang } from "../../utils/formatters/date";
-import { usePatients } from "../../hooks/PatientsHooks";
-import { useTreatmentServices } from "../../hooks/TreatmentServicesHooks";
-import { useClinicalRecords } from "../../hooks/ClinicalRecorsHooks";
-import { notifyError, notifyInfo, notifySuccess } from "../../utils/notifications";
+import TreatmentPlanComparison from "@/pages/treatment-planning/components/TreatmentPlanComparison";
 
 const TreatmentPlanning = () => {
   const { t, i18n } = useTranslation();
@@ -29,7 +29,15 @@ const TreatmentPlanning = () => {
 
   const { sortedPatients, loading: loadingPatients } = usePatients();
   const { services, loading: loadingServices } = useTreatmentServices();
-  const { saveTreatmentPlan, fetchPatientSummary, fetchPatientRecords, updateClinicalRecord, summary, records, loading: loadingTreatmentPlan } = useClinicalRecords();
+  const {
+    saveTreatmentPlan,
+    fetchPatientSummary,
+    fetchPatientRecords,
+    updateClinicalRecord,
+    summary,
+    records,
+    loading: loadingTreatmentPlan,
+  } = useClinicalRecords();
 
   const patientInsurance = {
     provider: "Delta Dental",
@@ -211,7 +219,13 @@ const TreatmentPlanning = () => {
             <Button variant="outline" onClick={() => setShowComparison(!showComparison)} iconName="GitCompare" iconPosition="left">
               {t("treatment.comparePlans")}
             </Button>
-            <Button variant="default" onClick={() => setShowPresentationMode(true)} iconName="Presentation" iconPosition="left" disabled={treatments?.length === 0}>
+            <Button
+              variant="default"
+              onClick={() => setShowPresentationMode(true)}
+              iconName="Presentation"
+              iconPosition="left"
+              disabled={treatments?.length === 0}
+            >
               {t("treatment.presentToPatient")}
             </Button>
           </div>
@@ -233,7 +247,9 @@ const TreatmentPlanning = () => {
 
             <div className="flex items-center gap-2 text-sm">
               <Icon name="Calendar" size={18} className="text-muted-foreground" />
-              <span className="text-muted-foreground">{t("treatment.lastVisit", { date: formatDateLang("2026-01-10", i18n.language) })}</span>
+              <span className="text-muted-foreground">
+                {t("treatment.lastVisit", { date: formatDateLang("2026-01-10", i18n.language) })}
+              </span>
             </div>
           </div>
 
@@ -292,7 +308,9 @@ const TreatmentPlanning = () => {
 
             {(showTreatmentForm || editingTreatment) && (
               <div className="bg-card border border-border rounded-lg p-4 md:p-6">
-                <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-4">{editingTreatment ? t("treatment.editTreatment") : t("treatment.addTreatment")}</h3>
+                <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-4">
+                  {editingTreatment ? t("treatment.editTreatment") : t("treatment.addTreatment")}
+                </h3>
                 <TreatmentForm
                   services={services}
                   isEditingHistory={editingTreatment?.isPersisted}
@@ -311,7 +329,13 @@ const TreatmentPlanning = () => {
           </div>
 
           <div className="space-y-6">
-            <TreatmentSequence treatments={allTreatments} services={services} onReorder={handleReorderTreatments} onRemove={handleRemoveTreatment} onEdit={handleEditTreatment} />
+            <TreatmentSequence
+              treatments={allTreatments}
+              services={services}
+              onReorder={handleReorderTreatments}
+              onRemove={handleRemoveTreatment}
+              onEdit={handleEditTreatment}
+            />
           </div>
         </div>
 
@@ -324,10 +348,17 @@ const TreatmentPlanning = () => {
               <div className="flex-1">
                 <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-2">Treatment Plan Ready</h3>
                 <p className="text-sm md:text-base text-muted-foreground mb-4">
-                  Insurance verified and treatment plan finalized. You can now present this plan to the patient or save it for future reference.
+                  Insurance verified and treatment plan finalized. You can now present this plan to the patient or save it for future
+                  reference.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button variant="default" iconName="Save" iconPosition="left" onClick={handleSaveFullPlan} disabled={loadingTreatmentPlan}>
+                  <Button
+                    variant="default"
+                    iconName="Save"
+                    iconPosition="left"
+                    onClick={handleSaveFullPlan}
+                    disabled={loadingTreatmentPlan}
+                  >
                     {loadingTreatmentPlan ? t("loading") : t("treatment.savePlan")}
                   </Button>
                   <Button variant="outline" onClick={() => setShowPresentationMode(true)} iconName="Presentation" iconPosition="left">
@@ -339,7 +370,12 @@ const TreatmentPlanning = () => {
           </div>
         )}
       </div>
-      {showPresentationMode && <PatientPresentationMode treatmentPlan={treatmentPlans?.find((p) => p?.id === selectedPlanId) || treatmentPlans?.[1]} onClose={() => setShowPresentationMode(false)} />}
+      {showPresentationMode && (
+        <PatientPresentationMode
+          treatmentPlan={treatmentPlans?.find((p) => p?.id === selectedPlanId) || treatmentPlans?.[1]}
+          onClose={() => setShowPresentationMode(false)}
+        />
+      )}
     </>
   );
 };

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Icon from "../../components/AppIcon";
-import SettingsSection from "./components/SettingsSection";
-import UserManagementCard from "./components/UserManagementCard";
-import PracticeCustomization from "./components/PracticeCustomization";
-import SecurityCompliance from "./components/SecurityCompliance";
-import IntegrationMarketplace from "./components/IntegrationMarketplace";
-import NotificationPreferences from "./components/NotificationPreferences";
-import BackupRestore from "./components/BackupRestore";
+import Icon from "@/components/AppIcon";
+import UserManagementCard from "@/pages/settings-panel/components/UserManagementCard";
+import PracticeCustomization from "@/pages/settings-panel/components/PracticeCustomization";
+import SecurityCompliance from "@/pages/settings-panel/components/SecurityCompliance";
+import IntegrationMarketplace from "@/pages/settings-panel/components/IntegrationMarketplace";
+import NotificationPreferences from "@/pages/settings-panel/components/NotificationPreferences";
+import BackupRestore from "@/pages/settings-panel/components/BackupRestore";
+import SettingsSection from "@/pages/settings-panel/components/SettingsSection";
 
 const SettingsPanel = () => {
   const [activeTab, setActiveTab] = useState("users");
@@ -60,7 +60,8 @@ const SettingsPanel = () => {
           <div>
             <h3 className="font-medium text-sm text-foreground mb-1">System Configuration</h3>
             <p className="text-xs text-muted-foreground">
-              Configure your DentalCare Manager system to match your practice workflow. Changes to critical settings may require administrator approval and will be logged for compliance.
+              Configure your DentalCare Manager system to match your practice workflow. Changes to critical settings may require
+              administrator approval and will be logged for compliance.
             </p>
           </div>
         </div>
@@ -74,7 +75,9 @@ const SettingsPanel = () => {
                 key={tab?.id}
                 onClick={() => setActiveTab(tab?.id)}
                 className={`flex items-center gap-2 px-4 md:px-6 py-4 text-sm font-medium transition-all duration-base border-b-2 whitespace-nowrap ${
-                  activeTab === tab?.id ? "border-primary text-primary bg-primary/5" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  activeTab === tab?.id
+                    ? "border-primary text-primary bg-primary/5"
+                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 }`}
               >
                 <Icon name={tab?.icon} size={18} />
@@ -91,7 +94,9 @@ const SettingsPanel = () => {
                 <Icon name={tabs?.find((t) => t?.id === activeTab)?.icon || "Settings"} size={20} color="var(--color-primary)" />
               </div>
               <div>
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{tabs?.find((t) => t?.id === activeTab)?.label}</h2>
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+                  {tabs?.find((t) => t?.id === activeTab)?.label}
+                </h2>
                 <p className="text-xs md:text-sm text-muted-foreground">{tabs?.find((t) => t?.id === activeTab)?.description}</p>
               </div>
             </div>

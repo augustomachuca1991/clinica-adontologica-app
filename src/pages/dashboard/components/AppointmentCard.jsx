@@ -1,9 +1,9 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
-import Image from "../../../components/AppImage";
-import Button from "../../../components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import Image from "@/components/AppImage";
 
 const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
   const { t } = useTranslation();
@@ -38,7 +38,9 @@ const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
           <div className="flex items-start justify-between gap-2 mb-1">
             <h4 className="font-headline font-semibold text-sm md:text-base text-foreground truncate">{appointment?.patientName}</h4>
 
-            <span className={`inline-flex items-center rounded-xl px-2 py-1 text-xs font-medium inset-ring ${getStatusColor()}`}>{t(`appointment.status.${appointment?.status}`)}</span>
+            <span className={`inline-flex items-center rounded-xl px-2 py-1 text-xs font-medium inset-ring ${getStatusColor()}`}>
+              {t(`appointment.status.${appointment?.status}`)}
+            </span>
           </div>
           <p className="text-sm text-muted-foreground mb-2">{appointment?.treatment}</p>
           <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-muted-foreground">
@@ -60,10 +62,24 @@ const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
         </div>
       </div>
       <div className="flex gap-2 pt-3 border-t border-border">
-        <Button variant="tertiary" size="sm" onClick={() => navigate("/weekly-calendar")} iconName="Eye" iconPosition="left" className="flex-1">
+        <Button
+          variant="tertiary"
+          size="sm"
+          onClick={() => navigate("/weekly-calendar")}
+          iconName="Eye"
+          iconPosition="left"
+          className="flex-1"
+        >
           {t("appointment.viewDetails")}
         </Button>
-        <Button variant="default" size="sm" onClick={() => onReschedule(appointment?.id)} iconName="Calendar" iconPosition="left" className="flex-1">
+        <Button
+          variant="default"
+          size="sm"
+          onClick={() => onReschedule(appointment?.id)}
+          iconName="Calendar"
+          iconPosition="left"
+          className="flex-1"
+        >
           {t("appointment.reschedule")}
         </Button>
       </div>

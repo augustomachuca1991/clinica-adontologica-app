@@ -1,33 +1,18 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../../components/ui/Button";
-import Icon from "../../components/AppIcon";
-import { useAppointments } from "../../hooks/AppointmentsHooks";
-import ScheduleAppointmentModal from "../dashboard/components/ScheduleAppointmentModal";
-import {
-  notifyError,
-  notifySuccess,
-  notifyConfirm,
-} from "../../utils/notifications";
+import Button from "@/components/ui/Button";
+import Icon from "@/components/AppIcon";
+import { useAppointments } from "@/hooks/AppointmentsHooks";
+import ScheduleAppointmentModal from "@/pages/dashboard/components/ScheduleAppointmentModal";
+import { notifyError, notifySuccess, notifyConfirm } from "@/utils/notifications";
 
 const isTouchDevice = () => {
-  return (
-    "ontouchstart" in window ||
-    navigator.maxTouchPoints > 0 ||
-    navigator.msMaxTouchPoints > 0
-  );
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 };
 
 const WeeklyCalendar = () => {
   const { t } = useTranslation();
-  const {
-    appointments,
-    fetchAppointments,
-    addAppointment,
-    updateAppointment,
-    deleteAppointment,
-    loading: isSaving,
-  } = useAppointments();
+  const { appointments, fetchAppointments, addAppointment, updateAppointment, deleteAppointment, loading: isSaving } = useAppointments();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -46,14 +31,7 @@ const WeeklyCalendar = () => {
     }),
   ];
 
-  const daysOfWeek = [
-    t("days.monday"),
-    t("days.tuesday"),
-    t("days.wednesday"),
-    t("days.thursday"),
-    t("days.friday"),
-    t("days.saturday"),
-  ];
+  const daysOfWeek = [t("days.monday"), t("days.tuesday"), t("days.wednesday"), t("days.thursday"), t("days.friday"), t("days.saturday")];
 
   useEffect(() => {
     fetchAppointments();
@@ -71,19 +49,14 @@ const WeeklyCalendar = () => {
         const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
         // COMPARACIÓN DE UUIDs SEGURA
-        const isSameAppointment =
-          excludeId &&
-          appt.id &&
-          String(appt.id).toLowerCase().trim() ===
-            String(excludeId).toLowerCase().trim();
+        const isSameAppointment = excludeId && appt.id && String(appt.id).toLowerCase().trim() === String(excludeId).toLowerCase().trim();
 
         return dateStr === selectedDate && !isSameAppointment;
       })
       .map((appt) => {
         const d = appt.date;
         const start = d.getHours() * 60 + d.getMinutes();
-        const durationNum =
-          parseInt(String(appt.duration).replace(/\D/g, "")) || 30;
+        const durationNum = parseInt(String(appt.duration).replace(/\D/g, "")) || 30;
 
         return {
           start,
@@ -93,9 +66,7 @@ const WeeklyCalendar = () => {
       })
       .sort((a, b) => a.start - b.start);
 
-    const collision = dayAppointments.find(
-      (appt) => selectedStart >= appt.start && selectedStart < appt.end
-    );
+    const collision = dayAppointments.find((appt) => selectedStart >= appt.start && selectedStart < appt.end);
 
     if (collision) {
       return { available: 0, conflictWith: collision.patient };
@@ -174,15 +145,9 @@ const WeeklyCalendar = () => {
     const day = String(d.getDate()).padStart(2, "0");
     const datePart = `${y}-${m}-${day}`;
 
-    const timePart =
-      appointmentData.time ||
-      `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    const timePart = appointmentData.time || `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 
-    const resultValidation = getAvailableTime(
-      datePart,
-      timePart,
-      appointmentData.id
-    );
+    const resultValidation = getAvailableTime(datePart, timePart, appointmentData.id);
     const requestedMin = parseInt(appointmentData.duration);
 
     if (resultValidation.available === 0) {
@@ -211,17 +176,11 @@ const WeeklyCalendar = () => {
         date: `${datePart}T${timePart}:00`, // El formato local que arreglamos
       };
 
-      const res = isEditing
-        ? await updateAppointment(appointmentData.id, payload)
-        : await addAppointment(payload);
+      const res = isEditing ? await updateAppointment(appointmentData.id, payload) : await addAppointment(payload);
 
       if (res.success) {
         setIsModalOpen(false);
-        notifySuccess(
-          isEditing
-            ? t("appointment.msgSaveSuccess")
-            : t("appointment.msgSuccess")
-        );
+        notifySuccess(isEditing ? t("appointment.msgSaveSuccess") : t("appointment.msgSuccess"));
         await fetchAppointments();
       }
     } catch (error) {
@@ -300,23 +259,19 @@ const WeeklyCalendar = () => {
       e.stopPropagation();
     }
 
-    notifyConfirm(
-      t("appointment.confirmDeleteTitle"),
-      t("appointment.confirmDeleteDescription"),
-      async () => {
-        try {
-          const res = await deleteAppointment(id);
-          if (res.success) {
-            notifySuccess(t("appointment.msgDeleteSuccess"));
-            setActiveMenu(null);
-          } else {
-            notifyError(t("appointment.msgErrorDelete"));
-          }
-        } catch (error) {
-          notifyError(`Error: ${error}` || "An unexpected error occurred");
+    notifyConfirm(t("appointment.confirmDeleteTitle"), t("appointment.confirmDeleteDescription"), async () => {
+      try {
+        const res = await deleteAppointment(id);
+        if (res.success) {
+          notifySuccess(t("appointment.msgDeleteSuccess"));
+          setActiveMenu(null);
+        } else {
+          notifyError(t("appointment.msgErrorDelete"));
         }
+      } catch (error) {
+        notifyError(`Error: ${error}` || "An unexpected error occurred");
       }
-    );
+    });
   };
 
   const handleReschedule = (e, appointment) => {
@@ -347,21 +302,14 @@ const WeeklyCalendar = () => {
         {/* Header del Calendario */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-headline font-bold text-foreground">
-              {t("calendar.title")}
-            </h1>
+            <h1 className="text-2xl font-headline font-bold text-foreground">{t("calendar.title")}</h1>
             <p className="text-muted-foreground">{t("calendar.subtitle")}</p>
           </div>
 
           <div className="flex gap-2">
             <Button variant="tertiary" size="sm" iconName="ChevronLeft" />
             <Button variant="tertiary" size="sm" iconName="ChevronRight" />
-            <Button
-              variant="default"
-              size="sm"
-              iconName="Plus"
-              onClick={handleAddAppointment}
-            >
+            <Button variant="default" size="sm" iconName="Plus" onClick={handleAddAppointment}>
               {t("calendar.newAppointment")}
             </Button>
           </div>
@@ -376,9 +324,7 @@ const WeeklyCalendar = () => {
                     ${getStatusStyles(item.status).split(" ")[1]} 
                     ${getStatusStyles(item.status).split(" ")[0]}`}
                 />
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
-                  {item.label}
-                </span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight">{item.label}</span>
               </div>
             ))}
           </div>
@@ -392,10 +338,7 @@ const WeeklyCalendar = () => {
               <div className="p-4 border-r border-border"></div>
               {/* Cabecera de Días */}
               {daysOfWeek.map((day) => (
-                <div
-                  key={day}
-                  className="p-4 text-center font-semibold text-sm text-foreground border-r border-border last:border-0"
-                >
+                <div key={day} className="p-4 text-center font-semibold text-sm text-foreground border-r border-border last:border-0">
                   {day}
                 </div>
               ))}
@@ -427,9 +370,7 @@ const WeeklyCalendar = () => {
                     };
 
                     const targetDayIndex = dayMap[day];
-                    const diff =
-                      targetDayIndex -
-                      (currentDayIndex === 0 ? 7 : currentDayIndex);
+                    const diff = targetDayIndex - (currentDayIndex === 0 ? 7 : currentDayIndex);
 
                     const cellDate = new Date(today);
                     cellDate.setDate(today.getDate() + diff);
@@ -445,9 +386,7 @@ const WeeklyCalendar = () => {
                     return (
                       <div
                         key={`${day}-${time}`}
-                        onClick={() =>
-                          !appointment && handleCellClick(day, time)
-                        }
+                        onClick={() => !appointment && handleCellClick(day, time)}
                         className={`h-12 border-r border-b border-border relative group transition-all
                           ${appointment ? "z-10" : "hover:bg-primary/5 cursor-pointer"}
                           ${time.endsWith(":00") ? "border-b-muted-foreground/20" : "border-b-border/50"}`}
@@ -473,17 +412,13 @@ const WeeklyCalendar = () => {
                             {/* BOTONES DE ACCIÓN RÁPIDA (Aparecen al hacer hover sobre la cita) */}
                             <div className="absolute right-1 top-1 hidden lg:flex flex-col gap-1 opacity-0 group-hover/appt:opacity-100 transition-opacity z-30">
                               <button
-                                onClick={(e) =>
-                                  handleReschedule(e, appointment)
-                                }
+                                onClick={(e) => handleReschedule(e, appointment)}
                                 className="p-1 bg-white/80 hover:bg-white rounded shadow-sm text-blue-600 transition-colors"
                               >
                                 <Icon name="CalendarClock" size={12} />
                               </button>
                               <button
-                                onClick={(e) =>
-                                  handleDeleteAppointment(e, appointment.id)
-                                }
+                                onClick={(e) => handleDeleteAppointment(e, appointment.id)}
                                 className="p-1 bg-white/80 hover:bg-red-50 rounded shadow-sm text-red-600 transition-colors"
                               >
                                 <Icon name="Trash2" size={12} />
@@ -495,26 +430,14 @@ const WeeklyCalendar = () => {
                               {/* Padding derecho para que el texto no pise los botones */}
                               <div className="flex items-center gap-1 mb-0.5">
                                 <Icon name="Clock" size={8} />
-                                <span className="text-[8px] font-bold uppercase tracking-wider italic">
-                                  {appointment.time}
-                                </span>
+                                <span className="text-[8px] font-bold uppercase tracking-wider italic">{appointment.time}</span>
                               </div>
-                              <p className="text-[10px] font-bold truncate leading-tight">
-                                {appointment.patientName}
-                              </p>
-                              <p className="text-[9px] opacity-90 truncate leading-tight italic">
-                                {appointment.treatment}
-                              </p>
+                              <p className="text-[10px] font-bold truncate leading-tight">{appointment.patientName}</p>
+                              <p className="text-[9px] opacity-90 truncate leading-tight italic">{appointment.treatment}</p>
                               {parseInt(appointment.duration) > 30 && (
                                 <div className="mt-auto pt-1 border-t border-current/10 flex justify-between items-center">
-                                  <span className="text-[8px] font-medium">
-                                    {appointment.duration} min
-                                  </span>
-                                  <Icon
-                                    name="CheckCircle"
-                                    size={10}
-                                    className="opacity-50"
-                                  />
+                                  <span className="text-[8px] font-medium">{appointment.duration} min</span>
+                                  <Icon name="CheckCircle" size={10} className="opacity-50" />
                                 </div>
                               )}
                             </div>
@@ -523,11 +446,7 @@ const WeeklyCalendar = () => {
 
                         {!appointment && (
                           <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center">
-                            <Icon
-                              name="Plus"
-                              size={14}
-                              className="text-primary/40"
-                            />
+                            <Icon name="Plus" size={14} className="text-primary/40" />
                           </div>
                         )}
                       </div>
@@ -565,9 +484,7 @@ const WeeklyCalendar = () => {
                   <Icon name="User" size={20} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg text-black leading-tight">
-                    {activeMenu.patientName}
-                  </h3>
+                  <h3 className="font-bold text-lg text-black leading-tight">{activeMenu.patientName}</h3>
                   <p className="text-xs text-muted-foreground">
                     {activeMenu.time} - {activeMenu.treatment}
                   </p>
@@ -584,11 +501,7 @@ const WeeklyCalendar = () => {
                   setActiveMenu(null);
                 }}
               >
-                <Icon
-                  name="CalendarClock"
-                  size={20}
-                  className="mr-3 text-blue-600"
-                />
+                <Icon name="CalendarClock" size={20} className="mr-3 text-blue-600" />
                 {t("appointment.reschedule") || "Reprogramar Cita"}
               </Button>
 
@@ -596,10 +509,7 @@ const WeeklyCalendar = () => {
                 variant="outline"
                 className="justify-start h-14 text-base font-medium text-red-600 border-red-100 hover:bg-red-50"
                 onClick={() => {
-                  handleDeleteAppointment(
-                    { stopPropagation: () => {} },
-                    activeMenu.id
-                  );
+                  handleDeleteAppointment({ stopPropagation: () => {} }, activeMenu.id);
                   setActiveMenu(null);
                 }}
               >

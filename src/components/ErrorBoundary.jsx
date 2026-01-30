@@ -1,6 +1,6 @@
 import React from "react";
-import Icon from "./AppIcon";
-import Button from "./ui/Button";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 
 class ErrorBoundaryInner extends React.Component {
@@ -33,8 +33,12 @@ class ErrorBoundaryInner extends React.Component {
               </div>
             </div>
             <div className="flex flex-col gap-1 text-center">
-              <h1 className="text-2xl font-medium text-neutral-800">{t("error_boundary.title")}</h1>
-              <p className="text-neutral-600 text-base w w-8/12 mx-auto">{t("error_boundary.description")}</p>
+              <h1 className="text-2xl font-medium text-neutral-800">
+                {t("error_boundary.title")}
+              </h1>
+              <p className="text-neutral-600 text-base w w-8/12 mx-auto">
+                {t("error_boundary.description")}
+              </p>
             </div>
             <div className="flex justify-center items-center mt-6">
               <Button

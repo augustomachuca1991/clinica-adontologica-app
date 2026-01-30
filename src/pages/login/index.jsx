@@ -1,34 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { Checkbox } from "@/components/ui/Checkbox";
 import FooterLogin from "@/pages/login/components/FooterLogin";
-import { notifyError, notifySuccess } from "@/utils/notifications";
-import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/lib/supabase";
 import Spinner from "@/components/ui/Spinner";
 import Image from "@/components/AppImage";
 import logo from "@/assets/images/logo-orion-software.svg";
+import { useAuth } from "@/contexts/AuthContext";
+import { notifyError, notifySuccess } from "@/utils/notifications";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated, signIn, isLoggedIn, hasActiveSubscription } = useAuth();
+  const { signIn, loading } = useAuth();
   const { t } = useTranslation();
-
-  const [isRedirecting, setIsRedirecting] = useState(false);
-  const APP_NAME = import.meta.env.VITE_APP_NAME || "Dental Care";
-
-  useEffect(() => {
-    if (isLoggedIn && !isRedirecting) {
-      if (hasActiveSubscription) {
-        navigate("/dashboard", { replace: true });
-      } else {
-        navigate("/subscription-expired", { replace: true });
-      }
-    }
-  }, [isLoggedIn, hasActiveSubscription, isRedirecting, navigate]);
+  const APP_NAME = import.meta.env?.VITE_APP_NAME || "Dental Care";
 
   const [form, setForm] = useState({
     email: "",
@@ -43,47 +28,16 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { email, password } = form;
-    if (!email || !password) {
-      notifyError(t("login.errors.missingFields"));
-      return;
-    }
+    const { error } = await signIn(form.email, form.password);
 
-    // Iniciamos estado de carga/redirección
-    setIsRedirecting(true);
-
-    try {
-      const { data, error } = await signIn(email, password);
-      if (error) {
-        notifyError(error.message);
-        setIsRedirecting(false); // Detenemos si hay error
-        return;
-      }
-
-      // Consultamos roles
-      const { data: profileData } = await supabase
-        .from("user_profiles")
-        .select(`user_roles ( roles ( name ) )`)
-        .eq("id", data.user.id)
-        .single();
-
-      const roles = profileData?.user_roles?.map((ur) => ur.roles?.name) || [];
-
-      // Notificamos éxito antes de movernos
+    if (error) {
+      notifyError(error.message);
+    } else {
       notifySuccess(t("welcome"));
-
-      if (roles.includes("admin")) {
-        navigate("/admin-panel", { replace: true });
-      } else {
-        navigate("/dashboard", { replace: true });
-      }
-    } catch (err) {
-      console.error(err);
-      setIsRedirecting(false);
     }
   };
 
-  if (isRedirecting) {
+  if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-muted/40">
         <Spinner size={56} />
@@ -144,30 +98,11 @@ const Login = () => {
               />
             </div>
 
-            <Button variant="default" className="w-full" type="submit" disabled={isRedirecting}>
+            <Button variant="default" className="w-full" type="submit" disabled={loading}>
               {t("login.submit")}
             </Button>
           </div>
         </form>
-
-        {/* Divider */}
-        {/* <div className="my-6 flex items-center gap-3">
-          <div className="h-px flex-1 bg-border" />
-          <span className="text-xs text-muted-foreground">{t("login.continueWith")}</span>
-          <div className="h-px flex-1 bg-border" />
-        </div> */}
-
-        {/* Social login */}
-        {/* <div className="grid grid-cols-2 gap-3">
-          <Button variant="outline" className="w-full" iconName="Mail">
-            Google
-          </Button>
-          <Button variant="outline" className="w-full" iconName="Facebook">
-            Facebook
-          </Button>
-        </div> */}
-
-        {/* Footer */}
         <FooterLogin />
       </div>
     </div>

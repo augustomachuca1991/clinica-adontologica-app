@@ -7,6 +7,7 @@ import Icon from "@/components/AppIcon";
 import { notifyError, notifySuccess } from "@/utils/notifications";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
+import Spinner from "@/components/ui/Spinner";
 
 //import LanguageSwitch from "@/components/ui/LanguageSwitch";
 //import Image from "@/components/AppImage";
@@ -21,26 +22,23 @@ const ResetPassword = () => {
     confirmPassword: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { updatePassword } = useAuth();
+  const { updatePassword, signOut } = useAuth();
   const [isValidToken, setIsValidToken] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    // 1. Verificamos si existe una sesión activa (Supabase la crea automáticamente al detectar el token en la URL)
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
-
       if (data?.session) {
         setIsValidToken(true);
       } else {
-        // Si no hay sesión, avisamos y mandamos al login
         notifyError(t("resetPassword.invalidOrExpired"));
         navigate("/login", { replace: true });
       }
-      setLoading(false);
+      setChecking(false);
     };
-
     checkSession();
-  }, [navigate]);
+  }, [navigate, t]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,15 +47,26 @@ const ResetPassword = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+
     setIsLoading(true);
-
     const { error } = await updatePassword(passwords.newPassword);
-
     setIsLoading(false);
-    if (error) notifyError(t("resetPassword.error"));
-    else notifySuccess(t("resetPassword.success"));
+
+    if (error) {
+      notifyError(error.message);
+    } else {
+      notifySuccess(t("resetPassword.success"));
+      await signOut();
+      navigate("/login", { replace: true });
+    }
   };
 
+  if (checking)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner size={40} />
+      </div>
+    );
   if (!isValidToken) return null;
 
   return (

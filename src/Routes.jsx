@@ -9,27 +9,33 @@ import TreatmentPlanning from "@/pages/treatment-planning";
 import PatientDirectory from "@/pages/patient-directory";
 import ClinicalRecords from "@/pages/clinical-records";
 import Login from "@/pages/login";
-import PrivateRoute from "@/components/PrivateRoute";
+import PrivateRoute from "@/components/auth/PrivateRoute";
 import MainLayout from "@/components/ui/MainLayout";
 import SubscriptionExpired from "@/pages/subscription-expired";
 import ForgotPassword from "@/pages/forgot-password";
 import ResetPassword from "@/pages/reset-password";
 import WeeklyCalendar from "@/pages/weekly-calendar";
 import RoleGuard from "@/components/auth/RoleGuard";
+import PublicRoute from "@/components/auth/PublicRoute";
 import Terms from "@/pages/terms";
 import AdminPanel from "@/pages/admin-panel";
 
 const Routes = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <ErrorBoundary>
         <ScrollToTop />
         <RouterRoutes>
           {/* ================= PUBLIC ================= */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/terms" element={<Terms />} />
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Route>
 
           {/* ================= PRIVATE ================= */}
           <Route element={<PrivateRoute />}>
@@ -54,6 +60,9 @@ const Routes = () => {
             {/* Rutas privadas especiales sin layout */}
             <Route path="/subscription-expired" element={<SubscriptionExpired />} />
           </Route>
+
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* ================= FALLBACK ================= */}
           <Route path="*" element={<Navigate to="/login" replace />} />

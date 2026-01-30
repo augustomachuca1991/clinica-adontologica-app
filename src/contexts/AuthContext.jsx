@@ -63,11 +63,7 @@ export const AuthProvider = ({ children }) => {
       setSubscriptionLoading(true);
 
       try {
-        const { data, error } = await supabase
-          .from("subscriptions")
-          .select("*")
-          .eq("user_id", userId)
-          .maybeSingle();
+        const { data, error } = await supabase.from("subscriptions").select("*").eq("user_id", userId).maybeSingle();
 
         if (!error) setSubscription(data);
       } catch (error) {
@@ -88,10 +84,7 @@ export const AuthProvider = ({ children }) => {
   const isAdmin = roles.includes("admin");
 
   // SUSCRIPCIÓN
-  const hasActiveSubscription =
-    subscription &&
-    subscription.status === "active" &&
-    new Date(subscription.current_period_end) > new Date();
+  const hasActiveSubscription = subscription && subscription.status === "active" && new Date(subscription.current_period_end) > new Date();
   const isUserActive = userProfile?.status === "active";
   const isLoggedIn = !!user && isUserActive;
 
@@ -159,12 +152,7 @@ export const AuthProvider = ({ children }) => {
     if (!user) return { error: { message: "No user logged in" } };
 
     try {
-      const { data, error } = await supabase
-        ?.from("user_profiles")
-        ?.update(updates)
-        ?.eq("id", user?.id)
-        ?.select()
-        ?.single();
+      const { data, error } = await supabase?.from("user_profiles")?.update(updates)?.eq("id", user?.id)?.select()?.single();
       if (!error) setUserProfile(data);
       return { data, error };
     } catch (error) {
@@ -174,12 +162,9 @@ export const AuthProvider = ({ children }) => {
 
   const sendPasswordResetEmail = async (email) => {
     try {
-      const { data, error } = await supabase?.auth?.resetPasswordForEmail(
-        email,
-        {
-          redirectTo: `${window.location.origin}/reset-password`,
-        }
-      );
+      const { data, error } = await supabase?.auth?.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
       return { data, error };
     } catch (error) {
       return { error: { message: "Network error. Please try again." } };

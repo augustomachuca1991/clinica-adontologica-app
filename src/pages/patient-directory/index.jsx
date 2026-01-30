@@ -1,17 +1,17 @@
 import React, { useState, useMemo } from "react";
-import Button from "../../components/ui/Button";
-import SearchFilters from "./components/SearchFilters";
-import StatsOverview from "./components/StatsOverview";
-import ViewToggle from "./components/ViewToggle";
-import PatientCard from "./components/PatientCard";
-import PatientTable from "./components/PatientTable";
-import BulkActions from "./components/BulkActions";
-import Pagination from "./components/Pagination";
-import AddPatientModal from "./components/AddPatientModal";
-import Icon from "../../components/AppIcon";
 import { useTranslation } from "react-i18next";
-import { notifyError, notifyInfo, notifySuccess, notifyWarning } from "../../utils/notifications";
-import { usePatients } from "../../hooks/PatientsHooks";
+import Button from "@/components/ui/Button";
+import SearchFilters from "@/pages/patient-directory/components/SearchFilters";
+import ViewToggle from "@/pages/patient-directory/components/ViewToggle";
+import PatientCard from "@/pages/patient-directory/components/PatientCard";
+import PatientTable from "@/pages/patient-directory/components/PatientTable";
+import BulkActions from "@/pages/patient-directory/components/BulkActions";
+import Pagination from "@/pages/patient-directory/components/Pagination";
+import AddPatientModal from "@/pages/patient-directory/components/AddPatientModal";
+import { notifyError, notifyInfo, notifySuccess, notifyWarning } from "@/utils/notifications";
+import { usePatients } from "@/hooks/PatientsHooks";
+import Icon from "@/components/AppIcon";
+import StatsOverview from "@/pages/patient-directory/components/StatsOverview";
 
 const FILTERS = {
   searchQuery: "",
@@ -157,10 +157,17 @@ const PatientDirectory = () => {
           </div>
         </div>
 
-        <SearchFilters filters={filters} onFilterChange={handleFilterChange} onReset={handleResetFilters} onSearch={() => console.log("Search applied")} />
+        <SearchFilters
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onReset={handleResetFilters}
+          onSearch={() => console.log("Search applied")}
+        />
 
         <div className="mb-4 flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">{t("pagination.showing", { paginated: paginatedPatients?.length, sorted: sortedPatients?.length })}</p>
+          <p className="text-sm text-muted-foreground">
+            {t("pagination.showing", { paginated: paginatedPatients?.length, sorted: sortedPatients?.length })}
+          </p>
           {selectedPatients?.length > 0 && (
             <Button variant="ghost" size="sm" onClick={() => setSelectedPatients([])} iconName="X" iconPosition="left">
               {t("pagination.clearSelection")}

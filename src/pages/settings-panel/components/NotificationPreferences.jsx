@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-import { Checkbox } from "../../../components/ui/Checkbox";
-import Button from "../../../components/ui/Button";
-import Select from "../../../components/ui/Select";
+import Icon from "@/components/AppIcon";
+import { Checkbox } from "@/components/ui/Checkbox";
+import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
 
 const NotificationPreferences = () => {
   const [emailFrequency, setEmailFrequency] = useState("daily");
@@ -64,7 +64,9 @@ const NotificationPreferences = () => {
           <Icon name="Bell" size={20} className="text-primary flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <h4 className="font-medium text-sm text-foreground mb-1">Notification Delivery</h4>
-            <p className="text-xs text-muted-foreground mb-4">Choose how you want to receive notifications. You can customize preferences for each notification type below.</p>
+            <p className="text-xs text-muted-foreground mb-4">
+              Choose how you want to receive notifications. You can customize preferences for each notification type below.
+            </p>
             <Select
               label="Email Notification Frequency"
               options={frequencyOptions}
@@ -92,7 +94,9 @@ const NotificationPreferences = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="pb-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Notification Type</th>
+                      <th className="pb-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Notification Type
+                      </th>
                       <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Email</th>
                       <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Push</th>
                       <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">SMS</th>
@@ -132,7 +136,8 @@ const NotificationPreferences = () => {
           <div>
             <h5 className="font-medium text-sm text-foreground mb-1">Important Notice</h5>
             <p className="text-xs text-muted-foreground">
-              Critical security notifications (login from new device, password changes) cannot be disabled to ensure account security. SMS notifications may incur additional charges from your carrier.
+              Critical security notifications (login from new device, password changes) cannot be disabled to ensure account security. SMS
+              notifications may incur additional charges from your carrier.
             </p>
           </div>
         </div>

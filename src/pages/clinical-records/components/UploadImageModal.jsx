@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../../../components/ui/Button";
-import Icon from "../../../components/AppIcon";
-import { notifyError, notifySuccess } from "../../../utils/notifications";
-import { uploadFileToStorage } from "../../../utils/helpers/attachments";
+import Button from "@/components/ui/Button";
+import Icon from "@/components/AppIcon";
+import { notifyError, notifySuccess } from "@/utils/notifications";
+import { uploadFileToStorage } from "@/utils/helpers/attachments";
 
 const UploadImageModal = ({ isOpen, onClose, onUploadSuccess, recordId }) => {
   const { t } = useTranslation();

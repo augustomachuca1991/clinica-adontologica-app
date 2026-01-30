@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Button from "../../../components/ui/Button";
-import { Checkbox } from "../../../components/ui/Checkbox";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Button from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 const PracticeCustomization = () => {
   const [practiceName, setPracticeName] = useState("DentalCare Clinic");
@@ -33,25 +33,69 @@ const PracticeCustomization = () => {
 
   const workflowSettings = [
     { id: "auto-save", label: "Auto-save clinical notes", description: "Automatically save notes every 2 minutes", checked: true },
-    { id: "appointment-reminders", label: "Send appointment reminders", description: "Email and SMS reminders 24 hours before", checked: true },
-    { id: "treatment-alerts", label: "Treatment completion alerts", description: "Notify when treatment plans are completed", checked: true },
+    {
+      id: "appointment-reminders",
+      label: "Send appointment reminders",
+      description: "Email and SMS reminders 24 hours before",
+      checked: true,
+    },
+    {
+      id: "treatment-alerts",
+      label: "Treatment completion alerts",
+      description: "Notify when treatment plans are completed",
+      checked: true,
+    },
     { id: "billing-notifications", label: "Billing notifications", description: "Alert for pending payments and invoices", checked: false },
   ];
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        <Input label="Practice Name" type="text" value={practiceName} onChange={(e) => setPracticeName(e?.target?.value)} description="This name appears on reports and communications" />
+        <Input
+          label="Practice Name"
+          type="text"
+          value={practiceName}
+          onChange={(e) => setPracticeName(e?.target?.value)}
+          description="This name appears on reports and communications"
+        />
         <Input label="Practice Phone" type="tel" placeholder="(555) 123-4567" description="Main contact number for the practice" />
-        <Input label="Practice Email" type="email" placeholder="contact@dentalcare.com" description="Primary email for practice communications" />
-        <Input label="Practice Address" type="text" placeholder="123 Main Street, City, State" description="Physical location of the practice" />
+        <Input
+          label="Practice Email"
+          type="email"
+          placeholder="contact@dentalcare.com"
+          description="Primary email for practice communications"
+        />
+        <Input
+          label="Practice Address"
+          type="text"
+          placeholder="123 Main Street, City, State"
+          description="Physical location of the practice"
+        />
       </div>
       <div className="border-t border-border pt-6">
         <h4 className="font-headline font-semibold text-base text-foreground mb-4">Regional Settings</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Select label="Timezone" options={timezoneOptions} value={timezone} onChange={setTimezone} description="Practice operating timezone" />
-          <Select label="Date Format" options={dateFormatOptions} value={dateFormat} onChange={setDateFormat} description="How dates are displayed" />
-          <Select label="Default Appointment Duration" options={durationOptions} value={appointmentDuration} onChange={setAppointmentDuration} description="Standard appointment length" />
+          <Select
+            label="Timezone"
+            options={timezoneOptions}
+            value={timezone}
+            onChange={setTimezone}
+            description="Practice operating timezone"
+          />
+          <Select
+            label="Date Format"
+            options={dateFormatOptions}
+            value={dateFormat}
+            onChange={setDateFormat}
+            description="How dates are displayed"
+          />
+          <Select
+            label="Default Appointment Duration"
+            options={durationOptions}
+            value={appointmentDuration}
+            onChange={setAppointmentDuration}
+            description="Standard appointment length"
+          />
         </div>
       </div>
       <div className="border-t border-border pt-6">

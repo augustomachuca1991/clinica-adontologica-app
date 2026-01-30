@@ -1,8 +1,8 @@
 import { LogOut } from "lucide-react";
-import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import LanguageSwitch from "components/ui/LanguageSwitch";
+import { useAuth } from "@/contexts/AuthContext";
+import LanguageSwitch from "@/components/ui/LanguageSwitch";
 
 const SubscriptionExpired = () => {
   const { signOut, userProfile } = useAuth();
@@ -30,7 +30,10 @@ const SubscriptionExpired = () => {
 
         <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">{t("subscriptionExpired.instructions")}</div>
 
-        <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 rounded-md bg-destructive text-destructive-foreground py-2 hover:opacity-90 transition">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 rounded-md bg-destructive text-destructive-foreground py-2 hover:opacity-90 transition"
+        >
           <LogOut size={18} />
           {t("subscriptionExpired.logout")}
         </button>

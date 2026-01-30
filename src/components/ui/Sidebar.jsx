@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "../AppIcon";
 import Image from "../AppImage";
-import logo from "../../../public/assets/images/logo-orion-software.svg";
+import logo from "@/assets/images/logo-orion-software.svg";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -65,7 +65,9 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
     },
   ];
 
-  const visibleItems = navigationItems.filter((item) => item.roles.some((role) => roles.includes(role)));
+  const visibleItems = navigationItems.filter((item) =>
+    item.roles.some((role) => roles.includes(role))
+  );
 
   const isActive = (path) => location?.pathname === path;
 
@@ -79,7 +81,11 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
 
   return (
     <>
-      <button onClick={handleMobileToggle} className="fixed top-3.5 left-4 z-50 lg:hidden bg-card text-foreground p-2 rounded-md shadow-clinical-md focus-clinical" aria-label="Toggle mobile menu">
+      <button
+        onClick={handleMobileToggle}
+        className="fixed top-3.5 left-4 z-50 lg:hidden bg-card text-foreground p-2 rounded-md shadow-clinical-md focus-clinical"
+        aria-label="Toggle mobile menu"
+      >
         <Icon name={isMobileOpen ? "X" : "Menu"} size={18} />
       </button>
       <div
@@ -93,11 +99,21 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
           role="button"
           aria-label="Go to home"
         >
-          <div className={`sidebar-logo flex items-center justify-center transition-all duration-slow ${isCollapsed ? "w-10 h-10" : "w-12 h-12"} bg-primary/10 rounded-lg`}>
+          <div
+            className={`sidebar-logo flex items-center justify-center transition-all duration-slow ${isCollapsed ? "w-10 h-10" : "w-12 h-12"} bg-primary/10 rounded-lg`}
+          >
             {/* <Icon name="Activity" size={isCollapsed ? 20 : 24} color="var(--color-primary)" /> */}
-            <Image src={logo} alt="App Logo" className={`object-contain ${isCollapsed ? "h-14 w-14" : "h-10 w-10"}`} />
+            <Image
+              src={logo}
+              alt="App Logo"
+              className={`object-contain ${isCollapsed ? "h-14 w-14" : "h-10 w-10"}`}
+            />
           </div>
-          {!isCollapsed && <span className="ml-1 text-lg font-headline font-bold text-foreground tracking-[-0.015em]">{appName}</span>}
+          {!isCollapsed && (
+            <span className="ml-1 text-lg font-headline font-bold text-foreground tracking-[-0.015em]">
+              {appName}
+            </span>
+          )}
         </div>
 
         <nav className="flex-1 overflow-y-auto py-4 px-2">
@@ -108,18 +124,32 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
                   to={item?.path}
                   onClick={closeMobileMenu}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-base group ${
-                    isActive(item?.path) ? "bg-primary text-primary-foreground shadow-clinical-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    isActive(item?.path)
+                      ? "bg-primary text-primary-foreground shadow-clinical-sm"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                   title={isCollapsed ? t(item?.label) : ""}
                 >
-                  <Icon name={item?.icon} size={20} className={`flex-shrink-0 transition-transform duration-base ${isActive(item?.path) ? "scale-110" : "group-hover:scale-105"}`} />
+                  <Icon
+                    name={item?.icon}
+                    size={20}
+                    className={`flex-shrink-0 transition-transform duration-base ${isActive(item?.path) ? "scale-110" : "group-hover:scale-105"}`}
+                  />
                   {!isCollapsed && (
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm truncate">{t(item?.label)}</div>
-                      {!isActive(item?.path) && <div className="text-xs opacity-70 truncate">{t(item.description)}</div>}
+                      <div className="font-medium text-sm truncate">
+                        {t(item?.label)}
+                      </div>
+                      {!isActive(item?.path) && (
+                        <div className="text-xs opacity-70 truncate">
+                          {t(item.description)}
+                        </div>
+                      )}
                     </div>
                   )}
-                  {isActive(item?.path) && !isCollapsed && <div className="w-1 h-6 bg-primary-foreground rounded-full" />}
+                  {isActive(item?.path) && !isCollapsed && (
+                    <div className="w-1 h-6 bg-primary-foreground rounded-full" />
+                  )}
                 </Link>
               </li>
             ))}
@@ -132,12 +162,23 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
             className="hidden lg:flex items-center justify-center w-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-all duration-base focus-clinical"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <Icon name={isCollapsed ? "ArrowRightToLine" : "ArrowLeftToLine"} size={20} />
-            {!isCollapsed && <span className="ml-2">{t("sidebar.toggle")}</span>}
+            <Icon
+              name={isCollapsed ? "ArrowRightToLine" : "ArrowLeftToLine"}
+              size={20}
+            />
+            {!isCollapsed && (
+              <span className="ml-2">{t("sidebar.toggle")}</span>
+            )}
           </button>
         </div>
       </div>
-      {isMobileOpen && <div className="fixed inset-0 bg-background z-30 lg:hidden" onClick={closeMobileMenu} aria-hidden="true" />}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 bg-background z-30 lg:hidden"
+          onClick={closeMobileMenu}
+          aria-hidden="true"
+        />
+      )}
     </>
   );
 };

@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Image from "../../../components/AppImage";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
+import Image from "@/components/AppImage";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
-import { formatDateForUI } from "../../../utils/formatters/date";
+import { formatDateForUI } from "@/utils/formatters/date";
 
 const STATUS_CONFIG = {
   active: {
@@ -77,8 +77,22 @@ const PatientCard = ({ patient, onQuickAction }) => {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="ghost" size="icon" onClick={() => onQuickAction("call", patient)} iconName="Phone" aria-label="Call patient" className="flex-shrink-0" />
-              <Button variant="ghost" size="icon" onClick={() => onQuickAction("message", patient)} iconName="Mail" aria-label="Email patient" className="flex-shrink-0" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onQuickAction("call", patient)}
+                iconName="Phone"
+                aria-label="Call patient"
+                className="flex-shrink-0"
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onQuickAction("message", patient)}
+                iconName="Mail"
+                aria-label="Email patient"
+                className="flex-shrink-0"
+              />
             </div>
           </div>
 
@@ -104,7 +118,9 @@ const PatientCard = ({ patient, onQuickAction }) => {
           </div>
 
           {patient?.nextAppointment && (
-            <div className={`flex items-center gap-2 p-2 md:p-3 rounded-md bg-muted/50 ${getAppointmentStatusColor(patient?.appointmentStatus)}`}>
+            <div
+              className={`flex items-center gap-2 p-2 md:p-3 rounded-md bg-muted/50 ${getAppointmentStatusColor(patient?.appointmentStatus)}`}
+            >
               <Icon name="Clock" size={16} className="flex-shrink-0" />
               <span className="text-xs md:text-sm font-medium">
                 {t("next")}: {patient?.nextAppointment}
@@ -116,7 +132,10 @@ const PatientCard = ({ patient, onQuickAction }) => {
           {patient?.tags && patient?.tags?.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {patient?.tags?.map((tag, index) => (
-                <span key={index} className="px-2 py-1 text-xs rounded-full bg-brand-secondary/10 text-brand-secondary font-medium uppercase">
+                <span
+                  key={index}
+                  className="px-2 py-1 text-xs rounded-full bg-brand-secondary/10 text-brand-secondary font-medium uppercase"
+                >
                   {tag}
                 </span>
               ))}

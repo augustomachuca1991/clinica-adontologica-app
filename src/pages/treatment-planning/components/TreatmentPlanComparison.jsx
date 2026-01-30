@@ -1,10 +1,14 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 
 const TreatmentPlanComparison = ({ plans, onSelectPlan, selectedPlanId }) => {
   const getFeatureIcon = (included) => {
-    return included ? <Icon name="CheckCircle2" size={18} className="text-success" /> : <Icon name="XCircle" size={18} className="text-muted-foreground" />;
+    return included ? (
+      <Icon name="CheckCircle2" size={18} className="text-success" />
+    ) : (
+      <Icon name="XCircle" size={18} className="text-muted-foreground" />
+    );
   };
 
   return (
@@ -15,13 +19,17 @@ const TreatmentPlanComparison = ({ plans, onSelectPlan, selectedPlanId }) => {
           <div
             key={plan?.id}
             className={`bg-card border rounded-lg overflow-hidden transition-all duration-base ${
-              selectedPlanId === plan?.id ? "border-primary shadow-clinical-lg ring-2 ring-primary/20" : "border-border hover:border-primary/50 hover:shadow-clinical-md"
+              selectedPlanId === plan?.id
+                ? "border-primary shadow-clinical-lg ring-2 ring-primary/20"
+                : "border-border hover:border-primary/50 hover:shadow-clinical-md"
             }`}
           >
             <div className={`p-4 md:p-6 ${plan?.recommended ? "bg-primary/5" : "bg-muted/30"}`}>
               <div className="flex items-start justify-between mb-2">
                 <h4 className="text-base md:text-lg font-headline font-semibold text-foreground">{plan?.name}</h4>
-                {plan?.recommended && <span className="px-2 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">Recommended</span>}
+                {plan?.recommended && (
+                  <span className="px-2 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">Recommended</span>
+                )}
               </div>
               <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{plan?.description}</p>
             </div>

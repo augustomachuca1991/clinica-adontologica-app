@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import { supabase } from "../lib/supabase"; // Ajusta la ruta a tu cliente
-import { useAuth } from "../contexts/AuthContext"; // Asumiendo que tienes un contexto de auth
+import { supabase } from "@/lib/supabase"; // Ajusta la ruta a tu cliente
+import { useAuth } from "@/contexts/AuthContext"; // Asumiendo que tienes un contexto de auth
 
 export const useClinicalNotes = () => {
   const { user } = useAuth();

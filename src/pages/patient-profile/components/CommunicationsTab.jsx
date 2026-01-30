@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
 
 const CommunicationsTab = ({ communications }) => {
   const [messageType, setMessageType] = useState("email");
@@ -64,7 +64,13 @@ const CommunicationsTab = ({ communications }) => {
         <div className="space-y-4">
           <Select label="Message Type" options={messageTypeOptions} value={messageType} onChange={setMessageType} />
 
-          <Input label="Subject" type="text" placeholder="Enter message subject" value={messageSubject} onChange={(e) => setMessageSubject(e?.target?.value)} />
+          <Input
+            label="Subject"
+            type="text"
+            placeholder="Enter message subject"
+            value={messageSubject}
+            onChange={(e) => setMessageSubject(e?.target?.value)}
+          />
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Message Content</label>
@@ -97,7 +103,10 @@ const CommunicationsTab = ({ communications }) => {
 
         <div className="space-y-3 md:space-y-4">
           {communications?.map((comm, index) => (
-            <div key={index} className="p-3 md:p-4 bg-muted/50 rounded-lg border border-border hover:bg-muted transition-colors duration-base">
+            <div
+              key={index}
+              className="p-3 md:p-4 bg-muted/50 rounded-lg border border-border hover:bg-muted transition-colors duration-base"
+            >
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
                 <div className="flex items-start gap-3 flex-1 min-w-0">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${getMessageColor(comm?.type)}`}>
@@ -109,14 +118,25 @@ const CommunicationsTab = ({ communications }) => {
                       <span className={`px-2 py-1 rounded text-xs font-medium ${getMessageColor(comm?.type)}`}>{comm?.type}</span>
                     </div>
                     <p className="text-xs md:text-sm text-muted-foreground">
-                      {comm?.sender} • {new Date(comm.date)?.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                      {comm?.sender} •{" "}
+                      {new Date(comm.date)?.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </p>
                   </div>
                 </div>
                 {comm?.status && (
                   <span
                     className={`px-2 py-1 rounded text-xs font-medium flex-shrink-0 ${
-                      comm?.status === "Sent" ? "bg-success/10 text-success" : comm?.status === "Delivered" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                      comm?.status === "Sent"
+                        ? "bg-success/10 text-success"
+                        : comm?.status === "Delivered"
+                          ? "bg-primary/10 text-primary"
+                          : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {comm?.status}

@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "../../../components/AppIcon";
+import Icon from "@/components/AppIcon";
 import { useTranslation } from "react-i18next";
 
 const TimelineView = ({ records }) => {
@@ -17,10 +17,22 @@ const TimelineView = ({ records }) => {
 
   const getStatusColorLabel = (status) => {
     const colors = {
-      completed: { classColor: "bg-success/10 text-success border-success/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
-      inProgress: { classColor: "bg-warning/10 text-warning border-warning/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
-      planned: { classColor: "bg-primary/10 text-primary border-primary/20", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
-      cancelled: { classColor: "bg-muted text-muted-foreground border-border", label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`) },
+      completed: {
+        classColor: "bg-success/10 text-success border-success/20",
+        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+      },
+      inProgress: {
+        classColor: "bg-warning/10 text-warning border-warning/20",
+        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+      },
+      planned: {
+        classColor: "bg-primary/10 text-primary border-primary/20",
+        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+      },
+      cancelled: {
+        classColor: "bg-muted text-muted-foreground border-border",
+        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+      },
     };
     return colors?.[status] || colors?.planned;
   };
@@ -59,7 +71,9 @@ const TimelineView = ({ records }) => {
                     </p>
                   </div>
                 </div>
-                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColorLabel(record?.status).classColor}`}>
+                <span
+                  className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColorLabel(record?.status).classColor}`}
+                >
                   {getStatusColorLabel(record?.status).label}
                 </span>
               </div>

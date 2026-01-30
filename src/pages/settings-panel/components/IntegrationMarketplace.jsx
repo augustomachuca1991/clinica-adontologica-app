@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import Icon from "../../../components/AppIcon";
-
-import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 const IntegrationMarketplace = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -79,7 +78,9 @@ const IntegrationMarketplace = () => {
   ];
 
   const filteredIntegrations = integrations?.filter((integration) => {
-    const matchesSearch = integration?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) || integration?.description?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+    const matchesSearch =
+      integration?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+      integration?.description?.toLowerCase()?.includes(searchQuery?.toLowerCase());
     const matchesCategory = selectedCategory === "all" || integration?.category?.toLowerCase() === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -88,7 +89,13 @@ const IntegrationMarketplace = () => {
     <div className="space-y-6">
       <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
         <div className="flex-1 w-full lg:w-auto">
-          <Input type="search" placeholder="Search integrations..." value={searchQuery} onChange={(e) => setSearchQuery(e?.target?.value)} className="w-full" />
+          <Input
+            type="search"
+            placeholder="Search integrations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e?.target?.value)}
+            className="w-full"
+          />
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2 w-full lg:w-auto">
           {categories?.map((category) => (
@@ -96,7 +103,9 @@ const IntegrationMarketplace = () => {
               key={category?.value}
               onClick={() => setSelectedCategory(category?.value)}
               className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-base ${
-                selectedCategory === category?.value ? "bg-primary text-primary-foreground shadow-clinical-sm" : "bg-muted text-muted-foreground hover:bg-muted/80"
+                selectedCategory === category?.value
+                  ? "bg-primary text-primary-foreground shadow-clinical-sm"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
               {category?.label} ({category?.count})
@@ -106,7 +115,10 @@ const IntegrationMarketplace = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredIntegrations?.map((integration) => (
-          <div key={integration?.id} className="bg-card border border-border rounded-lg p-4 hover:shadow-clinical-md transition-all duration-base">
+          <div
+            key={integration?.id}
+            className="bg-card border border-border rounded-lg p-4 hover:shadow-clinical-md transition-all duration-base"
+          >
             <div className="flex items-start justify-between mb-3">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                 <Icon name={integration?.icon} size={24} color="var(--color-primary)" />
@@ -116,7 +128,9 @@ const IntegrationMarketplace = () => {
                   integration?.status === "Connected" ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
                 }`}
               >
-                <span className={`w-1.5 h-1.5 rounded-full ${integration?.status === "Connected" ? "bg-success" : "bg-muted-foreground"}`} />
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${integration?.status === "Connected" ? "bg-success" : "bg-muted-foreground"}`}
+                />
                 {integration?.status}
               </span>
             </div>
@@ -173,7 +187,8 @@ const IntegrationMarketplace = () => {
           <div>
             <h5 className="font-medium text-sm text-foreground mb-1">Need a Custom Integration?</h5>
             <p className="text-xs text-muted-foreground mb-3">
-              Contact our support team to discuss custom integration options for your practice. We can help connect DentalCare Manager with your existing tools and workflows.
+              Contact our support team to discuss custom integration options for your practice. We can help connect DentalCare Manager with
+              your existing tools and workflows.
             </p>
             <Button variant="outline" size="sm" iconName="Mail">
               Contact Support

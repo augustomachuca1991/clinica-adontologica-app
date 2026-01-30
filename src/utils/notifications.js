@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import i18n from "../i18n/index";
+import i18n from "@/i18n/index";
 
 export const notifySuccess = (message) => toast.success(message);
 export const notifyError = (message) => toast.error(message);

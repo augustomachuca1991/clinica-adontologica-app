@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useTreatmentServices = () => {
   const [services, setServices] = useState([]);
@@ -81,5 +81,11 @@ export const useTreatmentServices = () => {
     fetchServices();
   }, [fetchServices]);
 
-  return { services, loading, addService, updateService, refresh: fetchServices };
+  return {
+    services,
+    loading,
+    addService,
+    updateService,
+    refresh: fetchServices,
+  };
 };

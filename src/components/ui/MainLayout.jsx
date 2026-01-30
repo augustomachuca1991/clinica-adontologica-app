@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
-import Breadcrumbs from "./Breadcrumbs";
+import Sidebar from "@/components/ui/Sidebar";
+import Header from "@/components/ui/Header";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
@@ -15,7 +15,9 @@ const MainLayout = () => {
     <div className="min-h-screen bg-background">
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={handleSidebarToggle} />
 
-      <div className={`transition-all duration-slow ${sidebarCollapsed ? "lg:ml-20" : "lg:ml-64"}`}>
+      <div
+        className={`transition-all duration-slow ${sidebarCollapsed ? "lg:ml-20" : "lg:ml-64"}`}
+      >
         <Header sidebarCollapsed={sidebarCollapsed} />
 
         <main className="pt-16">

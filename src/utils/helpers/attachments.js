@@ -1,4 +1,4 @@
-import { supabase } from "../../lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 /**
  * Sube un archivo a Storage y devuelve su URL pública

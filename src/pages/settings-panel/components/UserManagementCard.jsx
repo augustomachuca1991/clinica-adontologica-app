@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Icon from "../../../components/AppIcon";
-import Image from "../../../components/AppImage";
-import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
-import Spinner from "../../../components/ui/Spinner";
-import { supabase } from "../../../lib/supabase";
+import Icon from "@/components/AppIcon";
+import Image from "@/components/AppImage";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Spinner from "@/components/ui/Spinner";
+import { supabase } from "@/lib/supabase";
 import { useTranslation } from "react-i18next";
 
 const UserManagementCard = () => {
@@ -117,7 +117,9 @@ const UserManagementCard = () => {
   // FILTRADO DINÁMICO
   const filteredUsers = users?.filter((user) => {
     const primaryRole = user?.user_roles?.[0]?.roles?.name?.toLowerCase() || "";
-    const matchesSearch = user?.full_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) || user?.email?.toLowerCase()?.includes(searchQuery?.toLowerCase());
+    const matchesSearch =
+      user?.full_name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+      user?.email?.toLowerCase()?.includes(searchQuery?.toLowerCase());
     const matchesRole = selectedRole === "all" || primaryRole === selectedRole;
     return matchesSearch && matchesRole;
   });
@@ -133,11 +135,29 @@ const UserManagementCard = () => {
     <div className="space-y-4">
       <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
         <div className="flex-1 w-full lg:w-auto">
-          <Input type="search" placeholder="Search users by name or email..." value={searchQuery} onChange={(e) => setSearchQuery(e?.target?.value)} className="w-full" />
+          <Input
+            type="search"
+            placeholder="Search users by name or email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e?.target?.value)}
+            className="w-full"
+          />
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-          <Select options={roleOptions} value={selectedRole} onChange={setSelectedRole} placeholder="Filter by role" className="w-full sm:w-48" />
-          <Button variant="default" iconName="UserPlus" iconPosition="left" onClick={() => setShowAddUser(!showAddUser)} className="w-full sm:w-auto">
+          <Select
+            options={roleOptions}
+            value={selectedRole}
+            onChange={setSelectedRole}
+            placeholder="Filter by role"
+            className="w-full sm:w-48"
+          />
+          <Button
+            variant="default"
+            iconName="UserPlus"
+            iconPosition="left"
+            onClick={() => setShowAddUser(!showAddUser)}
+            className="w-full sm:w-auto"
+          >
             Add User
           </Button>
         </div>
@@ -171,7 +191,10 @@ const UserManagementCard = () => {
           const isActive = user?.status === "active";
 
           return (
-            <div key={user?.id} className="bg-card border border-border rounded-lg p-4 hover:shadow-clinical-md transition-all duration-base">
+            <div
+              key={user?.id}
+              className="bg-card border border-border rounded-lg p-4 hover:shadow-clinical-md transition-all duration-base"
+            >
               <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
                 <div className="flex items-center gap-4 flex-1 min-w-0">
                   {/* Avatar Hardcoded hasta que tengas storage de imágenes */}

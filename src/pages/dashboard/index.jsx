@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-
-import Button from "../../components/ui/Button";
-import Skeleton from "../../components/ui/Skeleton";
-/* import StatCard from "./components/StatCard"; */
-import AppointmentCard from "./components/AppointmentCard";
-import PatientAlertCard from "./components/PatientAlertCard";
-import QuickActionButton from "./components/QuickActionButton";
-import RecentActivityItem from "./components/RecentActivityItem";
-import TreatmentProgressChart from "./components/TreatmentProgressChart";
-import UpcomingTaskCard from "./components/UpcomingTaskCard";
+import Button from "@/components/ui/Button";
+import Skeleton from "@/components/ui/Skeleton";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../contexts/AuthContext";
-import AddPatientModal from "../patient-directory/components/AddPatientModal";
-import { usePatients } from "../../hooks/PatientsHooks";
-import { useAppointments } from "../../hooks/AppointmentsHooks";
-import ScheduleAppointmentModal from "../dashboard/components/ScheduleAppointmentModal";
-import { notifyError, notifySuccess } from "../../utils/notifications";
+import AppointmentCard from "@/pages/dashboard/components/AppointmentCard";
+import QuickActionButton from "@/pages/dashboard/components/QuickActionButton";
+import RecentActivityItem from "@/pages/dashboard/components/RecentActivityItem";
+import TreatmentProgressChart from "@/pages/dashboard/components/TreatmentProgressChart";
+import { useAuth } from "@/contexts/AuthContext";
+import AddPatientModal from "@/pages/patient-directory/components/AddPatientModal";
+import { usePatients } from "@/hooks/PatientsHooks";
+import { useAppointments } from "@/hooks/AppointmentsHooks";
+import ScheduleAppointmentModal from "@/pages/dashboard/components/ScheduleAppointmentModal";
+import { notifyError, notifySuccess } from "@/utils/notifications";
+
+import PatientAlertCard from "./components/PatientAlertCard";
+import UpcomingTaskCard from "./components/UpcomingTaskCard";
+/* import StatCard from "./components/StatCard"; */
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -375,17 +375,27 @@ const Dashboard = () => {
       <div className="space-y-6 md:space-y-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("home.welcome", { name: fullname })}</h1>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
+              {t("home.welcome", { name: fullname })}
+            </h1>
             <p className="text-sm md:text-base text-muted-foreground">{t("home.overview")}</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant={selectedTimeframe === "today" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("today")}>
+            <Button
+              variant={selectedTimeframe === "today" ? "default" : "tertiary"}
+              size="sm"
+              onClick={() => setSelectedTimeframe("today")}
+            >
               {t("timeFrame.today")}
             </Button>
             <Button variant={selectedTimeframe === "week" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("week")}>
               {t("timeFrame.thisWeek")}
             </Button>
-            <Button variant={selectedTimeframe === "month" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("month")}>
+            <Button
+              variant={selectedTimeframe === "month" ? "default" : "tertiary"}
+              size="sm"
+              onClick={() => setSelectedTimeframe("month")}
+            >
               {t("timeFrame.thisMonth")}
             </Button>
           </div>
@@ -401,7 +411,9 @@ const Dashboard = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t(`appointment.timeFrame.${selectedTimeframe}`)}</h2>
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+                  {t(`appointment.timeFrame.${selectedTimeframe}`)}
+                </h2>
                 <Button variant="ghost" size="sm" onClick={() => setSelectedTimeframe("all")} iconName="Calendar" iconPosition="left">
                   {t("appointment.viewAll")}
                 </Button>
@@ -419,7 +431,12 @@ const Dashboard = () => {
                   <p className="text-muted-foreground p-4 text-center">{t(`appointment.noAppointments.${selectedTimeframe}`)}</p>
                 ) : (
                   filteredAppointments?.map((appointment) => (
-                    <AppointmentCard key={appointment.id} appointment={appointment} onViewDetails={handleViewAppointmentDetails} onReschedule={handleRescheduleAppointment} />
+                    <AppointmentCard
+                      key={appointment.id}
+                      appointment={appointment}
+                      onViewDetails={handleViewAppointmentDetails}
+                      onReschedule={handleRescheduleAppointment}
+                    />
                   ))
                 )}
               </div>
@@ -441,7 +458,13 @@ const Dashboard = () => {
               <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">{t("dashboard.quickActions.title")}</h2>
               <div className="grid grid-cols-2 gap-3">
                 {quickActions?.map((action, index) => (
-                  <QuickActionButton key={index} icon={action?.icon} label={t(`dashboard.quickActions.${action?.label}`)} color={action?.color} onClick={() => handleQuickAction(action?.label)} />
+                  <QuickActionButton
+                    key={index}
+                    icon={action?.icon}
+                    label={t(`dashboard.quickActions.${action?.label}`)}
+                    color={action?.color}
+                    onClick={() => handleQuickAction(action?.label)}
+                  />
                 ))}
               </div>
             </div>

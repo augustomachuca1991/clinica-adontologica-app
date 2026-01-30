@@ -1,10 +1,16 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import Spinner from "./ui/Spinner";
+import { useAuth } from "@/contexts/AuthContext";
+import Spinner from "@/components/ui/Spinner";
 
 const PrivateRoute = () => {
   const location = useLocation();
-  const { isAuthenticated, loading, isAdmin, hasActiveSubscription, isLoggedIn } = useAuth();
+  const {
+    isAuthenticated,
+    loading,
+    isAdmin,
+    hasActiveSubscription,
+    isLoggedIn,
+  } = useAuth();
 
   if (loading) {
     return (

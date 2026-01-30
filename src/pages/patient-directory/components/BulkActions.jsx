@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../../components/ui/Button";
+import Button from "@/components/ui/Button";
 import { t } from "i18next";
 
 const BulkActions = ({ selectedCount, onAction }) => {

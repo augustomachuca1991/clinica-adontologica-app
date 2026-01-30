@@ -1,9 +1,9 @@
 // components/ui/Select.jsx - Shadcn style Select
 import React, { useState } from "react";
 import { ChevronDown, Check, Search, X } from "lucide-react";
-import { cn } from "../../utils/cn";
-import Button from "./Button";
-import Input from "./Input";
+import { cn } from "@/utils/cn";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 import { useTranslation } from "react-i18next";
 
 const Select = React.forwardRef(
@@ -35,16 +35,26 @@ const Select = React.forwardRef(
     const [searchTerm, setSearchTerm] = useState("");
     const { t } = useTranslation();
 
-    const finalPlaceholder = placeholder || t("selectAnOption") || "Select option...";
+    const finalPlaceholder =
+      placeholder || t("selectAnOption") || "Select option...";
 
     // Generate unique ID if not provided
-    const selectId = id || `select-${Math.random()?.toString(36)?.substr(2, 9)}`;
+    const selectId =
+      id || `select-${Math.random()?.toString(36)?.substr(2, 9)}`;
 
     // Filter options based on search
     const filteredOptions =
       searchable && searchTerm
         ? options?.filter(
-            (option) => option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase()) || (option?.value && option?.value?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase()))
+            (option) =>
+              option?.label
+                ?.toLowerCase()
+                ?.includes(searchTerm?.toLowerCase()) ||
+              (option?.value &&
+                option?.value
+                  ?.toString()
+                  ?.toLowerCase()
+                  ?.includes(searchTerm?.toLowerCase()))
           )
         : options;
 
@@ -53,10 +63,15 @@ const Select = React.forwardRef(
       if (!value) return finalPlaceholder;
 
       if (multiple) {
-        const selectedOptions = options?.filter((opt) => value?.includes(opt?.value));
+        const selectedOptions = options?.filter((opt) =>
+          value?.includes(opt?.value)
+        );
         if (selectedOptions?.length === 0) return finalPlaceholder;
         if (selectedOptions?.length === 1) return selectedOptions?.[0]?.label;
-        return t("itemsSelected", { count: selectedOptions?.length }) || `${selectedOptions?.length} items selected`;
+        return (
+          t("itemsSelected", { count: selectedOptions?.length }) ||
+          `${selectedOptions?.length} items selected`
+        );
       }
 
       const selectedOption = options?.find((opt) => opt?.value === value);
@@ -79,7 +94,9 @@ const Select = React.forwardRef(
     const handleOptionSelect = (option) => {
       if (multiple) {
         const newValue = value || [];
-        const updatedValue = newValue?.includes(option?.value) ? newValue?.filter((v) => v !== option?.value) : [...newValue, option?.value];
+        const updatedValue = newValue?.includes(option?.value)
+          ? newValue?.filter((v) => v !== option?.value)
+          : [...newValue, option?.value];
         onChange?.(updatedValue);
       } else {
         onChange?.(option?.value);
@@ -104,14 +121,19 @@ const Select = React.forwardRef(
       return value === optionValue;
     };
 
-    const hasValue = multiple ? value?.length > 0 : value !== undefined && value !== "";
+    const hasValue = multiple
+      ? value?.length > 0
+      : value !== undefined && value !== "";
 
     return (
       <div className={cn("relative", className)}>
         {label && (
           <label
             htmlFor={selectId}
-            className={cn("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block", error ? "text-destructive" : "text-foreground")}
+            className={cn(
+              "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block",
+              error ? "text-destructive" : "text-foreground"
+            )}
           >
             {label}
             {required && <span className="text-destructive ml-1">*</span>}
@@ -138,18 +160,40 @@ const Select = React.forwardRef(
             <div className="flex items-center gap-1">
               {loading && (
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
                 </svg>
               )}
 
               {clearable && hasValue && !loading && (
-                <Button variant="ghost" size="icon" className="h-4 w-4" onClick={handleClear}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-4 w-4"
+                  onClick={handleClear}
+                >
                   <X className="h-3 w-3" />
                 </Button>
               )}
 
-              <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 transition-transform",
+                  isOpen && "rotate-180"
+                )}
+              />
             </div>
           </button>
 
@@ -178,28 +222,44 @@ const Select = React.forwardRef(
                 <div className="p-2 border-b">
                   <div className="relative">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input placeholder={t("searchOption")} value={searchTerm} onChange={handleSearchChange} className="pl-8" />
+                    <Input
+                      placeholder={t("searchOption")}
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      className="pl-8"
+                    />
                   </div>
                 </div>
               )}
 
               <div className="py-1 max-h-60 overflow-auto">
                 {filteredOptions?.length === 0 ? (
-                  <div className="px-3 py-2 text-sm text-muted-foreground">{searchTerm ? t("NoOptionsFound") : t("noOptionsAvailable")}</div>
+                  <div className="px-3 py-2 text-sm text-muted-foreground">
+                    {searchTerm ? t("NoOptionsFound") : t("noOptionsAvailable")}
+                  </div>
                 ) : (
                   filteredOptions?.map((option) => (
                     <div
                       key={option?.value}
                       className={cn(
                         "relative flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
-                        isSelected(option?.value) && "bg-primary text-primary-foreground",
+                        isSelected(option?.value) &&
+                          "bg-primary text-primary-foreground",
                         option?.disabled && "pointer-events-none opacity-50"
                       )}
-                      onClick={() => !option?.disabled && handleOptionSelect(option)}
+                      onClick={() =>
+                        !option?.disabled && handleOptionSelect(option)
+                      }
                     >
                       <span className="flex-1">{option?.label}</span>
-                      {multiple && isSelected(option?.value) && <Check className="h-4 w-4" />}
-                      {option?.description && <span className="text-xs text-muted-foreground ml-2">{option?.description}</span>}
+                      {multiple && isSelected(option?.value) && (
+                        <Check className="h-4 w-4" />
+                      )}
+                      {option?.description && (
+                        <span className="text-xs text-muted-foreground ml-2">
+                          {option?.description}
+                        </span>
+                      )}
                     </div>
                   ))
                 )}
@@ -207,7 +267,9 @@ const Select = React.forwardRef(
             </div>
           )}
         </div>
-        {description && !error && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
+        {description && !error && (
+          <p className="text-sm text-muted-foreground mt-1">{description}</p>
+        )}
         {error && <p className="text-sm text-destructive mt-1">{error}</p>}
       </div>
     );

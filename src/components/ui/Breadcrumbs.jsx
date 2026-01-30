@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import Icon from "../AppIcon";
+import Icon from "@/components/AppIcon";
 import { useTranslation } from "react-i18next";
 
 const Breadcrumbs = () => {
@@ -25,7 +25,10 @@ const Breadcrumbs = () => {
     <nav aria-label="Breadcrumb" className="mb-6">
       <ol className="flex items-center gap-2 text-sm">
         <li>
-          <Link to="/dashboard" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-base">
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors duration-base"
+          >
             <Icon name="Home" size={16} />
             <span>{t("breadcrumbs.home")}</span>
           </Link>
@@ -38,15 +41,25 @@ const Breadcrumbs = () => {
           return (
             <React.Fragment key={to}>
               <li>
-                <Icon name="ChevronRight" size={16} className="text-muted-foreground" />
+                <Icon
+                  name="ChevronRight"
+                  size={16}
+                  className="text-muted-foreground"
+                />
               </li>
               <li>
                 {isLast ? (
-                  <span className="font-medium text-foreground" aria-current="page">
+                  <span
+                    className="font-medium text-foreground"
+                    aria-current="page"
+                  >
                     {label}
                   </span>
                 ) : (
-                  <Link to={to} className="text-muted-foreground hover:text-foreground transition-colors duration-base">
+                  <Link
+                    to={to}
+                    className="text-muted-foreground hover:text-foreground transition-colors duration-base"
+                  >
                     {label}
                   </Link>
                 )}

@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react";
-import PatientHeader from "./components/PatientHeader";
-import DemographicsTab from "./components/DemographicsTab";
-import MedicalHistoryTab from "./components/MedicalHistoryTab";
-import TreatmentHistoryTab from "./components/TreatmentHistoryTab";
-import CommunicationsTab from "./components/CommunicationsTab";
-import BillingTab from "./components/BillingTab";
-import Icon from "../../components/AppIcon";
-import Button from "../../components/ui/Button";
-import Select from "../../components/ui/Select";
 import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
-import EditPatientModal from "../patient-directory/components/EditPatientModal";
-import { usePatients, uploadPatientAvatar } from "../../hooks/PatientsHooks";
-import { notifyError, notifySuccess } from "utils/notifications";
-import { usePatientTreatments } from "../../hooks/PatientTreatmentsHooks";
+import PatientHeader from "@/pages/patient-profile/components/PatientHeader";
+import DemographicsTab from "@/pages/patient-profile/components/DemographicsTab";
+import MedicalHistoryTab from "@/pages/patient-profile/components/MedicalHistoryTab";
+import TreatmentHistoryTab from "@/pages/patient-profile/components/TreatmentHistoryTab";
+import CommunicationsTab from "@/pages/patient-profile/components/CommunicationsTab";
+import BillingTab from "@/pages/patient-profile/components/BillingTab";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
+import EditPatientModal from "@/pages/patient-directory/components/EditPatientModal";
+import { usePatients, uploadPatientAvatar } from "@/hooks/PatientsHooks";
+import { notifyError, notifySuccess } from "@/utils/notifications";
+import { usePatientTreatments } from "@/hooks/PatientTreatmentsHooks";
 
 const PatientProfile = () => {
   const navigate = useNavigate();
@@ -264,7 +264,8 @@ const PatientProfile = () => {
       subject: "Appointment Confirmation",
       sender: "Dr. Sarah Johnson's Office",
       date: "2025-12-08T14:30:00",
-      content: "Your appointment for root canal treatment is confirmed for December 10, 2025 at 10:00 AM. Reply YES to confirm or CANCEL to reschedule.",
+      content:
+        "Your appointment for root canal treatment is confirmed for December 10, 2025 at 10:00 AM. Reply YES to confirm or CANCEL to reschedule.",
       status: "Delivered",
     },
     {
@@ -290,7 +291,8 @@ const PatientProfile = () => {
       subject: "Professional Cleaning Completed",
       sender: "Dr. Emily Rodriguez",
       date: "2025-09-15T10:00:00",
-      content: "Professional teeth cleaning completed successfully. Patient education provided on proper flossing technique. Next cleaning recommended in 6 months. Fluoride treatment applied.",
+      content:
+        "Professional teeth cleaning completed successfully. Patient education provided on proper flossing technique. Next cleaning recommended in 6 months. Fluoride treatment applied.",
       status: "Completed",
     },
     {
@@ -298,7 +300,8 @@ const PatientProfile = () => {
       subject: "Payment Receipt",
       sender: "Billing Department",
       date: "2025-09-15T11:30:00",
-      content: "Payment of $150.00 received for professional teeth cleaning on 09/15/2025. Thank you! Your receipt has been emailed to sarah.mitchell@email.com",
+      content:
+        "Payment of $150.00 received for professional teeth cleaning on 09/15/2025. Thank you! Your receipt has been emailed to sarah.mitchell@email.com",
       status: "Delivered",
     },
   ];
@@ -497,7 +500,12 @@ const PatientProfile = () => {
         </div>
       ) : (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <PatientHeader patient={currentPatient} onEdit={handleEditProfile} onSchedule={handleScheduleAppointment} onMessage={handleSendMessage} />
+          <PatientHeader
+            patient={currentPatient}
+            onEdit={handleEditProfile}
+            onSchedule={handleScheduleAppointment}
+            onMessage={handleSendMessage}
+          />
 
           <div className="bg-card rounded-lg shadow-clinical-md border border-border overflow-hidden mt-6 md:mt-8">
             <div className="border-b border-border overflow-x-auto">
@@ -507,7 +515,9 @@ const PatientProfile = () => {
                     key={tab?.id}
                     onClick={() => setActiveTab(tab?.id)}
                     className={`flex items-center gap-2 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-medium transition-all duration-base border-b-2 flex-shrink-0 ${
-                      activeTab === tab?.id ? "border-primary text-primary bg-primary/5" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      activeTab === tab?.id
+                        ? "border-primary text-primary bg-primary/5"
+                        : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50"
                     }`}
                   >
                     <Icon name={tab?.icon} size={16} className={activeTab === tab?.id ? "text-primary" : "text-muted-foreground"} />
@@ -523,7 +533,9 @@ const PatientProfile = () => {
       )}
 
       {/* MODAL (Fuera de la lógica condicional principal para que no se desmonte bruscamente) */}
-      {isEditModalOpen && <EditPatientModal patient={currentPatient} onClose={() => setIsEditModalOpen(false)} onSave={handleUpdatePatient} />}
+      {isEditModalOpen && (
+        <EditPatientModal patient={currentPatient} onClose={() => setIsEditModalOpen(false)} onSave={handleUpdatePatient} />
+      )}
     </div>
   );
 };

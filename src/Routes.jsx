@@ -1,25 +1,23 @@
 import React from "react";
 import { BrowserRouter, Routes as RouterRoutes, Route, Navigate } from "react-router-dom";
-import ScrollToTop from "components/ScrollToTop";
-import ErrorBoundary from "components/ErrorBoundary";
-import PatientProfile from "./pages/patient-profile";
-import SettingsPanel from "./pages/settings-panel";
-import Dashboard from "./pages/dashboard";
-import TreatmentPlanning from "./pages/treatment-planning";
-import PatientDirectory from "./pages/patient-directory";
-import ClinicalRecords from "./pages/clinical-records";
-import Login from "./pages/login";
-import PrivateRoute from "./components/PrivateRoute";
-import MainLayout from "./components/ui/MainLayout";
-import SubscriptionExpired from "./pages/subscription-expired";
-import ForgotPassword from "./pages/forgot-password";
-import ResetPassword from "./pages/reset-password";
-import WeeklyCalendar from "./pages/weekly-calendar";
-
-import Terms from "./pages/terms";
-
-import AdminPanel from "./pages/admin-panel";
-import RoleGuard from "./components/auth/RoleGuard";
+import ScrollToTop from "@/components/ScrollToTop";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import PatientProfile from "@/pages/patient-profile";
+import SettingsPanel from "@/pages/settings-panel";
+import Dashboard from "@/pages/dashboard";
+import TreatmentPlanning from "@/pages/treatment-planning";
+import PatientDirectory from "@/pages/patient-directory";
+import ClinicalRecords from "@/pages/clinical-records";
+import Login from "@/pages/login";
+import PrivateRoute from "@/components/PrivateRoute";
+import MainLayout from "@/components/ui/MainLayout";
+import SubscriptionExpired from "@/pages/subscription-expired";
+import ForgotPassword from "@/pages/forgot-password";
+import ResetPassword from "@/pages/reset-password";
+import WeeklyCalendar from "@/pages/weekly-calendar";
+import RoleGuard from "@/components/auth/RoleGuard";
+import Terms from "@/pages/terms";
+import AdminPanel from "@/pages/admin-panel";
 
 const Routes = () => {
   return (

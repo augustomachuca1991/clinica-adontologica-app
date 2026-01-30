@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/ui/Button";
-import Icon from "../../components/AppIcon";
 import { useTranslation } from "react-i18next";
+import Button from "@/components/ui/Button";
+import Icon from "@/components/AppIcon";
 
 const Terms = () => {
   const navigate = useNavigate();
@@ -15,7 +15,10 @@ const Terms = () => {
     <div className="min-h-screen bg-muted/40 py-12 px-4">
       <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* BOTÓN VOLVER */}
-        <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6 group">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6 group"
+        >
           <Icon name="ArrowLeft" size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm font-medium">{t("terms.back_to_login")}</span>
         </button>

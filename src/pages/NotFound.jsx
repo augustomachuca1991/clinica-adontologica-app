@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
-import Button from "../components/ui/Button"; // Ajusta la ruta
-import Icon from "../components/AppIcon";
+import Button from "@/components/ui/Button";
+import Icon from "@/components/AppIcon";
+import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
   const navigate = useNavigate();

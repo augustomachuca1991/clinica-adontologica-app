@@ -32,12 +32,6 @@
     "title": "¿Eliminar imagen?",
     "description": "Esta acción quitará la imagen del registro médico."
   },
-  "roles": {
-    "admin": "Administrador",
-    "user": "Usuario",
-    "receptionist": "Recepcionista",
-    "dentist": "Odontólogo"
-  },
   "gender": {
     "male": "Masculino",
     "female": "Femenino",
@@ -523,22 +517,8 @@
       }
     }
   },
-  "settings": {
-    "title": "Configuración",
-    "description": "Configuración del sistema"
-  },
   "sidebar": {
     "toggle": "Contraer"
-  },
-  "notifications": {
-    "title": "Notificaciones",
-    "noNotifications": "No hay nuevas notificaciones",
-    "markAllAsRead": "Marcar todas como leídas",
-    "viewAll": "Ver todas las notificaciones",
-    "logoutSuccess": "Sesión cerrada con éxito",
-    "logoutError": "Error al cerrar sesión",
-    "patientUpdated": "Información del paciente actualizada con éxito",
-    "errorUpdatingPatient": "Error al actualizar la información del paciente"
   },
   "search": {
     "label": "Buscar",
@@ -633,11 +613,6 @@
     "confirmDeleteTitle": "Confirmar Eliminación",
     "confirmDeleteDescription": "¿Estás seguro de que deseas eliminar esta cita?",
     "rescheduled": "Reprogramada"
-  },
-  "common": {
-    "cancel": "Cancelar",
-    "error": "Error",
-    "select": "Seleccionar"
   },
   "printableRecord": {
     "title": "Ficha Clínica Odontológica",
@@ -789,5 +764,315 @@
     "thursday": "Jueves",
     "friday": "Viernes",
     "saturday": "Sábado"
+  },
+  "settings": {
+    "title": "Configuración",
+    "description": "Configuración del sistema",
+    "header": {
+      "title": "Ajustes y Configuración",
+      "subtitle": "Gestione la configuración de su clínica, cuentas de usuario y preferencias del sistema",
+      "helpBtn": "Ayuda"
+    },
+    "notice": {
+      "title": "Configuración del Sistema",
+      "description": "Configure su sistema DentalCare Manager para que se adapte al flujo de trabajo de su clínica. Los cambios en ajustes críticos pueden requerir la aprobación de un administrador y serán registrados para auditorías de cumplimiento."
+    },
+    "tabs": {
+      "users": {
+        "label": "Gestión de Usuarios",
+        "description": "Gestione las cuentas del personal y sus permisos"
+      },
+      "practice": {
+        "label": "Ajustes de la Clínica",
+        "description": "Personalice la información de su clínica"
+      },
+      "security": {
+        "label": "Seguridad y Cumplimiento",
+        "description": "Cumplimiento HIPAA y seguridad"
+      },
+      "integrations": {
+        "label": "Integraciones",
+        "description": "Conecte servicios de terceros"
+      },
+      "notifications": {
+        "label": "Notificaciones",
+        "description": "Configure las preferencias de notificación"
+      },
+      "backup": {
+        "label": "Respaldo y Restauración",
+        "description": "Respaldo de datos y recuperación"
+      }
+    },
+    "status": {
+      "system": {
+        "title": "Estado del Sistema",
+        "value": "Todos los sistemas operativos"
+      },
+      "users": {
+        "title": "Usuarios Activos",
+        "value": "4 usuarios conectados actualmente"
+      },
+      "backup": {
+        "title": "Último Respaldo",
+        "value": "16/01/2026 02:00 AM"
+      }
+    }
+  },
+  "admin": {
+    "header": {
+      "title": "Panel de suscripciones",
+      "subtitle": "Gestioná las suscripciones de los usuarios."
+    },
+    "status": {
+      "active": "Activo",
+      "grace": "Período de Gracia",
+      "inactive": "Inactivo",
+      "expiresIn_one": "Vence en 1 día",
+      "expiresIn_other": "Vence en {{count}} días",
+      "expiredAgo_one": "⚠ Venció hace 1 día",
+      "expiredAgo_other": "⚠ Venció hace {{count}} días"
+    },
+    "alerts": {
+      "renewError": "Error al renovar: ",
+      "createSuccess": "¡Suscripción creada exitosamente!"
+    },
+    "table": {
+      "loading": "Cargando usuarios...",
+      "error": "Error: {{error}}",
+      "empty": "No hay suscripciones disponibles",
+      "thUser": "Usuario",
+      "thStatus": "Estado",
+      "thExpiration": "Vencimiento",
+      "thActions": "Acciones",
+      "noName": "Sin nombre"
+    },
+    "actions": {
+      "viewInfo": "Ver info",
+      "modify": "Modificar",
+      "renew": "Renovar"
+    },
+    "form": {
+      "title": "Nueva suscripción",
+      "cancel": "Cancelar",
+      "selectUser": "Seleccionar usuario",
+      "searchPlaceholder": "Escribí para filtrar...",
+      "usersCount_one": "Usuario (1)",
+      "usersCount_other": "Usuarios ({{count}})",
+      "noMatches": "Sin modificaciones",
+      "changeUser": "Cambiar",
+      "durationLabel": "Duración del período",
+      "processing": "Procesando...",
+      "submit": "Activar suscripción",
+      "errors": {
+        "selectUser": "Por favor, selecciona un usuario válido de la lista.",
+        "processError": "Error al procesar la suscripción."
+      }
+    },
+    "duration": {
+      "1month": "1 mes",
+      "3months": "3 meses",
+      "6months": "6 meses",
+      "1year": "1 año completo"
+    },
+    "modals": {
+      "shared": {
+        "user": "Usuario",
+        "email": "Email",
+        "cancel": "Cancelar"
+      },
+      "renew": {
+        "title": "Renovar suscripción",
+        "description": "Seleccioná la fecha de inicio. Se extenderá la vigencia por exactamente 1 mes a partir de ese día.",
+        "startDate": "Fecha de inicio de renovación",
+        "confirmBtn": "Confirmar (+1 mes)"
+      },
+      "view": {
+        "title": "Detalles de suscripción",
+        "idLabel": "Identificador",
+        "userDataSection": "Datos de usuario",
+        "statusSection": "Estado del servicio",
+        "currentStatus": "Estado actual",
+        "remainingDays": "Días restantes",
+        "expiredLabel": "Vencida",
+        "daysCount_one": "1 día",
+        "daysCount_other": "{{count}} días",
+        "createdAt": "Fecha de creación",
+        "nextExpiration": "Próximo vencimiento",
+        "closeBtn": "Cerrar ventana"
+      }
+    }
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "error": "Error",
+    "select": "Seleccionar"
+  },
+  "roles": {
+    "administrator": "Administrador",
+    "dentist": "Odontólogo",
+    "user": "Usuario",
+    "admin": "Administrador",
+    "receptionist": "Recepcionista"
+  },
+  "permissions": {
+    "view_patients": "Ver Pacientes",
+    "standard_access": "Acceso Estándar"
+  },
+  "users": {
+    "search_placeholder": "Buscar usuarios por nombre o correo...",
+    "filter_role": "Filtrar por rol",
+    "add_user_btn": "Agregar Usuario",
+    "form_title": "Agregar Nuevo Usuario",
+    "create_btn": "Crear Usuario",
+    "permissions_btn": "Permisos",
+    "permissions_label": "Permisos:",
+    "joined": "Miembro desde",
+    "no_results": "No se encontraron usuarios que coincidan con los criterios",
+    "roles": {
+      "all": "Todos los Roles",
+      "administrator": "Administrador",
+      "dentist": "Odontólogo"
+    },
+    "status": {
+      "inactive": "Inactivo"
+    },
+    "labels": {
+      "full_name": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "role": "Rol",
+      "phone": "Teléfono"
+    },
+    "placeholders": {
+      "full_name": "Ingresa el nombre completo",
+      "email": "Ingresa el correo electrónico",
+      "role": "Selecciona un rol",
+      "phone": "Ingresa el número de teléfono"
+    }
+  },
+  "notifications": {
+    "delivery_title": "Entrega de Notificaciones",
+    "delivery_description": "Elige cómo deseas recibir tus notificaciones. Puedes personalizar las preferencias para cada tipo de notificación a continuación.",
+    "frequency_label": "Frecuencia de Notificaciones por Correo",
+    "frequency_description": "Qué tan seguido recibes los correos de notificación",
+    "title": "Notificaciones",
+    "noNotifications": "No hay nuevas notificaciones",
+    "markAllAsRead": "Marcar todas como leídas",
+    "viewAll": "Ver todas las notificaciones",
+    "logoutSuccess": "Sesión cerrada con éxito",
+    "logoutError": "Error al cerrar sesión",
+    "patientUpdated": "Información del paciente actualizada con éxito",
+    "errorUpdatingPatient": "Error al actualizar la información del paciente",
+    "table": {
+      "type": "Tipo de Notificación",
+      "email": "Correo",
+      "push": "Push",
+      "sms": "SMS"
+    },
+    "notice": {
+      "title": "Aviso Importante",
+      "description": "Las notificaciones críticas de seguridad (inicio de sesión desde un nuevo dispositivo, cambios de contraseña) no se pueden desactivar para garantizar la seguridad de la cuenta. Las notificaciones por SMS pueden incurrir en cargos adicionales por parte de tu operador."
+    },
+    "buttons": {
+      "reset": "Restablecer Valores",
+      "save": "Guardar Preferencias"
+    },
+    "frequencies": {
+      "realtime": "Tiempo real",
+      "hourly": "Resumen por hora",
+      "daily": "Resumen diario",
+      "weekly": "Resumen semanal"
+    },
+    "categories": {
+      "appointments": "Citas",
+      "patient_records": "Historial Clínico",
+      "billing_payments": "Facturación y Pagos",
+      "system_security": "Sistema y Seguridad"
+    },
+    "labels": {
+      "appointment_created": "Nueva cita programada",
+      "appointment_cancelled": "Cita cancelada",
+      "appointment_reminder": "Recordatorio de próxima cita",
+      "appointment_confirmed": "Paciente confirmó la cita",
+      "record_updated": "Historial del paciente actualizado",
+      "lab_results": "Resultados de laboratorio disponibles",
+      "treatment_completed": "Plan de tratamiento completado",
+      "document_uploaded": "Nuevo documento subido",
+      "payment_received": "Pago recibido",
+      "invoice_sent": "Factura enviada al paciente",
+      "payment_overdue": "Pago atrasado",
+      "payment_plan_updated": "Plan de pago actualizado",
+      "login_new_device": "Inicio de sesión desde nuevo dispositivo",
+      "password_changed": "Contraseña cambiada",
+      "system_maintenance": "Mantenimiento del sistema programado",
+      "backup_completed": "Copia de seguridad completada"
+    }
+  },
+  "backup": {
+    "config": {
+      "title": "Configuración de Copias de Seguridad",
+      "subtitle": "Ajustes de respaldos automatizados",
+      "frequency_label": "Frecuencia de Respaldo",
+      "frequency_desc": "Qué tan seguido se crean las copias de seguridad",
+      "retention_label": "Periodo de Retención",
+      "retention_desc": "Cuánto tiempo se conservan los respaldos",
+      "save_btn": "Guardar Configuración"
+    },
+    "status": {
+      "title": "Estado del Respaldo",
+      "subtitle": "Información actual del sistema",
+      "last_backup": "Último Respaldo",
+      "size": "Tamaño del Respaldo",
+      "next_scheduled": "Próximo Programado",
+      "storage_used": "Almacenamiento Usado",
+      "manual_btn": "Crear Respaldo Manual"
+    },
+    "categories": {
+      "title": "Categorías de Datos",
+      "subtitle": "Selecciona qué categorías de datos incluir en los respaldos",
+      "labels": {
+        "patient-records": "Expedientes de Pacientes",
+        "clinical-notes": "Notas Clínicas",
+        "images": "Imágenes Clínicas",
+        "appointments": "Citas",
+        "billing": "Datos de Facturación",
+        "settings": "Ajustes del Sistema"
+      }
+    },
+    "history": {
+      "title": "Historial de Respaldos",
+      "export_btn": "Exportar Lista",
+      "th_date_time": "Fecha y Hora",
+      "th_size": "Tamaño",
+      "th_type": "Tipo",
+      "th_duration": "Duración",
+      "th_status": "Estado",
+      "th_actions": "Acciones"
+    },
+    "warning": {
+      "title": "Advertencia de Restauración",
+      "description": "Restaurar desde una copia de seguridad reemplazará todos los datos actuales con los del respaldo. Esta acción no se puede deshacer. Crea siempre un respaldo manual antes de restaurar.",
+      "restore_btn": "Restaurar desde Respaldo"
+    },
+    "frequencies": {
+      "hourly": "Cada hora",
+      "daily": "Diario a las 2:00 AM",
+      "weekly": "Semanal los domingos",
+      "monthly": "Mensual el día 1"
+    },
+    "retention": {
+      "days_7": "7 días",
+      "days_30": "30 días",
+      "days_90": "90 días",
+      "year_1": "1 año"
+    },
+    "types": {
+      "automatic": "Automático",
+      "manual": "Manual"
+    },
+    "states": {
+      "completed": "Completado",
+      "failed": "Fallido"
+    }
   }
 }

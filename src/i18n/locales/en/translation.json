@@ -32,12 +32,6 @@
     "title": "Delete image?",
     "description": "This action will remove the image from the medical record."
   },
-  "roles": {
-    "admin": "Administrator",
-    "user": "User",
-    "receptionist": "Receptionist",
-    "dentist": "Dentist"
-  },
   "gender": {
     "male": "Male",
     "female": "Female",
@@ -524,22 +518,8 @@
     "patientHistory": "Patient History",
     "currentPlan": "Current Plan"
   },
-  "settings": {
-    "title": "Settings",
-    "description": "System configuration"
-  },
   "sidebar": {
     "toggle": "Collapse"
-  },
-  "notifications": {
-    "title": "Notifications",
-    "noNotifications": "No new notifications",
-    "markAllAsRead": "Mark all as read",
-    "viewAll": "View all notifications",
-    "logoutSuccess": "Logged out successfully",
-    "logoutError": "Error logging out",
-    "patientUpdated": "Patient information updated successfully",
-    "errorUpdatingPatient": "Error updating patient information"
   },
   "search": {
     "placeholder": "Search patients, appointments...",
@@ -636,11 +616,6 @@
     "confirmDeleteTitle": "Confirm Deletion",
     "confirmDeleteDescription": "Are you sure you want to delete this appointment?",
     "rescheduled": "Rescheduled"
-  },
-  "common": {
-    "cancel": "Cancel",
-    "error": "Error",
-    "select": "Select"
   },
   "printableRecord": {
     "title": "Dental Medical Record",
@@ -792,5 +767,315 @@
     "thursday": "Thursday",
     "friday": "Friday",
     "saturday": "Saturday"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "System configuration",
+    "header": {
+      "title": "Settings & Configuration",
+      "subtitle": "Manage your practice settings, user accounts, and system preferences",
+      "helpBtn": "Help"
+    },
+    "notice": {
+      "title": "System Configuration",
+      "description": "Configure your DentalCare Manager system to match your practice workflow. Changes to critical settings may require administrator approval and will be logged for compliance."
+    },
+    "tabs": {
+      "users": {
+        "label": "User Management",
+        "description": "Manage staff accounts and permissions"
+      },
+      "practice": {
+        "label": "Practice Settings",
+        "description": "Customize practice information"
+      },
+      "security": {
+        "label": "Security & Compliance",
+        "description": "HIPAA compliance and security"
+      },
+      "integrations": {
+        "label": "Integrations",
+        "description": "Connect third-party services"
+      },
+      "notifications": {
+        "label": "Notifications",
+        "description": "Configure notification preferences"
+      },
+      "backup": {
+        "label": "Backup & Restore",
+        "description": "Data backup and recovery"
+      }
+    },
+    "status": {
+      "system": {
+        "title": "System Status",
+        "value": "All systems operational"
+      },
+      "users": {
+        "title": "Active Users",
+        "value": "4 users currently online"
+      },
+      "backup": {
+        "title": "Last Backup",
+        "value": "01/16/2026 02:00 AM"
+      }
+    }
+  },
+  "admin": {
+    "header": {
+      "title": "Subscription Panel",
+      "subtitle": "Manage user subscriptions."
+    },
+    "status": {
+      "active": "Active",
+      "grace": "Grace Period",
+      "inactive": "Inactive",
+      "expiresIn_one": "Expires in 1 day",
+      "expiresIn_other": "Expires in {{count}} days",
+      "expiredAgo_one": "⚠ Expired 1 day ago",
+      "expiredAgo_other": "⚠ Expired {{count}} days ago"
+    },
+    "alerts": {
+      "renewError": "Error renewing subscription: ",
+      "createSuccess": "Subscription created successfully!"
+    },
+    "table": {
+      "loading": "Loading users...",
+      "error": "Error: {{error}}",
+      "empty": "No subscriptions available",
+      "thUser": "User",
+      "thStatus": "Status",
+      "thExpiration": "Expiration",
+      "thActions": "Actions",
+      "noName": "No name"
+    },
+    "actions": {
+      "viewInfo": "View info",
+      "modify": "Modify",
+      "renew": "Renew"
+    },
+    "form": {
+      "title": "New Subscription",
+      "cancel": "Cancel",
+      "selectUser": "Select user",
+      "searchPlaceholder": "Type to filter...",
+      "usersCount_one": "User (1)",
+      "usersCount_other": "Users ({{count}})",
+      "noMatches": "No matches found",
+      "changeUser": "Change",
+      "durationLabel": "Period duration",
+      "processing": "Processing...",
+      "submit": "Activate subscription",
+      "errors": {
+        "selectUser": "Please select a valid user from the list.",
+        "processError": "Error processing subscription."
+      }
+    },
+    "duration": {
+      "1month": "1 month",
+      "3months": "3 months",
+      "6months": "6 months",
+      "1year": "1 full year"
+    },
+    "modals": {
+      "shared": {
+        "user": "User",
+        "email": "Email",
+        "cancel": "Cancel"
+      },
+      "renew": {
+        "title": "Renew Subscription",
+        "description": "Select the start date. Service validity will be extended by exactly 1 month starting from that day.",
+        "startDate": "Renewal start date",
+        "confirmBtn": "Confirm (+1 month)"
+      },
+      "view": {
+        "title": "Subscription Details",
+        "idLabel": "Identifier",
+        "userDataSection": "User data",
+        "statusSection": "Service status",
+        "currentStatus": "Current status",
+        "remainingDays": "Remaining days",
+        "expiredLabel": "Expired",
+        "daysCount_one": "1 day",
+        "daysCount_other": "{{count}} days",
+        "createdAt": "Creation date",
+        "nextExpiration": "Next expiration",
+        "closeBtn": "Close window"
+      }
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "error": "Error",
+    "select": "Select"
+  },
+  "roles": {
+    "administrator": "Administrator",
+    "dentist": "Dentist",
+    "user": "User",
+    "admin": "Administrator",
+    "receptionist": "Receptionist"
+  },
+  "permissions": {
+    "view_patients": "View Patients",
+    "standard_access": "Standard Access"
+  },
+  "users": {
+    "search_placeholder": "Search users by name or email...",
+    "filter_role": "Filter by role",
+    "add_user_btn": "Add User",
+    "form_title": "Add New User",
+    "create_btn": "Create User",
+    "permissions_btn": "Permissions",
+    "permissions_label": "Permissions:",
+    "joined": "Joined",
+    "no_results": "No users found matching your criteria",
+    "roles": {
+      "all": "All Roles",
+      "administrator": "Administrator",
+      "dentist": "Dentist"
+    },
+    "status": {
+      "inactive": "Inactive"
+    },
+    "labels": {
+      "full_name": "Full Name",
+      "email": "Email Address",
+      "role": "Role",
+      "phone": "Phone Number"
+    },
+    "placeholders": {
+      "full_name": "Enter full name",
+      "email": "Enter email",
+      "role": "Select role",
+      "phone": "Enter phone number"
+    }
+  },
+  "notifications": {
+    "delivery_title": "Notification Delivery",
+    "delivery_description": "Choose how you want to receive notifications. You can customize preferences for each notification type below.",
+    "frequency_label": "Email Notification Frequency",
+    "frequency_description": "How often you receive email notifications",
+    "title": "Notifications",
+    "noNotifications": "No new notifications",
+    "markAllAsRead": "Mark all as read",
+    "viewAll": "View all notifications",
+    "logoutSuccess": "Logged out successfully",
+    "logoutError": "Error logging out",
+    "patientUpdated": "Patient information updated successfully",
+    "errorUpdatingPatient": "Error updating patient information",
+    "table": {
+      "type": "Notification Type",
+      "email": "Email",
+      "push": "Push",
+      "sms": "SMS"
+    },
+    "notice": {
+      "title": "Important Notice",
+      "description": "Critical security notifications (login from new device, password changes) cannot be disabled to ensure account security. SMS notifications may incur additional charges from your carrier."
+    },
+    "buttons": {
+      "reset": "Reset to Defaults",
+      "save": "Save Preferences"
+    },
+    "frequencies": {
+      "realtime": "Real-time",
+      "hourly": "Hourly digest",
+      "daily": "Daily digest",
+      "weekly": "Weekly digest"
+    },
+    "categories": {
+      "appointments": "Appointments",
+      "patient_records": "Patient Records",
+      "billing_payments": "Billing & Payments",
+      "system_security": "System & Security"
+    },
+    "labels": {
+      "appointment_created": "New appointment scheduled",
+      "appointment_cancelled": "Appointment cancelled",
+      "appointment_reminder": "Upcoming appointment reminder",
+      "appointment_confirmed": "Patient confirmed appointment",
+      "record_updated": "Patient record updated",
+      "lab_results": "Lab results available",
+      "treatment_completed": "Treatment plan completed",
+      "document_uploaded": "New document uploaded",
+      "payment_received": "Payment received",
+      "invoice_sent": "Invoice sent to patient",
+      "payment_overdue": "Payment overdue",
+      "payment_plan_updated": "Payment plan updated",
+      "login_new_device": "Login from new device",
+      "password_changed": "Password changed",
+      "system_maintenance": "System maintenance scheduled",
+      "backup_completed": "Backup completed"
+    }
+  },
+  "backup": {
+    "config": {
+      "title": "Backup Configuration",
+      "subtitle": "Automated backup settings",
+      "frequency_label": "Backup Frequency",
+      "frequency_desc": "How often backups are created",
+      "retention_label": "Retention Period",
+      "retention_desc": "How long backups are kept",
+      "save_btn": "Save Configuration"
+    },
+    "status": {
+      "title": "Backup Status",
+      "subtitle": "Current backup information",
+      "last_backup": "Last Backup",
+      "size": "Backup Size",
+      "next_scheduled": "Next Scheduled",
+      "storage_used": "Storage Used",
+      "manual_btn": "Create Manual Backup"
+    },
+    "categories": {
+      "title": "Data Categories",
+      "subtitle": "Select which data categories to include in backups",
+      "labels": {
+        "patient-records": "Patient Records",
+        "clinical-notes": "Clinical Notes",
+        "images": "Clinical Images",
+        "appointments": "Appointments",
+        "billing": "Billing Data",
+        "settings": "System Settings"
+      }
+    },
+    "history": {
+      "title": "Backup History",
+      "export_btn": "Export List",
+      "th_date_time": "Date & Time",
+      "th_size": "Size",
+      "th_type": "Type",
+      "th_duration": "Duration",
+      "th_status": "Status",
+      "th_actions": "Actions"
+    },
+    "warning": {
+      "title": "Restore Warning",
+      "description": "Restoring from a backup will replace all current data with the backup data. This action cannot be undone. Always create a manual backup before restoring.",
+      "restore_btn": "Restore from Backup"
+    },
+    "frequencies": {
+      "hourly": "Every hour",
+      "daily": "Daily at 2:00 AM",
+      "weekly": "Weekly on Sunday",
+      "monthly": "Monthly on 1st"
+    },
+    "retention": {
+      "days_7": "7 days",
+      "days_30": "30 days",
+      "days_90": "90 days",
+      "year_1": "1 year"
+    },
+    "types": {
+      "automatic": "Automatic",
+      "manual": "Manual"
+    },
+    "states": {
+      "completed": "Completed",
+      "failed": "Failed"
+    }
   }
 }

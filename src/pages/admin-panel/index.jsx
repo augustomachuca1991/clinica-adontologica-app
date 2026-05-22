@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useSubscription } from "@/hooks/SubscriptionHooks";
 import { supabase } from "@/lib/supabase";
 import { useUserRegistration } from "@/hooks/UserHooks";
+
 function getInitials(name) {
   if (!name) return "U";
   return name
@@ -32,13 +33,14 @@ function daysLeft(iso) {
   return Math.ceil((new Date(iso) - new Date()) / 86400000);
 }
 
-function fmtDate(iso) {
-  return new Date(iso).toLocaleDateString("es-AR", { day: "2-digit", month: "short", year: "numeric" });
+// Formateadores dinámicos según el idioma activo
+function fmtDate(iso, lng) {
+  return new Date(iso).toLocaleDateString(lng, { day: "2-digit", month: "short", year: "numeric" });
 }
 
-function fmtDateTime(iso) {
+function fmtDateTime(iso, lng) {
   if (!iso) return "-";
-  return new Date(iso).toLocaleDateString("es-AR", {
+  return new Date(iso).toLocaleDateString(lng, {
     day: "2-digit",
     month: "long",
     year: "numeric",
@@ -47,59 +49,15 @@ function fmtDateTime(iso) {
   });
 }
 
-const obtenerEstadoVisual = (subscription) => {
-  const hoy = new Date();
-  const finPeriodo = new Date(subscription.current_period_end);
-
-  // Calcular la diferencia en días
-  const diferenciaTiempo = hoy - finPeriodo;
-  const diasVencido = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
-
-  if (hoy <= finPeriodo) {
-    // Calcular cuántos días le quedan de forma positiva
-    const diasRestantes = Math.ceil((finPeriodo - hoy) / (1000 * 60 * 60 * 24));
-    return {
-      key: "active",
-      texto: "Activo",
-      claseBg: "bg-emerald-100 text-emerald-800", // Verde pulido
-      claseCirculo: "bg-emerald-500",
-      textoDias: `Vence en ${diasRestantes} días`,
-      claseTextoDias: "text-muted-foreground",
-    };
-  } else if (diasVencido <= 5) {
-    return {
-      key: "grace",
-      texto: "Período de Gracia",
-      claseBg: "bg-amber-100 text-amber-800", // Amarillo / Ámbar
-      claseCirculo: "bg-amber-500",
-      textoDias: `⚠ Venció hace ${diasVencido} ${diasVencido === 1 ? "día" : "días"}`,
-      claseTextoDias: "text-amber-500",
-    };
-  } else {
-    return {
-      key: "expired",
-      texto: "Inactivo",
-      claseBg: "bg-red-100 text-red-700", // Rojo
-      claseCirculo: "bg-red-500",
-      textoDias: `⚠ Venció hace ${diasVencido} días`,
-      claseTextoDias: "text-red-500",
-    };
-  }
-};
-
 const AdminPanel = () => {
-  const { t } = useTranslation();
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [openMenuId, setOpenMenuId] = useState(null);
+  const { t, i18n } = useTranslation();
+  const currentLng = i18n.language; // Captura el idioma actual para las fechas
 
+  const [openMenuId, setOpenMenuId] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null);
   const [viewingSub, setViewingSub] = useState(null);
   const [renewalDate, setRenewalDate] = useState(new Date().toISOString().split("T")[0]);
   const [isRenewing, setIsRenewing] = useState(false);
-
-  // Estados para el formulario de Nuevo Registro
-  const [formData, setFormData] = useState({ fullName: "", email: "" });
-  const [selectedRoles, setSelectedRoles] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -113,6 +71,45 @@ const AdminPanel = () => {
 
   const { subscriptions, loading, error, renewSubscription, refresh } = useSubscription();
   const { users, loadingUsers, fetchUsers } = useUserRegistration();
+
+  // Función para obtener el estado visual traducido dinámicamente
+  const obtenerEstadoVisual = (subscription) => {
+    const hoy = new Date();
+    const finPeriodo = new Date(subscription.current_period_end);
+
+    const diferenciaTiempo = hoy - finPeriodo;
+    const diasVencido = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
+
+    if (hoy <= finPeriodo) {
+      const diasRestantes = Math.ceil((finPeriodo - hoy) / (1000 * 60 * 60 * 24));
+      return {
+        key: "active",
+        texto: t("admin.status.active"),
+        claseBg: "bg-emerald-100 text-emerald-800",
+        claseCirculo: "bg-emerald-500",
+        textoDias: t("admin.status.expiresIn", { count: diasRestantes }),
+        claseTextoDias: "text-muted-foreground",
+      };
+    } else if (diasVencido <= 5) {
+      return {
+        key: "grace",
+        texto: t("admin.status.grace"),
+        claseBg: "bg-amber-100 text-amber-800",
+        claseCirculo: "bg-amber-500",
+        textoDias: t("admin.status.expiredAgo", { count: diasVencido }),
+        claseTextoDias: "text-amber-500",
+      };
+    } else {
+      return {
+        key: "expired",
+        texto: t("admin.status.inactive"),
+        claseBg: "bg-red-100 text-red-700",
+        claseCirculo: "bg-red-500",
+        textoDias: t("admin.status.expiredAgo", { count: diasVencido }),
+        claseTextoDias: "text-red-500",
+      };
+    }
+  };
 
   const handleOpenRenewModal = (subscription) => {
     setSelectedSub(subscription);
@@ -134,30 +131,16 @@ const AdminPanel = () => {
     if (result.success) {
       setSelectedSub(null);
     } else {
-      alert("Error al renovar: " + result.error);
-    }
-  };
-
-  // Manejador para los checkboxes de roles
-  const handleRoleChange = (role) => {
-    if (selectedRoles.includes(role)) {
-      setSelectedRoles(selectedRoles.filter((r) => r !== role));
-    } else {
-      setSelectedRoles([...selectedRoles, role]);
+      alert(t("admin.alerts.renewError") + result.error);
     }
   };
 
   const handleCreateSubscription = async (e) => {
     e.preventDefault();
     setFormError(null);
-    /* {
-        "userId": "c93c08e0-6a38-459d-be25-7991701be237",
-        "userName": "augusto fernandito",
-        "duration": "3"
-    } */
 
     if (!subscriptionData.userId) {
-      setFormError("Por favor, selecciona un usuario válido de la lista.");
+      setFormError(t("admin.form.errors.selectUser"));
       return;
     }
 
@@ -168,7 +151,7 @@ const AdminPanel = () => {
       const endDate = new Date();
       endDate.setMonth(startDate.getMonth() + parseInt(subscriptionData.duration));
 
-      const { data, error } = await supabase.from("subscriptions").insert([
+      const { error } = await supabase.from("subscriptions").insert([
         {
           user_id: subscriptionData.userId,
           status: "active",
@@ -178,9 +161,8 @@ const AdminPanel = () => {
 
       if (error) throw error;
 
-      alert("¡Suscripción creada exitosamente!");
+      alert(t("admin.alerts.createSuccess"));
 
-      setIsFormOpen(false);
       setSearchTerm("");
       setSubscriptionData({ userId: "", userName: "", duration: "1" });
 
@@ -188,7 +170,7 @@ const AdminPanel = () => {
       if (typeof fetchUsers === "function") await fetchUsers();
     } catch (err) {
       console.error(err);
-      setFormError(err.message || "Error al procesar la suscripción.");
+      setFormError(err.message || t("admin.form.errors.processError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -198,8 +180,8 @@ const AdminPanel = () => {
     <div className="p-6 max-w-7xl mx-auto space-y-8 fade-in-up">
       {/* HEADER */}
       <header>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Panel de suscripciones</h1>
-        <p className="text-muted-foreground mt-1">Gestioná las suscripciones de los usuarios.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t("admin.header.title")}</h1>
+        <p className="text-muted-foreground mt-1">{t("admin.header.subtitle")}</p>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -209,29 +191,31 @@ const AdminPanel = () => {
             {loading ? (
               <div className="p-8 text-center">
                 <div className="inline-block animate-spin">⚙️</div>
-                <p className="text-muted-foreground mt-2">Cargando usuarios...</p>
+                <p className="text-muted-foreground mt-2">{t("admin.table.loading")}</p>
               </div>
             ) : error ? (
               <div className="p-8 text-center">
-                <p className="text-red-600">Error: {error}</p>
+                <p className="text-red-600">{t("admin.table.error", { error })}</p>
               </div>
             ) : subscriptions.length === 0 ? (
               <div className="p-8 text-center">
-                <p className="text-muted-foreground">No hay suscripciones disponibles</p>
+                <p className="text-muted-foreground">{t("admin.table.empty")}</p>
               </div>
             ) : (
               <table className="w-full text-left border-collapse overflow-visible">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
                     <th className="p-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Usuario
-                    </th>
-                    <th className="p-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estado</th>
-                    <th className="p-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Vencimiento
+                      {t("admin.table.thUser")}
                     </th>
                     <th className="p-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Acciones
+                      {t("admin.table.thStatus")}
+                    </th>
+                    <th className="p-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      {t("admin.table.thExpiration")}
+                    </th>
+                    <th className="p-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      {t("admin.table.thActions")}
                     </th>
                   </tr>
                 </thead>
@@ -239,14 +223,10 @@ const AdminPanel = () => {
                   {subscriptions.map((subscription) => {
                     const p = subscription.user_profiles || {};
                     const days = daysLeft(subscription.current_period_end);
-
-                    // 1. Obtenemos el estado visual calculado dinámicamente
                     const estado = obtenerEstadoVisual(subscription);
 
-                    // Ajustamos las banderas lógicas basadas en nuestro nuevo estado visual
                     const isExpired = estado.key === "expired";
                     const isGrace = estado.key === "grace";
-                    const endWarn = !isExpired && days < 30;
 
                     return (
                       <tr key={subscription.id} className="hover:bg-muted/20 transition-colors">
@@ -258,7 +238,9 @@ const AdminPanel = () => {
                               {getInitials(p.full_name)}
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <span className="font-medium text-sm text-foreground">{p.full_name || "Sin nombre"}</span>
+                              <span className="font-medium text-sm text-foreground">
+                                {p.full_name || t("admin.table.noName")}
+                              </span>
                               <span className="text-xs text-muted-foreground">{p.email || "-"}</span>
                               <span className="text-[10px] text-muted-foreground font-mono">
                                 @{p.username || "sin-user"}
@@ -267,7 +249,6 @@ const AdminPanel = () => {
                           </div>
                         </td>
 
-                        {/* 2. Etiqueta de Estado Dinámica (Con tus estilos originales adaptados) */}
                         <td className="p-4">
                           <span
                             className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${estado.claseBg}`}
@@ -277,17 +258,15 @@ const AdminPanel = () => {
                           </span>
                         </td>
 
-                        {/* 3. Fechas y Alertas de Vencimiento */}
                         <td className="p-4">
                           <div
                             className={`text-sm font-medium ${isExpired ? "text-red-600" : isGrace ? "text-amber-600" : "text-foreground"}`}
                           >
-                            {fmtDate(subscription.current_period_end)}
+                            {fmtDate(subscription.current_period_end, currentLng)}
                           </div>
                           <div className={`text-[10px] mt-0.5 ${estado.claseTextoDias}`}>{estado.textoDias}</div>
                         </td>
 
-                        {/* 4. Menú de Acciones de la Fila */}
                         <td className="p-4 overflow-visible">
                           <div className="relative overflow-visible">
                             <button
@@ -315,7 +294,7 @@ const AdminPanel = () => {
                                     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                                     <circle cx="12" cy="12" r="3" />
                                   </svg>
-                                  Ver info
+                                  {t("admin.actions.viewInfo")}
                                 </button>
                                 <button className="w-full text-left px-4 py-2 hover:bg-muted text-sm transition-colors flex items-center gap-2 text-foreground border-t border-border">
                                   <svg
@@ -332,10 +311,9 @@ const AdminPanel = () => {
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4Z" />
                                   </svg>
-                                  Modificar
+                                  {t("admin.actions.modify")}
                                 </button>
 
-                                {/* 👇 Ahora te permite renovar tanto si está Vencido como si está en Periodo de Gracia */}
                                 {(isExpired || isGrace) && (
                                   <button
                                     onClick={() => handleOpenRenewModal(subscription)}
@@ -357,7 +335,7 @@ const AdminPanel = () => {
                                       <path d="M3 22v-6h6" />
                                       <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
                                     </svg>
-                                    Renovar
+                                    {t("admin.actions.renew")}
                                   </button>
                                 )}
                               </div>
@@ -377,27 +355,26 @@ const AdminPanel = () => {
         <aside className="lg:col-span-4 sticky top-6">
           <div className="bg-card border border-border rounded-xl p-5 space-y-5">
             <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold text-foreground">Nueva suscripción</h2>
+              <h2 className="text-base font-semibold text-foreground">{t("admin.form.title")}</h2>
               <button
+                type="button"
                 onClick={() => {
-                  setIsFormOpen(false);
                   setSearchTerm("");
                   setSubscriptionData({ userId: "", userName: "", duration: "1" });
                 }}
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                Cancelar
+                {t("admin.form.cancel")}
               </button>
             </div>
 
             <form className="space-y-5" onSubmit={handleCreateSubscription}>
-              {/* SELECCIONAR USUARIO */}
               <div className="space-y-1.5 relative">
-                <label className="text-xs font-medium text-muted-foreground">Seleccionar usuario</label>
+                <label className="text-xs font-medium text-muted-foreground">{t("admin.form.selectUser")}</label>
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Escribí para filtrar..."
+                    placeholder={t("admin.form.searchPlaceholder")}
                     value={subscriptionData.userName || searchTerm}
                     onFocus={() => {
                       const sorted = [...users].sort((a, b) => a.full_name?.localeCompare(b.full_name));
@@ -429,7 +406,7 @@ const AdminPanel = () => {
                 {filteredUsers.length > 0 && !subscriptionData.userId && (
                   <div className="absolute z-50 w-full bg-popover border border-border rounded-lg shadow-lg mt-1">
                     <div className="text-[10px] font-semibold text-muted-foreground px-3 py-1.5 bg-muted/50 uppercase tracking-wider rounded-t-lg border-b border-border">
-                      Usuarios ({filteredUsers.length})
+                      {t("admin.form.usersCount", { count: filteredUsers.length })}
                     </div>
                     <ul className="max-h-52 overflow-y-auto divide-y divide-border">
                       {filteredUsers.map((u) => (
@@ -452,7 +429,7 @@ const AdminPanel = () => {
 
                 {searchTerm && filteredUsers.length === 0 && (
                   <div className="absolute z-50 w-full bg-popover border border-border rounded-lg p-3 text-center text-xs text-muted-foreground mt-1 shadow-md">
-                    Sin coincidencias
+                    {t("admin.form.noMatches")}
                   </div>
                 )}
 
@@ -464,24 +441,22 @@ const AdminPanel = () => {
                       onClick={() => setSubscriptionData({ userId: "", userName: "", duration: "1" })}
                       className="text-[11px] text-red-500 hover:underline font-medium"
                     >
-                      Cambiar
+                      {t("admin.form.changeUser")}
                     </button>
                   </div>
                 )}
               </div>
 
-              {/* SEPARADOR */}
               <div className="border-t border-border" />
 
-              {/* DURACIÓN */}
               <div className="space-y-2">
-                <label className="text-xs font-medium text-muted-foreground">Duración del período</label>
+                <label className="text-xs font-medium text-muted-foreground">{t("admin.form.durationLabel")}</label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { value: "1", label: "1 mes" },
-                    { value: "3", label: "3 meses" },
-                    { value: "6", label: "6 meses" },
-                    { value: "12", label: "1 año completo" },
+                    { value: "1", label: t("admin.duration.1month") },
+                    { value: "3", label: t("admin.duration.3months") },
+                    { value: "6", label: t("admin.duration.6months") },
+                    { value: "12", label: t("admin.duration.1year") },
                   ].map((p) => (
                     <label
                       key={p.value}
@@ -512,7 +487,7 @@ const AdminPanel = () => {
                 disabled={isSubmitting}
                 className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50"
               >
-                {isSubmitting ? "Procesando..." : "Activar suscripción"}
+                {isSubmitting ? t("admin.form.processing") : t("admin.form.submit")}
               </button>
             </form>
           </div>
@@ -524,22 +499,21 @@ const AdminPanel = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
           <div className="bg-background border border-border rounded-xl p-6 w-full max-w-md shadow-2xl space-y-4 mx-4">
             <div>
-              <h3 className="text-lg font-bold text-foreground">Renovar suscripción</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Seleccioná la fecha de inicio. Se extenderá la vigencia por exactamente <strong>1 mes</strong> a partir
-                de ese día.
-              </p>
+              <h3 className="text-lg font-bold text-foreground">{t("admin.modals.renew.title")}</h3>
+              <p className="text-sm text-muted-foreground mt-1">{t("admin.modals.renew.description")}</p>
             </div>
             <div className="bg-muted/40 p-3 rounded-lg text-xs space-y-1 text-muted-foreground">
               <p>
-                <strong className="text-foreground">Usuario:</strong> {selectedSub.user_profiles?.full_name}
+                <strong className="text-foreground">{t("admin.modals.shared.user")}:</strong>{" "}
+                {selectedSub.user_profiles?.full_name}
               </p>
               <p>
-                <strong className="text-foreground">Email:</strong> {selectedSub.user_profiles?.email}
+                <strong className="text-foreground">{t("admin.modals.shared.email")}:</strong>{" "}
+                {selectedSub.user_profiles?.email}
               </p>
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Fecha de inicio de renovación</label>
+              <label className="text-sm font-medium text-foreground">{t("admin.modals.renew.startDate")}</label>
               <input
                 type="date"
                 value={renewalDate}
@@ -554,7 +528,7 @@ const AdminPanel = () => {
                 disabled={isRenewing}
                 className="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
               >
-                Cancelar
+                {t("admin.modals.shared.cancel")}
               </button>
               <button
                 type="button"
@@ -562,7 +536,7 @@ const AdminPanel = () => {
                 disabled={isRenewing}
                 className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 shadow-md transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
               >
-                {isRenewing ? "Procesando..." : "Confirmar (+1 mes)"}
+                {isRenewing ? t("admin.form.processing") : t("admin.modals.renew.confirmBtn")}
               </button>
             </div>
           </div>
@@ -574,13 +548,15 @@ const AdminPanel = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
           <div className="bg-background border border-border rounded-xl p-6 w-full max-w-lg shadow-2xl space-y-5 mx-4 relative">
             <header className="pr-8">
-              <h3 className="text-xl font-bold text-foreground">Detalles de suscripción</h3>
+              <h3 className="text-xl font-bold text-foreground">{t("admin.modals.view.title")}</h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Identificador: {viewingSub.id || viewingSub.user_id}
+                {t("admin.modals.view.idLabel")}: {viewingSub.id || viewingSub.user_id}
               </p>
             </header>
             <div className="space-y-3">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Datos de usuario</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                {t("admin.modals.view.userDataSection")}
+              </h4>
               <div className="flex items-center gap-3 bg-muted/30 p-3 rounded-lg border border-border">
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-semibold ${getAvatarColor(viewingSub.user_profiles?.full_name || "U")}`}
@@ -589,7 +565,7 @@ const AdminPanel = () => {
                 </div>
                 <div>
                   <h5 className="font-semibold text-sm text-foreground">
-                    {viewingSub.user_profiles?.full_name || "Sin nombre"}
+                    {viewingSub.user_profiles?.full_name || t("admin.table.noName")}
                   </h5>
                   <p className="text-xs text-muted-foreground">{viewingSub.user_profiles?.email}</p>
                   <p className="text-[11px] font-mono text-primary mt-0.5">@{viewingSub.user_profiles?.username}</p>
@@ -598,42 +574,42 @@ const AdminPanel = () => {
             </div>
             <div className="space-y-3">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Estado del servicio
+                {t("admin.modals.view.statusSection")}
               </h4>
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-muted/30 p-3 rounded-lg border border-border flex flex-col justify-between">
-                  <span className="text-[11px] text-muted-foreground">Estado actual</span>
+                  <span className="text-[11px] text-muted-foreground">{t("admin.modals.view.currentStatus")}</span>
                   <span
                     className={`inline-flex items-center gap-1.5 mt-1 self-start px-2.5 py-0.5 rounded-full text-xs font-medium ${viewingSub.status === "active" ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-700"}`}
                   >
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${viewingSub.status === "active" ? "bg-emerald-500" : "bg-red-500"}`}
                     />
-                    {viewingSub.status === "active" ? "Activo" : "Inactivo"}
+                    {viewingSub.status === "active" ? t("admin.status.active") : t("admin.status.inactive")}
                   </span>
                 </div>
                 <div className="bg-muted/30 p-3 rounded-lg border border-border">
-                  <span className="text-[11px] text-muted-foreground">Días restantes</span>
+                  <span className="text-[11px] text-muted-foreground">{t("admin.modals.view.remainingDays")}</span>
                   <p
                     className={`text-base font-bold mt-1 ${daysLeft(viewingSub.current_period_end) <= 0 ? "text-red-500" : "text-foreground"}`}
                   >
                     {daysLeft(viewingSub.current_period_end) <= 0
-                      ? "Vencida"
-                      : `${daysLeft(viewingSub.current_period_end)} días`}
+                      ? t("admin.modals.view.expiredLabel")
+                      : t("admin.modals.view.daysCount", { count: daysLeft(viewingSub.current_period_end) })}
                   </p>
                 </div>
               </div>
               <div className="bg-muted/30 p-3 rounded-lg border border-border space-y-2 text-xs">
                 <div className="flex justify-between border-b border-border/50 pb-1.5">
-                  <span className="text-muted-foreground">Fecha de creación:</span>
-                  <span className="font-medium text-foreground">{fmtDateTime(viewingSub.created_at)}</span>
+                  <span className="text-muted-foreground">{t("admin.modals.view.createdAt")}:</span>
+                  <span className="font-medium text-foreground">{fmtDateTime(viewingSub.created_at, currentLng)}</span>
                 </div>
                 <div className="flex justify-between pt-0.5">
-                  <span className="text-muted-foreground">Próximo vencimiento:</span>
+                  <span className="text-muted-foreground">{t("admin.modals.view.nextExpiration")}:</span>
                   <span
                     className={`font-semibold ${daysLeft(viewingSub.current_period_end) <= 0 ? "text-red-500" : "text-foreground"}`}
                   >
-                    {fmtDateTime(viewingSub.current_period_end)}
+                    {fmtDateTime(viewingSub.current_period_end, currentLng)}
                   </span>
                 </div>
               </div>
@@ -644,7 +620,7 @@ const AdminPanel = () => {
                 onClick={() => setViewingSub(null)}
                 className="w-full sm:w-auto px-5 py-2 bg-muted text-muted-foreground rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors border border-border"
               >
-                Cerrar ventana
+                {t("admin.modals.view.closeBtn")}
               </button>
             </div>
           </div>

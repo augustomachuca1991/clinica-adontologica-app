@@ -3,56 +3,130 @@ import Icon from "@/components/AppIcon";
 import { Checkbox } from "@/components/ui/Checkbox";
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
+import { useTranslation } from "react-i18next";
 
 const NotificationPreferences = () => {
+  const { t } = useTranslation();
   const [emailFrequency, setEmailFrequency] = useState("daily");
 
   const frequencyOptions = [
-    { value: "realtime", label: "Real-time" },
-    { value: "hourly", label: "Hourly digest" },
-    { value: "daily", label: "Daily digest" },
-    { value: "weekly", label: "Weekly digest" },
+    { value: "realtime", label: t("notifications.frequencies.realtime") },
+    { value: "hourly", label: t("notifications.frequencies.hourly") },
+    { value: "daily", label: t("notifications.frequencies.daily") },
+    { value: "weekly", label: t("notifications.frequencies.weekly") },
   ];
 
   const notificationCategories = [
     {
-      category: "Appointments",
+      category: t("notifications.categories.appointments"),
       icon: "Calendar",
       notifications: [
-        { id: "appointment-created", label: "New appointment scheduled", email: true, push: true, sms: false },
-        { id: "appointment-cancelled", label: "Appointment cancelled", email: true, push: true, sms: true },
-        { id: "appointment-reminder", label: "Upcoming appointment reminder", email: true, push: true, sms: true },
-        { id: "appointment-confirmed", label: "Patient confirmed appointment", email: true, push: false, sms: false },
+        {
+          id: "appointment-created",
+          label: t("notifications.labels.appointment_created"),
+          email: true,
+          push: true,
+          sms: false,
+        },
+        {
+          id: "appointment-cancelled",
+          label: t("notifications.labels.appointment_cancelled"),
+          email: true,
+          push: true,
+          sms: true,
+        },
+        {
+          id: "appointment-reminder",
+          label: t("notifications.labels.appointment_reminder"),
+          email: true,
+          push: true,
+          sms: true,
+        },
+        {
+          id: "appointment-confirmed",
+          label: t("notifications.labels.appointment_confirmed"),
+          email: true,
+          push: false,
+          sms: false,
+        },
       ],
     },
     {
-      category: "Patient Records",
+      category: t("notifications.categories.patient_records"),
       icon: "FileText",
       notifications: [
-        { id: "record-updated", label: "Patient record updated", email: true, push: true, sms: false },
-        { id: "lab-results", label: "Lab results available", email: true, push: true, sms: false },
-        { id: "treatment-completed", label: "Treatment plan completed", email: true, push: false, sms: false },
-        { id: "document-uploaded", label: "New document uploaded", email: false, push: true, sms: false },
+        { id: "record-updated", label: t("notifications.labels.record_updated"), email: true, push: true, sms: false },
+        { id: "lab-results", label: t("notifications.labels.lab_results"), email: true, push: true, sms: false },
+        {
+          id: "treatment-completed",
+          label: t("notifications.labels.treatment_completed"),
+          email: true,
+          push: false,
+          sms: false,
+        },
+        {
+          id: "document-uploaded",
+          label: t("notifications.labels.document_uploaded"),
+          email: false,
+          push: true,
+          sms: false,
+        },
       ],
     },
     {
-      category: "Billing & Payments",
+      category: t("notifications.categories.billing_payments"),
       icon: "DollarSign",
       notifications: [
-        { id: "payment-received", label: "Payment received", email: true, push: true, sms: false },
-        { id: "invoice-sent", label: "Invoice sent to patient", email: true, push: false, sms: false },
-        { id: "payment-overdue", label: "Payment overdue", email: true, push: true, sms: true },
-        { id: "payment-plan-updated", label: "Payment plan updated", email: true, push: false, sms: false },
+        {
+          id: "payment-received",
+          label: t("notifications.labels.payment_received"),
+          email: true,
+          push: true,
+          sms: false,
+        },
+        { id: "invoice-sent", label: t("notifications.labels.invoice_sent"), email: true, push: false, sms: false },
+        { id: "payment-overdue", label: t("notifications.labels.payment_overdue"), email: true, push: true, sms: true },
+        {
+          id: "payment-plan-updated",
+          label: t("notifications.labels.payment_plan_updated"),
+          email: true,
+          push: false,
+          sms: false,
+        },
       ],
     },
     {
-      category: "System & Security",
+      category: t("notifications.categories.system_security"),
       icon: "Shield",
       notifications: [
-        { id: "login-new-device", label: "Login from new device", email: true, push: true, sms: true },
-        { id: "password-changed", label: "Password changed", email: true, push: true, sms: true },
-        { id: "system-maintenance", label: "System maintenance scheduled", email: true, push: true, sms: false },
-        { id: "backup-completed", label: "Backup completed", email: false, push: false, sms: false },
+        {
+          id: "login-new-device",
+          label: t("notifications.labels.login_new_device"),
+          email: true,
+          push: true,
+          sms: true,
+        },
+        {
+          id: "password-changed",
+          label: t("notifications.labels.password_changed"),
+          email: true,
+          push: true,
+          sms: true,
+        },
+        {
+          id: "system-maintenance",
+          label: t("notifications.labels.system_maintenance"),
+          email: true,
+          push: true,
+          sms: false,
+        },
+        {
+          id: "backup-completed",
+          label: t("notifications.labels.backup_completed"),
+          email: false,
+          push: false,
+          sms: false,
+        },
       ],
     },
   ];
@@ -63,21 +137,20 @@ const NotificationPreferences = () => {
         <div className="flex items-start gap-3">
           <Icon name="Bell" size={20} className="text-primary flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <h4 className="font-medium text-sm text-foreground mb-1">Notification Delivery</h4>
-            <p className="text-xs text-muted-foreground mb-4">
-              Choose how you want to receive notifications. You can customize preferences for each notification type below.
-            </p>
+            <h4 className="font-medium text-sm text-foreground mb-1">{t("notifications.delivery_title")}</h4>
+            <p className="text-xs text-muted-foreground mb-4">{t("notifications.delivery_description")}</p>
             <Select
-              label="Email Notification Frequency"
+              label={t("notifications.frequency_label")}
               options={frequencyOptions}
               value={emailFrequency}
               onChange={setEmailFrequency}
-              description="How often you receive email notifications"
+              description={t("notifications.frequency_description")}
               className="max-w-xs"
             />
           </div>
         </div>
       </div>
+
       <div className="space-y-6">
         {notificationCategories?.map((category) => (
           <div key={category?.category} className="bg-card border border-border rounded-lg overflow-hidden">
@@ -95,11 +168,17 @@ const NotificationPreferences = () => {
                   <thead>
                     <tr className="border-b border-border">
                       <th className="pb-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Notification Type
+                        {t("notifications.table.type")}
                       </th>
-                      <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Email</th>
-                      <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Push</th>
-                      <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">SMS</th>
+                      <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">
+                        {t("notifications.table.email")}
+                      </th>
+                      <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">
+                        {t("notifications.table.push")}
+                      </th>
+                      <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">
+                        {t("notifications.table.sms")}
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -130,22 +209,21 @@ const NotificationPreferences = () => {
           </div>
         ))}
       </div>
+
       <div className="bg-warning/10 border border-warning/30 rounded-lg p-4">
         <div className="flex items-start gap-3">
           <Icon name="AlertTriangle" size={20} className="text-warning flex-shrink-0 mt-0.5" />
           <div>
-            <h5 className="font-medium text-sm text-foreground mb-1">Important Notice</h5>
-            <p className="text-xs text-muted-foreground">
-              Critical security notifications (login from new device, password changes) cannot be disabled to ensure account security. SMS
-              notifications may incur additional charges from your carrier.
-            </p>
+            <h5 className="font-medium text-sm text-foreground mb-1">{t("notifications.notice.title")}</h5>
+            <p className="text-xs text-muted-foreground">{t("notifications.notice.description")}</p>
           </div>
         </div>
       </div>
+
       <div className="flex justify-end gap-3 pt-4">
-        <Button variant="outline">Reset to Defaults</Button>
+        <Button variant="outline">{t("notifications.buttons.reset")}</Button>
         <Button variant="default" iconName="Save">
-          Save Preferences
+          {t("notifications.buttons.save")}
         </Button>
       </div>
     </div>

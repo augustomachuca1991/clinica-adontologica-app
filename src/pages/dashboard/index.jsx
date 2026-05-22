@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/ui/Button";
 import Skeleton from "@/components/ui/Skeleton";
+import GracePeriodBanner from "@/components/ui/GracePeriodBanner";
 import { useTranslation } from "react-i18next";
 import AppointmentCard from "@/pages/dashboard/components/AppointmentCard";
 import QuickActionButton from "@/pages/dashboard/components/QuickActionButton";
@@ -371,6 +372,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="space-y-6 md:space-y-8">
+        <GracePeriodBanner />
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">

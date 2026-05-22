@@ -84,7 +84,37 @@ export const AuthProvider = ({ children }) => {
   const isAdmin = roles.includes("admin");
 
   // SUSCRIPCIÓN
-  const hasActiveSubscription = subscription && subscription.status === "active" && new Date(subscription.current_period_end) > new Date();
+  const hasActiveSubscription = (() => {
+    if (!subscription) return false;
+
+    const hoy = new Date();
+    const finPeriodo = new Date(subscription.current_period_end);
+
+    // Si todavía no venció, tiene acceso total
+    if (hoy <= finPeriodo) return true;
+
+    // Si ya venció, calculamos cuántos días pasaron
+    const diferenciaTiempo = hoy - finPeriodo;
+    const diasVencido = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
+
+    // Si pasaron 5 días o menos, le permitimos el acceso (Período de Gracia)
+    return diasVencido <= 5;
+  })();
+
+  const daysWithGrace = (() => {
+    if (!subscription) return 0;
+    const hoy = new Date();
+    const finPeriodo = new Date(subscription.current_period_end);
+
+    if (hoy <= finPeriodo) return 5; // Si no venció, tiene el total
+
+    const diferenciaTiempo = hoy - finPeriodo;
+    const diasVencido = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
+
+    const restantes = 5 - diasVencido;
+    return restantes < 0 ? 0 : restantes;
+  })();
+
   const isUserActive = userProfile?.status === "active";
   const isLoggedIn = !!user && isUserActive;
 
@@ -152,7 +182,12 @@ export const AuthProvider = ({ children }) => {
     if (!user) return { error: { message: "No user logged in" } };
 
     try {
-      const { data, error } = await supabase?.from("user_profiles")?.update(updates)?.eq("id", user?.id)?.select()?.single();
+      const { data, error } = await supabase
+        ?.from("user_profiles")
+        ?.update(updates)
+        ?.eq("id", user?.id)
+        ?.select()
+        ?.single();
       if (!error) setUserProfile(data);
       return { data, error };
     } catch (error) {
@@ -194,6 +229,7 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: canAccessApp,
     hasActiveSubscription,
     isLoggedIn,
+    daysWithGrace,
     sendPasswordResetEmail,
     updatePassword,
   };

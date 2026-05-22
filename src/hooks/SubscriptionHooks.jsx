@@ -66,25 +66,42 @@ export const useSubscription = () => {
       }
 
       const startDate = new Date(startDateString);
-      // Calculamos 1 mes después de la fecha elegida
       const endDate = new Date(startDate);
-      endDate.setMonth(endDate.getMonth() + 1);
+      endDate.setMonth(endDate.getMonth() + 1); // Suma 1 mes exacto
 
-      const { error } = await supabase
+      const { data: currentSub, error: subError } = await supabase
+        .from("subscriptions")
+        .select("user_id")
+        .eq("id", subscriptionId)
+        .single();
+
+      if (subError) throw subError;
+
+      const { error: updateError } = await supabase
         .from("subscriptions")
         .update({
-          status: "active",
+          status: "active", // Vuelve a estar activo al renovar
+          current_period_start: startDate.toISOString(),
           current_period_end: endDate.toISOString(),
         })
         .eq("id", subscriptionId);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
 
-      // Refrescamos la lista del componente automáticamente
+      const { error: historyError } = await supabase.from("subscription_history").insert({
+        subscription_id: subscriptionId,
+        user_id: currentSub.user_id,
+        amount: amountPaid, // Podés pasarle el monto desde el formulario del AdminPanel
+        period_start: startDate.toISOString(),
+        period_end: endDate.toISOString(),
+      });
+
+      if (historyError) throw historyError;
+
       await fetchSubscriptions();
       return { success: true };
     } catch (err) {
-      console.error("Error al renovar suscripción:", err);
+      console.error("Error al renovar suscripción con historial:", err);
       return { success: false, error: err.message };
     }
   };

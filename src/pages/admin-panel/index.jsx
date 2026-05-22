@@ -47,6 +47,46 @@ function fmtDateTime(iso) {
   });
 }
 
+const obtenerEstadoVisual = (subscription) => {
+  const hoy = new Date();
+  const finPeriodo = new Date(subscription.current_period_end);
+
+  // Calcular la diferencia en días
+  const diferenciaTiempo = hoy - finPeriodo;
+  const diasVencido = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24));
+
+  if (hoy <= finPeriodo) {
+    // Calcular cuántos días le quedan de forma positiva
+    const diasRestantes = Math.ceil((finPeriodo - hoy) / (1000 * 60 * 60 * 24));
+    return {
+      key: "active",
+      texto: "Activo",
+      claseBg: "bg-emerald-100 text-emerald-800", // Verde pulido
+      claseCirculo: "bg-emerald-500",
+      textoDias: `Vence en ${diasRestantes} días`,
+      claseTextoDias: "text-muted-foreground",
+    };
+  } else if (diasVencido <= 5) {
+    return {
+      key: "grace",
+      texto: "Período de Gracia",
+      claseBg: "bg-amber-100 text-amber-800", // Amarillo / Ámbar
+      claseCirculo: "bg-amber-500",
+      textoDias: `⚠ Venció hace ${diasVencido} ${diasVencido === 1 ? "día" : "días"}`,
+      claseTextoDias: "text-amber-500",
+    };
+  } else {
+    return {
+      key: "expired",
+      texto: "Inactivo",
+      claseBg: "bg-red-100 text-red-700", // Rojo
+      claseCirculo: "bg-red-500",
+      textoDias: `⚠ Venció hace ${diasVencido} días`,
+      claseTextoDias: "text-red-500",
+    };
+  }
+};
+
 const AdminPanel = () => {
   const { t } = useTranslation();
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -198,9 +238,14 @@ const AdminPanel = () => {
                 <tbody className="divide-y divide-border">
                   {subscriptions.map((subscription) => {
                     const p = subscription.user_profiles || {};
-                    const isActive = subscription.status === "active";
                     const days = daysLeft(subscription.current_period_end);
-                    const isExpired = days <= 0;
+
+                    // 1. Obtenemos el estado visual calculado dinámicamente
+                    const estado = obtenerEstadoVisual(subscription);
+
+                    // Ajustamos las banderas lógicas basadas en nuestro nuevo estado visual
+                    const isExpired = estado.key === "expired";
+                    const isGrace = estado.key === "grace";
                     const endWarn = !isExpired && days < 30;
 
                     return (
@@ -221,28 +266,28 @@ const AdminPanel = () => {
                             </div>
                           </div>
                         </td>
+
+                        {/* 2. Etiqueta de Estado Dinámica (Con tus estilos originales adaptados) */}
                         <td className="p-4">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-700"}`}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${estado.claseBg}`}
                           >
-                            <span
-                              className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-emerald-500" : "bg-red-500"}`}
-                            />
-                            {isActive ? "Activo" : "Inactivo"}
+                            <span className={`w-1.5 h-1.5 rounded-full ${estado.claseCirculo}`} />
+                            {estado.texto}
                           </span>
                         </td>
+
+                        {/* 3. Fechas y Alertas de Vencimiento */}
                         <td className="p-4">
                           <div
-                            className={`text-sm font-medium ${isExpired ? "text-red-600" : endWarn ? "text-amber-600" : "text-foreground"}`}
+                            className={`text-sm font-medium ${isExpired ? "text-red-600" : isGrace ? "text-amber-600" : "text-foreground"}`}
                           >
                             {fmtDate(subscription.current_period_end)}
                           </div>
-                          <div
-                            className={`text-[10px] mt-0.5 ${isExpired ? "text-red-500" : endWarn ? "text-amber-500" : "text-muted-foreground"}`}
-                          >
-                            {isExpired ? "⚠ Vencida" : endWarn ? `⚠ Vence en ${days} días` : `Vence en ${days} días`}
-                          </div>
+                          <div className={`text-[10px] mt-0.5 ${estado.claseTextoDias}`}>{estado.textoDias}</div>
                         </td>
+
+                        {/* 4. Menú de Acciones de la Fila */}
                         <td className="p-4 overflow-visible">
                           <div className="relative overflow-visible">
                             <button
@@ -289,7 +334,9 @@ const AdminPanel = () => {
                                   </svg>
                                   Modificar
                                 </button>
-                                {isExpired && (
+
+                                {/* 👇 Ahora te permite renovar tanto si está Vencido como si está en Periodo de Gracia */}
+                                {(isExpired || isGrace) && (
                                   <button
                                     onClick={() => handleOpenRenewModal(subscription)}
                                     className="w-full text-left px-4 py-2 hover:bg-emerald-50 text-sm text-emerald-700 transition-colors flex items-center gap-2 border-t border-border"

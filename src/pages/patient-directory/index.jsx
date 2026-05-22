@@ -75,7 +75,9 @@ const PatientDirectory = () => {
 
   const handleBulkAction = (action) => {
     console.log(`Bulk action: ${action} for patients:`, selectedPatients);
-    alert(`${action?.charAt(0)?.toUpperCase() + action?.slice(1)} action performed on ${selectedPatients?.length} patient(s)`);
+    alert(
+      `${action?.charAt(0)?.toUpperCase() + action?.slice(1)} action performed on ${selectedPatients?.length} patient(s)`
+    );
   };
 
   const handleQuickAction = (action, patient) => {
@@ -117,11 +119,6 @@ const PatientDirectory = () => {
   };
 
   const onSavePatient = async (formData, imageFile) => {
-    if (!formData.name || !formData.dateOfBirth || !formData.email) {
-      notifyError(t("patient.form.validation.required"));
-      return;
-    }
-
     const result = await addPatient(formData, imageFile);
     if (result.success) {
       await refresh();
@@ -146,7 +143,9 @@ const PatientDirectory = () => {
       <div className="mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("directory.title")}</h1>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
+              {t("directory.title")}
+            </h1>
             <p className="text-sm md:text-base text-muted-foreground">{t("directory.subtitle")}</p>
           </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">

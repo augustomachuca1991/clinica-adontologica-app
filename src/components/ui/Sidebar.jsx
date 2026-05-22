@@ -36,6 +36,13 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
       roles: ["dentist"],
     },
     {
+      path: "/weekly-calendar",
+      label: "calendar.title",
+      icon: "Calendar",
+      description: "calendar.subtitle",
+      roles: ["dentist"],
+    },
+    {
       path: "/clinical-records",
       label: "records.title",
       icon: "FileText",
@@ -65,9 +72,7 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
     },
   ];
 
-  const visibleItems = navigationItems.filter((item) =>
-    item.roles.some((role) => roles.includes(role))
-  );
+  const visibleItems = navigationItems.filter((item) => item.roles.some((role) => roles.includes(role)));
 
   const isActive = (path) => location?.pathname === path;
 
@@ -103,16 +108,10 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
             className={`sidebar-logo flex items-center justify-center transition-all duration-slow ${isCollapsed ? "w-10 h-10" : "w-12 h-12"} bg-primary/10 rounded-lg`}
           >
             {/* <Icon name="Activity" size={isCollapsed ? 20 : 24} color="var(--color-primary)" /> */}
-            <Image
-              src={logo}
-              alt="App Logo"
-              className={`object-contain ${isCollapsed ? "h-14 w-14" : "h-10 w-10"}`}
-            />
+            <Image src={logo} alt="App Logo" className={`object-contain ${isCollapsed ? "h-14 w-14" : "h-10 w-10"}`} />
           </div>
           {!isCollapsed && (
-            <span className="ml-1 text-lg font-headline font-bold text-foreground tracking-[-0.015em]">
-              {appName}
-            </span>
+            <span className="ml-1 text-lg font-headline font-bold text-foreground tracking-[-0.015em]">{appName}</span>
           )}
         </div>
 
@@ -137,13 +136,9 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
                   />
                   {!isCollapsed && (
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm truncate">
-                        {t(item?.label)}
-                      </div>
+                      <div className="font-medium text-sm truncate">{t(item?.label)}</div>
                       {!isActive(item?.path) && (
-                        <div className="text-xs opacity-70 truncate">
-                          {t(item.description)}
-                        </div>
+                        <div className="text-xs opacity-70 truncate">{t(item.description)}</div>
                       )}
                     </div>
                   )}
@@ -162,22 +157,13 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
             className="hidden lg:flex items-center justify-center w-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-all duration-base focus-clinical"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <Icon
-              name={isCollapsed ? "ArrowRightToLine" : "ArrowLeftToLine"}
-              size={20}
-            />
-            {!isCollapsed && (
-              <span className="ml-2">{t("sidebar.toggle")}</span>
-            )}
+            <Icon name={isCollapsed ? "ArrowRightToLine" : "ArrowLeftToLine"} size={20} />
+            {!isCollapsed && <span className="ml-2">{t("sidebar.toggle")}</span>}
           </button>
         </div>
       </div>
       {isMobileOpen && (
-        <div
-          className="fixed inset-0 bg-background z-30 lg:hidden"
-          onClick={closeMobileMenu}
-          aria-hidden="true"
-        />
+        <div className="fixed inset-0 bg-background z-30 lg:hidden" onClick={closeMobileMenu} aria-hidden="true" />
       )}
     </>
   );

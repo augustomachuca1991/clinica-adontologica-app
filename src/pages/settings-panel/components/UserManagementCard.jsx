@@ -7,6 +7,7 @@ import Select from "@/components/ui/Select";
 import Spinner from "@/components/ui/Spinner";
 import { supabase } from "@/lib/supabase";
 import { useTranslation } from "react-i18next";
+import { useUserRegistration } from "@/hooks/UserHooks";
 
 const UserManagementCard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +16,9 @@ const UserManagementCard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+
+  const { formData, setFormData, selectedRoles, formError, isSubmitting, handleRoleChange, handleRegisterUser } =
+    useUserRegistration();
 
   useEffect(() => {
     fetchUsers();
@@ -104,8 +108,6 @@ const UserManagementCard = () => {
     { value: "all", label: "All Roles" },
     { value: "administrator", label: "Administrator" },
     { value: "dentist", label: "Dentist" },
-    { value: "office-manager", label: "Office Manager" },
-    { value: "hygienist", label: "Dental Hygienist" },
   ];
 
   /* const filteredUsers = usersMock?.filter((user) => {
@@ -130,6 +132,13 @@ const UserManagementCard = () => {
         <Spinner />
       </div>
     );
+
+  const onSubmit = async (e) => {
+    const result = await handleRegisterUser(e);
+    if (result.success) {
+      alert("¡Usuario guardado desde el nuevo componente!");
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -169,18 +178,52 @@ const UserManagementCard = () => {
             <h4 className="font-headline font-semibold text-base text-foreground">Add New User</h4>
             <Button variant="ghost" size="icon" iconName="X" onClick={() => setShowAddUser(false)} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Full Name" type="text" placeholder="Enter full name" required />
-            <Input label="Email Address" type="email" placeholder="Enter email" required />
-            <Select label="Role" options={roleOptions?.filter((opt) => opt?.value !== "all")} placeholder="Select role" required />
-            <Input label="Phone Number" type="tel" placeholder="Enter phone number" />
-          </div>
-          <div className="flex gap-3 justify-end">
-            <Button variant="outline" onClick={() => setShowAddUser(false)}>
-              Cancel
-            </Button>
-            <Button variant="default">Create User</Button>
-          </div>
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="Full Name"
+                type="text"
+                placeholder="Enter full name"
+                required
+                value={formData.fullName}
+                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+              />
+              <Input
+                label="Email Address"
+                type="email"
+                placeholder="Enter email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+              <Select
+                label="Role"
+                options={roleOptions?.filter((opt) => opt?.value !== "all")}
+                placeholder="Select role"
+                required
+                value={formData.roleId || ""} // Evita undefined agregando un fallback vacio
+                onChange={(e) => {
+                  // Si tu Select devuelve el evento nativo del navegador:
+                  const val = e?.target ? e.target.value : e;
+                  setFormData({ ...formData, roleId: val });
+                }}
+              />
+              <Input
+                label="Phone Number"
+                type="tel"
+                placeholder="Enter phone number"
+                value={formData.phone || ""}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              />
+              {formError && <p className="text-red-500 text-xs">{formError}</p>}
+            </div>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => setShowAddUser(false)}>
+                Cancel
+              </Button>
+              <Button variant="default">Create User</Button>
+            </div>
+          </form>
         </div>
       )}
 
@@ -211,7 +254,9 @@ const UserManagementCard = () => {
                           isActive ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
                         }`}
                       >
-                        <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-success" : "bg-muted-foreground"}`} />
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-success" : "bg-muted-foreground"}`}
+                        />
                         {user?.status || "Inactive"}
                       </span>
                     </div>
@@ -222,7 +267,9 @@ const UserManagementCard = () => {
                         {userRole}
                       </span>
                       {/* Hardcoded: Last active y Permissions (puedes calcularlo de created_at si quieres) */}
-                      <span className="text-xs text-muted-foreground">Joined: {new Date(user?.created_at).toLocaleDateString()}</span>
+                      <span className="text-xs text-muted-foreground">
+                        Joined: {new Date(user?.created_at).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -242,7 +289,10 @@ const UserManagementCard = () => {
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-xs text-muted-foreground">Permissions:</span>
                   {["View Patients", "Standard Access"].map((permission, idx) => (
-                    <span key={idx} className="inline-flex items-center px-2 py-0.5 bg-muted rounded text-xs text-foreground">
+                    <span
+                      key={idx}
+                      className="inline-flex items-center px-2 py-0.5 bg-muted rounded text-xs text-foreground"
+                    >
                       {permission}
                     </span>
                   ))}

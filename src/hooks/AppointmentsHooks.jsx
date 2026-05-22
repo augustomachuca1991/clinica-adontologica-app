@@ -10,9 +10,7 @@ export const useAppointments = () => {
 
   const mapAppointments = (data) => {
     return data.map((appt) => {
-      const pureDateString = appt.appointment_date
-        .substring(0, 19)
-        .replace(" ", "T");
+      const pureDateString = appt.appointment_date.substring(0, 19).replace(" ", "T");
 
       // 3. Creamos la fecha. Al no tener "+00" ni "Z", JS la toma como LOCAL
       const appointmentDate = new Date(pureDateString);
@@ -29,7 +27,7 @@ export const useAppointments = () => {
         treatment: appt.reason, // O appt.treatment_services?.name si hiciste el join
         time: `${String(appointmentDate.getHours()).padStart(2, "0")}:${String(appointmentDate.getMinutes()).padStart(2, "0")}`,
         date: appointmentDate,
-        duration: `${appt.duration_min} min`,
+        duration: appt.duration_min,
         status: appt.status || "confirmed",
         priority: appt.priority || "medium", // Asumiendo que tienes esta columna o lógica
       };
@@ -76,8 +74,6 @@ export const useAppointments = () => {
     try {
       if (!user?.id) throw new Error("No hay un usuario autenticado.");
 
-      /* const dateToSave = appointmentData.date.replace("Z", ""); */
-
       const { data, error } = await supabase.from("appointments").insert([
         {
           patient_id: appointmentData.patientId, // ID del paciente seleccionado
@@ -87,6 +83,7 @@ export const useAppointments = () => {
           reason: appointmentData.reason,
           status: "scheduled", // Valor por defecto según nuestro script SQL
           notes: appointmentData.notes || "",
+          service_id: appointmentData.serviceId,
         },
       ]).select(`
           *,
@@ -117,7 +114,7 @@ export const useAppointments = () => {
           notes: updatedData.notes || t("appointment.rescheduled") || "",
         })
         .eq("id", id)
-        .eq("provider_id", user.id) // SEGURIDAD: Solo el dueño puede editar
+        .eq("provider_id", user.id)
         .select();
 
       if (error) throw error;
@@ -134,11 +131,7 @@ export const useAppointments = () => {
   const deleteAppointment = async (id) => {
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from("appointments")
-        .delete()
-        .eq("id", id)
-        .eq("provider_id", user.id); // Seguridad: solo el dueño borra
+      const { error } = await supabase.from("appointments").delete().eq("id", id).eq("provider_id", user.id);
 
       if (error) throw error;
       setAppointments((prev) => prev.filter((appt) => appt.id !== id));

@@ -3,21 +3,7 @@ import { cn } from "@/utils/cn";
 import Icon from "@/components/AppIcon";
 
 const Input = React.forwardRef(
-  (
-    {
-      className,
-      type = "text",
-      label,
-      description,
-      error,
-      required = false,
-      id,
-      checked,
-      color,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, type = "text", label, description, error, required = false, id, checked, color, ...props }, ref) => {
     // Generate unique ID if not provided
     const inputId = id || `input-${Math.random()?.toString(36)?.substr(2, 9)}`;
 
@@ -43,10 +29,7 @@ const Input = React.forwardRef(
 
     if (type === "radio") {
       return (
-        <label
-          htmlFor={inputId}
-          className="inline-flex items-center cursor-pointer group"
-        >
+        <label htmlFor={inputId} className="inline-flex items-center cursor-pointer group">
           <div className="relative flex items-center">
             {/* El input real sigue manejando la lógica, pero lo ocultamos */}
             <input
@@ -68,9 +51,7 @@ const Input = React.forwardRef(
               )}
             >
               {/* Si está checked, mostramos el icono */}
-              {checked && (
-                <Icon name="Check" size={12} className="text-white" />
-              )}
+              {checked && <Icon name="Check" size={12} className="text-white" />}
             </div>
           </div>
           {label && (
@@ -105,21 +86,15 @@ const Input = React.forwardRef(
 
         <input
           type={type}
-          className={cn(
-            baseInputClasses,
-            error && "border-destructive focus-visible:ring-destructive",
-            className
-          )}
+          className={cn(baseInputClasses, error && "border-destructive focus-visible:ring-destructive", className)}
           ref={ref}
           id={inputId}
           {...props}
         />
 
-        {description && !error && (
-          <p className="text-sm text-muted-foreground">{description}</p>
-        )}
+        {description && !error && <p className="text-sm text-muted-foreground">{description}</p>}
 
-        {error && <p className="text-sm text-destructive">{error}</p>}
+        {error && <p className="text-xs text-destructive">{error}</p>}
       </div>
     );
   }

@@ -25,9 +25,7 @@ export const uploadPatientAvatar = async (file, patientId) => {
     const filePath = `${fileName}`;
 
     // 3. Subida al Bucket 'AVATAR' (Tal cual está en tu captura)
-    const { error: uploadError } = await supabase.storage
-      .from("avatar")
-      .upload(filePath, file);
+    const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, file);
 
     if (uploadError) throw uploadError;
 
@@ -41,10 +39,7 @@ export const uploadPatientAvatar = async (file, patientId) => {
   }
 };
 
-export const usePatients = (
-  filters = {},
-  sortConfig = { column: "name", direction: "asc" }
-) => {
+export const usePatients = (filters = {}, sortConfig = { column: "name", direction: "asc" }) => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const { isLoggedIn, user } = useAuth();
@@ -87,7 +82,7 @@ export const usePatients = (
     try {
       const { data, error } = await supabase
         .from("patients")
-        .select(`*, appointments(appointment_date, status)`)
+        .select(`*, appointments(appointment_date, status,reason,service_id,treatment_services(name))`)
         .eq("provider_id", user.id)
         .order("created_at", { ascending: false });
 
@@ -96,10 +91,7 @@ export const usePatients = (
       const formatted = data.map((p) => {
         const nextApp = p.appointments
           ?.filter((a) => new Date(a.appointment_date) > new Date())
-          .sort(
-            (a, b) =>
-              new Date(a.appointment_date) - new Date(b.appointment_date)
-          )[0];
+          .sort((a, b) => new Date(a.appointment_date) - new Date(b.appointment_date))[0];
 
         return {
           ...p,
@@ -143,9 +135,7 @@ export const usePatients = (
         const filePath = `${user.id}/${fileName}`;
 
         // Subir al bucket 'avatars' (asegúrate de que el bucket sea público)
-        const { error: uploadError } = await supabase.storage
-          .from("avatar")
-          .upload(filePath, imageFile);
+        const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, imageFile);
 
         if (uploadError) throw uploadError;
 
@@ -256,15 +246,33 @@ export const usePatients = (
     // USAMOS ENCADENAMIENTO OPCIONAL (?.) PARA EVITAR EL ERROR
     if (filters?.searchQuery) {
       const q = filters.searchQuery.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name?.toLowerCase().includes(q) ||
-          p.patientId?.toLowerCase().includes(q)
-      );
+      result = result.filter((p) => p.name?.toLowerCase().includes(q) || p.patientId?.toLowerCase().includes(q));
     }
-    // AQUÍ ESTABA EL ERROR: agregamos el check de filters?.status
+    //2. Filtro por estado del paciente (patient Status)
     if (filters?.status && filters.status !== "all") {
       result = result.filter((p) => p.status === filters.status);
+    }
+    //3. Filtro por estado de la cita (appointment Status)
+    if (filters?.appointmentStatus && filters.appointmentStatus !== "all") {
+      result = result.filter((p) => {
+        return p.appointments?.some((appt) => appt.status === filters.appointmentStatus);
+      });
+    }
+    //4. Filtro por Obra Social (Insurance)
+    if (filters?.insurance && filters.insurance !== "all") {
+      result = result.filter((p) => {
+        if (!p.insurance) return false;
+        return p.insurance.toLowerCase() === filters.insurance.toLowerCase();
+      });
+    }
+    //4. Filtro por Tratamiento (Treatment)
+    if (filters?.treatment && filters.treatment !== "all") {
+      result = result.filter((p) => {
+        if (!p.appointments || p.appointments.length === 0) return false;
+        return p.appointments.some((appt) => {
+          return String(appt.service_id) === String(filters.treatment);
+        });
+      });
     }
     return result;
   }, [filters, patients]);

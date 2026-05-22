@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
+import { useTreatmentServices } from "@/hooks/TreatmentServicesHooks";
 
 const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   const { t } = useTranslation();
+  const { services, loading: loadingServices } = useTreatmentServices();
   const statusOptions = [
     {
       value: "all",
@@ -26,37 +28,46 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   ];
 
   const appointmentOptions = [
-    { value: "all", label: "All Appointments" },
-    { value: "upcoming", label: "Upcoming" },
-    { value: "overdue", label: "Overdue" },
-    { value: "completed", label: "Completed" },
-    { value: "none", label: "No Appointments" },
+    { value: "all", label: t("appointment.status.all") },
+    { value: "scheduled", label: t("appointment.status.scheduled") },
+    { value: "confirmed", label: t("appointment.status.confirmed") },
+    { value: "completed", label: t("appointment.status.completed") },
+    { value: "in-progress", label: t("appointment.status.in-progress") },
+    { value: "cancelled", label: t("appointment.status.cancelled") },
+    { value: "no-show", label: t("appointment.status.no-show") },
   ];
 
   const insuranceOptions = [
-    { value: "all", label: "All Insurance" },
-    { value: "Delta Dental", label: "Delta Dental" },
-    { value: "Cigna Dental", label: "Cigna Dental" },
-    { value: "Aetna Dental", label: "Aetna Dental" },
-    { value: "MetLife Dental", label: "MetLife Dental" },
-    { value: "United Healthcare", label: "United Healthcare" },
-    { value: "Self-Pay", label: "Self-Pay" },
+    { value: "all", label: t("appointment.status.all") },
+    { value: "osde", label: "OSDE" },
+    { value: "swiss_medical", label: "Swiss Medical" },
+    { value: "galeno", label: "Galeno" },
+    { value: "ioscor", label: "IOSCOR" },
+    { value: "ioma", label: "IOMA" },
+    { value: "ospe", label: "OSPE" },
+    { value: "self_pay", label: "Particular (Self-pay)" },
+    { value: "other", label: "Otra / Sin especificar" },
   ];
 
-  const treatmentOptions = [
-    { value: "all", label: "All Treatments" },
-    { value: "Cleaning", label: "Cleaning" },
-    { value: "Root Canal", label: "Root Canal" },
-    { value: "Crown", label: "Crown" },
-    { value: "Implant", label: "Implant" },
-    { value: "Orthodontics", label: "Orthodontics" },
-    { value: "Extraction", label: "Extraction" },
-  ];
+  const treatmentOptions = useMemo(() => {
+    const options = [{ value: "all", label: t("appointment.status.all") }];
+    if (services && services.length > 0) {
+      const dbOptions = services.map((service) => ({
+        value: service.id,
+        label: service.name,
+      }));
+      return [...options, ...dbOptions];
+    }
+
+    return options;
+  }, [services, t]);
 
   return (
     <div className="clinical-card p-4 md:p-5 lg:p-6 mb-6">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
-        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("directory.panelFilter.title")}</h2>
+        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+          {t("directory.panelFilter.title")}
+        </h2>
         <Button variant="outline" size="sm" onClick={onReset} iconName="RotateCcw" iconPosition="left">
           {t("directory.panelFilter.resetButton")}
         </Button>
@@ -99,7 +110,7 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
           value={filters?.treatment}
           onChange={(value) => onFilterChange("treatment", value)}
         />
-        <div className="flex items-end">
+        {/* <div className="flex items-end">
           <Input
             type="date"
             label={t("directory.panelFilter.lastVisitFromLabel")}
@@ -117,7 +128,7 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
             onChange={(e) => onFilterChange("lastVisitTo", e?.target?.value)}
             className="w-full"
           />
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-col sm:flex-row gap-3">
         <Button variant="default" onClick={onSearch} iconName="Search" iconPosition="left" className="sm:w-auto">

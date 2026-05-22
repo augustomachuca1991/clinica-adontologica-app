@@ -15,6 +15,7 @@ const Breadcrumbs = () => {
     "treatment-planning": "breadcrumbs.treatment",
     "patient-profile": "breadcrumbs.profile",
     "settings-panel": "breadcrumbs.settings",
+    "weekly-calendar": "breadcrumbs.weekly",
   };
 
   if (pathnames?.length === 0) {
@@ -41,25 +42,15 @@ const Breadcrumbs = () => {
           return (
             <React.Fragment key={to}>
               <li>
-                <Icon
-                  name="ChevronRight"
-                  size={16}
-                  className="text-muted-foreground"
-                />
+                <Icon name="ChevronRight" size={16} className="text-muted-foreground" />
               </li>
               <li>
                 {isLast ? (
-                  <span
-                    className="font-medium text-foreground"
-                    aria-current="page"
-                  >
+                  <span className="font-medium text-foreground" aria-current="page">
                     {label}
                   </span>
                 ) : (
-                  <Link
-                    to={to}
-                    className="text-muted-foreground hover:text-foreground transition-colors duration-base"
-                  >
+                  <Link to={to} className="text-muted-foreground hover:text-foreground transition-colors duration-base">
                     {label}
                   </Link>
                 )}

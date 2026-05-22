@@ -5,37 +5,45 @@ import { Checkbox } from "@/components/ui/Checkbox";
 import FooterLogin from "@/pages/login/components/FooterLogin";
 import { useTranslation } from "react-i18next";
 import Spinner from "@/components/ui/Spinner";
+import LoadSending from "@/components/ui/LoadSending";
 import Image from "@/components/AppImage";
 import logo from "@/assets/images/logo-orion-software.svg";
 import { useAuth } from "@/contexts/AuthContext";
 import { notifyError, notifySuccess } from "@/utils/notifications";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Login = () => {
   const { signIn, loading } = useAuth();
   const { t } = useTranslation();
   const APP_NAME = import.meta.env?.VITE_APP_NAME || "Dental Care";
 
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    rememberMe: false,
+  const validationSchema = Yup.object({
+    email: Yup.string().email(t("login.errors.invalidEmail")).required(t("login.errors.required")),
+    password: Yup.string().min(6, t("login.errors.passwordShort")).required(t("login.errors.required")),
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: localStorage.getItem("remembered_email") || "",
+      password: "",
+      rememberMe: !!localStorage.getItem("remembered_email"),
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      if (values.rememberMe) {
+        localStorage.setItem("remembered_email", values.email);
+      } else {
+        localStorage.removeItem("remembered_email");
+      }
+      const { error } = await signIn(values.email, values.password);
+      if (error) notifyError(error.message);
+      else notifySuccess(t("welcome"));
+    },
+  });
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const { error } = await signIn(form.email, form.password);
-
-    if (error) {
-      notifyError(error.message);
-    } else {
-      notifySuccess(t("welcome"));
-    }
-  };
+  const isLoading = loading || formik.isSubmitting;
 
   if (loading) {
     return (
@@ -59,7 +67,7 @@ const Login = () => {
         </div>
 
         {/* Form */}
-        <form className="space-y-6" onSubmit={handleLogin}>
+        <form className="space-y-6" onSubmit={formik.handleSubmit}>
           <div className="space-y-4">
             <section>
               <Input
@@ -68,8 +76,8 @@ const Login = () => {
                 type="email"
                 placeholder="email@ejemplo.com"
                 className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary tracking-[-0.015em]"
-                value={form.email}
-                onChange={handleChange}
+                {...formik.getFieldProps("email")}
+                error={formik.touched.email && formik.errors.email}
                 required
               />
             </section>
@@ -81,8 +89,8 @@ const Login = () => {
                 name="password"
                 placeholder="••••••••"
                 className="mt-1 w-full rounded-lg border p-3 text-sm focus:ring-2 focus:ring-primary tracking-[-0.015em]"
-                value={form.password}
-                onChange={handleChange}
+                {...formik.getFieldProps("password")}
+                error={formik.touched.password && formik.errors.password}
                 required
               />
             </section>
@@ -92,14 +100,14 @@ const Login = () => {
                 label={t("login.rememberMe")}
                 id="rememberMe"
                 name="rememberMe"
-                checked={form.rememberMe}
+                checked={formik.values.rememberMe}
+                onChange={formik.handleChange}
                 className="mt-1 focus:ring-2 focus:ring-primary tracking-[-0.015em]"
-                onChange={(e) => setForm((prev) => ({ ...prev, rememberMe: e.target.checked }))}
               />
             </div>
 
-            <Button variant="default" className="w-full" type="submit" disabled={loading}>
-              {t("login.submit")}
+            <Button variant="default" className="w-full" type="submit" disabled={isLoading}>
+              <LoadSending isLoading={isLoading} text={t("login.submit")} />
             </Button>
           </div>
         </form>

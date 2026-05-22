@@ -61,12 +61,27 @@
         "tags": "Etiquetas"
       },
       "fields": {
-        "name": "Nombre completo *",
-        "address": "Domicilio",
-        "email": "Email *",
+        "name": "Nombre completo",
+        "address": "Direccion",
+        "email": "Email",
         "phone": "Teléfono",
-        "tags": "Etiquetas (separadas por coma)",
+        "tags": "Etiquetas",
+        "dateOfBirth": "Fecha de Nacimiento",
+        "gender": "Género",
+        "bloodType": "Grupo Sanguíneos",
+        "maritalStatus": "Estado Civil",
+        "city": "Ciudad",
+        "state": "Estado/Provincia",
+        "zipCode": "Código Postal",
+        "emergencyName": "Nombre del contacto",
+        "relationship": "Relación",
+        "emergencyPhone": "Telefono de emergencia",
+        "allergies": {
+          "label": "Alergias",
+          "placeholder": "Separada por coma"
+        },
         "insurance": {
+          "label": "Cobertura médica",
           "placeholder": "Seleccionar obra social"
         }
       },
@@ -545,7 +560,8 @@
     "profile": "Perfil del paciente",
     "records": "Historias clínicas",
     "treatment": "Planificación de tratamientos",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "weekly": "Agenda Semanal"
   },
   "timeFrame": {
     "today": "Hoy",
@@ -574,7 +590,8 @@
       "scheduled": "Programado",
       "in-progress": "En curso",
       "completed": "Finalizado",
-      "no-show": "No asistió"
+      "no-show": "No asistió",
+      "all": "Todos"
     },
     "priority": {
       "high": "Alta",
@@ -662,8 +679,12 @@
     "continueWith": "Continuar con",
     "welcome": "¡Bienvenido!",
     "rememberMe": "Recordame",
+    "sending": "Enviando",
     "errors": {
-      "emptyFields": "Debe completar usuario y contraseña"
+      "emptyFields": "Debe completar usuario y contraseña",
+      "required": "Este campo es obligatorio",
+      "invalidEmail": "El formato del correo no es válido",
+      "passwordShort": "La contraseña debe tener al menos 6 caracteres"
     },
     "footerLogin": {
       "noAccount": "¿No tienes una cuenta?",
@@ -694,7 +715,10 @@
     "success": "Contraseña actualizada con éxito. Ya puedes iniciar sesión.",
     "error": "Hubo un problema al actualizar la contraseña.",
     "mismatch": "Las contraseñas no coinciden",
-    "invalidOrExpired": "Enlace de recuperación inválido o expirado."
+    "invalidOrExpired": "Enlace de recuperación inválido o expirado.",
+    "errors": {
+      "mismatch": "Las contraseñas no coinciden"
+    }
   },
   "terms": {
     "title": "Términos y Condiciones",

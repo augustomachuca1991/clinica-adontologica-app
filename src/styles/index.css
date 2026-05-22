@@ -30,3 +30,10 @@ input[type="time"].custom-datetime-input {
   appearance: none;
   -webkit-appearance: none;
 }
+
+.PhoneInputInput {
+  outline: none;
+  border: none !important;
+  background: transparent !important;
+  width: 100%;
+}

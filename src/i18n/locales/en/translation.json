@@ -61,12 +61,27 @@
         "tags": "Tags"
       },
       "fields": {
-        "name": "Full Name *",
+        "name": "Full Name",
         "address": "Address",
         "email": "Email *",
         "phone": "Phone",
         "tags": "Tags (comma-separated)",
+        "dateOfBirth": "Date of Birth",
+        "gender": "Gender",
+        "bloodType": "Blood Type",
+        "maritalStatus": "Marital Status",
+        "city": "City",
+        "state": "State/Province",
+        "zipCode": "Zip/Postal Code",
+        "emergencyName": "Name",
+        "relationship": "Relationship",
+        "emergencyPhone": "Emergency Phone",
+        "allergies": {
+          "label": "Allergies",
+          "placeholder": "Separated by comma"
+        },
         "insurance": {
+          "label": "Insurance",
           "placeholder": "Select insurance provider"
         }
       },
@@ -547,7 +562,8 @@
     "profile": "Patient Profile",
     "records": "Clinical Records",
     "treatment": "Treatment Planning",
-    "settings": "Settings"
+    "settings": "Settings",
+    "weekly": "Weekly Calendar"
   },
   "timeFrame": {
     "today": "Today",
@@ -576,7 +592,8 @@
       "scheduled": "Scheduled",
       "in-progress": "In progress",
       "completed": "Completed",
-      "no-show": "No show"
+      "no-show": "No show",
+      "all": "All"
     },
     "priority": {
       "low": "Low",
@@ -665,8 +682,12 @@
     "continueWith": "or continue with",
     "welcome": "Welcome back!",
     "rememberMe": "Remember me",
+    "sending": "Sending",
     "errors": {
-      "emptyFields": "Please enter both email and password"
+      "emptyFields": "Please enter both email and password",
+      "required": "This field is required",
+      "invalidEmail": "Invalid email format",
+      "passwordShort": "Password must be at least 6 characters"
     },
     "footerLogin": {
       "noAccount": "Don't have an account?",
@@ -697,7 +718,10 @@
     "success": "Password updated successfully. You can now log in.",
     "error": "There was a problem updating the password.",
     "mismatch": "Passwords do not match",
-    "invalidOrExpired": "The recovery link is invalid or has expired."
+    "invalidOrExpired": "The recovery link is invalid or has expired.",
+    "errors": {
+      "mismatch": "Passwords do not match"
+    }
   },
   "terms": {
     "title": "Terms and Conditions",

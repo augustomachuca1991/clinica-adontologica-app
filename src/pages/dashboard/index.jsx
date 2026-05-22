@@ -21,13 +21,18 @@ import UpcomingTaskCard from "./components/UpcomingTaskCard";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [selectedTimeframe, setSelectedTimeframe] = useState("today");
-  const [isSaving, setIsSaving] = useState(false);
   const { userProfile } = useAuth();
   const { t } = useTranslation();
   const [isAddPatientModalOpen, setIsAddPatientModalOpen] = useState(false);
   const fullname = userProfile?.full_name || "no especified";
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
-  const { appointments, fetchAppointments, addAppointment, updateAppointment, loading: isSavingAppt } = useAppointments();
+  const {
+    appointments,
+    fetchAppointments,
+    addAppointment,
+    updateAppointment,
+    loading: isSavingAppt,
+  } = useAppointments();
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   const { addPatient } = usePatients();
@@ -83,7 +88,8 @@ const Dashboard = () => {
       patientName: "Robert Williams",
       patientId: 1,
       patientImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1f23d9c3d-1763295425663.png",
-      patientImageAlt: "Professional headshot of African American man with short hair in gray suit with serious expression",
+      patientImageAlt:
+        "Professional headshot of African American man with short hair in gray suit with serious expression",
       message: "Post-operative follow-up required - Extraction site showing signs of infection",
       time: "15 min ago",
     },
@@ -140,7 +146,8 @@ const Dashboard = () => {
       type: "payment",
       userName: "Departamento de Facturación",
       userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1b686b60e-1763292151580.png",
-      userImageAlt: "Retrato profesional de especialista en facturación hombre con gafas y camisa blanca con expresión concentrada",
+      userImageAlt:
+        "Retrato profesional de especialista en facturación hombre con gafas y camisa blanca con expresión concentrada",
       description: "Pago recibido de Robert Williams - $450,00",
       time: "hace 1 hora",
     },
@@ -252,23 +259,14 @@ const Dashboard = () => {
   };
 
   const handleAddPatient = async (formData, imageFile) => {
-    setIsSaving(true);
     const result = await addPatient(formData, imageFile);
-    setIsSaving(false);
 
     if (result.success) {
-      // 1. Cerramos el modal
       setIsAddPatientModalOpen(false);
-
-      // 2. Opcional: Mostrar una notificación de éxito
-      console.log("¡Paciente guardado con éxito!");
-
-      // 3. Opcional: Si quieres que el doctor vea al paciente recién creado
-      // navigate('/patient-directory');
+      notifySuccess(t("patient.created"));
     } else {
-      // Manejo de error si algo falla en el hook
       console.error("Error al guardar:", result.error);
-      alert(t("common.errorSaving") + ": " + result.error);
+      notifyError("Error: " + result.error);
     }
   };
 
@@ -388,7 +386,11 @@ const Dashboard = () => {
             >
               {t("timeFrame.today")}
             </Button>
-            <Button variant={selectedTimeframe === "week" ? "default" : "tertiary"} size="sm" onClick={() => setSelectedTimeframe("week")}>
+            <Button
+              variant={selectedTimeframe === "week" ? "default" : "tertiary"}
+              size="sm"
+              onClick={() => setSelectedTimeframe("week")}
+            >
               {t("timeFrame.thisWeek")}
             </Button>
             <Button
@@ -414,13 +416,18 @@ const Dashboard = () => {
                 <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
                   {t(`appointment.timeFrame.${selectedTimeframe}`)}
                 </h2>
-                <Button variant="ghost" size="sm" onClick={() => setSelectedTimeframe("all")} iconName="Calendar" iconPosition="left">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedTimeframe("all")}
+                  iconName="Calendar"
+                  iconPosition="left"
+                >
                   {t("appointment.viewAll")}
                 </Button>
               </div>
               <div className="space-y-4">
                 {isSavingAppt ? (
-                  // Mostramos 4 esqueletos mientras carga
                   <>
                     <AppointmentSkeleton />
                     <AppointmentSkeleton />
@@ -428,7 +435,9 @@ const Dashboard = () => {
                     <AppointmentSkeleton />
                   </>
                 ) : filteredAppointments.length === 0 ? (
-                  <p className="text-muted-foreground p-4 text-center">{t(`appointment.noAppointments.${selectedTimeframe}`)}</p>
+                  <p className="text-muted-foreground p-4 text-center">
+                    {t(`appointment.noAppointments.${selectedTimeframe}`)}
+                  </p>
                 ) : (
                   filteredAppointments?.map((appointment) => (
                     <AppointmentCard
@@ -444,7 +453,9 @@ const Dashboard = () => {
 
             <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.treatmentProgress.title")}</h2>
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+                  {t("dashboard.treatmentProgress.title")}
+                </h2>
                 <Button variant="ghost" size="sm" iconName="Download" iconPosition="left">
                   {t("dashboard.treatmentProgress.export")}
                 </Button>
@@ -455,7 +466,9 @@ const Dashboard = () => {
 
           <div className="space-y-6">
             <div className="clinical-card p-4 md:p-6">
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">{t("dashboard.quickActions.title")}</h2>
+              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">
+                {t("dashboard.quickActions.title")}
+              </h2>
               <div className="grid grid-cols-2 gap-3">
                 {quickActions?.map((action, index) => (
                   <QuickActionButton
@@ -470,7 +483,9 @@ const Dashboard = () => {
             </div>
             <div className="clinical-card p-4 md:p-6">
               <div className="flex items-center justify-between mb-4 md:mb-6">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{t("dashboard.recentActivity.title")}</h2>
+                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+                  {t("dashboard.recentActivity.title")}
+                </h2>
                 <Button variant="ghost" size="sm" iconName="RefreshCw" iconPosition="left">
                   {t("dashboard.recentActivity.refresh")}
                 </Button>
@@ -512,7 +527,11 @@ const Dashboard = () => {
         initialData={selectedAppointment}
         isLoading={isSavingAppt}
       />
-      <AddPatientModal isOpen={isAddPatientModalOpen} onClose={() => setIsAddPatientModalOpen(false)} onSave={handleAddPatient} />
+      <AddPatientModal
+        isOpen={isAddPatientModalOpen}
+        onClose={() => setIsAddPatientModalOpen(false)}
+        onSave={handleAddPatient}
+      />
     </>
   );
 };

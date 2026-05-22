@@ -3,28 +3,49 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import LoadSending from "@/components/ui/LoadSending";
 import Icon from "@/components/AppIcon";
 import { notifyError, notifySuccess } from "@/utils/notifications";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import Spinner from "@/components/ui/Spinner";
+import Image from "@/components/AppImage";
+import logo from "@/assets/images/logo-orion-software.svg";
 
-//import LanguageSwitch from "@/components/ui/LanguageSwitch";
-//import Image from "@/components/AppImage";
-//import logo from "@/assets/images/logo-orion-software.svg";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const [passwords, setPasswords] = useState({
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const { updatePassword, signOut } = useAuth();
+  const { updatePassword, signOut, loading: authLoading } = useAuth();
   const [isValidToken, setIsValidToken] = useState(false);
   const [checking, setChecking] = useState(true);
+
+  const validationSchema = Yup.object({
+    newPassword: Yup.string().min(6, t("login.errors.passwordShort")).required(t("login.errors.required")),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("newPassword"), null], t("resetPassword.errors.mismatch")) // VALIDACIÓN CLAVE
+      .required(t("login.errors.required")),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      newPassword: "",
+      confirmPassword: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      const { error } = await updatePassword(values.newPassword);
+      if (error) {
+        notifyError(error.message);
+      } else {
+        notifySuccess(t("resetPassword.success"));
+        await signOut();
+        navigate("/login", { replace: true });
+      }
+    },
+  });
 
   useEffect(() => {
     const checkSession = async () => {
@@ -40,26 +61,7 @@ const ResetPassword = () => {
     checkSession();
   }, [navigate, t]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPasswords((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    setIsLoading(true);
-    const { error } = await updatePassword(passwords.newPassword);
-    setIsLoading(false);
-
-    if (error) {
-      notifyError(error.message);
-    } else {
-      notifySuccess(t("resetPassword.success"));
-      await signOut();
-      navigate("/login", { replace: true });
-    }
-  };
+  const isLoading = authLoading || formik.isSubmitting;
 
   if (checking)
     return (
@@ -67,26 +69,24 @@ const ResetPassword = () => {
         <Spinner size={40} />
       </div>
     );
+
   if (!isValidToken) return null;
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-muted/40 px-4">
-      {/* <div className="absolute top-6 left-6 inline-flex items-center gap-2">
-        <Image src={logo} alt="App Logo" className="h-10 md:h-14 w-auto object-contain" />
-        <h1 className="text-2xl font-headline font-bold text-foreground tracking-[-0.015em]">Orion Software</h1>
-      </div> */}
-
-      <div className="w-full max-w-md bg-card rounded-2xl shadow-clinical-md p-8">
+    <div className=" min-h-screen flex items-center justify-center bg-muted/40 px-4">
+      <div className="relative w-full max-w-md bg-card rounded-2xl shadow-clinical-md p-8">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-            <Icon name="ShieldCheck" size={24} className="text-primary" />
+            <div className="absolute top-6 left-28 inline-flex items-center gap-2">
+              <Image src={logo} alt="App Logo" className="h-10 md:h-14 w-auto object-contain" />
+              <h2 className="text-xl font-headline font-bold text-foreground tracking-[-0.015em]">Orion Software</h2>
+            </div>
           </div>
-          <h1 className="text-2xl font-headline font-bold text-foreground tracking-[-0.015em]">{t("resetPassword.title")}</h1>
           <p className="text-sm text-muted-foreground mt-2">{t("resetPassword.subtitle")}</p>
         </div>
 
-        <form onSubmit={handleUpdate} className="space-y-5">
+        <form onSubmit={formik.handleSubmit} className="space-y-5">
           {/* Nueva Contraseña */}
           <section>
             <Input
@@ -95,8 +95,8 @@ const ResetPassword = () => {
               label={t("resetPassword.newPasswordLabel")}
               placeholder={t("resetPassword.placeholder")}
               className="mt-1 w-full p-3 rounded-lg border bg-background text-sm tracking-[-0.015em] focus:ring-2 focus:ring-primary outline-none transition-all"
-              value={passwords.newPassword}
-              onChange={handleChange}
+              {...formik.getFieldProps("newPassword")}
+              error={formik.touched.newPassword && formik.errors.newPassword}
               required
             />
           </section>
@@ -109,14 +109,14 @@ const ResetPassword = () => {
               label={t("resetPassword.confirmPasswordLabel")}
               placeholder={t("resetPassword.placeholder")}
               className="mt-1 w-full p-3 rounded-lg border bg-background text-sm tracking-[-0.015em] focus:ring-2 focus:ring-primary outline-none transition-all"
-              value={passwords.confirmPassword}
-              onChange={handleChange}
+              {...formik.getFieldProps("confirmPassword")}
+              error={formik.touched.confirmPassword && formik.errors.confirmPassword}
               required
             />
           </section>
 
           <Button type="submit" variant="default" className="w-full py-6" disabled={isLoading}>
-            {isLoading ? "..." : t("resetPassword.submit")}
+            <LoadSending isLoading={isLoading} text={t("resetPassword.submit")} />
           </Button>
         </form>
       </div>

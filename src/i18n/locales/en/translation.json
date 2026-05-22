@@ -817,7 +817,8 @@
       },
       "backup": {
         "title": "Last Backup",
-        "value": "01/16/2026 02:00 AM"
+        "value": "01/16/2026 02:00 AM",
+        "lastBackup": "Last backup {{date}}"
       }
     }
   },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Icon from "@/components/AppIcon";
 import UserManagementCard from "@/pages/settings-panel/components/UserManagementCard";
@@ -7,10 +7,16 @@ import SecurityCompliance from "@/pages/settings-panel/components/SecurityCompli
 import IntegrationMarketplace from "@/pages/settings-panel/components/IntegrationMarketplace";
 import NotificationPreferences from "@/pages/settings-panel/components/NotificationPreferences";
 import BackupRestore from "@/pages/settings-panel/components/BackupRestore";
+import { useBackup } from "@/hooks/BackupHooks";
 
 const SettingsPanel = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("users");
+
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem("settings_active_tab") || "users";
+  });
+
+  const { backupHistory, fetchBackupHistory } = useBackup();
 
   // Definición de las pestañas usando las claves de traducción de i18n
   const tabs = [
@@ -54,6 +60,21 @@ const SettingsPanel = () => {
 
   const currentTab = tabs.find((t) => t.id === activeTab) || tabs[0];
 
+  useEffect(() => {
+    fetchBackupHistory();
+  }, [fetchBackupHistory]);
+
+  const lastBackup = backupHistory.find((b) => b.status === "completed");
+  const lastBackupDate = lastBackup
+    ? new Date(lastBackup.created_at).toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : null;
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "users":
@@ -71,6 +92,11 @@ const SettingsPanel = () => {
       default:
         return null;
     }
+  };
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    localStorage.setItem("settings_active_tab", tabId);
   };
 
   return (
@@ -109,7 +135,7 @@ const SettingsPanel = () => {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`flex items-center gap-2 px-4 md:px-6 py-4 text-sm font-medium transition-all duration-base border-b-2 whitespace-nowrap ${
                   activeTab === tab.id
                     ? "border-primary text-primary bg-primary/5"
@@ -170,7 +196,11 @@ const SettingsPanel = () => {
             </div>
             <h4 className="font-medium text-sm text-foreground">{t("settings.status.backup.title")}</h4>
           </div>
-          <p className="text-xs text-muted-foreground">{t("settings.status.backup.value")}</p>
+          <p className="text-xs text-muted-foreground">
+            {lastBackupDate
+              ? t("settings.status.backup.lastBackup", { date: lastBackupDate })
+              : t("settings.status.backup.value")}
+          </p>
         </div>
       </div>
     </div>

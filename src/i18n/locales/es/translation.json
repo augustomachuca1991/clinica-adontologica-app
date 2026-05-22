@@ -814,7 +814,8 @@
       },
       "backup": {
         "title": "Último Respaldo",
-        "value": "16/01/2026 02:00 AM"
+        "value": "16/01/2026 02:00 AM",
+        "lastBackup": "Último respaldo {{date}}"
       }
     }
   },

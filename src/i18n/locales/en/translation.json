@@ -24,6 +24,10 @@
   "choosePhoto": "Choose profile photo",
   "download": "Download",
   "delete": "Delete",
+  "subscription": {
+    "title": "Subscription",
+    "description": "Manage your subscription and payment methods"
+  },
   "confirmDeleteImage": {
     "title": "Delete image?",
     "description": "This action will remove the image from the medical record."

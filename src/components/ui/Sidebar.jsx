@@ -70,6 +70,13 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
       description: "settings.description",
       roles: ["admin"],
     },
+    {
+      path: "/admin-panel",
+      label: "subscription.title",
+      icon: "subscription",
+      description: "subscription.description",
+      roles: ["admin"],
+    },
   ];
 
   const visibleItems = navigationItems.filter((item) => item.roles.some((role) => roles.includes(role)));

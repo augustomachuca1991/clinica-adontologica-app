@@ -22,8 +22,12 @@
   "noOptionsAvailable": "No hay opciones disponibles",
   "change": "Cambiar",
   "choosePhoto": "Elegir foto de perfil",
-  "download": "Dercargar",
+  "download": "Descargar",
   "delete": "Eliminar",
+  "subscription": {
+    "title": "Suscripción",
+    "description": "Gestiona tu suscripción y métodos de pago"
+  },
   "confirmDeleteImage": {
     "title": "¿Eliminar imagen?",
     "description": "Esta acción quitará la imagen del registro médico."

@@ -8,6 +8,7 @@ import Dashboard from "@/pages/dashboard";
 import TreatmentPlanning from "@/pages/treatment-planning";
 import PatientDirectory from "@/pages/patient-directory";
 import ClinicalRecords from "@/pages/clinical-records";
+import ClinicalNotes from "@/pages/clinical-notes";
 import Login from "@/pages/login";
 import PrivateRoute from "@/components/auth/PrivateRoute";
 import MainLayout from "@/components/ui/MainLayout";
@@ -48,6 +49,7 @@ const Routes = () => {
                 <Route path="/treatment-planning" element={<TreatmentPlanning />} />
                 <Route path="/clinical-records" element={<ClinicalRecords />} />
                 <Route path="/weekly-calendar" element={<WeeklyCalendar />} />
+                <Route path="/clinical-notes" element={<ClinicalNotes />} />
               </Route>
 
               {/* GRUPO ADMINISTRATIVO: Solo para Admins */}

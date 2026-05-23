@@ -5,6 +5,7 @@ import Icon from "@/components/AppIcon";
 import Image from "@/components/AppImage";
 import Button from "@/components/ui/Button";
 import PrintableMedicalRecord from "@/pages/clinical-records/components/PrintableMedicalRecord";
+import ClinicalNotesTab from "@/pages/clinical-records/components/ClinicalNotesTab";
 import ImageLightbox from "@/components/ui/ImageLightBox";
 import { formatDateLang } from "@/utils/formatters/date";
 import { downloadImage } from "@/utils/downloaderHelper";
@@ -243,66 +244,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
             </div>
           )}
 
-          {activeTab === "notes" && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="text-base font-headline font-semibold text-foreground">
-                  {t("records.recordsModal.tabs.clinicalNotes.name")}
-                </h4>
-                <Button variant="outline" size="sm" iconName="Plus" iconPosition="left">
-                  {t("records.recordsModal.tabs.clinicalNotes.addClinicalNote")}
-                </Button>
-              </div>
-              {currentRecordData?.clinical_notes?.length > 0 ? (
-                currentRecordData.clinical_notes.map((note) => (
-                  <div key={note} className="bg-muted border border-border rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Icon name="User" size={18} color="var(--color-primary)" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-foreground">
-                            {note?.provider?.user_profiles?.full_name}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {new Date(note.created_at).toLocaleDateString(i18n.language, {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                      <span
-                        className={`text-xs px-2 py-1 bg-primary/10 text-primary rounded-full ${
-                          note.type === "followUp"
-                            ? "border-purple-200 bg-purple-100 text-gray-700"
-                            : note.type === "treatment"
-                              ? "border-green-200 bg-green-100 text-gray-700"
-                              : note.type === "observation"
-                                ? "border-amber-200 bg-amber-100 text-gray-700"
-                                : "border-blue-200 bg-blue-100 text-gray-700"
-                        } `}
-                      >
-                        {t(`records.recordsModal.tabs.clinicalNotes.noteTypeOptions.${note?.type}`)}
-                      </span>
-                    </div>
-                    <p className="text-sm text-foreground leading-relaxed">{note?.content}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-10 bg-muted/20 border-2 border-dashed border-border rounded-lg">
-                  <Icon name="Clipboard" size={32} className="mx-auto mb-2 text-muted-foreground/40" />
-                  <p className="text-sm text-muted-foreground italic">
-                    {t("records.recordsModal.tabs.clinicalNotes.noNotes") || "No notes recorded for this procedure."}
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
+          {activeTab === "notes" && <ClinicalNotesTab record={record} />}
 
           {activeTab === "images" && (
             <div>

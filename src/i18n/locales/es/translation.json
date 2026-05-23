@@ -325,6 +325,19 @@
           }
         },
         "clinicalNotes": {
+          "private": "Privada",
+          "public": "Pública",
+          "makePrivate": "Hacer privada",
+          "makePublic": "Hacer pública",
+          "noNotesForType": "No se encontraron notas para el filtro seleccionado.",
+          "noteCount_one": "{{count}} nota clínica",
+          "noteCount_other": "{{count}} notas clínicas",
+          "createSuccess": "Nota clínica creada correctamente.",
+          "updateSuccess": "Nota clínica actualizada correctamente.",
+          "confirmDelete": {
+            "title": "¿Eliminar nota clínica?",
+            "description": "Esta acción no se puede deshacer y la nota se borrará permanentemente de la historia clínica."
+          },
           "name": "Nota Clínica",
           "addClinicalNote": "Agregar Nota Clínica",
           "noteType": "Tipo de Nota",
@@ -333,7 +346,10 @@
             "progress": "Progreso",
             "treatment": "Tratamiento",
             "observation": "Observación",
-            "followUp": "Seguimiento"
+            "followUp": "Seguimiento",
+            "general": "General",
+            "diagnosis": "Diagnóstico",
+            "prescription": "Prescripción"
           },
           "quickTemplates": "Plantillas Rápidas",
           "postProcedure": "Post-Procedimiento",
@@ -915,7 +931,14 @@
     "cancel": "Cancelar",
     "edit": "Editar",
     "error": "Error",
-    "select": "Seleccionar"
+    "select": "Seleccionar",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "delete": "Eliminar",
+    "unknown": "Desconocido",
+    "all": "Todas",
+    "loading": "Cargando notas...",
+    "clearFilter": "Limpiar filtros"
   },
   "roles": {
     "administrator": "Administrador",

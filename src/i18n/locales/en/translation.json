@@ -391,6 +391,19 @@
           }
         },
         "clinicalNotes": {
+          "private": "Private",
+          "public": "Public",
+          "makePrivate": "Make private",
+          "makePublic": "Make public",
+          "noNotesForType": "No notes found for the selected filter.",
+          "noteCount_one": "{{count}} clinical note",
+          "noteCount_other": "{{count}} clinical notes",
+          "createSuccess": "Clinical note successfully created.",
+          "updateSuccess": "Clinical note successfully updated.",
+          "confirmDelete": {
+            "title": "Delete clinical note?",
+            "description": "This action cannot be undone and the note will be permanently removed from the medical history."
+          },
           "name": "Clinical Note",
           "addClinicalNote": "Add Clinical Note",
           "noteType": "Note Type",
@@ -399,7 +412,10 @@
             "progress": "Progress",
             "treatment": "Treatment",
             "observation": "Observation",
-            "followUp": "Follow-Up"
+            "followUp": "Follow-Up",
+            "general": "General",
+            "diagnosis": "Diagnosis",
+            "prescription": "Prescription"
           },
           "quickTemplates": "Quick Templates",
           "postProcedure": "Post-Procedure",
@@ -918,7 +934,14 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "error": "Error",
-    "select": "Select"
+    "select": "Select",
+    "save": "Save",
+    "saving": "Saving...",
+    "delete": "Delete",
+    "unknown": "Unknown",
+    "all": "All",
+    "loading": "Loading notes...",
+    "clearFilter": "Clear filters"
   },
   "roles": {
     "administrator": "Administrator",

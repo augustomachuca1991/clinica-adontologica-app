@@ -85,7 +85,6 @@ export const useClinicalNotes = () => {
   };
 
   // ─── Actualizar nota ──────────────────────────────────────────────────────────
-  // RLS rechaza silenciosamente si intentás editar nota ajena.
   const updateNote = async (id, { content, type, isPrivate }) => {
     setIsSubmitting(true);
     try {

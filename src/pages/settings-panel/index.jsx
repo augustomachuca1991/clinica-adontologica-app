@@ -8,6 +8,7 @@ import IntegrationMarketplace from "@/pages/settings-panel/components/Integratio
 import NotificationPreferences from "@/pages/settings-panel/components/NotificationPreferences";
 import BackupRestore from "@/pages/settings-panel/components/BackupRestore";
 import ServicesManagement from "@/pages/settings-panel/components/ServicesManagement";
+import ProvidersManagement from "@/pages/settings-panel/components/ProvidersManagement";
 import { useBackup } from "@/hooks/BackupHooks";
 
 const SettingsPanel = () => {
@@ -63,6 +64,12 @@ const SettingsPanel = () => {
       icon: "Stethoscope",
       description: t("settings.tabs.services.description"),
     },
+    {
+      id: "providers",
+      label: t("settings.tabs.providers.label"),
+      icon: "Stethoscope",
+      description: t("settings.tabs.providers.description"),
+    },
   ];
 
   const currentTab = tabs.find((t) => t.id === activeTab) || tabs[0];
@@ -98,6 +105,8 @@ const SettingsPanel = () => {
         return <BackupRestore />;
       case "services":
         return <ServicesManagement />;
+      case "providers":
+        return <ProvidersManagement />;
       default:
         return null;
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
@@ -26,9 +26,12 @@ const ClinicalRecords = () => {
   });
 
   const { t } = useTranslation();
-  const { records, loading, stats, refresh } =
-    useGlobalClinicalRegistry(filters);
-  const { addNote } = useClinicalNotes();
+  const { records, loading, stats, refresh } = useGlobalClinicalRegistry(filters);
+  const { createNote, fetchCurrentProvider, currentProviderId, isSubmitting } = useClinicalNotes();
+
+  useEffect(() => {
+    fetchCurrentProvider();
+  }, [fetchCurrentProvider]);
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -56,14 +59,22 @@ const ClinicalRecords = () => {
     setShowAddNoteModal(true);
   };
 
-  const handleSaveNote = async (content, type) => {
+  // Firma compatible con AddNoteModal: onSave(content, type)
+  // Internamente llama al nuevo createNote con la firma completa
+  const handleSaveNote = async (content, type, isPrivate = false) => {
     if (!selectedRecord) return;
 
-    const result = await addNote(selectedRecord.id, content, type);
+    const result = await createNote({
+      recordId: selectedRecord.id,
+      providerId: currentProviderId,
+      content,
+      type,
+      isPrivate,
+    });
 
     if (result.success) {
       setShowAddNoteModal(false);
-      refresh(); // Esto recarga los records de Supabase con la nueva nota
+      refresh();
       notifySuccess(t("records.notes.saveSuccess"));
     } else {
       notifyError(result.error);
@@ -78,9 +89,7 @@ const ClinicalRecords = () => {
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
               {t("records.title")}
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground">
-              {t("records.subtitle")}
-            </p>
+            <p className="text-sm md:text-base text-muted-foreground">{t("records.subtitle")}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
@@ -107,11 +116,7 @@ const ClinicalRecords = () => {
 
         {!loading && <StatsOverview stats={stats} />}
 
-        <RecordFilters
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onClearFilters={handleClearFilters}
-        />
+        <RecordFilters filters={filters} onFilterChange={handleFilterChange} onClearFilters={handleClearFilters} />
 
         <div className="bg-card border border-border rounded-lg p-4 md:p-6 shadow-clinical-sm">
           <div className="flex items-center justify-between mb-6">
@@ -125,12 +130,7 @@ const ClinicalRecords = () => {
                 })}
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              iconName="Download"
-              iconPosition="left"
-            >
+            <Button variant="outline" size="sm" iconName="Download" iconPosition="left">
               {t("records.treatmentHistoryList.button.export")}
             </Button>
           </div>
@@ -144,7 +144,6 @@ const ClinicalRecords = () => {
             </div>
           ) : (
             <>
-              {/* CAMBIO: Ahora mapeamos 'records' (los reales de Supabase) */}
               {viewMode === "grid" ? (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-start">
                   {records?.map((record) => (
@@ -160,26 +159,14 @@ const ClinicalRecords = () => {
                 <TimelineView records={records} />
               )}
 
-              {/* CAMBIO: Si después de cargar, la lista está vacía, mostramos el estado Empty */}
               {records?.length === 0 && (
                 <div className="text-center py-12">
-                  <Icon
-                    name="FileText"
-                    size={48}
-                    className="mx-auto mb-4 text-muted-foreground"
-                  />
+                  <Icon name="FileText" size={48} className="mx-auto mb-4 text-muted-foreground" />
                   <h3 className="text-lg font-headline font-semibold text-foreground mb-2">
                     {t("records.treatmentHistoryList.foundRecords_zero")}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-6">
-                    {t("records.treatmentHistoryList.tryAdjusting")}
-                  </p>
-                  <Button
-                    variant="outline"
-                    onClick={handleClearFilters}
-                    iconName="RefreshCw"
-                    iconPosition="left"
-                  >
+                  <p className="text-sm text-muted-foreground mb-6">{t("records.treatmentHistoryList.tryAdjusting")}</p>
+                  <Button variant="outline" onClick={handleClearFilters} iconName="RefreshCw" iconPosition="left">
                     {t("records.treatmentHistoryList.button.resetFilters")}
                   </Button>
                 </div>
@@ -188,13 +175,16 @@ const ClinicalRecords = () => {
           )}
         </div>
       </div>
+
       {showAddNoteModal && selectedRecord && (
         <AddNoteModal
           record={selectedRecord}
           onClose={() => setShowAddNoteModal(false)}
           onSave={handleSaveNote}
+          isSubmitting={isSubmitting}
         />
       )}
+
       {showDetailsModal && selectedRecord && (
         <RecordDetailsModal
           record={selectedRecord}

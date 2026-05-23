@@ -22,7 +22,6 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
   const fileInputRef = useRef(null); // Nueva referencia para el input oculto
 
   const { fetchPatientRecords, records: history, loading: isLoadingHistory } = useClinicalRecords();
-  /* const { addNote, loading: isSavingNote } = useClinicalNotes(); */
   const { t, i18n } = useTranslation();
 
   const currentRecordData = history?.find((r) => r.id === record.id) || record;
@@ -135,7 +134,9 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                 key={tab?.id}
                 onClick={() => setActiveTab(tab?.id)}
                 className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors duration-base whitespace-nowrap ${
-                  activeTab === tab?.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
+                  activeTab === tab?.id
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Icon name={tab?.icon} size={16} />
@@ -168,7 +169,9 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                     <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                       {t("records.card.provider")}
                     </label>
-                    <p className="text-sm text-foreground mt-1">{currentRecordData?.provider?.name || currentRecordData?.provider}</p>
+                    <p className="text-sm text-foreground mt-1">
+                      {currentRecordData?.provider?.name || currentRecordData?.provider}
+                    </p>
                   </div>
                   <div>
                     <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
@@ -189,7 +192,9 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                   </div>
                   {currentRecordData?.cost && (
                     <div>
-                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t("records.card.cost")}</label>
+                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        {t("records.card.cost")}
+                      </label>
                       <p className="text-sm text-foreground mt-1">${currentRecordData?.cost?.toLocaleString()}</p>
                     </div>
                   )}
@@ -215,7 +220,9 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                       {currentRecordData.clinical_notes[0].content}
                     </p>
                   ) : (
-                    <p className="text-sm text-muted-foreground italic">{t("records.recordsModal.tabs.clinicalNotes.noNotes")}</p>
+                    <p className="text-sm text-muted-foreground italic">
+                      {t("records.recordsModal.tabs.clinicalNotes.noNotes")}
+                    </p>
                   )}
                 </div>
               </div>
@@ -255,7 +262,9 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                           <Icon name="User" size={18} color="var(--color-primary)" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-foreground">{note?.provider?.user_profiles?.full_name}</p>
+                          <p className="text-sm font-medium text-foreground">
+                            {note?.provider?.user_profiles?.full_name}
+                          </p>
                           <p className="text-xs text-muted-foreground">
                             {new Date(note.created_at).toLocaleDateString(i18n.language, {
                               day: "numeric",
@@ -301,7 +310,13 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                 <h4 className="text-base font-headline font-semibold text-foreground">
                   {t("records.recordsModal.tabs.images.clinicalImages")}
                 </h4>
-                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleDirectUpload} />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleDirectUpload}
+                />
                 <Button
                   variant="outline"
                   size="sm"
@@ -336,7 +351,10 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                           <button
                             onClick={(e) => {
                               e.stopPropagation(); // Importante: evita que se abra el visor
-                              downloadImage(attachment.url, `dental_${record?.patientName?.replace(/\s+/g, "_")}_${index + 1}.jpg`);
+                              downloadImage(
+                                attachment.url,
+                                `dental_${record?.patientName?.replace(/\s+/g, "_")}_${index + 1}.jpg`
+                              );
                             }}
                             className="bg-black/50 hover:bg-black/70 text-white p-1.5 rounded backdrop-blur-sm transition-colors"
                             title={t("download")}
@@ -398,13 +416,16 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                           <div className="flex items-center justify-between mb-2">
                             <p className="text-sm font-medium text-foreground">{item.treatmentName}</p>
                             <p className="text-xs text-muted-foreground">
-                              {t("records.recordsModal.tabs.history.statusUpdated")} {formatDateLang(item?.date, i18n.language)}
+                              {t("records.recordsModal.tabs.history.statusUpdated")}{" "}
+                              {formatDateLang(item?.date, i18n.language)}
                             </p>
                           </div>
                           <span className="text-sm text-muted-foreground">
                             {t("records.recordsModal.tabs.history.activity.actionLabel") || "El estado cambió a"}
                           </span>
-                          <span className={`font-bold px-2 py-0.5 rounded-full text-[10px] border ${getStatusColor(item.status)}`}>
+                          <span
+                            className={`font-bold px-2 py-0.5 rounded-full text-[10px] border ${getStatusColor(item.status)}`}
+                          >
                             &nbsp;
                             {t(`records.recordsModal.tabs.history.activity.status.${item?.status}`).toUpperCase()}
                             &nbsp;

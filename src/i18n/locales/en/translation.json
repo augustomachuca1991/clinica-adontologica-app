@@ -808,6 +808,10 @@
       "services": {
         "label": "Services Management",
         "description": "Manage dental services and data for appointments and treatments"
+      },
+      "providers": {
+        "label": "Providers",
+        "description": "Manage dental professionals and their schedules"
       }
     },
     "status": {
@@ -1110,6 +1114,79 @@
         "btnEdit": "Edit",
         "emptySearch": "No categories found",
         "emptyDefault": "No categories created yet"
+      }
+    }
+  },
+  "providers": {
+    "management": {
+      "searchPlaceholder": "Search by name, specialty, license, or email...",
+      "newProviderBtn": "New provider",
+
+      "filter": {
+        "all": "All",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+
+      "stats": {
+        "total": "Total",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+
+      "form": {
+        "titleCreate": "New provider",
+        "titleEdit": "Edit provider",
+        "labelFirstName": "First Name",
+        "labelLastName": "Last Name",
+        "labelEmail": "Email",
+        "labelPhone": "Phone",
+        "labelSpecialty": "Specialty",
+        "labelLicense": "License",
+        "labelId": "ID",
+        "placeholderFirstName": "e.g., John",
+        "placeholderLastName": "e.g., Doe",
+        "placeholderEmail": "e.g., john@clinica.com",
+        "placeholderPhone": "e.g., +54 11 1234-5678",
+        "placeholderSpecialty": "e.g., General Dentist",
+        "placeholderLicense": "e.g., MP-12345",
+        "btnCancel": "Cancel",
+        "btnSave": "Save changes",
+        "btnCreate": "Create provider",
+        "btnSaving": "Saving...",
+        "errorNameRequired": "First and last name are required.",
+        "errorSpecialtyRequired": "Specialty is required.",
+        "errorLicenseRequired": "License is required.",
+        "errorUnexpected": "An unexpected error occurred. Please try again."
+      },
+
+      "list": {
+        "createdAt": "Created: {{date}}",
+        "updatedAt": "Updated: {{date}}",
+        "btnView": "View",
+        "btnEdit": "Edit",
+        "btnActivate": "Activate",
+        "btnDeactivate": "Deactivate",
+        "emptySearch": "No providers found with that criteria.",
+        "emptyDefault": "No providers registered yet."
+      },
+
+      "viewModal": {
+        "btnClose": "Close"
+      },
+
+      "deleteModal": {
+        "title": "Delete Provider",
+        "subtitle": "Delete {{name}}?",
+        "body": "This action is permanent and cannot be undone. The provider will be removed from the system.",
+        "btnCancel": "Cancel",
+        "btnConfirm": "Delete",
+        "btnDeleting": "Deleting..."
       }
     }
   }

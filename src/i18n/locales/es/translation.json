@@ -805,6 +805,10 @@
       "services": {
         "label": "Gestión de Servicios",
         "description": "Configuración y administración de servicios odontológicos"
+      },
+      "providers": {
+        "label": "Gestión de Proveedores",
+        "description": "Administre la información de sus proveedores y laboratorios"
       }
     },
     "status": {
@@ -1107,6 +1111,79 @@
         "btnEdit": "Editar",
         "emptySearch": "No se encontraron categorías",
         "emptyDefault": "No hay categorías creadas todavía"
+      }
+    }
+  },
+  "providers": {
+    "management": {
+      "searchPlaceholder": "Buscar por nombre, especialidad, matrícula o email...",
+      "newProviderBtn": "Nuevo profesional",
+
+      "filter": {
+        "all": "Todos",
+        "active": "Activos",
+        "inactive": "Inactivos"
+      },
+
+      "stats": {
+        "total": "Total",
+        "active": "Activos",
+        "inactive": "Inactivos"
+      },
+
+      "status": {
+        "active": "Activo",
+        "inactive": "Inactivo"
+      },
+
+      "form": {
+        "titleCreate": "Nuevo profesional",
+        "titleEdit": "Editar profesional",
+        "labelFirstName": "Nombre",
+        "labelLastName": "Apellido",
+        "labelEmail": "Email",
+        "labelPhone": "Teléfono",
+        "labelSpecialty": "Especialidad",
+        "labelLicense": "Matrícula",
+        "labelId": "ID",
+        "placeholderFirstName": "Ej: Juan",
+        "placeholderLastName": "Ej: Pérez",
+        "placeholderEmail": "Ej: juan@clinica.com",
+        "placeholderPhone": "Ej: +54 11 1234-5678",
+        "placeholderSpecialty": "Ej: Dentista General",
+        "placeholderLicense": "Ej: MP-12345",
+        "btnCancel": "Cancelar",
+        "btnSave": "Guardar cambios",
+        "btnCreate": "Crear profesional",
+        "btnSaving": "Guardando...",
+        "errorNameRequired": "El nombre y apellido son obligatorios.",
+        "errorSpecialtyRequired": "La especialidad es obligatoria.",
+        "errorLicenseRequired": "La matrícula es obligatoria.",
+        "errorUnexpected": "Ocurrió un error inesperado. Intentá nuevamente."
+      },
+
+      "list": {
+        "createdAt": "Creado: {{date}}",
+        "updatedAt": "Actualizado: {{date}}",
+        "btnView": "Ver",
+        "btnEdit": "Editar",
+        "btnActivate": "Activar",
+        "btnDeactivate": "Desactivar",
+        "emptySearch": "No se encontraron profesionales con ese criterio.",
+        "emptyDefault": "Aún no hay profesionales registrados."
+      },
+
+      "viewModal": {
+        "btnClose": "Cerrar"
+      },
+
+      "deleteModal": {
+        "title": "Eliminar profesional",
+        "subtitle": "¿Eliminar a {{name}}?",
+        "body": "Esta acción es permanente y no se puede deshacer. El profesional será eliminado del sistema.",
+        "btnCancel": "Cancelar",
+        "btnConfirm": "Eliminar",
+        "btnDeleting": "Eliminando..."
       }
     }
   }

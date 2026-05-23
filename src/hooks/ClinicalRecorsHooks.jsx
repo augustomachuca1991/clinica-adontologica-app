@@ -10,25 +10,19 @@ export const useClinicalRecords = () => {
     inProgress: 0,
     completed: 0,
   });
-  const [records, setRecords] = useState([]); // Nuevo estado para la lista real
+  const [records, setRecords] = useState([]);
 
-  // Función para obtener el resumen de estados del paciente
   const fetchPatientSummary = useCallback(async (patientId) => {
     if (!patientId) return;
 
     try {
-      const { data, error } = await supabase
-        .from("clinical_records")
-        .select("status")
-        .eq("patient_id", patientId);
+      const { data, error } = await supabase.from("clinical_records").select("status").eq("patient_id", patientId);
 
       if (error) throw error;
 
-      // Agrupamos los resultados por estado
       const stats = data.reduce(
         (acc, curr) => {
-          const key =
-            curr.status === "in-progress" ? "inProgress" : curr.status;
+          const key = curr.status === "in-progress" ? "inProgress" : curr.status;
           acc[key] = (acc[key] || 0) + 1;
           return acc;
         },
@@ -49,67 +43,76 @@ export const useClinicalRecords = () => {
         .from("clinical_records")
         .select(
           `
-        id,
-        tooth_number,
-        service_id,
-        actual_cost,
-        status,
-        notes,
-        date,
-        created_at,
-        estimated_duration,
-        priority,
-        patient_id,
-        patients (
+          id,
+          tooth_number,
+          service_id,
+          actual_cost,
+          status,
+          notes,
+          date,
+          created_at,
+          estimated_duration,
+          priority,
           patient_id,
-          name
-        ),
-        treatment_services (name),
-        providers!provider_id (
-          license_number,
-          specialty,
-          user_profiles (
-            full_name
-          )
-        ),
-        clinical_notes (
+          patients (
+            patient_id,
+            name
+          ),
+          treatment_services (name),
+          providers!provider_id (
+            license_number,
+            specialty,
+            first_name,
+            last_name
+          ),
+          clinical_notes (
             id,
             content,
             type,
+            is_private,
             created_at,
             providers (
-              user_profiles (full_name)
+              first_name,
+              last_name
             )
           )
-      `
+          `
         )
         .eq("patient_id", patientId)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
 
-      // Mapeamos para que coincida con la estructura de el estado local
-      const formattedRecords = data.map((r) => ({
-        id: r.id,
-        toothNumber: r.tooth_number,
-        procedure: r.service_id,
-        cost: r.actual_cost,
-        status: r.status,
-        notes: r.notes,
-        isPersisted: true,
-        duration: r.estimated_duration,
-        priority: r.priority,
-        date: r.date,
-        patientId: r.patients?.patient_id,
-        patientName: r.patients?.name || "Name Patient",
-        treatmentName: r.treatment_services?.name || "N/A",
-        provider: {
-          license: r.providers?.license_number || "N/A",
-          name: r.providers?.user_profiles?.full_name || "N/A",
-          especialidad: r.providers?.specialty || "N/A",
-        },
-        clinical_notes: r.clinical_notes || [],
-      }));
+      const formattedRecords = data.map((r) => {
+        const providerFirstName = r.providers?.first_name || "";
+        const providerLastName = r.providers?.last_name || "";
+        const providerName = [providerFirstName, providerLastName].filter(Boolean).join(" ") || "N/A";
+
+        return {
+          id: r.id,
+          toothNumber: r.tooth_number,
+          procedure: r.service_id,
+          cost: r.actual_cost,
+          status: r.status,
+          notes: r.notes,
+          isPersisted: true,
+          duration: r.estimated_duration,
+          priority: r.priority,
+          date: r.date,
+          patientId: r.patients?.patient_id,
+          patientName: r.patients?.name || "Name Patient",
+          treatmentName: r.treatment_services?.name || "N/A",
+          provider: {
+            license: r.providers?.license_number || "N/A",
+            name: providerName,
+            especialidad: r.providers?.specialty || "N/A",
+          },
+          clinical_notes: (r.clinical_notes || []).map((note) => ({
+            ...note,
+            providerName: [note.providers?.first_name, note.providers?.last_name].filter(Boolean).join(" ") || "N/A",
+          })),
+        };
+      });
 
       setRecords(formattedRecords);
     } catch (err) {
@@ -119,10 +122,8 @@ export const useClinicalRecords = () => {
     }
   }, []);
 
-  // Guardado masivo de un plan de tratamiento
   const saveTreatmentPlan = async (patientId, treatments) => {
-    if (!user?.id || !patientId || treatments.length === 0)
-      return { success: false, error: "Missing data" };
+    if (!user?.id || !patientId || treatments.length === 0) return { success: false, error: "Missing data" };
 
     setLoading(true);
     try {
@@ -139,10 +140,7 @@ export const useClinicalRecords = () => {
         priority: t.priority,
       }));
 
-      const { data, error } = await supabase
-        .from("clinical_records")
-        .insert(recordsToSave)
-        .select();
+      const { data, error } = await supabase.from("clinical_records").insert(recordsToSave).select();
 
       if (error) throw error;
       return { success: true, data };

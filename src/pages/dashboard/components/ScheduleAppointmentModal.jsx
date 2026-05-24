@@ -7,6 +7,7 @@ import Select from "@/components/ui/Select";
 import Icon from "@/components/AppIcon";
 import { usePatients } from "@/hooks/PatientsHooks";
 import { useTreatmentServices } from "@/hooks/TreatmentServicesHooks";
+import { notifyError } from "@/utils/notifications";
 
 const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoading }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -157,7 +158,7 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!selectedPatient) return alert(t("appointment.errorNoPatient"));
+    if (!selectedPatient) return notifyError(t("appointment.errorNoPatient"));
 
     // IMPORTANTE: Construimos el ISO Local (sin Z) para que tu lógica de handleSave funcione
     const localDateTime = `${formData.date}T${formData.time}:00`;

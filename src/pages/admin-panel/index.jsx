@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useSubscription } from "@/hooks/SubscriptionHooks";
 import { supabase } from "@/lib/supabase";
 import { useUserRegistration } from "@/hooks/UserHooks";
+import { notifyError, notifySuccess } from "@/utils/notifications";
 
 function getInitials(name) {
   if (!name) return "U";
@@ -129,9 +130,10 @@ const AdminPanel = () => {
 
     setIsRenewing(false);
     if (result.success) {
+      notifySuccess(t("admin.alerts.renewSuccess"));
       setSelectedSub(null);
     } else {
-      alert(t("admin.alerts.renewError") + result.error);
+      notifyError(t("admin.alerts.renewError") + result.error);
     }
   };
 
@@ -161,7 +163,7 @@ const AdminPanel = () => {
 
       if (error) throw error;
 
-      alert(t("admin.alerts.createSuccess"));
+      notifySuccess(t("admin.alerts.createSuccess"));
 
       setSearchTerm("");
       setSubscriptionData({ userId: "", userName: "", duration: "1" });

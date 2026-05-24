@@ -6,6 +6,7 @@ import Select from "@/components/ui/Select";
 import Image from "@/components/AppImage";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/cn";
+import { notifyError } from "@/utils/notifications";
 
 // ─── Constantes Estáticas (Mapeos para i18n) ──────────────────────────────────
 const getStatusOptions = (t) => [
@@ -108,7 +109,7 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
     const file = e.target.files[0];
     if (!file) return;
     if (file.size > 2 * 1024 * 1024) {
-      alert(t("patient.errors.imageSize"));
+      notifyError(t("patient.errors.imageSize"));
       return;
     }
     setImageFile(file);

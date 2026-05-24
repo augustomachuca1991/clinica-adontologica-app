@@ -75,7 +75,7 @@ const PatientDirectory = () => {
 
   const handleBulkAction = (action) => {
     console.log(`Bulk action: ${action} for patients:`, selectedPatients);
-    alert(
+    notifyInfo(
       `${action?.charAt(0)?.toUpperCase() + action?.slice(1)} action performed on ${selectedPatients?.length} patient(s)`
     );
   };
@@ -107,7 +107,6 @@ const PatientDirectory = () => {
           // Abre WhatsApp con el mensaje listo para completar
           window.open(`https://wa.me/${cleanPhone}?text=` + mensaje, "_blank");
         } else {
-          // Alerta específica si no hay número
           notifyWarning(`Error: El paciente ${patient.name} no tiene un número de teléfono configurado.`);
         }
         break;

@@ -13,18 +13,31 @@ export const useTreatmentServices = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from("treatment_services")
+        .from("provider_services")
         .select(
           `
-          *,
-          category:service_categories(id, name)
-        `
+            id,
+            provider_id,
+            service:treatment_services (
+              id,
+              name,
+              base_cost,
+              estimated_duration_min,
+              description,
+              is_active,
+              category:service_categories(id, name)
+            )
+          `
         )
-        .eq("provider_id", user.id)
-        .order("name", { ascending: true });
+        .eq("provider_id", user.id);
 
       if (error) throw error;
-      setServices(data);
+      const flatServices = data.map((item) => item.service).filter((service) => service !== null); // Evita problemas si hay filas huérfanas
+
+      // 3. Ordenamos alfabéticamente por nombre en JavaScript (ya que Supabase no ordena sub-tablas plano M:M directamente de forma limpia)
+      flatServices.sort((a, b) => a.name.localeCompare(b.name));
+
+      setServices(flatServices);
     } catch (err) {
       console.error("Error:", err.message);
     } finally {
@@ -35,21 +48,31 @@ export const useTreatmentServices = () => {
   // 2. Agregar un nuevo servicio
   const addService = async (formData) => {
     try {
-      const { data, error } = await supabase
+      const { data: newServiceData, error: serviceError } = await supabase
         .from("treatment_services")
         .insert([
           {
-            provider_id: user.id,
             category_id: formData.categoryId,
             name: formData.name,
             base_cost: formData.baseCost,
             estimated_duration_min: formData.duration || 30,
+            // Eliminado: provider_id ya no va aquí
           },
         ])
-        .select();
+        .select()
+        .single(); // .single() nos devuelve el objeto directo en lugar de un array
 
-      if (error) throw error;
-      setServices((prev) => [...data, ...prev]);
+      if (serviceError) throw serviceError;
+      const { error: relationError } = await supabase.from("provider_services").insert([
+        {
+          provider_id: user.id,
+          service_id: newServiceData.id, // El ID numérico que se acaba de generar en el Paso 1
+        },
+      ]);
+
+      if (relationError) throw relationError;
+      setServices((prev) => [newServiceData, ...prev]);
+
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };

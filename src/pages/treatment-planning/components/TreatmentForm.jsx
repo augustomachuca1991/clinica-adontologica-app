@@ -5,7 +5,15 @@ import Select from "@/components/ui/Select";
 import { useTranslation } from "react-i18next";
 /* import { useTreatmentServices } from "@/hooks/TreatmentServicesHooks"; */
 
-const TreatmentForm = ({ services, loading, selectedTooth, onSubmit, onCancel, editingTreatment, isEditingHistory }) => {
+const TreatmentForm = ({
+  services,
+  loading,
+  selectedTooth,
+  onSubmit,
+  onCancel,
+  editingTreatment,
+  isEditingHistory,
+}) => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState(
@@ -58,21 +66,38 @@ const TreatmentForm = ({ services, loading, selectedTooth, onSubmit, onCancel, e
   }, [editingTreatment, selectedTooth]);
 
   const procedureOptions = useMemo(() => {
-    return services.map((s) => ({
-      value: s.id.toString(), // El valor será el ID del servicio
-      label: s.name, // La etiqueta será el nombre del tratamiento
-    }));
+    if (!services || !Array.isArray(services) || services.length === 0) {
+      return [];
+    }
+
+    return services.map((s) => {
+      // Evaluamos todas las estructuras posibles que pueda devolver tu Hook
+      const actualService = s.service ? s.service : s;
+
+      return {
+        value: actualService.id?.toString() || "",
+        label: actualService.name || t("common.unknown"),
+      };
+    });
   }, [services]);
 
   const handleProcedureChange = (serviceId) => {
-    const idStr = serviceId.toString(); // Forzamos string
-    const selectedService = services.find((s) => s.id.toString() === idStr);
+    const idStr = serviceId?.toString(); // Forzamos string para comparar de forma segura
+
+    // Buscamos considerando ambas estructuras (anidada o plana)
+    const selectedService = services.find((s) => {
+      const actualService = s.service ? s.service : s;
+      return actualService.id?.toString() === idStr;
+    });
+
+    // Extraemos la información real del servicio (costo y duración)
+    const serviceData = selectedService?.service ? selectedService.service : selectedService;
 
     setFormData({
       ...formData,
       procedure: idStr,
-      cost: selectedService ? selectedService.base_cost : "",
-      duration: selectedService ? `${selectedService.estimated_duration_min}` : "",
+      cost: serviceData ? serviceData.base_cost : "",
+      duration: serviceData ? `${serviceData.estimated_duration_min}` : "",
     });
   };
 
@@ -88,7 +113,13 @@ const TreatmentForm = ({ services, loading, selectedTooth, onSubmit, onCancel, e
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input label={t("treatment.formLabel.toothNumber")} type="text" value={formData?.toothNumber} disabled required />
+        <Input
+          label={t("treatment.formLabel.toothNumber")}
+          type="text"
+          value={formData?.toothNumber}
+          disabled
+          required
+        />
 
         <Select
           label={loading ? t("loading") : t("treatment.formLabel.procedure")}

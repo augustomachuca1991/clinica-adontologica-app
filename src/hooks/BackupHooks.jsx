@@ -44,6 +44,7 @@ const ORDERED_TABLES = [
   "subscriptions",
   "subscription_history",
   "backup_history",
+  "provider_services",
 ];
 
 // Tablas que solo necesitan INSERT (no upsert) porque sus datos raramente cambian

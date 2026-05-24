@@ -101,6 +101,74 @@
       "validation": {
         "required": "Completá los campos obligatorios antes de guardar"
       }
+    },
+    "editTitle": "Editar paciente",
+    "avatarAlt": "Perfil",
+    "stepIndicator": "Paso {{current}} de {{total}} · {{label}}",
+    "steps": {
+      "personal": "Personal",
+      "contact": "Contacto",
+      "medical": "Médico",
+      "emergency": "Emergencia",
+      "profile": "Perfil"
+    },
+    "fields": {
+      "fullName": "Nombre completo",
+      "birthDate": "Fecha de nacimiento",
+      "gender": "Género",
+      "bloodType": "Grupo sanguíneo",
+      "maritalStatus": "Estado civil",
+      "email": "Email",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Provincia",
+      "zipCode": "Cód. postal",
+      "insurance": "Cobertura médica",
+      "allergies": "Alergias",
+      "status": "Estado"
+    },
+    "placeholders": {
+      "fullName": "Ej: María García",
+      "insurance": "Seleccioná cobertura",
+      "allergies": "Separadas por comas"
+    },
+    "status": {
+      "active": "Activo",
+      "pending": "Pendiente",
+      "inactive": "Inactivo"
+    },
+    "gender": {
+      "female": "Femenino",
+      "male": "Masculino",
+      "other": "Otro"
+    },
+    "marital": {
+      "single": "Soltero/a",
+      "married": "Casado/a",
+      "divorced": "Divorciado/a",
+      "widowed": "Viudo/a",
+      "separated": "Separado/a",
+      "notSpecified": "No especificado"
+    },
+    "insurance": {
+      "selfPay": "Particular",
+      "other": "Otra"
+    },
+    "emergency": {
+      "title": "Contacto de emergencia",
+      "subtitle": "Persona a contactar en caso de urgencia",
+      "relationship": "Relación",
+      "relationshipPlaceholder": "Ej: Cónyuge, Padre/Madre"
+    },
+    "summary": {
+      "title": "Resumen del paciente",
+      "name": "Nombre",
+      "insurance": "Cobertura",
+      "bloodType": "Grupo sang."
+    },
+    "errors": {
+      "imageSize": "Imagen demasiado grande (máx 2MB)"
     }
   },
   "dashboard": {
@@ -938,7 +1006,10 @@
     "unknown": "Desconocido",
     "all": "Todas",
     "loading": "Cargando notas...",
-    "clearFilter": "Limpiar filtros"
+    "clearFilter": "Limpiar filtros",
+    "back": "Atrás",
+    "continue": "Continuar",
+    "saveChanges": "Guardar cambios"
   },
   "roles": {
     "administrator": "Administrador",

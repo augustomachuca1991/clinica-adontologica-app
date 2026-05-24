@@ -101,6 +101,74 @@
       "validation": {
         "required": "Please complete the required fields before saving"
       }
+    },
+    "editTitle": "Edit Patient",
+    "avatarAlt": "Profile",
+    "stepIndicator": "Step {{current}} of {{total}} · {{label}}",
+    "steps": {
+      "personal": "Personal",
+      "contact": "Contact",
+      "medical": "Medical",
+      "emergency": "Emergency",
+      "profile": "Profile"
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "birthDate": "Date of Birth",
+      "gender": "Gender",
+      "bloodType": "Blood Type",
+      "maritalStatus": "Marital Status",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "city": "City",
+      "state": "State/Province",
+      "zipCode": "Zip/Postal Code",
+      "insurance": "Medical Insurance",
+      "allergies": "Allergies",
+      "status": "Status"
+    },
+    "placeholders": {
+      "fullName": "eg: María García",
+      "insurance": "Choose insurance provider",
+      "allergies": "Separated by commas"
+    },
+    "status": {
+      "active": "Active",
+      "pending": "Pending",
+      "inactive": "Inactive"
+    },
+    "gender": {
+      "female": "Female",
+      "male": "Male",
+      "other": "Other"
+    },
+    "marital": {
+      "single": "Single",
+      "married": "Married",
+      "divorced": "Divorced",
+      "widowed": "Widowed",
+      "separated": "Separated",
+      "notSpecified": "Not specified"
+    },
+    "insurance": {
+      "selfPay": "Self-Pay",
+      "other": "Other"
+    },
+    "emergency": {
+      "title": "Emergency Contact",
+      "subtitle": "Person to contact in case of emergency",
+      "relationship": "Relationship",
+      "relationshipPlaceholder": "eg: Spouse, Father/Mother"
+    },
+    "summary": {
+      "title": "Patient Summary",
+      "name": "Name",
+      "insurance": "Insurance",
+      "bloodType": "Blood Type"
+    },
+    "errors": {
+      "imageSize": "Image too large (max 2MB)"
     }
   },
   "dashboard": {
@@ -941,7 +1009,10 @@
     "unknown": "Unknown",
     "all": "All",
     "loading": "Loading notes...",
-    "clearFilter": "Clear filters"
+    "clearFilter": "Clear filters",
+    "back": "Back",
+    "continue": "Continue",
+    "saveChanges": "Save Changes"
   },
   "roles": {
     "administrator": "Administrator",

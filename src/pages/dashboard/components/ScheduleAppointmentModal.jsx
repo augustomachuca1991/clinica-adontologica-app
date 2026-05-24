@@ -47,10 +47,12 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
   ];
 
   const serviceOptions = useMemo(() => {
+    if (!services || !Array.isArray(services)) return [];
+
     return services.map((s) => ({
-      value: s.name,
-      label: s.name,
-      id: s.id,
+      value: s.name, // El value DEBE ser el ID único numérico
+      label: s.name, // El label es el texto que ve el usuario
+      id: s.id.toString(), // ID numérico real para referencia interna
       duration: s.estimated_duration_min,
     }));
   }, [services]);
@@ -61,9 +63,9 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
       { value: "pending", label: t("appointment.status.pending") },
       { value: "cancelled", label: t("appointment.status.cancelled") },
       { value: "scheduled", label: t("appointment.status.scheduled") },
-      { value: "in-progress", label: t("appointment.status.in-progress") },
+      { value: "in_progress", label: t("appointment.status.in-progress") }, // ✨ Corregido con _
       { value: "completed", label: t("appointment.status.completed") },
-      { value: "no-show", label: t("appointment.status.no-show") },
+      { value: "no_show", label: t("appointment.status.no-show") }, // ✨ Corregido con _
     ],
     [t]
   );
@@ -108,7 +110,7 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
           reason: initialData.treatment || "",
           notes: initialData.notes || "",
           status: initialData.status || "scheduled",
-          serviceId: initialData.serviceId || null,
+          serviceId: initialData.serviceId ? Number(initialData.serviceId) : null,
         });
 
         if (initialData.patientId) {
@@ -141,12 +143,14 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
     }
   }, [initialData, isOpen]);
 
-  const handleServiceChange = (selectedName) => {
-    const serviceInfo = serviceOptions.find((s) => s.value === selectedName);
+  const handleServiceChange = (selectedId) => {
+    const idStr = selectedId?.toString();
+    const serviceInfo = serviceOptions.find((s) => s.value === idStr);
+
     setFormData((prev) => ({
-      ...prev,
-      reason: selectedName,
-      serviceId: serviceInfo?.id ? Number(serviceInfo.id) : null,
+      ...formData,
+      reason: serviceInfo ? serviceInfo.label : "", // Guarda el nombre (ej. "Limpieza Dental")
+      serviceId: serviceInfo ? Number(serviceInfo.value) : null, // Guarda el ID numérico real
       duration: serviceInfo?.duration ? String(serviceInfo.duration) : prev.duration,
     }));
   };

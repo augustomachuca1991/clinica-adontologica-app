@@ -6,13 +6,18 @@ import { useAppointments } from "@/hooks/AppointmentsHooks";
 import ScheduleAppointmentModal from "@/pages/dashboard/components/ScheduleAppointmentModal";
 import { notifyError, notifySuccess, notifyConfirm } from "@/utils/notifications";
 
-const isTouchDevice = () => {
-  return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
-};
+const isTouchDevice = () => "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 
 const WeeklyCalendar = () => {
   const { t } = useTranslation();
-  const { appointments, fetchAppointments, addAppointment, updateAppointment, deleteAppointment, loading: isSaving } = useAppointments();
+  const {
+    appointments,
+    fetchAppointments,
+    addAppointment,
+    updateAppointment,
+    deleteAppointment,
+    loading: isSaving,
+  } = useAppointments();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -31,199 +36,141 @@ const WeeklyCalendar = () => {
     }),
   ];
 
-  const daysOfWeek = [t("days.monday"), t("days.tuesday"), t("days.wednesday"), t("days.thursday"), t("days.friday"), t("days.saturday")];
+  const daysOfWeek = [
+    t("days.monday"),
+    t("days.tuesday"),
+    t("days.wednesday"),
+    t("days.thursday"),
+    t("days.friday"),
+    t("days.saturday"),
+  ];
 
-  useEffect(() => {
-    fetchAppointments();
-  }, [fetchAppointments]);
-
-  const getAvailableTime = (selectedDate, selectedTime, excludeId = null) => {
-    if (!selectedTime) return { available: 1440, conflictWith: null };
-
-    const [selH, selM] = selectedTime.split(":").map(Number);
-    const selectedStart = selH * 60 + selM;
-
-    const dayAppointments = appointments
-      .filter((appt) => {
-        const d = appt.date;
-        const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-
-        // COMPARACIÓN DE UUIDs SEGURA
-        const isSameAppointment = excludeId && appt.id && String(appt.id).toLowerCase().trim() === String(excludeId).toLowerCase().trim();
-
-        return dateStr === selectedDate && !isSameAppointment;
-      })
-      .map((appt) => {
-        const d = appt.date;
-        const start = d.getHours() * 60 + d.getMinutes();
-        const durationNum = parseInt(String(appt.duration).replace(/\D/g, "")) || 30;
-
-        return {
-          start,
-          end: start + durationNum,
-          patient: appt.patientName,
-        };
-      })
-      .sort((a, b) => a.start - b.start);
-
-    const collision = dayAppointments.find((appt) => selectedStart >= appt.start && selectedStart < appt.end);
-
-    if (collision) {
-      return { available: 0, conflictWith: collision.patient };
-    }
-
-    const nextAppt = dayAppointments.find((appt) => appt.start > selectedStart);
-    return {
-      available: nextAppt ? nextAppt.start - selectedStart : 1440,
-      conflictWith: null,
-    };
-  };
-
-  const appointmentsMap = useMemo(() => {
-    const map = {};
-    if (!appointments || appointments.length === 0) return map;
-
-    appointments.forEach((appt) => {
-      const d = appt.date;
-
-      // Verificamos que la fecha sea válida antes de mapear
-      if (isNaN(d.getTime())) {
-        console.error("Fecha inválida detectada en appt:", appt);
-        return;
-      }
-
-      const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-      const hours = String(d.getHours()).padStart(2, "0");
-      const minutes = String(d.getMinutes()).padStart(2, "0");
-      const timeKey = `${hours}:${minutes}`;
-
-      const fullKey = `${dateKey}-${timeKey}`;
-      map[fullKey] = appt;
-    });
-
-    return map;
-  }, [appointments]);
-
-  const handleCellClick = (dayName, time) => {
-    // Calculamos la fecha real basándonos en el día de la semana actual
-    const today = new Date();
-    const currentDayIndex = today.getDay(); // 0 (Dom) a 6 (Sab)
-
-    // Mapeo de tus nombres de días a índices (ajustar según tus daysOfWeek)
-    const dayMap = {
+  const dayMap = useMemo(
+    () => ({
       [t("days.monday")]: 1,
       [t("days.tuesday")]: 2,
       [t("days.wednesday")]: 3,
       [t("days.thursday")]: 4,
       [t("days.friday")]: 5,
       [t("days.saturday")]: 6,
-    };
+    }),
+    [t]
+  );
 
-    const targetDayIndex = dayMap[dayName];
-    const diff = targetDayIndex - (currentDayIndex === 0 ? 7 : currentDayIndex); // Ajuste si hoy es domingo
+  useEffect(() => {
+    fetchAppointments();
+  }, [fetchAppointments]);
 
-    const targetDate = new Date(today);
-    targetDate.setDate(today.getDate() + diff);
-
-    // Seteamos los datos iniciales para el modal
-    setSelectedSlot({
-      date: targetDate.toISOString().split("T")[0],
-      time: time,
-      status: "scheduled",
+  const appointmentsMap = useMemo(() => {
+    const map = {};
+    if (!appointments || appointments.length === 0) return map;
+    appointments.forEach((appt) => {
+      const d = appt.date;
+      if (isNaN(d.getTime())) return;
+      const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      const timeKey = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+      map[`${dateKey}-${timeKey}`] = appt;
     });
+    return map;
+  }, [appointments]);
 
+  const getCellDate = (day) => {
+    const today = new Date();
+    const currentDayIndex = today.getDay();
+    const targetDayIndex = dayMap[day];
+    const diff = targetDayIndex - (currentDayIndex === 0 ? 7 : currentDayIndex);
+    const cellDate = new Date(today);
+    cellDate.setDate(today.getDate() + diff);
+    const y = cellDate.getFullYear();
+    const m = String(cellDate.getMonth() + 1).padStart(2, "0");
+    const d = String(cellDate.getDate()).padStart(2, "0");
+    return { cellDate, dateKey: `${y}-${m}-${d}` };
+  };
+
+  const handleCellClick = (dayName, time) => {
+    const { dateKey } = getCellDate(dayName);
+    setSelectedSlot({ date: dateKey, time, status: "scheduled" });
     setIsModalOpen(true);
   };
 
+  // ─── handleSaveAppointment ────────────────────────────────────────────────────
+  // La validación de solapamiento la hace el hook con operadores estrictos (< y >)
+  // lo que permite citas consecutivas. No hay validación local redundante.
   const handleSaveAppointment = async (appointmentData) => {
-    // Aseguramos que trabajamos con un objeto Date válido
     const d = new Date(appointmentData.date);
-
-    // Extraemos las partes exactas que el usuario ve en pantalla
     const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const mo = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
-    const datePart = `${y}-${m}-${day}`;
+    const datePart = `${y}-${mo}-${day}`;
+    const timePart =
+      appointmentData.time || `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 
-    const timePart = appointmentData.time || `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    const isEditing = !!appointmentData.id;
 
-    const resultValidation = getAvailableTime(datePart, timePart, appointmentData.id);
-    const requestedMin = parseInt(appointmentData.duration);
+    const payload = {
+      ...appointmentData,
+      date: `${datePart}T${timePart}:00`,
+    };
 
-    if (resultValidation.available === 0) {
-      notifyError(
-        t("appointment.error.slotOccupied", {
-          patient: resultValidation.conflictWith,
-        })
-      );
+    const res = isEditing ? await updateAppointment(appointmentData.id, payload) : await addAppointment(payload);
+
+    if (res.success) {
+      setIsModalOpen(false);
+      setSelectedSlot(null);
+      notifySuccess(isEditing ? t("appointment.msgSaveSuccess") : t("appointment.msgSuccess"));
+      await fetchAppointments();
       return;
     }
 
-    if (requestedMin > resultValidation.available) {
-      notifyError(
-        t("appointment.error.insufficientTime", {
-          available: resultValidation.available,
-        })
-      );
-      return;
-    }
+    // El hook devuelve conflict: true cuando hay solapamiento real
+    // y un mensaje con el nombre del paciente y el horario exacto
+    notifyError(res.error || t("appointment.msgError"));
+  };
 
-    const isEditing = !!appointmentData.id; // Si tiene ID, estamos editando
+  const handleAddAppointment = () => {
+    setSelectedSlot(null);
+    setIsModalOpen(true);
+  };
 
-    try {
-      const payload = {
-        ...appointmentData,
-        date: `${datePart}T${timePart}:00`, // El formato local que arreglamos
-      };
-
-      const res = isEditing ? await updateAppointment(appointmentData.id, payload) : await addAppointment(payload);
-
+  const handleDeleteAppointment = async (e, id) => {
+    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
+    notifyConfirm(t("appointment.confirmDeleteTitle"), t("appointment.confirmDeleteDescription"), async () => {
+      const res = await deleteAppointment(id);
       if (res.success) {
-        setIsModalOpen(false);
-        notifySuccess(isEditing ? t("appointment.msgSaveSuccess") : t("appointment.msgSuccess"));
-        await fetchAppointments();
+        notifySuccess(t("appointment.msgDeleteSuccess"));
+        setActiveMenu(null);
+      } else {
+        notifyError(t("appointment.msgErrorDelete"));
       }
-    } catch (error) {
-      notifyError("appointment.msgError");
-    }
+    });
+  };
+
+  const handleReschedule = (e, appointment) => {
+    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
+    const d = new Date(appointment.date);
+    const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    setSelectedSlot({
+      ...appointment,
+      id: appointment.id,
+      patientId: appointment.patientId,
+      patientName: appointment.patientName,
+      patientImage: appointment.patientImage,
+      date: localDate,
+      time: appointment.time,
+      duration: String(appointment.duration).replace(" min", ""),
+      treatment: appointment.treatment,
+    });
+    setIsModalOpen(true);
   };
 
   const statusLegend = [
-    {
-      label: t("appointment.status.scheduled"),
-      class: "bg-blue-100 border-blue-500 text-blue-700",
-      status: "scheduled",
-    },
-    {
-      label: t("appointment.status.confirmed"),
-      class: "bg-emerald-100 border-emerald-500 text-emerald-700",
-      status: "confirmed",
-    },
-    {
-      label: t("appointment.status.pending"),
-      class: "bg-amber-100 border-amber-500 text-amber-700",
-      status: "pending",
-    },
-    {
-      label: t("appointment.status.in-progress"),
-      class: "bg-purple-100 border-purple-500 text-purple-700",
-      status: "in-progress",
-    },
-    {
-      label: t("appointment.status.completed"),
-      class: "bg-slate-100 border-slate-400 text-slate-600",
-      status: "completed",
-    },
-    {
-      label: t("appointment.status.cancelled"),
-      class: "bg-red-100 border-red-500 text-red-700",
-      status: "cancelled",
-    },
-    {
-      label: t("appointment.status.no-show"),
-      class: "bg-gray-100 border-gray-400 text-gray-500",
-      status: "no-show",
-    },
+    { label: t("appointment.status.scheduled"), status: "scheduled" },
+    { label: t("appointment.status.confirmed"), status: "confirmed" },
+    { label: t("appointment.status.pending"), status: "pending" },
+    { label: t("appointment.status.in-progress"), status: "in-progress" },
+    { label: t("appointment.status.completed"), status: "completed" },
+    { label: t("appointment.status.cancelled"), status: "cancelled" },
+    { label: t("appointment.status.no-show"), status: "no-show" },
   ];
 
   const getStatusStyles = (status) => {
@@ -240,72 +187,15 @@ const WeeklyCalendar = () => {
     return styles[status] || styles.default;
   };
 
-  const statusColors = {
-    scheduled: "bg-blue-100 border-blue-500 text-blue-700",
-    confirmed: "bg-emerald-100 border-emerald-500 text-emerald-700",
-    cancelled: "bg-red-100 border-red-500 text-red-700",
-    completed: "bg-slate-100 border-slate-400 text-slate-600",
-    default: "bg-primary/15 border-primary text-primary-dark",
-  };
-
-  const handleAddAppointment = () => {
-    setSelectedSlot(null);
-    setSelectedSlot(null);
-    setIsModalOpen(true);
-  };
-
-  const handleDeleteAppointment = async (e, id) => {
-    if (e && typeof e.stopPropagation === "function") {
-      e.stopPropagation();
-    }
-
-    notifyConfirm(t("appointment.confirmDeleteTitle"), t("appointment.confirmDeleteDescription"), async () => {
-      try {
-        const res = await deleteAppointment(id);
-        if (res.success) {
-          notifySuccess(t("appointment.msgDeleteSuccess"));
-          setActiveMenu(null);
-        } else {
-          notifyError(t("appointment.msgErrorDelete"));
-        }
-      } catch (error) {
-        notifyError(`Error: ${error}` || "An unexpected error occurred");
-      }
-    });
-  };
-
-  const handleReschedule = (e, appointment) => {
-    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
-
-    const d = new Date(appointment.date);
-    const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    const durationClean = String(appointment.duration).replace(" min", "");
-
-    setSelectedSlot({
-      ...appointment,
-      id: appointment.id,
-      patientId: appointment.patientId || appointment.id_paciente,
-      patientName: appointment.patientName,
-      patientImage: appointment.patientImage,
-      date: localDate,
-      time: appointment.time,
-      duration: durationClean,
-      treatment: appointment.treatment,
-    });
-
-    setIsModalOpen(true);
-  };
-
   return (
     <>
       <div className="space-y-6">
-        {/* Header del Calendario */}
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-headline font-bold text-foreground">{t("calendar.title")}</h1>
             <p className="text-muted-foreground">{t("calendar.subtitle")}</p>
           </div>
-
           <div className="flex gap-2">
             <Button variant="tertiary" size="sm" iconName="ChevronLeft" />
             <Button variant="tertiary" size="sm" iconName="ChevronRight" />
@@ -315,72 +205,52 @@ const WeeklyCalendar = () => {
           </div>
         </div>
 
+        {/* Leyenda */}
         <div className="w-full bg-muted/5 border-y border-border px-6 py-3">
           <div className="flex flex-wrap items-center justify-start gap-x-6 gap-y-3">
             {statusLegend.map((item) => (
               <div key={item.status} className="flex items-center gap-2 group">
                 <span
-                  className={`w-3 h-3 rounded-full border shadow-sm transition-transform group-hover:scale-110 
-                    ${getStatusStyles(item.status).split(" ")[1]} 
+                  className={`w-3 h-3 rounded-full border shadow-sm transition-transform group-hover:scale-110
+                    ${getStatusStyles(item.status).split(" ")[1]}
                     ${getStatusStyles(item.status).split(" ")[0]}`}
                 />
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight">{item.label}</span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
+                  {item.label}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
+        {/* Grilla */}
         <div className="clinical-card overflow-hidden border-none shadow-xl">
-          {/* Grid Container */}
           <div className="overflow-x-auto">
+            {/* Cabecera días */}
             <div className="min-w-[800px] grid grid-cols-[80px_repeat(6,1fr)] border-b border-border bg-muted/30">
-              {/* Esquina vacía */}
-              <div className="p-4 border-r border-border"></div>
-              {/* Cabecera de Días */}
+              <div className="p-4 border-r border-border" />
               {daysOfWeek.map((day) => (
-                <div key={day} className="p-4 text-center font-semibold text-sm text-foreground border-r border-border last:border-0">
+                <div
+                  key={day}
+                  className="p-4 text-center font-semibold text-sm text-foreground border-r border-border last:border-0"
+                >
                   {day}
                 </div>
               ))}
             </div>
 
-            {/* Cuerpo de la Grilla */}
+            {/* Cuerpo */}
             <div className="min-w-[800px] grid grid-cols-[80px_repeat(6,1fr)]">
-              {timeSlots.map((time, index) => (
+              {timeSlots.map((time) => (
                 <React.Fragment key={time}>
-                  {/* Columna de Horas */}
                   <div
                     className={`p-2 text-xs font-medium text-muted-foreground text-right pr-4 border-r border-border flex items-center justify-end ${time.endsWith(":00") ? "bg-muted/20" : ""}`}
                   >
                     {time.endsWith(":00") || time.endsWith(":30") ? time : ""}
                   </div>
 
-                  {/* Celdas de Días */}
-                  {daysOfWeek.map((day, dayIndex) => {
-                    const today = new Date();
-                    const currentDayIndex = today.getDay();
-
-                    const dayMap = {
-                      [t("days.monday")]: 1,
-                      [t("days.tuesday")]: 2,
-                      [t("days.wednesday")]: 3,
-                      [t("days.thursday")]: 4,
-                      [t("days.friday")]: 5,
-                      [t("days.saturday")]: 6,
-                    };
-
-                    const targetDayIndex = dayMap[day];
-                    const diff = targetDayIndex - (currentDayIndex === 0 ? 7 : currentDayIndex);
-
-                    const cellDate = new Date(today);
-                    cellDate.setDate(today.getDate() + diff);
-
-                    // Formatear manualmente a local YYYY-MM-DD
-                    const y = cellDate.getFullYear();
-                    const m = String(cellDate.getMonth() + 1).padStart(2, "0");
-                    const d = String(cellDate.getDate()).padStart(2, "0");
-                    const dateKey = `${y}-${m}-${d}`;
-
+                  {daysOfWeek.map((day) => {
+                    const { dateKey } = getCellDate(day);
                     const appointment = appointmentsMap[`${dateKey}-${time}`];
 
                     return (
@@ -395,21 +265,11 @@ const WeeklyCalendar = () => {
                           <div
                             onClick={(e) => {
                               e.stopPropagation();
-
-                              if (isTouchDevice()) {
-                                setActiveMenu(appointment); // En celular abre el menú de abajo
-                              } else {
-                                handleReschedule(e, appointment); // En PC abre el modal directo
-                              }
+                              isTouchDevice() ? setActiveMenu(appointment) : handleReschedule(e, appointment);
                             }}
-                            className={`absolute inset-x-1 top-1 rounded-md border-l-4 p-1.5 overflow-hidden shadow-md animate-in fade-in zoom-in duration-200 group/appt
-                              ${statusColors[appointment.status] || statusColors.default}`}
-                            style={{
-                              height: `${(parseInt(appointment.duration) / 15) * 48 - 4}px`,
-                              zIndex: 20,
-                            }}
+                            className={`absolute inset-x-1 top-1 rounded-md border-l-4 p-1.5 overflow-hidden shadow-md animate-in fade-in zoom-in duration-200 group/appt ${getStatusStyles(appointment.status)}`}
+                            style={{ height: `${(parseInt(appointment.duration) / 15) * 48 - 4}px`, zIndex: 20 }}
                           >
-                            {/* BOTONES DE ACCIÓN RÁPIDA (Aparecen al hacer hover sobre la cita) */}
                             <div className="absolute right-1 top-1 hidden lg:flex flex-col gap-1 opacity-0 group-hover/appt:opacity-100 transition-opacity z-30">
                               <button
                                 onClick={(e) => handleReschedule(e, appointment)}
@@ -424,16 +284,17 @@ const WeeklyCalendar = () => {
                                 <Icon name="Trash2" size={12} />
                               </button>
                             </div>
-
                             <div className="flex flex-col h-full pr-4">
-                              {" "}
-                              {/* Padding derecho para que el texto no pise los botones */}
                               <div className="flex items-center gap-1 mb-0.5">
                                 <Icon name="Clock" size={8} />
-                                <span className="text-[8px] font-bold uppercase tracking-wider italic">{appointment.time}</span>
+                                <span className="text-[8px] font-bold uppercase tracking-wider italic">
+                                  {appointment.time}
+                                </span>
                               </div>
                               <p className="text-[10px] font-bold truncate leading-tight">{appointment.patientName}</p>
-                              <p className="text-[9px] opacity-90 truncate leading-tight italic">{appointment.treatment}</p>
+                              <p className="text-[9px] opacity-90 truncate leading-tight italic">
+                                {appointment.treatment}
+                              </p>
                               {parseInt(appointment.duration) > 30 && (
                                 <div className="mt-auto pt-1 border-t border-current/10 flex justify-between items-center">
                                   <span className="text-[8px] font-medium">{appointment.duration} min</span>
@@ -443,7 +304,6 @@ const WeeklyCalendar = () => {
                             </div>
                           </div>
                         )}
-
                         {!appointment && (
                           <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center">
                             <Icon name="Plus" size={14} className="text-primary/40" />
@@ -458,6 +318,7 @@ const WeeklyCalendar = () => {
           </div>
         </div>
       </div>
+
       <ScheduleAppointmentModal
         isOpen={isModalOpen}
         onClose={() => {
@@ -469,6 +330,7 @@ const WeeklyCalendar = () => {
         isLoading={isSaving}
       />
 
+      {/* Mobile action sheet */}
       {activeMenu && (
         <div
           className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4"
@@ -491,7 +353,6 @@ const WeeklyCalendar = () => {
                 </div>
               </div>
             </div>
-
             <div className="p-4 flex flex-col gap-2">
               <Button
                 variant="outline"
@@ -504,7 +365,6 @@ const WeeklyCalendar = () => {
                 <Icon name="CalendarClock" size={20} className="mr-3 text-blue-600" />
                 {t("appointment.reschedule") || "Reprogramar Cita"}
               </Button>
-
               <Button
                 variant="outline"
                 className="justify-start h-14 text-base font-medium text-red-600 border-red-100 hover:bg-red-50"
@@ -516,7 +376,6 @@ const WeeklyCalendar = () => {
                 <Icon name="Trash2" size={20} className="mr-3" />
                 {t("delete") || "Eliminar Cita"}
               </Button>
-
               <button
                 className="w-full py-4 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors"
                 onClick={() => setActiveMenu(null)}

@@ -54,6 +54,27 @@ export const useClinicalNotes = () => {
     }
   }, []);
 
+  // ─── Fetch TODAS las notas del provider logueado (vista global) ───────────────
+  // No filtra por record_id — trae todo lo que el provider puede ver según RLS.
+  const fetchAllProviderNotes = useCallback(async (providerId) => {
+    if (!providerId) return;
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("clinical_notes")
+        .select("*")
+        .eq("provider_id", providerId)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setNotes(data || []);
+    } catch (err) {
+      console.error("useClinicalNotes.fetchAllProviderNotes:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   // ─── Crear nota ───────────────────────────────────────────────────────────────
   const createNote = async ({ recordId, providerId, content, type = "treatment", isPrivate = false }) => {
     setIsSubmitting(true);
@@ -85,6 +106,7 @@ export const useClinicalNotes = () => {
   };
 
   // ─── Actualizar nota ──────────────────────────────────────────────────────────
+  // RLS rechaza silenciosamente si intentás editar nota ajena.
   const updateNote = async (id, { content, type, isPrivate }) => {
     setIsSubmitting(true);
     try {
@@ -153,6 +175,7 @@ export const useClinicalNotes = () => {
     isSubmitting,
     currentProviderId,
     fetchNotes,
+    fetchAllProviderNotes,
     fetchCurrentProvider,
     createNote,
     updateNote,

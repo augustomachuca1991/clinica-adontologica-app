@@ -555,6 +555,7 @@ export default function ClinicalNotesPage({ recordId, providerId }) {
     isSubmitting,
     fetchNotes,
     fetchCurrentProvider,
+    fetchAllProviderNotes,
     createNote,
     updateNote,
     togglePrivate,
@@ -573,14 +574,26 @@ export default function ClinicalNotesPage({ recordId, providerId }) {
   const [deleteId, setDeleteId] = useState(null); // id a eliminar
 
   useEffect(() => {
-    fetchCurrentProvider();
-    if (recordId) fetchNotes(recordId);
-  }, [recordId]);
+    const init = async () => {
+      const providerId = await fetchCurrentProvider();
+      if (providerId) fetchAllProviderNotes(providerId);
+    };
+    init();
+  }, []);
 
   // ── Handlers CRUD ──────────────────────────────────────────────────────────
   const handleCreate = async ({ content, type, isPrivate }) => {
-    const res = await createNote({ recordId, providerId, content, type, isPrivate });
-    if (res.success) setCreateOpen(false);
+    const res = await createNote({
+      recordId: null, // sin registro clínico asociado
+      providerId: currentProviderId, // ← esto faltaba
+      content,
+      type,
+      isPrivate,
+    });
+    if (res.success) {
+      setCreateOpen(false);
+      fetchAllProviderNotes(currentProviderId); // refrescar lista
+    }
   };
 
   const handleUpdate = async ({ content, type, isPrivate }) => {

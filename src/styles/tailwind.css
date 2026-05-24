@@ -8,97 +8,156 @@
 
 @layer base {
   :root {
-    /* Primary Color - Tu Indigo Original */
-    --color-primary: #b97beb;
+    /* ── Primario — Violeta Orion ── */
+    --color-primary: #7c5cbf;
     --color-primary-foreground: #ffffff;
+    --color-primary-light: #ede8f9;
+    --color-primary-dark: #5a3f99;
 
-    /* Secondary Colors - Slate Blue (Ajustado para no competir) */
-    --color-secondary: #64748b;
+    /* ── Secundario — Slate neutro ── */
+    --color-secondary: #5e6e85;
     --color-secondary-foreground: #ffffff;
 
-    /* Tertiary - Lavender (Versión lavada de tu primario) */
-    --color-tertiary: #f5eeff;
-    --color-tertiary-foreground: #7c3aed;
-
-    /* Accent Colors - Rose (Más armónico que el rojo puro) */
-    --color-accent: #f43f5e;
+    /* ── Acento — Teal clínico ── */
+    --color-accent: #0e8a7a;
     --color-accent-foreground: #ffffff;
 
-    /* Background & Surface */
-    --color-background: #f8fafc;
-    --color-foreground: #1e1b4b;
+    /* ── Superficies ── */
+    --color-background: #f7f6fb;
+    --color-foreground: #1c1733;
+
     --color-card: #ffffff;
-    --color-card-foreground: #1e1b4b;
+    --color-card-foreground: #1c1733;
+
     --color-popover: #ffffff;
-    --color-popover-foreground: #1e1b4b;
+    --color-popover-foreground: #1c1733;
 
-    /* Muted & Subtle Elements */
-    --color-muted: #f1f5f9;
-    --color-muted-foreground: #64748b;
+    /* ── Muted ── */
+    --color-muted: #eeecf6;
+    --color-muted-foreground: #6b6880;
 
-    /* Border & Input */
-    --color-border: #e2e8f0;
-    --color-input: #f1f5f9;
-    --color-ring: #b97beb;
+    /* ── Bordes e inputs ── */
+    --color-border: #ddd9ee;
+    --color-input: #f0eef9;
+    --color-ring: #7c5cbf;
 
-    /* Status Colors */
-    --color-success: #10b981;
+    /* ── Estados ── */
+    --color-success: #0e9e6e;
     --color-success-foreground: #ffffff;
-    --color-warning: #f59e0b;
+    --color-success-light: #e0f5ee;
+
+    --color-warning: #d08a00;
     --color-warning-foreground: #ffffff;
-    --color-error: #ef4444;
+    --color-warning-light: #fef3d0;
+
+    --color-error: #c93b3b;
     --color-error-foreground: #ffffff;
-    --color-destructive: #dc2626;
+    --color-error-light: #fdeaea;
+
+    --color-destructive: #b52b2b;
     --color-destructive-foreground: #ffffff;
 
-    /* Brand Colors - Clinical Modernism Palette */
-    --color-brand-primary: #2b5a87; /* Deep Clinical Blue - Medical authority and trust */
-    --color-brand-secondary: #4a90a4; /* Calming Teal - Approachable warmth */
-    --color-brand-accent: #e8a547; /* Warm Amber - Urgency without aggression */
-    --color-brand-success: #5b8a72; /* Healthcare Green - Success and growth */
+    /* ── Brand clínico (para badges, highlights) ── */
+    --color-brand-primary: #7c5cbf;
+    --color-brand-secondary: #0e8a7a;
+    --color-brand-accent: #d08a00;
+    --color-brand-success: #0e9e6e;
 
-    /* Typography */
+    /* ── Tipografía ── */
     --font-headline: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --font-body: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --font-accent: "JetBrains Mono", "Courier New", monospace;
 
-    /* Spacing Scale - 8px base unit */
-    --spacing-xs: 0.5rem; /* 8px */
-    --spacing-sm: 0.75rem; /* 12px */
-    --spacing-md: 1rem; /* 16px */
-    --spacing-lg: 1.5rem; /* 24px */
-    --spacing-xl: 2rem; /* 32px */
-    --spacing-2xl: 3rem; /* 48px */
+    /* ── Spacing (base 8px) ── */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
 
-    /* Border Radius */
-    --radius-sm: 0.25rem; /* 4px */
-    --radius-md: 0.375rem; /* 6px */
-    --radius-lg: 0.5rem; /* 8px */
-    --radius-xl: 0.75rem; /* 12px */
+    /* ── Radios ── */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
 
-    /* Shadows - Ahora con el matiz de tu color #b97beb */
-    --shadow-sm: 0 1px 3px rgba(185, 123, 235, 0.05);
-    --shadow-md: 0 4px 12px rgba(185, 123, 235, 0.08);
-    --shadow-lg: 0 12px 24px rgba(185, 123, 235, 0.12);
-    --shadow-xl: 0 20px 25px -5px rgba(185, 123, 235, 0.15);
+    /* ── Sombras — neutras, sin color de marca ── */
+    --shadow-sm: 0 1px 2px rgba(28, 23, 51, 0.05);
+    --shadow-md: 0 4px 12px rgba(28, 23, 51, 0.08);
+    --shadow-lg: 0 12px 24px rgba(28, 23, 51, 0.1);
+    --shadow-xl: 0 20px 40px rgba(28, 23, 51, 0.12);
 
-    /* Transitions */
+    /* ── Sombras clínicas con tinte de marca ── */
+    --shadow-clinical-sm: 0 1px 3px rgba(124, 92, 191, 0.08);
+    --shadow-clinical-md: 0 4px 12px rgba(124, 92, 191, 0.12);
+    --shadow-clinical-lg: 0 12px 24px rgba(124, 92, 191, 0.15);
+
+    /* ── Transiciones ── */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* ═══════════════════════════════
+     DARK MODE — completo
+  ═══════════════════════════════ */
   .dark {
-    --color-background: #0f0a19;
-    --color-foreground: #f8fafc;
-    --color-card: #1a1425;
-    --color-card-foreground: #f8fafc;
-    --color-popover: #1a1425;
-    --color-popover-foreground: #f8fafc;
-    --color-muted: #2d243d;
-    --color-muted-foreground: #a78bfa;
-    --color-border: #2d243d;
-    --color-input: #2d243d;
+    --color-primary: #9d7fd4;
+    --color-primary-foreground: #ffffff;
+    --color-primary-light: #2a2050;
+    --color-primary-dark: #bba0e8;
+
+    --color-secondary: #8a97aa;
+    --color-secondary-foreground: #ffffff;
+
+    --color-accent: #2abfad;
+    --color-accent-foreground: #ffffff;
+
+    --color-background: #100e1e;
+    --color-foreground: #edeaf8;
+
+    --color-card: #1a1730;
+    --color-card-foreground: #edeaf8;
+
+    --color-popover: #1f1c35;
+    --color-popover-foreground: #edeaf8;
+
+    --color-muted: #252240;
+    --color-muted-foreground: #9d97b8;
+
+    --color-border: #2e2a4a;
+    --color-input: #252240;
+    --color-ring: #9d7fd4;
+
+    --color-success: #2abfa0;
+    --color-success-foreground: #ffffff;
+    --color-success-light: #0d2e28;
+
+    --color-warning: #f0aa30;
+    --color-warning-foreground: #1c1733;
+    --color-warning-light: #2e2210;
+
+    --color-error: #e05c5c;
+    --color-error-foreground: #ffffff;
+    --color-error-light: #2e1515;
+
+    --color-destructive: #c94444;
+    --color-destructive-foreground: #ffffff;
+
+    --color-brand-primary: #9d7fd4;
+    --color-brand-secondary: #2abfad;
+    --color-brand-accent: #f0aa30;
+    --color-brand-success: #2abfa0;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.45);
+
+    --shadow-clinical-sm: 0 1px 3px rgba(157, 127, 212, 0.15);
+    --shadow-clinical-md: 0 4px 12px rgba(157, 127, 212, 0.2);
+    --shadow-clinical-lg: 0 12px 24px rgba(157, 127, 212, 0.25);
   }
 
   * {
@@ -129,25 +188,24 @@
 }
 
 @layer components {
-  /* Clinical Data Halo Effect - Sincronizado con tu Indigo #b97beb */
   .data-halo {
-    box-shadow: 0 0 20px rgba(185, 123, 235, 0.25);
+    box-shadow: 0 0 20px rgba(124, 92, 191, 0.2);
     transition: box-shadow var(--transition-base);
   }
+  .dark .data-halo {
+    box-shadow: 0 0 20px rgba(157, 127, 212, 0.25);
+  }
 
-  /* Halo Urgente - Usando el nuevo tono Rose #f43f5e para evitar saturación agresiva */
   .data-halo-urgent {
-    box-shadow: 0 0 20px rgba(244, 63, 94, 0.25);
+    box-shadow: 0 0 20px rgba(201, 59, 59, 0.2);
     transition: box-shadow var(--transition-base);
   }
 
-  /* Halo Success - Usando el Esmeralda #10b981 */
   .data-halo-success {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+    box-shadow: 0 0 20px rgba(14, 158, 110, 0.2);
     transition: box-shadow var(--transition-base);
   }
 
-  /* Micro-animations */
   .fade-in-up {
     animation: fadeInUp 0.4s ease-out;
   }
@@ -163,32 +221,28 @@
     }
   }
 
-  /* Clinical Card Elevation */
   .clinical-card {
-    @apply bg-card rounded-lg shadow-md border border-border;
+    @apply bg-card rounded-lg border border-border;
+    box-shadow: var(--shadow-clinical-sm);
     transition:
       transform var(--transition-base),
       box-shadow var(--transition-base);
   }
-
   .clinical-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-clinical-lg);
   }
 
-  /* Trust-building hover states */
   .trust-hover {
     transition:
       transform var(--transition-base),
       box-shadow var(--transition-base);
   }
-
   .trust-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
   }
 
-  /* Contextual status indicators */
   .status-indicator {
     @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium;
     transition: all var(--transition-slow);
@@ -203,7 +257,6 @@
     @apply text-error;
   }
 
-  /* Progressive reveal animations */
   .reveal-content {
     max-height: 0;
     overflow: hidden;
@@ -212,13 +265,11 @@
       opacity var(--transition-slow);
     opacity: 0;
   }
-
   .reveal-content.active {
     max-height: 1000px;
     opacity: 1;
   }
 
-  /* Clinical timeline visualization */
   .timeline-item::before {
     content: "";
     position: absolute;
@@ -228,7 +279,6 @@
     width: 2px;
     background: var(--color-border);
   }
-
   .timeline-item::after {
     content: "";
     position: absolute;
@@ -243,36 +293,29 @@
 }
 
 @layer utilities {
-  /* Responsive typography with clamp */
   .text-responsive-sm {
     font-size: clamp(0.875rem, 2vw, 1rem);
   }
-
   .text-responsive-base {
     font-size: clamp(1rem, 2.5vw, 1.125rem);
   }
-
   .text-responsive-lg {
     font-size: clamp(1.125rem, 3vw, 1.5rem);
   }
-
   .text-responsive-xl {
     font-size: clamp(1.5rem, 4vw, 2rem);
   }
 
-  /* Clinical precision spacing */
   .clinical-spacing {
     @apply space-y-6;
   }
 
-  /* Empathetic color transitions */
   .color-transition {
     transition:
       color var(--transition-slow),
       background-color var(--transition-slow);
   }
 
-  /* Focus visible for accessibility */
   .focus-clinical:focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }

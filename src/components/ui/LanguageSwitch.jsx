@@ -11,60 +11,49 @@ const LanguageSwitch = () => {
   };
 
   return (
-    <div className="flex items-center gap-1 p-1 rounded-full bg-muted border border-border">
-      {/* Español */}
+    <div className="flex items-center gap-2">
       <button
         onClick={() => changeLang("es")}
-        className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm transition-all duration-200
-          ${currentLang === "es" ? "bg-primary text-primary-foreground shadow-sm" : "hover:bg-muted-foreground/10 text-muted-foreground"}`}
+        className={`flex items-center gap-1.5 border-none bg-transparent cursor-pointer transition-opacity duration-150 ${
+          currentLang === "es" ? "opacity-100" : "opacity-35 hover:opacity-60"
+        }`}
         aria-label="Cambiar a español"
       >
-        {/* <span className="text-base">🇪🇸</span> */}
-        <span className="hidden sm:inline">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="18" height="18">
-            <defs>
-              <clipPath id="circleView">
-                <circle cx="50" cy="50" r="50" />
-              </clipPath>
-            </defs>
-            <g clipPath="url(#circleView)">
-              <rect width="100" height="25" fill="#AA151B" />
-              <rect y="25" width="100" height="50" fill="#F1BF00" />
-              <rect y="75" width="100" height="25" fill="#AA151B" />
-              <circle cx="30" cy="50" r="8" fill="#AA151B" />
-              <rect x="26" y="46" width="8" height="10" fill="#8d1318" opacity="0.5" />
-            </g>
+        <span className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0 block">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <rect width="20" height="20" fill="#AA151B" />
+            <rect y="5" width="20" height="10" fill="#F1BF00" />
           </svg>
+        </span>
+        <span className={`text-sm font-medium ${currentLang === "es" ? "text-foreground" : "text-muted-foreground"}`}>
+          ES
         </span>
       </button>
 
-      {/* Inglés */}
+      <div className="w-px h-4 bg-border" />
+
       <button
         onClick={() => changeLang("en")}
-        className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm transition-all duration-200
-          ${currentLang === "en" ? "bg-primary text-primary-foreground shadow-sm" : "hover:bg-muted-foreground/10 text-muted-foreground"}`}
+        className={`flex items-center gap-1.5 border-none bg-transparent cursor-pointer transition-opacity duration-150 ${
+          currentLang === "en" ? "opacity-100" : "opacity-35 hover:opacity-60"
+        }`}
         aria-label="Switch to English"
       >
-        {/* <span className="text-base">🇺🇸</span> */}
-        <span className="hidden sm:inline">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="18" height="18">
-            <defs>
-              <clipPath id="circleViewUK">
-                <circle cx="50" cy="50" r="50" />
-              </clipPath>
-            </defs>
-            <g clipPath="url(#circleViewUK)">
-              <rect width="100" height="100" fill="#012169" />
-              <line x1="0" y1="0" x2="100" y2="100" stroke="#FFF" strokeWidth="10" />
-              <line x1="100" y1="0" x2="0" y2="100" stroke="#FFF" strokeWidth="10" />
-              <line x1="0" y1="0" x2="100" y2="100" stroke="#C8102E" strokeWidth="4" />
-              <line x1="100" y1="0" x2="0" y2="100" stroke="#C8102E" strokeWidth="4" />
-              <rect x="40" y="0" width="20" height="100" fill="#FFF" />
-              <rect x="0" y="40" width="100" height="20" fill="#FFF" />
-              <rect x="44" y="0" width="12" height="100" fill="#C8102E" />
-              <rect x="0" y="44" width="100" height="12" fill="#C8102E" />
-            </g>
+        <span className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0 block">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <rect width="20" height="20" fill="#012169" />
+            <line x1="0" y1="0" x2="20" y2="20" stroke="#fff" strokeWidth="3.5" />
+            <line x1="20" y1="0" x2="0" y2="20" stroke="#fff" strokeWidth="3.5" />
+            <line x1="0" y1="0" x2="20" y2="20" stroke="#C8102E" strokeWidth="1.8" />
+            <line x1="20" y1="0" x2="0" y2="20" stroke="#C8102E" strokeWidth="1.8" />
+            <rect x="8.5" y="0" width="3" height="20" fill="#fff" />
+            <rect x="0" y="8.5" width="20" height="3" fill="#fff" />
+            <rect x="9" y="0" width="2" height="20" fill="#C8102E" />
+            <rect x="0" y="9" width="20" height="2" fill="#C8102E" />
           </svg>
+        </span>
+        <span className={`text-sm font-medium ${currentLang === "en" ? "text-foreground" : "text-muted-foreground"}`}>
+          EN
         </span>
       </button>
     </div>

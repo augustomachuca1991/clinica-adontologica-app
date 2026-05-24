@@ -247,7 +247,7 @@ const Dashboard = () => {
     } else if (action === "scheduleAppointment") {
       setIsScheduleModalOpen(true);
     } else if (action === "addNote") {
-      navigate("/clinical-records");
+      navigate("/clinical-notes");
     } else if (action === "weekly") {
       navigate("/weekly-calendar");
     } else {

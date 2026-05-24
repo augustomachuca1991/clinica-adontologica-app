@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import Spinner from "@/components/ui/Spinner";
 import Image from "@/components/AppImage";
-import logo from "@/assets/images/logo-orion-software.svg";
+import logo from "@/assets/images/orion-logotipo-claro.svg";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -79,8 +79,7 @@ const ResetPassword = () => {
         <div className="text-center mb-8">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
             <div className="absolute top-6 left-28 inline-flex items-center gap-2">
-              <Image src={logo} alt="App Logo" className="h-10 md:h-14 w-auto object-contain" />
-              <h2 className="text-xl font-headline font-bold text-foreground tracking-[-0.015em]">Orion Software</h2>
+              <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
             </div>
           </div>
           <p className="text-sm text-muted-foreground mt-2">{t("resetPassword.subtitle")}</p>

@@ -8,7 +8,7 @@ import Icon from "@/components/AppIcon";
 import { notifyError, notifySuccess } from "@/utils/notifications";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "@/components/AppImage";
-import logo from "@/assets/images/logo-orion-software.svg";
+import logo from "@/assets/images/orion-logotipo-claro.svg";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -48,9 +48,6 @@ const ForgotPassword = () => {
           <div className="mx-auto mb-3 flex items-center justify-center rounded-xl bg-primary/10">
             <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
           </div>
-          <h1 className="text-2xl font-headline font-bold text-foreground tracking-[-0.015em]">
-            {t("forgotPassword.title")}
-          </h1>
           <p className="text-sm text-muted-foreground mt-2">{t("forgotPassword.subtitle")}</p>
         </div>
 

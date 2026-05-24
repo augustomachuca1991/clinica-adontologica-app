@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Icon from "../AppIcon";
-import Image from "../AppImage";
-import logo from "@/assets/images/logo-orion-software.svg";
+import Icon from "@/components/AppIcon";
+import Image from "@/components/AppImage";
+import logo from "@/assets/images/orion-logotipo-claro-600.svg";
+import logoIsotipo from "@/assets/images/orion-isotipo-transparente.svg";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Sidebar = ({ isCollapsed = false, onToggle }) => {
   const navigate = useNavigate();
@@ -106,20 +107,12 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
         } ${isCollapsed ? "w-20" : "w-64"}`}
       >
         <div
-          className="sidebar-header flex items-center justify-center h-16 border-b border-border bg-primary/5 backdrop-blur-sm"
+          className="sidebar-header flex items-center justify-center h-14 border-b border-border bg-primary/5 backdrop-blur-sm"
           onClick={() => navigate(isAdmin ? "/admin-panel" : "/dashboard")}
           role="button"
           aria-label="Go to home"
         >
-          <div
-            className={`sidebar-logo flex items-center justify-center transition-all duration-slow ${isCollapsed ? "w-10 h-10" : "w-12 h-12"} bg-primary/10 rounded-lg`}
-          >
-            {/* <Icon name="Activity" size={isCollapsed ? 20 : 24} color="var(--color-primary)" /> */}
-            <Image src={logo} alt="App Logo" className={`object-contain ${isCollapsed ? "h-14 w-14" : "h-10 w-10"}`} />
-          </div>
-          {!isCollapsed && (
-            <span className="ml-1 text-lg font-headline font-bold text-foreground tracking-[-0.015em]">{appName}</span>
-          )}
+          <Image src={isCollapsed ? logoIsotipo : logo} alt={`${appName} Logo`} className="h-12 w-100" />
         </div>
 
         <nav className="flex-1 overflow-y-auto py-4 px-2">

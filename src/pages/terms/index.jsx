@@ -3,13 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/AppIcon";
+import Image from "@/components/AppImage";
+import logo from "@/assets/images/orion-logotipo-claro.svg";
 
 const Terms = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   // Definimos las llaves de las secciones para mapearlas dinámicamente
-  const sectionKeys = ["acceptance", "privacy", "responsibility", "data_ownership", "subscription", "backups", "termination"];
+  const sectionKeys = [
+    "acceptance",
+    "privacy",
+    "responsibility",
+    "data_ownership",
+    "subscription",
+    "backups",
+    "termination",
+  ];
 
   return (
     <div className="min-h-screen bg-muted/40 py-12 px-4">
@@ -25,11 +35,11 @@ const Terms = () => {
 
         <div className="bg-card rounded-3xl shadow-clinical-xl border border-border overflow-hidden">
           {/* HEADER */}
-          <div className="p-8 border-b border-border bg-gradient-to-br from-primary/5 to-transparent">
+          <div className="relative top-6 left-18 inline-flex items-center gap-4">
+            <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
+          </div>
+          <div className="px-6 py-12 border-b border-border bg-gradient-to-br from-primary/5 to-transparent">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2.5 bg-primary text-primary-foreground rounded-xl shadow-lg shadow-primary/20">
-                <Icon name="ShieldCheck" size={24} />
-              </div>
               <h1 className="text-2xl font-headline font-bold text-foreground">{t("terms.title")}</h1>
             </div>
             <p className="text-sm text-muted-foreground">{t("terms.last_update")}</p>
@@ -40,7 +50,9 @@ const Terms = () => {
             {sectionKeys.map((key) => (
               <section key={key} className="space-y-3">
                 <h2 className="text-lg font-semibold text-foreground">{t(`terms.sections.${key}.title`)}</h2>
-                <p className="text-muted-foreground leading-relaxed text-sm md:text-base">{t(`terms.sections.${key}.content`)}</p>
+                <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                  {t(`terms.sections.${key}.content`)}
+                </p>
               </section>
             ))}
 

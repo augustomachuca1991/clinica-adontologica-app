@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import Spinner from "@/components/ui/Spinner";
 import LoadSending from "@/components/ui/LoadSending";
 import Image from "@/components/AppImage";
-import logo from "@/assets/images/logo-orion-software.svg";
+import logo from "@/assets/images/orion-logotipo-claro.svg";
 import { useAuth } from "@/contexts/AuthContext";
 import { notifyError, notifySuccess } from "@/utils/notifications";
 
@@ -59,11 +59,9 @@ const Login = () => {
       <div className="w-full max-w-md bg-card rounded-2xl shadow-clinical-md p-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="mx-auto mb-3 flex items-center justify-center rounded-xl bg-primary/10">
+          <div className="mx-auto mb-3 flex items-center justify-center rounded-xl ">
             <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
           </div>
-          <h1 className="text-2xl font-headline font-bold tracking-[-0.015em] text-foreground">{APP_NAME}</h1>
-          <p className="text-sm text-muted-foreground">{t("login.subtitle")}</p>
         </div>
 
         {/* Form */}

@@ -4,7 +4,6 @@ import Input from "@/components/ui/Input";
 import { Checkbox } from "@/components/ui/Checkbox";
 import FooterLogin from "@/pages/login/components/FooterLogin";
 import { useTranslation } from "react-i18next";
-import Spinner from "@/components/ui/Spinner";
 import LoadSending from "@/components/ui/LoadSending";
 import Image from "@/components/AppImage";
 import logo from "@/assets/images/orion-logotipo-claro.svg";
@@ -15,9 +14,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const Login = () => {
-  const { signIn, loading } = useAuth();
+  const { signIn } = useAuth();
   const { t } = useTranslation();
-  const APP_NAME = import.meta.env?.VITE_APP_NAME || "Dental Care";
 
   const validationSchema = Yup.object({
     email: Yup.string().email(t("login.errors.invalidEmail")).required(t("login.errors.required")),
@@ -43,16 +41,7 @@ const Login = () => {
     },
   });
 
-  const isLoading = loading || formik.isSubmitting;
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-muted/40">
-        <Spinner size={56} />
-        <p className="mt-4 text-muted-foreground animate-pulse">{t("workspace")}</p>
-      </div>
-    );
-  }
+  const isLoading = formik.isSubmitting;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/40 px-4">

@@ -16,7 +16,7 @@ import * as Yup from "yup";
 const ForgotPassword = () => {
   const { t } = useTranslation();
 
-  const { sendPasswordResetEmail, loading } = useAuth();
+  const { sendPasswordResetEmail } = useAuth();
 
   const validationSchema = Yup.object({
     email: Yup.string().email(t("login.errors.invalidEmail")).required(t("login.errors.required")),
@@ -33,13 +33,13 @@ const ForgotPassword = () => {
         notifyError(t("forgotPassword.error"));
       } else {
         notifySuccess(t("forgotPassword.success"));
-        formik.resetForm(); // Limpiamos el campo tras el éxito
+        formik.resetForm();
       }
     },
   });
 
   // Estado de carga combinado
-  const isLoading = loading || formik.isSubmitting;
+  const isLoading = formik.isSubmitting;
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-muted/40 px-4 font-sans">

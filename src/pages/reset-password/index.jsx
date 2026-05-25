@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import LoadSending from "@/components/ui/LoadSending";
-import Icon from "@/components/AppIcon";
 import { notifyError, notifySuccess } from "@/utils/notifications";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -61,7 +60,7 @@ const ResetPassword = () => {
     checkSession();
   }, [navigate, t]);
 
-  const isLoading = authLoading || formik.isSubmitting;
+  const isLoading = formik.isSubmitting;
 
   if (checking)
     return (

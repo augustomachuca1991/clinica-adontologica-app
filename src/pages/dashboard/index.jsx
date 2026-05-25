@@ -40,46 +40,6 @@ const Dashboard = () => {
   const { addPatient } = usePatients();
   const { activities, loading, error } = useRecentActivity(userProfile?.id);
 
-  /* const stats = [
-    {
-      title: "Today's Appointments",
-      value: "12",
-      change: "+15%",
-      changeType: "positive",
-      trend: "up",
-      icon: "Calendar",
-      iconColor: "var(--color-primary)",
-    },
-    {
-      title: "Active Patients",
-      value: "248",
-      change: "+8%",
-      changeType: "positive",
-      trend: "up",
-      icon: "Users",
-      iconColor: "var(--color-success)",
-    },
-    {
-      title: "Pending Treatments",
-      value: "34",
-      change: "-5%",
-      changeType: "negative",
-      trend: "down",
-      icon: "Activity",
-      iconColor: "var(--color-warning)",
-    },
-    {
-      title: "Revenue (MTD)",
-      value: "$45.2K",
-      change: "+12%",
-      changeType: "positive",
-      trend: "up",
-      icon: "DollarSign",
-      iconColor: "var(--color-brand-accent)",
-    },
-  ];
- */
-
   useEffect(() => {
     fetchAppointments();
   }, [fetchAppointments]);
@@ -123,46 +83,6 @@ const Dashboard = () => {
     { icon: "AlarmClockCheck", label: "scheduleAppointment", color: "var(--color-success)" },
     { icon: "FileText", label: "addNote", color: "var(--color-warning)" },
     { icon: "Calendar", label: "weekly", color: "var(--color-accent)" },
-  ];
-
-  const recentActivities = [
-    {
-      id: 1,
-      type: "treatment",
-      userName: "Dr. Sarah Johnson",
-      userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1b73223d7-1763296809581.png",
-      userImageAlt: "Retrato profesional de dentista mujer con cabello castaño y bata blanca con estetoscopio",
-      description: "Tratamiento de conducto completado para el paciente Michael Chen",
-      time: "hace 10 min",
-    },
-    {
-      id: 2,
-      type: "appointment",
-      userName: "Recepción",
-      userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1ccaed995-1763294687911.png",
-      userImageAlt: "Retrato profesional de recepcionista con cabello rubio y uniforme azul con sonrisa amable",
-      description: "Nuevo turno programado para Emily Rodriguez - Colocación de corona",
-      time: "hace 25 min",
-    },
-    {
-      id: 3,
-      type: "payment",
-      userName: "Departamento de Facturación",
-      userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_1b686b60e-1763292151580.png",
-      userImageAlt:
-        "Retrato profesional de especialista en facturación hombre con gafas y camisa blanca con expresión concentrada",
-      description: "Pago recibido de Robert Williams - $450,00",
-      time: "hace 1 hora",
-    },
-    {
-      id: 4,
-      type: "note",
-      userName: "Dr. James Wilson",
-      userImage: "https://img.rocket.new/generatedImages/rocket_gen_img_13747ffaf-1763301803218.png",
-      userImageAlt: "Retrato profesional de dentista hombre con cabello gris y bata blanca con actitud experimentada",
-      description: "Notas clínicas agregadas para el seguimiento de Lisa Anderson",
-      time: "hace 2 horas",
-    },
   ];
 
   const treatmentData = [
@@ -506,27 +426,6 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
-
-            {/* <div className="clinical-card p-4 md:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Patient Alerts</h2>
-                <span className="status-indicator bg-error/10 text-error text-xs px-2 py-1">{alerts?.filter((a) => a?.type === "critical")?.length} Critical</span>
-              </div>
-              <div className="space-y-3">
-                {alerts?.map((alert) => (
-                  <PatientAlertCard key={alert?.id} alert={alert} onDismiss={handleDismissAlert} onViewPatient={handleViewPatient} />
-                ))}
-              </div>
-            </div>
-
-            <div className="clinical-card p-4 md:p-6">
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-4">Upcoming Tasks</h2>
-              <div className="space-y-2">
-                {upcomingTasks?.map((task) => (
-                  <UpcomingTaskCard key={task?.id} task={task} onToggleComplete={handleToggleTaskComplete} onViewDetails={handleViewTaskDetails} />
-                ))}
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

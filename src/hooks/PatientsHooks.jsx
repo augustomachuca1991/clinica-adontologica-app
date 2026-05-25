@@ -218,24 +218,27 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
     }
   };
 
-  const searchPatients = async (searchTerm) => {
-    if (!searchTerm || searchTerm.length < 2) return [];
+  const searchPatients = useCallback(
+    async (searchTerm) => {
+      if (!searchTerm || searchTerm.length < 2) return [];
 
-    try {
-      const { data, error } = await supabase
-        .from("patients")
-        .select("id, name, avatar, patient_id")
-        .eq("provider_id", user.id)
-        .ilike("name", `%${searchTerm}%`)
-        .limit(5);
+      try {
+        const { data, error } = await supabase
+          .from("patients")
+          .select("id, name, avatar, patient_id")
+          .eq("provider_id", user?.id) // Usamos ?.id por seguridad si user tarda en cargar
+          .ilike("name", `%${searchTerm}%`)
+          .limit(5);
 
-      if (error) throw error;
-      return data;
-    } catch (err) {
-      console.error("Error buscando pacientes:", err.message);
-      return [];
-    }
-  };
+        if (error) throw error;
+        return data;
+      } catch (err) {
+        console.error("Error buscando pacientes:", err.message);
+        return [];
+      }
+    },
+    [user?.id]
+  );
 
   useEffect(() => {
     if (isLoggedIn) fetchPatients();

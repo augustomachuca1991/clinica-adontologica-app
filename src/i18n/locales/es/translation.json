@@ -1280,5 +1280,34 @@
         "btnDeleting": "Eliminando..."
       }
     }
+  },
+  "quickAddServiceModal": {
+    "title": "Nuevo procedimiento",
+    "subtitle": "Se guardará y quedará disponible para seleccionar",
+    "close": "Cerrar",
+    "warning": "Tu formulario de turno sigue abierto. Una vez guardado el procedimiento, podrás seleccionarlo y continuar donde lo dejaste.",
+    "labels": {
+      "name": "Nombre del procedimiento",
+      "category": "Categoría",
+      "duration": "Duración estimada",
+      "cost": "Costo base (opcional)"
+    },
+    "placeholders": {
+      "name": "Ej: Blanqueamiento LED",
+      "loading": "Cargando...",
+      "select": "Seleccioná...",
+      "cost": "Ej: 4500"
+    },
+    "buttons": {
+      "cancel": "Volver al turno",
+      "save": "Guardar procedimiento",
+      "saving": "Guardando..."
+    },
+    "notifications": {
+      "errorName": "El nombre del procedimiento es requerido.",
+      "errorCategory": "Seleccioná una categoría.",
+      "errorSave": "Error al guardar: ",
+      "success": "\"{{name}}\" agregado. Ahora podés seleccionarlo en el turno."
+    }
   }
 }

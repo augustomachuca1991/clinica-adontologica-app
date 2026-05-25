@@ -56,7 +56,6 @@ export const useTreatmentServices = () => {
             name: formData.name,
             base_cost: formData.baseCost,
             estimated_duration_min: formData.duration || 30,
-            // Eliminado: provider_id ya no va aquí
           },
         ])
         .select()

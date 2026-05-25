@@ -1283,5 +1283,34 @@
         "btnDeleting": "Deleting..."
       }
     }
+  },
+  "quickAddServiceModal": {
+    "title": "New procedure",
+    "subtitle": "It will be saved and available for selection",
+    "close": "Close",
+    "warning": "Your appointment form remains open. Once the procedure is saved, you can select it and pick up right where you left off.",
+    "labels": {
+      "name": "Procedure name",
+      "category": "Category",
+      "duration": "Estimated duration",
+      "cost": "Base cost (optional)"
+    },
+    "placeholders": {
+      "name": "E.g., LED Whitening",
+      "loading": "Loading...",
+      "select": "Select...",
+      "cost": "E.g., 4500"
+    },
+    "buttons": {
+      "cancel": "Back to appointment",
+      "save": "Save procedure",
+      "saving": "Saving..."
+    },
+    "notifications": {
+      "errorName": "Procedure name is required.",
+      "errorCategory": "Please select a category.",
+      "errorSave": "Error saving: ",
+      "success": "\"{{name}}\" added. You can now select it for the appointment."
+    }
   }
 }

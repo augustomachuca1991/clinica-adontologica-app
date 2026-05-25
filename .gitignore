@@ -9,3 +9,6 @@ vite.config.*s.*
 .env
 .env.*.local
 backups_history/
+backup/
+backups/
+logs/

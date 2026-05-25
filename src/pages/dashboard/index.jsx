@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import AddPatientModal from "@/pages/patient-directory/components/AddPatientModal";
 import { usePatients } from "@/hooks/PatientsHooks";
 import { useAppointments } from "@/hooks/AppointmentsHooks";
+import { useRecentActivity } from "@/hooks/RecentActivityHooks";
 import ScheduleAppointmentModal from "@/pages/dashboard/components/ScheduleAppointmentModal";
 import { notifyError, notifySuccess } from "@/utils/notifications";
 
@@ -37,6 +38,7 @@ const Dashboard = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   const { addPatient } = usePatients();
+  const { activities, loading, error } = useRecentActivity(userProfile?.id);
 
   /* const stats = [
     {
@@ -493,9 +495,15 @@ const Dashboard = () => {
                 </Button>
               </div>
               <div className="space-y-2">
-                {recentActivities?.map((activity) => (
-                  <RecentActivityItem key={activity?.id} activity={activity} />
-                ))}
+                {loading ? (
+                  <p className="text-sm text-muted-foreground">Cargando actividad reciente...</p>
+                ) : error ? (
+                  <p className="text-sm text-destructive">Error cargando actividad.</p>
+                ) : !activities.length ? (
+                  <p className="text-sm text-muted-foreground">No hay actividad reciente.</p>
+                ) : (
+                  activities.map((activity) => <RecentActivityItem key={activity?.id} activity={activity} />)
+                )}
               </div>
             </div>
 

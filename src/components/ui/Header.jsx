@@ -5,7 +5,6 @@ import LanguageSwitch from "@/components/ui/LanguageSwitch";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { notifyError, notifySuccess } from "@/utils/notifications";
-//import Button from "@/components/ui/Button";
 
 const Header = ({ sidebarCollapsed = false }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,8 +80,8 @@ const Header = ({ sidebarCollapsed = false }) => {
     >
       <div className="h-full flex items-center justify-between px-6">
         <div className="flex items-center gap-4 flex-1 max-w-2xl"></div>
-
         <div className="flex items-center gap-3">
+          <LanguageSwitch />
           <div className="relative">
             <button
               onClick={handleUserMenuClick}
@@ -157,7 +156,6 @@ const Header = ({ sidebarCollapsed = false }) => {
               </div>
             )}
           </div>
-          <LanguageSwitch />
         </div>
       </div>
     </header>

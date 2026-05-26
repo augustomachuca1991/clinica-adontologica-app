@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 export const DATA_CATEGORIES = [
   {
     id: "patient-records",
-    tables: ["patients", "clinical_records", "providers"],
+    tables: ["patients", "clinical_records"],
   },
   {
     id: "clinical-notes",
@@ -14,7 +14,7 @@ export const DATA_CATEGORIES = [
   },
   {
     id: "images",
-    tables: ["treatment_services", "service_categories"],
+    tables: ["treatment_services", "service_categories", "provider_services", "providers"],
   },
   {
     id: "appointments",
@@ -26,7 +26,7 @@ export const DATA_CATEGORIES = [
   },
   {
     id: "settings",
-    tables: ["roles", "user_profiles", "user_roles"],
+    tables: ["roles", "user_profiles", "user_roles", "backup_history"],
   },
 ];
 

@@ -28,24 +28,6 @@ const SettingsPanel = () => {
       icon: "Users",
       description: t("settings.tabs.users.description"),
     },
-    /* {
-      id: "practice",
-      label: t("settings.tabs.practice.label"),
-      icon: "Building",
-      description: t("settings.tabs.practice.description"),
-    },
-    {
-      id: "security",
-      label: t("settings.tabs.security.label"),
-      icon: "Shield",
-      description: t("settings.tabs.security.description"),
-    },
-    {
-      id: "integrations",
-      label: t("settings.tabs.integrations.label"),
-      icon: "Plug",
-      description: t("settings.tabs.integrations.description"),
-    }, */
     {
       id: "notifications",
       label: t("settings.tabs.notifications.label"),

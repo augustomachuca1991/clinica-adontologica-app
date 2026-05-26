@@ -1,12 +1,113 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+// components/ui/Sidebar.jsx
+import React, { useState, useCallback, useMemo, memo } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Icon from "@/components/AppIcon";
 import Image from "@/components/AppImage";
 import logo from "@/assets/images/orion-logotipo-claro-600.svg";
 import logoIsotipo from "@/assets/images/orion-isotipo-transparente.svg";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { cn } from "@/utils/cn";
+
+// ── Constantes estáticas ──────────────────────────────────────────────────────
+
+const NAVIGATION_ITEMS = [
+  {
+    path: "/dashboard",
+    label: "dashboard.title",
+    icon: "LayoutDashboard",
+    description: "dashboard.description",
+    roles: ["dentist"],
+  },
+  {
+    path: "/patient-directory",
+    label: "directory.title",
+    icon: "Users",
+    description: "directory.description",
+    roles: ["dentist"],
+  },
+  {
+    path: "/weekly-calendar",
+    label: "calendar.title",
+    icon: "Calendar",
+    description: "calendar.subtitle",
+    roles: ["dentist"],
+  },
+  {
+    path: "/clinical-records",
+    label: "records.title",
+    icon: "FileText",
+    description: "records.description",
+    roles: ["dentist"],
+  },
+  {
+    path: "/treatment-planning",
+    label: "treatment.title",
+    icon: "Calendar",
+    description: "treatment.description",
+    roles: ["dentist"],
+  },
+  {
+    path: "/patient-profile",
+    label: "profile.title",
+    icon: "User",
+    description: "profile.description",
+    roles: ["dentist"],
+  },
+  {
+    path: "/settings-panel",
+    label: "settings.title",
+    icon: "Settings",
+    description: "settings.description",
+    roles: ["admin"],
+  },
+  {
+    path: "/admin-panel",
+    label: "subscription.title",
+    icon: "subscription",
+    description: "subscription.description",
+    roles: ["admin"],
+  },
+];
+
+const APP_NAME = import.meta.env.VITE_APP_NAME || "Orion Software";
+
+// ── NavItem ───────────────────────────────────────────────────────────────────
+
+const NavItem = memo(({ item, isActive, isCollapsed, onClick, t }) => (
+  <li>
+    <Link
+      to={item.path}
+      onClick={onClick}
+      title={isCollapsed ? t(item.label) : undefined}
+      className={cn(
+        "flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-base group",
+        isActive
+          ? "bg-primary text-primary-foreground shadow-clinical-sm"
+          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+      )}
+    >
+      <Icon
+        name={item.icon}
+        size={20}
+        className={cn(
+          "flex-shrink-0 transition-transform duration-base",
+          isActive ? "scale-110" : "group-hover:scale-105"
+        )}
+      />
+      {!isCollapsed && (
+        <div className="flex-1 min-w-0">
+          <div className="font-medium text-sm truncate">{t(item.label)}</div>
+          {!isActive && <div className="text-xs opacity-70 truncate">{t(item.description)}</div>}
+        </div>
+      )}
+      {isActive && !isCollapsed && <div className="w-1 h-6 bg-primary-foreground rounded-full" />}
+    </Link>
+  </li>
+));
+NavItem.displayName = "NavItem";
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
 
 const Sidebar = ({ isCollapsed = false, onToggle }) => {
   const navigate = useNavigate();
@@ -15,155 +116,97 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
   const { userProfile, isAdmin } = useAuth();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  const appName = import.meta.env.VITE_APP_NAME || "Orion Software";
+  const roles = useMemo(() => userProfile?.user_roles?.map((ur) => ur.roles?.name) ?? [], [userProfile]);
 
-  // Extraemos roles para saber qué mostrar
-  const roles = userProfile?.user_roles?.map((ur) => ur.roles?.name) || [];
-  const isDentist = roles.includes("dentist"); // Asegúrate que el nombre coincida con tu DB
+  const visibleItems = useMemo(
+    () => NAVIGATION_ITEMS.filter((item) => item.roles.some((r) => roles.includes(r))),
+    [roles]
+  );
 
-  const navigationItems = [
-    {
-      path: "/dashboard",
-      label: "dashboard.title",
-      icon: "LayoutDashboard",
-      description: "dashboard.description",
-      roles: ["dentist"],
-    },
-    {
-      path: "/patient-directory",
-      label: "directory.title",
-      icon: "Users",
-      description: "directory.description",
-      roles: ["dentist"],
-    },
-    {
-      path: "/weekly-calendar",
-      label: "calendar.title",
-      icon: "Calendar",
-      description: "calendar.subtitle",
-      roles: ["dentist"],
-    },
-    {
-      path: "/clinical-records",
-      label: "records.title",
-      icon: "FileText",
-      description: "records.description",
-      roles: ["dentist"],
-    },
-    {
-      path: "/treatment-planning",
-      label: "treatment.title",
-      icon: "Calendar",
-      description: "treatment.description",
-      roles: ["dentist"],
-    },
-    {
-      path: "/patient-profile",
-      label: "profile.title",
-      icon: "User",
-      description: "profile.description",
-      roles: ["dentist"],
-    },
-    {
-      path: "/settings-panel",
-      label: "settings.title",
-      icon: "Settings",
-      description: "settings.description",
-      roles: ["admin"],
-    },
-    {
-      path: "/admin-panel",
-      label: "subscription.title",
-      icon: "subscription",
-      description: "subscription.description",
-      roles: ["admin"],
-    },
-  ];
+  const isActive = useCallback((path) => location.pathname === path, [location.pathname]);
 
-  const visibleItems = navigationItems.filter((item) => item.roles.some((role) => roles.includes(role)));
+  const handleHomeClick = useCallback(() => {
+    navigate(isAdmin ? "/admin-panel" : "/dashboard");
+  }, [navigate, isAdmin]);
 
-  const isActive = (path) => location?.pathname === path;
-
-  const handleMobileToggle = () => {
-    setIsMobileOpen(!isMobileOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileOpen(false);
-  };
+  const openMobileMenu = useCallback(() => setIsMobileOpen(true), []);
+  const closeMobileMenu = useCallback(() => setIsMobileOpen(false), []);
 
   return (
     <>
-      <button
-        onClick={handleMobileToggle}
-        className="fixed top-3.5 left-4 z-50 lg:hidden bg-card text-foreground p-2 rounded-md shadow-clinical-md focus-clinical"
-        aria-label="Toggle mobile menu"
-      >
-        <Icon name={isMobileOpen ? "X" : "Menu"} size={18} />
-      </button>
-      <div
-        className={`fixed lg:fixed top-0 left-0 h-full bg-card border-r border-border shadow-clinical-md transition-all duration-slow z-40 ${
-          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        } ${isCollapsed ? "w-20" : "w-64"}`}
-      >
-        <div
-          className="sidebar-header flex items-center justify-center h-14 border-b border-border bg-primary/5 backdrop-blur-sm"
-          onClick={() => navigate(isAdmin ? "/admin-panel" : "/dashboard")}
-          role="button"
-          aria-label="Go to home"
+      {/* ── Botón hamburguesa (solo visible cuando sidebar está cerrado) ── */}
+      {!isMobileOpen && (
+        <button
+          onClick={openMobileMenu}
+          className="fixed top-3.5 left-4 z-50 lg:hidden bg-card text-foreground p-2 rounded-md shadow-clinical-md focus-clinical"
+          aria-label="Abrir menú"
         >
-          <Image src={isCollapsed ? logoIsotipo : logo} alt={`${appName} Logo`} className="h-12 w-100" />
+          <Icon name="Menu" size={18} />
+        </button>
+      )}
+
+      {/* ── Sidebar panel ── */}
+      <div
+        className={cn(
+          "fixed top-0 left-0 h-full bg-card border-r border-border shadow-clinical-md transition-all duration-700 ease-in-out z-40",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
+          isCollapsed ? "w-20" : "w-64"
+        )}
+      >
+        {/* HEADER */}
+        <div
+          className="relative flex items-center justify-center h-14 border-b border-border bg-primary/5 cursor-pointer"
+          onClick={handleHomeClick}
+          role="button"
+          aria-label="Ir al inicio"
+        >
+          <Image src={isCollapsed ? logoIsotipo : logo} alt={`${APP_NAME} Logo`} className="h-12 w-auto" />
+
+          {/* Botón X dentro del header, solo en mobile cuando está abierto */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              closeMobileMenu();
+            }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 lg:hidden p-1.5 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            aria-label="Cerrar menú"
+          >
+            <Icon name="X" size={18} />
+          </button>
         </div>
 
+        {/* NAV */}
         <nav className="flex-1 overflow-y-auto py-4 px-2">
           <ul className="space-y-1">
-            {visibleItems?.map((item) => (
-              <li key={item?.path}>
-                <Link
-                  to={item?.path}
-                  onClick={closeMobileMenu}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-base group ${
-                    isActive(item?.path)
-                      ? "bg-primary text-primary-foreground shadow-clinical-sm"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
-                  title={isCollapsed ? t(item?.label) : ""}
-                >
-                  <Icon
-                    name={item?.icon}
-                    size={20}
-                    className={`flex-shrink-0 transition-transform duration-base ${isActive(item?.path) ? "scale-110" : "group-hover:scale-105"}`}
-                  />
-                  {!isCollapsed && (
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm truncate">{t(item?.label)}</div>
-                      {!isActive(item?.path) && (
-                        <div className="text-xs opacity-70 truncate">{t(item.description)}</div>
-                      )}
-                    </div>
-                  )}
-                  {isActive(item?.path) && !isCollapsed && (
-                    <div className="w-1 h-6 bg-primary-foreground rounded-full" />
-                  )}
-                </Link>
-              </li>
+            {visibleItems.map((item) => (
+              <NavItem
+                key={item.path}
+                item={item}
+                isActive={isActive(item.path)}
+                isCollapsed={isCollapsed}
+                onClick={closeMobileMenu}
+                t={t}
+              />
             ))}
           </ul>
         </nav>
 
+        {/* FOOTER — collapse toggle (solo desktop) */}
         <div className="border-t border-border p-4">
           <button
             onClick={onToggle}
             className="hidden lg:flex items-center justify-center w-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-all duration-base focus-clinical"
-            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
           >
             <Icon name={isCollapsed ? "ArrowRightToLine" : "ArrowLeftToLine"} size={20} />
             {!isCollapsed && <span className="ml-2">{t("sidebar.toggle")}</span>}
           </button>
         </div>
       </div>
+
+      {/* ── Overlay mobile ── */}
       {isMobileOpen && (
-        <div className="fixed inset-0 bg-background z-30 lg:hidden" onClick={closeMobileMenu} aria-hidden="true" />
+        <div className="fixed inset-0 bg-background/80 z-30 lg:hidden" onClick={closeMobileMenu} aria-hidden="true" />
       )}
     </>
   );

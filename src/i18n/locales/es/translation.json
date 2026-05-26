@@ -1014,7 +1014,8 @@
     "clearFilter": "Limpiar filtros",
     "back": "Atrás",
     "continue": "Continuar",
-    "saveChanges": "Guardar cambios"
+    "saveChanges": "Guardar cambios",
+    "close": "Cerrar"
   },
   "roles": {
     "administrator": "Administrador",
@@ -1313,6 +1314,93 @@
       "errorCategory": "Seleccioná una categoría.",
       "errorSave": "Error al guardar: ",
       "success": "\"{{name}}\" agregado. Ahora podés seleccionarlo en el turno."
+    }
+  },
+  "clinicalNotes": {
+    "title": "Notas Clínicas",
+    "subtitle": "Historial de notas clínicas del registro",
+    "buttonNew": "Nueva nota",
+    "listTitle": "Listado de notas",
+    "count_one": "{{count}} nota encontrada",
+    "count_other": "{{count}} notas encontradas",
+    "loading": "Cargando notas clínicas…",
+    "emptyState": {
+      "noNotesTitle": "Sin notas aún",
+      "noResultsTitle": "Sin resultados",
+      "noNotesDescription": "Creá la primera nota clínica para este registro.",
+      "noResultsDescription": "Probá ajustando los filtros de búsqueda.",
+      "buttonClear": "Limpiar filtros"
+    },
+    "modals": {
+      "createTitle": "Nueva nota clínica",
+      "editTitle": "Editar nota clínica",
+      "delete": {
+        "title": "Eliminar nota",
+        "warning": "Esta acción no se puede deshacer. La nota clínica será eliminada permanentemente.",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar"
+      }
+    },
+    "card": {
+      "private": "Privada",
+      "actionView": "Ver",
+      "actionEdit": "Editar",
+      "actionMakePublic": "Publicar",
+      "actionMakePrivate": "Privatizar",
+      "actionDelete": "Eliminar"
+    },
+    "detail": {
+      "title": "Detalle de nota",
+      "private": "Privada",
+      "public": "Pública",
+      "lastEdit": "Última edición: {{date}}",
+      "actionMakePublic": "Hacer pública",
+      "actionMakePrivate": "Hacer privada",
+      "actionEdit": "Editar",
+      "actionDelete": "Eliminar"
+    },
+    "form": {
+      "typeLabel": "Tipo de nota",
+      "contentLabel": "Contenido",
+      "placeholder": "Escribí el contenido de la nota clínica...",
+      "charCount": "{{count}} caracteres",
+      "privateActive": "Nota privada — solo visible para vos",
+      "privateInactive": "Nota pública — visible para el equipo",
+      "cancel": "Cancelar",
+      "submit": "Guardar nota",
+      "submitting": "Guardando…",
+      "types": {
+        "evolution": "Nota de evolución",
+        "general": "General",
+        "emergency": "Urgencia"
+      }
+    },
+    "filters": {
+      "searchPlaceholder": "Buscar en notas...",
+      "types": {
+        "all": "Todos los tipos",
+        "evolution": "Evolución",
+        "general": "General",
+        "emergency": "Urgencia"
+      },
+      "privacy": {
+        "all": "Todas las notas",
+        "public": "Públicas",
+        "private": "Privadas"
+      }
+    },
+    "stats": {
+      "total": "Total de notas",
+      "private": "Notas privadas",
+      "public": "Notas públicas",
+      "frequentType": "Tipo más frecuente",
+      "noType": "Ninguno"
+    },
+    "validation": {
+      "contentMin": "El contenido debe tener al menos 3 caracteres.",
+      "contentRequired": "El contenido es requerido.",
+      "typeInvalid": "Tipo de nota inválido.",
+      "typeRequired": "El tipo es requerido."
     }
   }
 }

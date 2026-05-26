@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { getInitials, getAvatarColor, fmtDate, getSubscriptionStatus } from "@/utils/adminUtilis/admin";
+import { getInitials, getAvatarColor, fmtDate, getSubscriptionStatus } from "@/utils/adminUtils/admin";
 
 const ActionMenu = ({ subscriptionId, openMenuId, onToggle, onView, onRenew, showRenew, t }) => {
   const menuRef = useRef(null);

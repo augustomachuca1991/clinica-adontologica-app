@@ -1017,7 +1017,8 @@
     "clearFilter": "Clear filters",
     "back": "Back",
     "continue": "Continue",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "close": "Close"
   },
   "roles": {
     "administrator": "Administrator",
@@ -1316,6 +1317,93 @@
       "errorCategory": "Please select a category.",
       "errorSave": "Error saving: ",
       "success": "\"{{name}}\" added. You can now select it for the appointment."
+    }
+  },
+  "clinicalNotes": {
+    "title": "Clinical Notes",
+    "subtitle": "Clinical notes history for this record",
+    "buttonNew": "New note",
+    "listTitle": "Notes list",
+    "count_one": "{{count}} note found",
+    "count_other": "{{count}} notes found",
+    "loading": "Loading clinical notes…",
+    "emptyState": {
+      "noNotesTitle": "No notes yet",
+      "noResultsTitle": "No results found",
+      "noNotesDescription": "Create the first clinical note for this record.",
+      "noResultsDescription": "Try adjusting your search filters.",
+      "buttonClear": "Clear filters"
+    },
+    "modals": {
+      "createTitle": "New clinical note",
+      "editTitle": "Edit clinical note",
+      "delete": {
+        "title": "Delete note",
+        "warning": "This action cannot be undone. The clinical note will be permanently deleted.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    },
+    "card": {
+      "private": "Private",
+      "actionView": "View",
+      "actionEdit": "Edit",
+      "actionMakePublic": "Make public",
+      "actionMakePrivate": "Make private",
+      "actionDelete": "Delete"
+    },
+    "detail": {
+      "title": "Note detail",
+      "private": "Private",
+      "public": "Public",
+      "lastEdit": "Last edit: {{date}}",
+      "actionMakePublic": "Make public",
+      "actionMakePrivate": "Make private",
+      "actionEdit": "Edit",
+      "actionDelete": "Delete"
+    },
+    "form": {
+      "typeLabel": "Note type",
+      "contentLabel": "Content",
+      "placeholder": "Write the content of the clinical note...",
+      "charCount": "{{count}} characters",
+      "privateActive": "Private note — only visible to you",
+      "privateInactive": "Public note — visible to the team",
+      "cancel": "Cancel",
+      "submit": "Save note",
+      "submitting": "Saving…",
+      "types": {
+        "evolution": "Evolution note",
+        "general": "General",
+        "emergency": "Emergency"
+      }
+    },
+    "filters": {
+      "searchPlaceholder": "Search notes...",
+      "types": {
+        "all": "All types",
+        "evolution": "Evolution",
+        "general": "General",
+        "emergency": "Emergency"
+      },
+      "privacy": {
+        "all": "All privacy levels",
+        "public": "Public",
+        "private": "Private"
+      }
+    },
+    "stats": {
+      "total": "Total notes",
+      "private": "Private notes",
+      "public": "Public notes",
+      "frequentType": "Most frequent type",
+      "noType": "None"
+    },
+    "validation": {
+      "contentMin": "Content must have at least 3 characters.",
+      "contentRequired": "Content is required.",
+      "typeInvalid": "Invalid note type.",
+      "typeRequired": "Type is required."
     }
   }
 }

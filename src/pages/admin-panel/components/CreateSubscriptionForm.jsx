@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-import { getValidationSchema } from "@/utils/adminUtilis/admin";
+import { getValidationSchema } from "@/utils/adminUtils/admin";
 
 const DURATIONS = [
   { value: "1", labelKey: "admin.duration.1month" },

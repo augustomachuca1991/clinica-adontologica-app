@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { getInitials, getAvatarColor, daysLeft, fmtDateTime } from "@/utils/adminUtilis/admin";
+import { getInitials, getAvatarColor, daysLeft, fmtDateTime } from "@/utils/adminUtils/admin";
 
 const ViewModal = ({ subscription, onClose }) => {
   const { t, i18n } = useTranslation();

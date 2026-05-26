@@ -1,8 +1,11 @@
 import React from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
+import Button from "@/components/ui/Button";
 
 const GracePeriodBanner = () => {
   const { subscription, isAdmin, isLoggedIn, daysWithGrace } = useAuth();
+  const { t } = useTranslation();
 
   if (!isLoggedIn || isAdmin || !subscription) return null;
 
@@ -33,21 +36,29 @@ const GracePeriodBanner = () => {
           </svg>
 
           <p className="text-sm font-medium tracking-wide">
-            Tu suscripción mensual ha vencido. Disponés de{" "}
-            <span className="font-bold underline decoration-2 decoration-amber-200">
-              {daysWithGrace} {daysWithGrace === 1 ? "día" : "días"} de gracia
-            </span>{" "}
-            para regularizar tu pago antes de que tu acceso sea denegado.
+            {t("subscription.gracePeriod.message")}
+            <span className="font-bold underline decoration-2 decoration-amber-200 mx-1">
+              {t(`subscription.gracePeriod.graceDays`, { count: daysWithGrace })}
+            </span>
+            {t("subscription.gracePeriod.actionWarning")}
           </p>
         </div>
 
         {/* Botón de Acción Opcional (Podés cambiar la ruta a donde pague el cliente) */}
-        <button
-          onClick={() => (window.location.href = "/profile")}
+        <Button
+          onClick={() => {
+            const email = "agguz.1991@gmail.com"; // 👈 Cambiá esto por tu mail real de soporte
+            const subject = encodeURIComponent("Soporte Suscripción - Regularización de Pago");
+            const body = encodeURIComponent(
+              "Hola equipo de soporte,\n\nMi suscripción ha vencido y me encuentro en el período de gracia. Necesito ayuda para regularizar mi pago.\n\nSaludos."
+            );
+
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+          }}
           className="bg-white text-orange-700 hover:bg-amber-50 transition-all text-xs font-semibold px-4 py-2 rounded-md shadow-sm whitespace-nowrap active:scale-95"
         >
-          Regularizar Pago
-        </button>
+          {t("subscription.gracePeriod.button")}
+        </Button>
       </div>
     </div>
   );

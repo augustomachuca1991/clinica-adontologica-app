@@ -26,7 +26,14 @@
   "delete": "Eliminar",
   "subscription": {
     "title": "Suscripción",
-    "description": "Gestiona tu suscripción y métodos de pago"
+    "description": "Gestiona tu suscripción y métodos de pago",
+    "gracePeriod": {
+      "message": "Tu suscripción mensual ha vencido. Disponés de ",
+      "graceDays_one": "{{count}} día de gracia.",
+      "graceDays_other": "{{count}} días de gracia.",
+      "actionWarning": "regularizar tu pago antes de que tu acceso sea denegado.",
+      "button": "Comunicate con Soporte"
+    }
   },
   "confirmDeleteImage": {
     "title": "¿Eliminar imagen?",
@@ -184,7 +191,10 @@
     },
     "recentActivity": {
       "title": "Actividad reciente",
-      "refresh": "Actualizar"
+      "refresh": "Actualizar",
+      "loading": "Cargando actividad reciente...",
+      "error": "Error cargando actividad.",
+      "empty": "No hay actividad reciente."
     },
     "treatmentProgress": {
       "title": "Progreso del tratamiento",
@@ -1407,8 +1417,7 @@
       "deleteError": "Error al eliminar la nota.",
       "saveSuccess": "Nota guardada exitosamente.",
       "saveError": "Error al guardar la nota.",
-      "updateSuccess": "Nota actualizada exitosamente.",
-      "updateError": "Error al actualizar la nota."
+      "updateSuccess": "Nota actualizada exitosamente."
     }
   }
 }

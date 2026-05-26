@@ -26,7 +26,14 @@
   "delete": "Delete",
   "subscription": {
     "title": "Subscription",
-    "description": "Manage your subscription and payment methods"
+    "description": "Manage your subscription and payment methods",
+    "gracePeriod": {
+      "message": "Your monthly subscription has expired. You have ",
+      "graceDays_one": "{{count}} grace day.",
+      "graceDays_other": "{{count}} grace days.",
+      "actionWarning": "regularize your payment before your access is denied.",
+      "button": "Contact Support"
+    }
   },
   "confirmDeleteImage": {
     "title": "Delete image?",
@@ -184,7 +191,10 @@
     },
     "recentActivity": {
       "title": "Recent Activity",
-      "refresh": "Refresh"
+      "refresh": "Refresh",
+      "loading": "Loading recent activity...",
+      "error": "Error loading activity.",
+      "empty": "No recent activity."
     },
     "treatmentProgress": {
       "title": "Treatment Progress",

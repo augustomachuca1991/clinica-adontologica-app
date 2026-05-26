@@ -31,7 +31,7 @@ export const INITIAL_FILTERS = { search: "", type: "all", privacy: "all" };
 export const NOTE_FORM_INITIAL_VALUES = {
   content: "",
   type: "treatment",
-  isPrivate: false,
+  isPrivate: true,
 };
 
 // ─── Schema de validación reactivo ─────────────────────────────────────────────

@@ -1404,6 +1404,14 @@
       "contentRequired": "Content is required.",
       "typeInvalid": "Invalid note type.",
       "typeRequired": "Type is required."
+    },
+    "notifications": {
+      "deleteSuccess": "Note deleted successfully.",
+      "deleteError": "Error deleting the note.",
+      "saveSuccess": "Note saved successfully.",
+      "saveError": "Error saving the note.",
+      "updateSuccess": "Note updated successfully.",
+      "updateError": "Error updating the note."
     }
   }
 }

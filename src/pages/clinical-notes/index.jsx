@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useClinicalNotes } from "@/hooks/ClinicalNotesHooks";
+import { notifySuccess, notifyError } from "@/utils/notifications";
 
 import Icon from "@/components/AppIcon";
 import NoteCard from "@/pages/clinical-notes/components/NoteCard";
@@ -44,7 +45,8 @@ export default function ClinicalNotesPage({ providerId }) {
   // ── Modales ────────────────────────────────────────────────────────────────
   const [createOpen, setCreateOpen] = useState(false);
   const [editNote, setEditNote] = useState(null);
-  const [detailNote, setDetailNote] = useState(null);
+  const [detailNoteId, setDetailNoteId] = useState(null);
+
   const [deleteId, setDeleteId] = useState(null);
 
   // ── Init ───────────────────────────────────────────────────────────────────
@@ -59,6 +61,9 @@ export default function ClinicalNotesPage({ providerId }) {
       if (res.success) {
         setCreateOpen(false);
         fetchAllProviderNotes(providerId);
+        notifySuccess(t("clinicalNotes.notifications.saveSuccess"));
+      } else {
+        notifyError(t("clinicalNotes.notifications.saveError"));
       }
     },
     [providerId, createNote, fetchAllProviderNotes]
@@ -68,27 +73,39 @@ export default function ClinicalNotesPage({ providerId }) {
     async (values) => {
       if (!editNote) return;
       const res = await updateNote(editNote.id, values);
-      if (res.success) setEditNote(null);
+      if (res.success) {
+        notifySuccess(t("clinicalNotes.notifications.updateSuccess"));
+        setEditNote(null);
+      } else {
+        notifyError(t("clinicalNotes.notifications.updateError"));
+      }
     },
     [editNote, updateNote]
   );
 
   const handleDelete = useCallback(async () => {
     if (!deleteId) return;
-    await deleteNote(deleteId);
-    setDeleteId(null);
-    setDetailNote(null);
+    const res = await deleteNote(deleteId);
+    if (res.success) {
+      notifySuccess(t("clinicalNotes.notifications.deleteSuccess"));
+      setDeleteId(null);
+      setDetailNoteId(null);
+    } else {
+      notifyError(t("clinicalNotes.notifications.deleteError"));
+    }
   }, [deleteId, deleteNote]);
 
   // ── Helpers de navegación entre modales ───────────────────────────────────
   const handleOpenEdit = useCallback((note) => {
-    setDetailNote(null);
+    setDetailNoteId(null);
     setEditNote(note);
   }, []);
 
   const handleOpenDelete = useCallback((id) => {
     setDeleteId(id);
   }, []);
+
+  const detailNote = useMemo(() => notes.find((n) => n.id === detailNoteId) ?? null, [notes, detailNoteId]);
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -174,7 +191,7 @@ export default function ClinicalNotesPage({ providerId }) {
                 key={note.id}
                 note={note}
                 isOwn={isOwnNote(note)}
-                onView={setDetailNote}
+                onView={(note) => setDetailNoteId(note.id)}
                 onEdit={setEditNote}
                 onDelete={handleOpenDelete}
                 onTogglePrivate={togglePrivate}
@@ -205,7 +222,7 @@ export default function ClinicalNotesPage({ providerId }) {
       <NoteDetailModal
         open={!!detailNote}
         note={detailNote}
-        onClose={() => setDetailNote(null)}
+        onClose={() => setDetailNoteId(null)}
         onEdit={handleOpenEdit}
         onDelete={handleOpenDelete}
         onTogglePrivate={togglePrivate}

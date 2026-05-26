@@ -1401,6 +1401,14 @@
       "contentRequired": "El contenido es requerido.",
       "typeInvalid": "Tipo de nota inválido.",
       "typeRequired": "El tipo es requerido."
+    },
+    "notifications": {
+      "deleteSuccess": "Nota eliminada exitosamente.",
+      "deleteError": "Error al eliminar la nota.",
+      "saveSuccess": "Nota guardada exitosamente.",
+      "saveError": "Error al guardar la nota.",
+      "updateSuccess": "Nota actualizada exitosamente.",
+      "updateError": "Error al actualizar la nota."
     }
   }
 }

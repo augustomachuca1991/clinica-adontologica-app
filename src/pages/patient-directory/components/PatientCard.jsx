@@ -1,150 +1,166 @@
-import React from "react";
+// pages/patient-directory/components/PatientCard.jsx
+import React, { memo, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Image from "@/components/AppImage";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 import { formatDateForUI } from "@/utils/formatters/date";
+import { cn } from "@/utils/cn";
 
-const STATUS_CONFIG = {
-  active: {
-    color: "text-success",
-  },
-  inactive: {
-    color: "text-muted-foreground",
-  },
-  pending: {
-    color: "text-warning",
-  },
+// ── Constantes estáticas ──────────────────────────────────────────────────────
+
+const STATUS_BADGE = {
+  active: "bg-success/10 text-success",
+  pending: "bg-warning/10 text-warning",
+  inactive: "bg-muted text-muted-foreground",
 };
 
-const PatientCard = ({ patient, onQuickAction }) => {
-  const { t } = useTranslation();
+const APPOINTMENT_STYLE = {
+  upcoming: { wrapper: "bg-primary/5", icon: "text-primary", text: "text-primary" },
+  overdue: { wrapper: "bg-error/10", icon: "text-error", text: "text-error" },
+  completed: { wrapper: "bg-success/10", icon: "text-success", text: "text-success" },
+  default: { wrapper: "bg-muted/50", icon: "text-muted-foreground", text: "text-muted-foreground" },
+};
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "active":
-        return "bg-success/10 text-success";
-      case "pending":
-        return "bg-warning/10 text-warning";
-      case "inactive":
-        return "bg-muted text-muted-foreground";
-      default:
-        return "bg-muted text-muted-foreground";
-    }
-  };
+// ── Avatar con fallback a iniciales ──────────────────────────────────────────
 
-  const getAppointmentStatusColor = (status) => {
-    switch (status) {
-      case "upcoming":
-        return "text-primary";
-      case "overdue":
-        return "text-error";
-      case "completed":
-        return "text-success";
-      default:
-        return "text-muted-foreground";
-    }
-  };
+const Avatar = memo(({ src, alt, name }) => {
+  const initials = useMemo(() => {
+    if (!name) return "?";
+    return name
+      .split(" ")
+      .slice(0, 2)
+      .map((w) => w[0]?.toUpperCase())
+      .join("");
+  }, [name]);
 
-  const config = STATUS_CONFIG[patient?.status] || STATUS_CONFIG.pending;
+  if (src) {
+    return (
+      <div className="w-12 h-12 rounded-full flex-shrink-0 border-2 border-border overflow-hidden">
+        <Image src={src} alt={alt} className="w-full h-full object-cover" />
+      </div>
+    );
+  }
 
   return (
-    <div className="clinical-card p-4 md:p-5 lg:p-6 fade-in-up">
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-shrink-0">
-          <div className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden border-2 border-primary/20">
-            <Image src={patient?.avatar} alt={patient?.avatarAlt} className="w-full h-full object-cover" />
-          </div>
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
-            <div className="flex-1 min-w-0">
-              <Link
-                to={`/patient-profile/${patient?.id}`}
-                className="text-base md:text-lg font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base truncate block capitalize"
-              >
-                {patient?.name}
-              </Link>
-              <div className="flex flex-wrap items-center gap-2 mt-1">
-                <span className="text-xs md:text-sm text-muted-foreground">ID: {patient?.patientId}</span>
-                <span className={`text-xs`}>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`size-3 ${config.color}`}>
-                    <circle cx="12" cy="12" r="8" />
-                  </svg>
-                </span>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onQuickAction("call", patient)}
-                iconName="Phone"
-                aria-label="Call patient"
-                className="flex-shrink-0"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onQuickAction("message", patient)}
-                iconName="Mail"
-                aria-label="Email patient"
-                className="flex-shrink-0"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-            <div className="flex items-center gap-2 text-xs md:text-sm">
-              <Icon name="Calendar" size={16} className="text-muted-foreground flex-shrink-0" />
-              <span className="text-muted-foreground truncate">
-                {t("patientCard.dob")}: {formatDateForUI(patient?.dateOfBirth)}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-xs md:text-sm">
-              <Icon name="Phone" size={16} className="text-muted-foreground flex-shrink-0" />
-              <span className="text-muted-foreground truncate">{patient?.phone || "N/A"}</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs md:text-sm">
-              <Icon name="Mail" size={16} className="text-muted-foreground flex-shrink-0" />
-              <span className="text-muted-foreground truncate">{patient?.email}</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs md:text-sm">
-              <Icon name="CreditCard" size={16} className="text-muted-foreground flex-shrink-0" />
-              <span className="text-muted-foreground truncate">{patient?.insurance || "N/A"}</span>
-            </div>
-          </div>
-
-          {patient?.nextAppointment && (
-            <div
-              className={`flex items-center gap-2 p-2 md:p-3 rounded-md bg-muted/50 ${getAppointmentStatusColor(patient?.appointmentStatus)}`}
-            >
-              <Icon name="Clock" size={16} className="flex-shrink-0" />
-              <span className="text-xs md:text-sm font-medium">
-                {t("next")}: {patient?.nextAppointment}
-              </span>
-              {patient?.appointmentStatus === "overdue" && <span className="ml-auto text-xs font-medium">{t("appointment.overdue")}</span>}
-            </div>
-          )}
-
-          {patient?.tags && patient?.tags?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-3">
-              {patient?.tags?.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 text-xs rounded-full bg-brand-secondary/10 text-brand-secondary font-medium uppercase"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+    <div className="w-12 h-12 rounded-full flex-shrink-0 border-2 border-border bg-muted flex items-center justify-center text-sm font-medium text-muted-foreground select-none">
+      {initials}
     </div>
   );
-};
+});
+Avatar.displayName = "Avatar";
 
+// ── Fila de metadato ─────────────────────────────────────────────────────────
+
+const MetaItem = memo(({ icon, value }) => (
+  <div className="flex items-center gap-1.5 min-w-0">
+    <Icon name={icon} size={14} className="text-muted-foreground flex-shrink-0" />
+    <span className="text-xs text-muted-foreground truncate">{value || "N/A"}</span>
+  </div>
+));
+MetaItem.displayName = "MetaItem";
+
+// ── Bloque de próxima cita ────────────────────────────────────────────────────
+
+const AppointmentRow = memo(({ nextAppointment, appointmentStatus, t }) => {
+  const style = APPOINTMENT_STYLE[appointmentStatus] ?? APPOINTMENT_STYLE.default;
+
+  return (
+    <div className={cn("flex items-center gap-2 px-3 py-2 rounded-lg", style.wrapper)}>
+      <Icon name="Clock" size={14} className={cn("flex-shrink-0", style.icon)} />
+      <span className={cn("text-xs font-medium flex-1", style.text)}>
+        {t("next")}: {nextAppointment}
+      </span>
+      {appointmentStatus === "overdue" && (
+        <span className="text-xs font-medium text-error">{t("appointment.overdue")}</span>
+      )}
+    </div>
+  );
+});
+AppointmentRow.displayName = "AppointmentRow";
+
+// ── Componente principal ──────────────────────────────────────────────────────
+
+const PatientCard = memo(({ patient, onQuickAction }) => {
+  const { t } = useTranslation();
+
+  const badgeClass = STATUS_BADGE[patient?.status] ?? STATUS_BADGE.inactive;
+
+  const handleCall = useCallback(() => onQuickAction("call", patient), [onQuickAction, patient]);
+  const handleMessage = useCallback(() => onQuickAction("message", patient), [onQuickAction, patient]);
+
+  return (
+    <div className="clinical-card p-4 md:p-5 fade-in-up flex flex-col gap-3">
+      {/* ── Header ── */}
+      <div className="flex items-start gap-3.5">
+        <Avatar src={patient?.avatar} alt={patient?.avatarAlt} name={patient?.name} />
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap mb-0.5">
+            <Link
+              to={`/patient-profile/${patient?.id}`}
+              className="text-sm font-semibold text-foreground hover:text-primary transition-colors truncate capitalize"
+            >
+              {patient?.name}
+            </Link>
+            <span className={cn("text-[11px] font-semibold px-2 py-0.5 rounded-full", badgeClass)}>
+              {t(`patient.status.${patient?.status}`)}
+            </span>
+          </div>
+          <span className="text-xs text-muted-foreground">ID: {patient?.patientId}</span>
+        </div>
+
+        <div className="flex gap-1.5 flex-shrink-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleCall}
+            iconName="Phone"
+            aria-label={t("patientCard.call")}
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleMessage}
+            iconName="Mail"
+            aria-label={t("patientCard.email")}
+          />
+        </div>
+      </div>
+
+      {/* ── Divider ── */}
+      <div className="h-px bg-border" />
+
+      {/* ── Metadata 2x2 ── */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+        <MetaItem icon="Calendar" value={formatDateForUI(patient?.dateOfBirth)} />
+        <MetaItem icon="Phone" value={patient?.phone} />
+        <MetaItem icon="Mail" value={patient?.email} />
+        <MetaItem icon="CreditCard" value={patient?.insurance} />
+      </div>
+
+      {/* ── Próxima cita ── */}
+      {patient?.nextAppointment && (
+        <AppointmentRow nextAppointment={patient.nextAppointment} appointmentStatus={patient.appointmentStatus} t={t} />
+      )}
+
+      {/* ── Tags ── */}
+      {patient?.tags?.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {patient.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-2 py-0.5 text-[11px] rounded-full bg-muted text-muted-foreground border border-border font-medium"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+});
+
+PatientCard.displayName = "PatientCard";
 export default PatientCard;

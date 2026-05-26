@@ -993,6 +993,11 @@
         "nextExpiration": "Próximo vencimiento",
         "closeBtn": "Cerrar ventana"
       }
+    },
+    "errors": {
+      "userRequired": "El usuario es requerido.",
+      "invalidDuration": "La duración seleccionada no es válida.",
+      "durationRequired": "La duración es requerida."
     }
   },
   "common": {

@@ -37,6 +37,24 @@ export const useSubscription = () => {
     }
   }, []);
 
+  const createSubscription = async (values) => {
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setMonth(startDate.getMonth() + parseInt(values.duration));
+
+    const { error } = await supabase.from("subscriptions").insert([
+      {
+        user_id: values.userId,
+        status: "active",
+        current_period_end: endDate.toISOString(),
+      },
+    ]);
+
+    if (error) throw error;
+
+    await refresh();
+  };
+
   const renewSubscription = async (subscriptionId, startDateString) => {
     try {
       // 1. Obtener el usuario actual logueado
@@ -115,6 +133,7 @@ export const useSubscription = () => {
     loading,
     error,
     refresh: fetchSubscriptions,
+    createSubscription,
     renewSubscription,
   };
 };

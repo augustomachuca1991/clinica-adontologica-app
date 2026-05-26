@@ -996,6 +996,11 @@
         "nextExpiration": "Next expiration",
         "closeBtn": "Close window"
       }
+    },
+    "errors": {
+      "userRequired": "User is required.",
+      "invalidDuration": "The selected duration is invalid.",
+      "durationRequired": "Duration is required."
     }
   },
   "common": {

@@ -1,257 +1,180 @@
-import React, { useState, useRef } from "react";
+// pages/patient-directory/components/EditPatientModal.jsx
+import React, { useCallback, useMemo } from "react";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/AppIcon";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Image from "@/components/AppImage";
-import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/cn";
-import { notifyError } from "@/utils/notifications";
+import Field from "@/components/ui/Field";
+import StepIndicator from "@/pages/patient-directory/components/StepIndicator";
+import { useEditPatientForm, BLOOD_OPTIONS } from "@/hooks/PatientFormHooks";
 
-// ─── Constantes Estáticas (Mapeos para i18n) ──────────────────────────────────
-const getStatusOptions = (t) => [
-  {
-    id: "active",
-    label: t("patient.status.active"),
-    color: "bg-emerald-500",
-    ring: "ring-emerald-200",
-    text: "text-emerald-700",
-    light: "bg-emerald-50 border-emerald-200",
-  },
-  {
-    id: "pending",
-    label: t("patient.status.pending"),
-    color: "bg-amber-500",
-    ring: "ring-amber-200",
-    text: "text-amber-700",
-    light: "bg-amber-50 border-amber-200",
-  },
-  {
-    id: "inactive",
-    label: t("patient.status.inactive"),
-    color: "bg-slate-400",
-    ring: "ring-slate-200",
-    text: "text-slate-600",
-    light: "bg-slate-50 border-slate-200",
-  },
-];
+// ─── Step sub-components ─────────────────────────────────────────────────────
 
-const getGenderOptions = (t) => [
-  { value: "female", label: t("patient.gender.female") },
-  { value: "male", label: t("patient.gender.male") },
-  { value: "other", label: t("patient.gender.other") },
-];
-
-const BLOOD_OPTIONS = [
-  { value: "a+", label: "A+" },
-  { value: "a-", label: "A-" },
-  { value: "b+", label: "B+" },
-  { value: "b-", label: "B-" },
-  { value: "ab+", label: "AB+" },
-  { value: "ab-", label: "AB-" },
-  { value: "o+", label: "O+" },
-  { value: "o-", label: "O-" },
-];
-
-const getMaritalStatusOptions = (t) => [
-  { value: "single", label: t("patient.marital.single") },
-  { value: "married", label: t("patient.marital.married") },
-  { value: "divorced", label: t("patient.marital.divorced") },
-  { value: "widowed", label: t("patient.marital.widowed") },
-  { value: "separated", label: t("patient.marital.separated") },
-  { value: "notSpecified", label: t("patient.marital.notSpecified") },
-];
-
-const getInsuranceOptions = (t) => [
-  { value: "osde", label: "OSDE" },
-  { value: "swiss_medical", label: "Swiss Medical" },
-  { value: "galeno", label: "Galeno" },
-  { value: "ioscor", label: "IOSCOR" },
-  { value: "ioma", label: "IOMA" },
-  { value: "ospe", label: "OSPE" },
-  { value: "self_pay", label: t("patient.insurance.selfPay") },
-  { value: "other", label: t("patient.insurance.other") },
-];
-
-const getSteps = (t) => [
-  { id: 0, label: t("patient.steps.personal"), icon: "User" },
-  { id: 1, label: t("patient.steps.contact"), icon: "Phone" },
-  { id: 2, label: t("patient.steps.medical"), icon: "Stethoscope" },
-  { id: 3, label: t("patient.steps.emergency"), icon: "ShieldAlert" },
-];
-
-// ─── Main Component ───────────────────────────────────────────────────────────
-const EditPatientModal = ({ patient, onClose, onSave }) => {
-  const { t } = useTranslation();
-  const fileInputRef = useRef(null);
-  const [step, setStep] = useState(0);
-
-  // Inicialización de selectores con i18n activo
-  const statusOptions = getStatusOptions(t);
-  const genderOptions = getGenderOptions(t);
-  const maritalStatusOptions = getMaritalStatusOptions(t);
-  const insuranceOptions = getInsuranceOptions(t);
-  const stepsConfig = getSteps(t);
-
-  const [form, setForm] = useState({
-    ...patient,
-    emergencyContact: patient?.emergencyContact || { name: "", relationship: "", phone: "", email: "" },
-    allergies: patient?.allergies || [],
-  });
-  const [previewImage, setPreviewImage] = useState(patient?.avatar);
-  const [imageFile, setImageFile] = useState(null);
-
-  const set = (field, value) => setForm((p) => ({ ...p, [field]: value }));
-  const setEmergency = (field, value) =>
-    setForm((p) => ({ ...p, emergencyContact: { ...p.emergencyContact, [field]: value } }));
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      notifyError(t("patient.errors.imageSize"));
-      return;
-    }
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => setPreviewImage(reader.result);
-    reader.readAsDataURL(file);
-  };
-
-  const goNext = () => setStep((s) => Math.min(s + 1, stepsConfig.length - 1));
-  const goBack = () => setStep((s) => Math.max(s - 1, 0));
-  const isLast = step === stepsConfig.length - 1;
-
-  const currentStatus = statusOptions.find((o) => o.id === form.status) || statusOptions[2];
-
-  // ─── Renderizado Dinámico de Pasos ──────────────────────────────────────────
-  const stepContent = [
-    // STEP 0 — Personal
-    <div key="personal" className="space-y-6">
-      <div className="flex items-center gap-5 p-4 bg-muted/20 border border-border rounded-xl">
-        <div className="relative flex-shrink-0">
-          <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-border bg-muted">
-            {previewImage ? (
-              <Image src={previewImage} alt={t("patient.avatarAlt")} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <Icon name="User" size={32} className="text-muted-foreground" />
-              </div>
-            )}
-          </div>
-          <button
-            type="button"
-            onClick={() => fileInputRef.current.click()}
-            className="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-primary text-primary-foreground rounded-lg shadow flex items-center justify-center hover:scale-110 transition-transform"
-          >
-            <Icon name="Camera" size={13} />
-          </button>
-          <input type="file" ref={fileInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
+const StepPersonal = ({
+  form,
+  set,
+  previewImage,
+  fileInputRef,
+  handleImageChange,
+  statusOptions,
+  genderOptions,
+  maritalStatusOptions,
+  t,
+}) => (
+  <div className="space-y-6">
+    <div className="flex items-center gap-5 p-4 bg-muted/20 border border-border rounded-xl">
+      <div className="relative flex-shrink-0">
+        <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-border bg-muted">
+          {previewImage ? (
+            <Image src={previewImage} alt={t("patient.avatarAlt")} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Icon name="User" size={32} className="text-muted-foreground" />
+            </div>
+          )}
         </div>
-
-        <div className="flex-1 space-y-1">
-          <p className="font-semibold text-foreground text-sm">{form.name || "—"}</p>
-          <p className="text-xs text-muted-foreground">{form.email || "—"}</p>
-          <div className="flex gap-2 pt-1">
-            {statusOptions.map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => set("status", opt.id)}
-                className={cn(
-                  "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-all",
-                  form.status === opt.id
-                    ? `${opt.light} ${opt.text} border-current`
-                    : "bg-background border-border text-muted-foreground hover:bg-muted"
-                )}
-              >
-                <span className={cn("w-1.5 h-1.5 rounded-full", opt.color)} />
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current.click()}
+          className="absolute -bottom-1.5 -right-1.5 w-7 h-7 bg-primary text-primary-foreground rounded-lg shadow flex items-center justify-center hover:scale-110 transition-transform"
+        >
+          <Icon name="Camera" size={13} />
+        </button>
+        <input type="file" ref={fileInputRef} onChange={handleImageChange} className="hidden" accept="image/*" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="md:col-span-2">
-          <Field label={t("patient.fields.fullName")}>
-            <Input
-              value={form.name}
-              onChange={(e) => set("name", e.target.value)}
-              placeholder={t("patient.placeholders.fullName")}
-            />
-          </Field>
+      <div className="flex-1 space-y-1">
+        <p className="font-semibold text-foreground text-sm">{form.name || "—"}</p>
+        <p className="text-xs text-muted-foreground">{form.email || "—"}</p>
+        <div className="flex gap-2 pt-1">
+          {statusOptions.map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => set("status", opt.id)}
+              className={cn(
+                "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border transition-all",
+                form.status === opt.id
+                  ? `${opt.light} ${opt.text} border-current`
+                  : "bg-background border-border text-muted-foreground hover:bg-muted"
+              )}
+            >
+              <span className={cn("w-1.5 h-1.5 rounded-full", opt.color)} />
+              {opt.label}
+            </button>
+          ))}
         </div>
-        <Field label={t("patient.fields.birthDate")}>
-          <Input type="date" value={form.dateOfBirth} onChange={(e) => set("dateOfBirth", e.target.value)} />
-        </Field>
-        <Field label={t("patient.fields.gender")}>
-          <Select
-            options={genderOptions}
-            value={form.gender}
-            onChange={(v) => set("gender", v)}
-            placeholder={t("common.select")}
-          />
-        </Field>
-        <Field label={t("patient.fields.bloodType")}>
-          <Select
-            options={BLOOD_OPTIONS}
-            value={form.bloodType}
-            onChange={(v) => set("bloodType", v)}
-            placeholder={t("common.select")}
-          />
-        </Field>
-        <Field label={t("patient.fields.maritalStatus")}>
-          <Select
-            options={maritalStatusOptions}
-            value={form.maritalStatus}
-            onChange={(v) => set("maritalStatus", v)}
-            placeholder={t("common.select")}
-          />
-        </Field>
       </div>
-    </div>,
+    </div>
 
-    // STEP 1 — Contacto
-    <div key="contacto" className="space-y-5">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Field label={t("patient.fields.email")}>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="md:col-span-2">
+        <Field label={t("patient.fields.fullName")}>
           <Input
-            type="email"
-            value={form.email}
-            onChange={(e) => set("email", e.target.value)}
-            placeholder="ejemplo@email.com"
+            value={form.name}
+            onChange={(e) => set("name", e.target.value)}
+            placeholder={t("patient.placeholders.fullName")}
           />
         </Field>
-        <Field label={t("patient.fields.phone")}>
-          <Input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+54 11 0000-0000" />
-        </Field>
-        <div className="md:col-span-2">
-          <Field label={t("patient.fields.address")}>
-            <Input
-              value={form.address}
-              onChange={(e) => set("address", e.target.value)}
-              placeholder="Av. Corrientes 1234"
-            />
-          </Field>
-        </div>
-        <Field label={t("patient.fields.city")}>
-          <Input value={form.city} onChange={(e) => set("city", e.target.value)} placeholder="Buenos Aires" />
-        </Field>
-        <div className="grid grid-cols-2 gap-4">
-          <Field label={t("patient.fields.state")}>
-            <Input value={form.state} onChange={(e) => set("state", e.target.value)} placeholder="CABA" />
-          </Field>
-          <Field label={t("patient.fields.zipCode")}>
-            <Input value={form.zipCode} onChange={(e) => set("zipCode", e.target.value)} placeholder="1043" />
-          </Field>
-        </div>
       </div>
-    </div>,
+      <Field label={t("patient.fields.birthDate")}>
+        <Input type="date" value={form.dateOfBirth} onChange={(e) => set("dateOfBirth", e.target.value)} />
+      </Field>
+      <Field label={t("patient.fields.gender")}>
+        <Select
+          options={genderOptions}
+          value={form.gender}
+          onChange={(v) => set("gender", v)}
+          placeholder={t("common.select")}
+        />
+      </Field>
+      <Field label={t("patient.fields.bloodType")}>
+        <Select
+          options={BLOOD_OPTIONS}
+          value={form.bloodType}
+          onChange={(v) => set("bloodType", v)}
+          placeholder={t("common.select")}
+        />
+      </Field>
+      <Field label={t("patient.fields.maritalStatus")}>
+        <Select
+          options={maritalStatusOptions}
+          value={form.maritalStatus}
+          onChange={(v) => set("maritalStatus", v)}
+          placeholder={t("common.select")}
+        />
+      </Field>
+    </div>
+  </div>
+);
 
-    // STEP 2 — Médico
-    <div key="medico" className="space-y-5">
+const StepContact = ({ form, set, t }) => (
+  <div className="space-y-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <Field label={t("patient.fields.email")}>
+        <Input
+          type="email"
+          value={form.email}
+          onChange={(e) => set("email", e.target.value)}
+          placeholder="ejemplo@email.com"
+        />
+      </Field>
+      <Field label={t("patient.fields.phone")}>
+        <Input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+54 11 0000-0000" />
+      </Field>
+      <div className="md:col-span-2">
+        <Field label={t("patient.fields.address")}>
+          <Input
+            value={form.address}
+            onChange={(e) => set("address", e.target.value)}
+            placeholder="Av. Corrientes 1234"
+          />
+        </Field>
+      </div>
+      <Field label={t("patient.fields.city")}>
+        <Input value={form.city} onChange={(e) => set("city", e.target.value)} placeholder="Buenos Aires" />
+      </Field>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label={t("patient.fields.state")}>
+          <Input value={form.state} onChange={(e) => set("state", e.target.value)} placeholder="CABA" />
+        </Field>
+        <Field label={t("patient.fields.zipCode")}>
+          <Input value={form.zipCode} onChange={(e) => set("zipCode", e.target.value)} placeholder="1043" />
+        </Field>
+      </div>
+    </div>
+  </div>
+);
+
+const StepMedical = ({ form, set, genderOptions, insuranceOptions, currentStatus, t }) => {
+  const summaryCards = useMemo(
+    () => [
+      {
+        label: t("patient.summary.bloodType"),
+        value: form.bloodType?.toUpperCase(),
+        icon: "Droplets",
+        color: "text-red-600 bg-red-50",
+      },
+      {
+        label: t("patient.fields.gender"),
+        value: genderOptions.find((o) => o.value === form.gender)?.label,
+        icon: "User",
+        color: "text-blue-600 bg-blue-50",
+      },
+      {
+        label: t("patient.fields.status"),
+        value: currentStatus.label,
+        icon: "Activity",
+        color: `${currentStatus.text} ${currentStatus.light}`,
+      },
+    ],
+    [t, form.bloodType, form.gender, genderOptions, currentStatus]
+  );
+
+  return (
+    <div className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Field label={t("patient.fields.insurance")}>
           <Select
@@ -271,26 +194,7 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        {[
-          {
-            label: t("patient.summary.bloodType"),
-            value: form.bloodType?.toUpperCase(),
-            icon: "Droplets",
-            color: "text-red-600 bg-red-50",
-          },
-          {
-            label: t("patient.fields.gender"),
-            value: genderOptions.find((o) => o.value === form.gender)?.label,
-            icon: "User",
-            color: "text-blue-600 bg-blue-50",
-          },
-          {
-            label: t("patient.fields.status"),
-            value: currentStatus.label,
-            icon: "Activity",
-            color: `${currentStatus.text} ${currentStatus.light}`,
-          },
-        ].map(({ label, value, icon, color }) => (
+        {summaryCards.map(({ label, value, icon, color }) => (
           <div
             key={label}
             className={cn(
@@ -306,10 +210,25 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
           </div>
         ))}
       </div>
-    </div>,
+    </div>
+  );
+};
 
-    // STEP 3 — Emergencia
-    <div key="emergencia" className="space-y-5">
+const StepEmergency = ({ form, setEmergency, insuranceOptions, t }) => {
+  const summaryRows = useMemo(
+    () => [
+      { label: t("patient.summary.name"), value: form.name },
+      { label: t("patient.fields.email"), value: form.email },
+      { label: t("patient.fields.phone"), value: form.phone },
+      { label: t("patient.fields.city"), value: form.city },
+      { label: t("patient.summary.insurance"), value: insuranceOptions.find((o) => o.value === form.insurance)?.label },
+      { label: t("patient.summary.bloodType"), value: form.bloodType?.toUpperCase() },
+    ],
+    [t, form, insuranceOptions]
+  );
+
+  return (
+    <div className="space-y-5">
       <div className="p-5 bg-red-50/50 border border-red-100 rounded-xl space-y-5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
@@ -361,17 +280,7 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
           </p>
         </div>
         <div className="p-4 grid grid-cols-2 gap-x-6 gap-y-3">
-          {[
-            { label: t("patient.summary.name"), value: form.name },
-            { label: t("patient.fields.email"), value: form.email },
-            { label: t("patient.fields.phone"), value: form.phone },
-            { label: t("patient.fields.city"), value: form.city },
-            {
-              label: t("patient.summary.insurance"),
-              value: insuranceOptions.find((o) => o.value === form.insurance)?.label,
-            },
-            { label: t("patient.summary.bloodType"), value: form.bloodType?.toUpperCase() },
-          ].map(({ label, value }) => (
+          {summaryRows.map(({ label, value }) => (
             <div key={label}>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">{label}</p>
               <p className="text-sm text-foreground font-medium truncate">
@@ -381,8 +290,83 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
           ))}
         </div>
       </div>
-    </div>,
-  ];
+    </div>
+  );
+};
+
+// ─── Main Component ───────────────────────────────────────────────────────────
+
+const EditPatientModal = ({ patient, onClose, onSave }) => {
+  const {
+    t,
+    fileInputRef,
+    step,
+    form,
+    previewImage,
+    imageFile,
+    statusOptions,
+    genderOptions,
+    maritalStatusOptions,
+    insuranceOptions,
+    stepsConfig,
+    currentStatus,
+    isLast,
+    set,
+    setEmergency,
+    handleImageChange,
+    goNext,
+    goBack,
+  } = useEditPatientForm(patient);
+
+  const handleSave = useCallback(() => onSave(form, imageFile), [onSave, form, imageFile]);
+
+  const stepContent = useMemo(
+    () => [
+      <StepPersonal
+        key="personal"
+        form={form}
+        set={set}
+        previewImage={previewImage}
+        fileInputRef={fileInputRef}
+        handleImageChange={handleImageChange}
+        statusOptions={statusOptions}
+        genderOptions={genderOptions}
+        maritalStatusOptions={maritalStatusOptions}
+        t={t}
+      />,
+      <StepContact key="contact" form={form} set={set} t={t} />,
+      <StepMedical
+        key="medical"
+        form={form}
+        set={set}
+        genderOptions={genderOptions}
+        insuranceOptions={insuranceOptions}
+        currentStatus={currentStatus}
+        t={t}
+      />,
+      <StepEmergency
+        key="emergency"
+        form={form}
+        setEmergency={setEmergency}
+        insuranceOptions={insuranceOptions}
+        t={t}
+      />,
+    ],
+    [
+      form,
+      set,
+      setEmergency,
+      previewImage,
+      fileInputRef,
+      handleImageChange,
+      statusOptions,
+      genderOptions,
+      maritalStatusOptions,
+      insuranceOptions,
+      currentStatus,
+      t,
+    ]
+  );
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 md:p-6">
@@ -416,7 +400,6 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
                 <Icon name="X" size={18} />
               </button>
             </div>
-
             <StepIndicator current={step} steps={stepsConfig} />
           </div>
 
@@ -462,7 +445,7 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
                   className="px-6"
                   iconName="Save"
                   iconPosition="left"
-                  onClick={() => onSave(form, imageFile)}
+                  onClick={handleSave}
                 >
                   {t("common.saveChanges")}
                 </Button>
@@ -474,54 +457,5 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
     </div>
   );
 };
-
-// ─── Sub-componentes Estáticos Reubicados ────────────────────────────────────
-const Field = ({ label, children }) => (
-  <div className="flex flex-col gap-1.5">
-    {label && <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</label>}
-    {children}
-  </div>
-);
-
-const StepIndicator = ({ current, steps }) => (
-  <div className="flex items-center gap-0">
-    {steps.map((step, i) => {
-      const done = i < current;
-      const active = i === current;
-      return (
-        <React.Fragment key={step.id}>
-          <div className="flex flex-col items-center gap-1.5">
-            <div
-              className={cn(
-                "w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 border",
-                done && "bg-primary border-primary text-primary-foreground shadow-sm",
-                active && "bg-primary/10 border-primary text-primary scale-110 shadow-md",
-                !done && !active && "bg-muted/50 border-border text-muted-foreground"
-              )}
-            >
-              {done ? <Icon name="Check" size={14} /> : <Icon name={step.icon} size={14} />}
-            </div>
-            <span
-              className={cn(
-                "text-[10px] font-semibold uppercase tracking-wider transition-colors",
-                active ? "text-primary" : done ? "text-foreground" : "text-muted-foreground"
-              )}
-            >
-              {step.label}
-            </span>
-          </div>
-          {i < steps.length - 1 && (
-            <div
-              className={cn(
-                "h-px flex-1 mx-2 mb-4 transition-all duration-500",
-                i < current ? "bg-primary" : "bg-border"
-              )}
-            />
-          )}
-        </React.Fragment>
-      );
-    })}
-  </div>
-);
 
 export default EditPatientModal;

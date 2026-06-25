@@ -4,6 +4,7 @@ import Icon from "@/components/AppIcon";
 import LanguageSwitch from "@/components/ui/LanguageSwitch";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { notifyError, notifySuccess } from "@/utils/notifications";
 
 const Header = ({ sidebarCollapsed = false }) => {
@@ -12,6 +13,7 @@ const Header = ({ sidebarCollapsed = false }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { t } = useTranslation();
   const { signOut, userProfile, isAdmin } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -80,6 +82,13 @@ const Header = ({ sidebarCollapsed = false }) => {
       <div className="h-full flex items-center justify-between px-6">
         <div className="flex items-center gap-4 flex-1 max-w-2xl"></div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-base focus-clinical"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? <Icon name="Sun" size={18} /> : <Icon name="Moon" size={18} />}
+          </button>
           <LanguageSwitch />
           <div className="relative">
             <button

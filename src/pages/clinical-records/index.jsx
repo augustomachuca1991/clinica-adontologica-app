@@ -11,6 +11,7 @@ import StatsOverview from "@/pages/clinical-records/components/StatsOverview";
 import { useGlobalClinicalRegistry } from "@/hooks/GlobalClinicalRegistryHooks";
 import { useClinicalNotes } from "@/hooks/ClinicalNotesHooks";
 import { notifySuccess, notifyError } from "@/utils/notifications";
+import Skeleton, { SkeletonCard, SkeletonStatsRow } from "@/components/ui/Skeleton";
 
 const ClinicalRecords = () => {
   const [viewMode, setViewMode] = useState("grid");
@@ -137,11 +138,10 @@ const ClinicalRecords = () => {
           </div>
 
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-              <div className="animate-spin mb-4">
-                <Icon name="RefreshCw" size={32} />
-              </div>
-              <p>Cargando historias clínicas...</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-start">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
             </div>
           ) : (
             <>

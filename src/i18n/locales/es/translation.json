@@ -1029,6 +1029,7 @@
     }
   },
   "common": {
+    "skipToContent": "Saltar al contenido",
     "cancel": "Cancelar",
     "edit": "Editar",
     "error": "Error",
@@ -1471,6 +1472,9 @@
       "contentLabel": "Contenido",
       "placeholder": "Escribí el contenido de la nota clínica...",
       "charCount": "{{count}} caracteres",
+      "saving": "Guardando…",
+      "saved": "Guardado",
+      "saveError": "Error al guardar",
       "privateActive": "Nota privada — solo visible para vos",
       "privateInactive": "Nota pública — visible para el equipo",
       "cancel": "Cancelar",

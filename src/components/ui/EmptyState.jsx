@@ -1,27 +1,23 @@
-// components/ui/EmptyState.jsx
-import React, { memo } from "react";
+import Icon from "@/components/AppIcon";
+import Button from "@/components/ui/Button";
 
-/**
- * EmptyState – mensaje vacío / error / cargando reutilizable.
- *
- * Props:
- *  - loading?:  boolean
- *  - error?:    boolean
- *  - loadingText?: string
- *  - errorText?:   string
- *  - emptyText:    string
- *  - children?:    ReactNode  (cuando hay datos, renderiza los hijos)
- */
-const EmptyState = memo(
-  ({ loading, error, loadingText = "Cargando...", errorText = "Error al cargar.", emptyText, children }) => {
-    if (loading) return <p className="text-sm text-muted-foreground py-4 text-center">{loadingText}</p>;
-    if (error) return <p className="text-sm text-destructive py-4 text-center">{errorText}</p>;
-    if (!children || (Array.isArray(children) && children.length === 0)) {
-      return <p className="text-muted-foreground p-4 text-center text-sm">{emptyText}</p>;
-    }
-    return <>{children}</>;
-  }
+const EmptyState = ({ icon = "Inbox", title, description, actionLabel, onAction, actionIcon = "Plus" }) => (
+  <div className="clinical-card p-12 text-center">
+    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+      <Icon name={icon} size={32} className="text-muted-foreground" />
+    </div>
+    {title && (
+      <h3 className="text-lg font-headline font-semibold text-foreground mb-2">{title}</h3>
+    )}
+    {description && (
+      <p className="text-sm text-muted-foreground mb-4">{description}</p>
+    )}
+    {actionLabel && onAction && (
+      <Button variant="default" onClick={onAction} iconName={actionIcon} iconPosition="left">
+        {actionLabel}
+      </Button>
+    )}
+  </div>
 );
 
-EmptyState.displayName = "EmptyState";
 export default EmptyState;

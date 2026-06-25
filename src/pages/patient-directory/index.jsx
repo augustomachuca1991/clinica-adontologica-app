@@ -12,6 +12,7 @@ import { notifyError, notifyInfo, notifySuccess, notifyWarning } from "@/utils/n
 import { usePatients } from "@/hooks/PatientsHooks";
 import Icon from "@/components/AppIcon";
 import StatsOverview from "@/pages/patient-directory/components/StatsOverview";
+import Skeleton, { SkeletonCard, SkeletonTable, SkeletonStatsRow } from "@/components/ui/Skeleton";
 
 const FILTERS = {
   searchQuery: "",
@@ -130,8 +131,28 @@ const PatientDirectory = () => {
 
   if (loading) {
     return (
-      <div className="flex h-96 items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#534AB7]"></div>
+      <div className="space-y-6">
+        <SkeletonStatsRow />
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-48" />
+            <Skeleton className="h-4 w-64" />
+          </div>
+          <div className="flex gap-3">
+            <Skeleton className="h-10 w-24 rounded-lg" />
+            <Skeleton className="h-10 w-40 rounded-lg" />
+          </div>
+        </div>
+        <Skeleton className="h-12 w-full rounded-lg" />
+        {view === "grid" ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 lg:gap-6">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : (
+          <SkeletonTable rows={5} />
+        )}
       </div>
     );
   }

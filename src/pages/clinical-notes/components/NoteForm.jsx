@@ -1,13 +1,14 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import Icon from "@/components/AppIcon";
 import { NOTE_TYPES, NOTE_FORM_INITIAL_VALUES, getNoteValidationSchema } from "@/utils/notesUtils/notes";
 
-const NoteForm = ({ initial = {}, onSubmit, onCancel, isSubmitting }) => {
+const NoteForm = ({ initial = {}, onSubmit, onCancel, isSubmitting, onAutoSave }) => {
   const { t } = useTranslation();
+  const [autoSaveStatus, setAutoSaveStatus] = useState(null);
+  const debounceRef = useRef(null);
 
-  // Pasamos 't' al esquema utilitario para que los errores de Yup reaccionen al cambio de idioma
   const validationSchema = useMemo(() => getNoteValidationSchema(t), [t]);
 
   const formik = useFormik({
@@ -17,11 +18,38 @@ const NoteForm = ({ initial = {}, onSubmit, onCancel, isSubmitting }) => {
       isPrivate: initial.is_private ?? NOTE_FORM_INITIAL_VALUES.isPrivate,
     },
     validationSchema,
-    enableReinitialize: true, // Permite que el formulario se actualice si las props iniciales cambian
+    enableReinitialize: true,
     onSubmit: async (values) => {
       await onSubmit(values);
     },
   });
+
+  const isEditMode = !!initial.id;
+
+  useEffect(() => {
+    if (!isEditMode || !onAutoSave) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    const hasChanges =
+      formik.values.content !== (initial.content ?? "") ||
+      formik.values.type !== (initial.type ?? NOTE_FORM_INITIAL_VALUES.type) ||
+      formik.values.isPrivate !== (initial.is_private ?? NOTE_FORM_INITIAL_VALUES.isPrivate);
+    if (!hasChanges) return;
+    setAutoSaveStatus("saving");
+    debounceRef.current = setTimeout(async () => {
+      const res = await onAutoSave({
+        content: formik.values.content,
+        type: formik.values.type,
+        isPrivate: formik.values.isPrivate,
+      });
+      setAutoSaveStatus(res.success ? "saved" : "error");
+      if (res.success) {
+        setTimeout(() => setAutoSaveStatus(null), 2000);
+      }
+    }, 2000);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [formik.values.content, formik.values.type, formik.values.isPrivate, isEditMode, onAutoSave]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -69,9 +97,23 @@ const NoteForm = ({ initial = {}, onSubmit, onCancel, isSubmitting }) => {
           ) : (
             <span />
           )}
-          <p className="text-xs text-muted-foreground text-right">
-            {t("clinicalNotes.form.charCount", { count: formik.values.content.length })}
-          </p>
+          <div className="flex items-center gap-2">
+            {autoSaveStatus === "saving" && (
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                <div className="w-2.5 h-2.5 border border-muted-foreground/40 border-t-muted-foreground rounded-full animate-spin" />
+                {t("clinicalNotes.form.saving")}
+              </span>
+            )}
+            {autoSaveStatus === "saved" && (
+              <span className="text-xs text-success">{t("clinicalNotes.form.saved")}</span>
+            )}
+            {autoSaveStatus === "error" && (
+              <span className="text-xs text-error">{t("clinicalNotes.form.saveError")}</span>
+            )}
+            <p className="text-xs text-muted-foreground text-right">
+              {t("clinicalNotes.form.charCount", { count: formik.values.content.length })}
+            </p>
+          </div>
         </div>
       </div>
 

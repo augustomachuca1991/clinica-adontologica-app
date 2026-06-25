@@ -13,6 +13,7 @@ import NoteDetailModal from "@/pages/clinical-notes/components/NoteDetailModal";
 import ConfirmDeleteModal from "@/pages/clinical-notes/components/ConfirmDeleteModal";
 
 import { filterNotes, INITIAL_FILTERS } from "@/utils/notesUtils/notes";
+import Skeleton, { SkeletonCard } from "@/components/ui/Skeleton";
 
 export default function ClinicalNotesPage({ providerId }) {
   const { t } = useTranslation();
@@ -145,11 +146,10 @@ export default function ClinicalNotesPage({ providerId }) {
 
         {/* Loading */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-            <div className="animate-spin mb-4">
-              <Icon name="RefreshCw" size={32} />
-            </div>
-            <p className="text-sm">{t("clinicalNotes.loading")}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 items-start">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
           </div>
         ) : filtered.length === 0 ? (
           /* Empty state */
@@ -214,6 +214,7 @@ export default function ClinicalNotesPage({ providerId }) {
             onSubmit={handleUpdate}
             onCancel={() => setEditNote(null)}
             isSubmitting={isSubmitting}
+            onAutoSave={updateNote}
           />
         )}
       </Modal>

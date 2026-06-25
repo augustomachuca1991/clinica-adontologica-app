@@ -1031,6 +1031,7 @@
     }
   },
   "common": {
+    "skipToContent": "Skip to content",
     "cancel": "Cancel",
     "edit": "Edit",
     "error": "Error",
@@ -1474,6 +1475,9 @@
       "contentLabel": "Content",
       "placeholder": "Write the content of the clinical note...",
       "charCount": "{{count}} characters",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "saveError": "Save failed",
       "privateActive": "Private note — only visible to you",
       "privateInactive": "Public note — visible to the team",
       "cancel": "Cancel",

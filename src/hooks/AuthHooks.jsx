@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { notifyError } from "@/utils/notifications";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useAuthentication = () => {
   const [loading, setLoading] = useState(false);

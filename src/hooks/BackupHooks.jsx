@@ -96,6 +96,7 @@ export const useBackup = () => {
 
     try {
       const text = await file.text();
+      const startTime = Date.now();
       const snapshot = JSON.parse(text);
 
       if (!snapshot._meta) {
@@ -173,10 +174,10 @@ export const useBackup = () => {
       // Registrar el restore en historial
       const { error: insertError } = await supabase.from("backup_history").insert({
         type: "manual",
-        status: success ? "completed" : "failed",
-        size_bytes: sizeBytes,
-        duration_ms: duration,
-        tables_included: tablesToBackup,
+        status: errors.length === 0 ? "completed" : "failed",
+        size_bytes: new Blob([text]).size,
+        duration_ms: Date.now() - startTime,
+        tables_included: tablesToRestore,
         error_detail: errors.length ? JSON.stringify(errors) : null,
       });
 

@@ -55,7 +55,7 @@ export const useSubscription = () => {
     await refresh();
   };
 
-  const renewSubscription = async (subscriptionId, startDateString) => {
+  const renewSubscription = async (subscriptionId, startDateString, amountPaid = 0) => {
     try {
       // 1. Obtener el usuario actual logueado
       const {

@@ -43,13 +43,9 @@ const TreatmentForm = ({
 
   useEffect(() => {
     if (editingTreatment) {
-      // Normalizamos los datos: si viene de la DB trae service_id,
-      // pero el formulario usa la propiedad 'procedure'
       setFormData({
         ...editingTreatment,
         procedure: (editingTreatment.procedure || editingTreatment.service_id)?.toString() || "",
-        // También nos aseguramos de que el status coincida con el formato de tus statusOptions
-        // (Si en la DB es 'in-progress', convertirlo a 'inProgress' si es necesario)
         status: editingTreatment.status === "in-progress" ? "inProgress" : editingTreatment.status,
       });
     } else {

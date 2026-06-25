@@ -7,7 +7,7 @@ function Image({ src, alt = "Image Name", className = "", ...props }) {
       alt={alt}
       className={className}
       onError={(e) => {
-        e.target.src = "src/assets/images/no_image.png";
+        e.target.src = NoImage;
       }}
       {...props}
     />

@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#b97beb" />
     <meta name="description" content="Orion Software – Soluciones digitales para clínicas" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+        script-src 'self';
+        style-src 'self' 'unsafe-inline';
+        font-src 'self' https://fonts.gstatic.com;
+        connect-src 'self' https://itbgzglbjbiyljibchdf.supabase.co wss://itbgzglbjbiyljibchdf.supabase.co;
+        img-src 'self' data: https://ui-avatars.com https://itbgzglbjbiyljibchdf.supabase.co;
+        frame-src 'none';
+        object-src 'none';
+        base-uri 'self';
+        form-action 'self';"
+    />
     <!-- Favicon -->
     <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
@@ -15,7 +28,7 @@
 
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div class="dhiwise-code" id="root"></div>
+    <div id="root"></div>
     <script type="module" src="/src/index.jsx"></script>
   </body>
 </html>

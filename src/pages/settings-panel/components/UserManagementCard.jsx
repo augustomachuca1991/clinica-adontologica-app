@@ -14,7 +14,7 @@ const UserManagementCard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRole, setSelectedRole] = useState("all");
   const [showAddUser, setShowAddUser] = useState(false);
-  const [newUserPassword, setNewUserPassword] = useState(null);
+  const [userCreatedEmail, setUserCreatedEmail] = useState(null);
 
   const { formData, setFormData, formError, handleRegisterUser } = useUserRegistration();
   const { users, loading, fetchUsers } = useUserList();
@@ -37,7 +37,7 @@ const UserManagementCard = () => {
   const onSubmit = async (e) => {
     const result = await handleRegisterUser(e);
     if (result?.success) {
-      setNewUserPassword(result.password);
+      setUserCreatedEmail(formData.email);
       setShowAddUser(false);
       await fetchUsers();
     }
@@ -141,33 +141,19 @@ const UserManagementCard = () => {
         </div>
       )}
 
-      {/* Contraseña generada */}
-      {newUserPassword && (
+      {/* Usuario creado — se envió email de recuperación */}
+      {userCreatedEmail && (
         <div className="bg-success/10 border border-success/30 rounded-lg p-4 flex items-start gap-3">
-          <Icon name="Key" size={20} className="text-success mt-0.5 flex-shrink-0" />
+          <Icon name="Mail" size={20} className="text-success mt-0.5 flex-shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-success mb-1">{t("users.password_generated_title") || "Usuario creado"}</p>
-            <p className="text-xs text-muted-foreground mb-2">{t("users.password_generated_desc") || "Contraseña temporal del nuevo usuario:"}</p>
-            <div className="flex items-center gap-2">
-              <code className="bg-background border border-border rounded px-3 py-1.5 text-sm font-mono select-all">
-                {newUserPassword}
-              </code>
-              <Button
-                variant="outline"
-                size="icon"
-                iconName="Copy"
-                onClick={() => {
-                  navigator.clipboard.writeText(newUserPassword);
-                  toast.success(t("common.copied") || "¡Copiado!");
-                }}
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                iconName="X"
-                onClick={() => setNewUserPassword(null)}
-              />
-            </div>
+            <p className="text-sm font-medium text-success mb-1">{t("users.created_title") || "Usuario creado"}</p>
+            <p className="text-xs text-muted-foreground mb-2">
+              {t("users.created_desc") || "Se envió un email de recuperación a"} <strong>{userCreatedEmail}</strong>
+              {". El usuario podrá establecer su propia contraseña."}
+            </p>
+            <Button variant="ghost" size="sm" iconName="X" onClick={() => setUserCreatedEmail(null)}>
+              {t("common.close") || "Cerrar"}
+            </Button>
           </div>
         </div>
       )}

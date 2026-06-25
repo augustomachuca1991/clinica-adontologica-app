@@ -7,14 +7,14 @@ import { useTranslation } from "react-i18next";
 import LoadSending from "@/components/ui/LoadSending";
 import Image from "@/components/AppImage";
 import logo from "@/assets/images/orion-logotipo-claro.svg";
-import { useAuth } from "@/contexts/AuthContext";
-import { notifyError, notifySuccess } from "@/utils/notifications";
+import { useAuthentication } from "@/hooks/AuthHooks";
+import { notifySuccess } from "@/utils/notifications";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const Login = () => {
-  const { signIn } = useAuth();
+  const { login, loading } = useAuthentication();
   const { t } = useTranslation();
 
   const validationSchema = Yup.object({
@@ -35,13 +35,12 @@ const Login = () => {
       } else {
         localStorage.removeItem("remembered_email");
       }
-      const { error } = await signIn(values.email, values.password);
-      if (error) notifyError(error.message);
-      else notifySuccess(t("welcome"));
+      const result = await login(values.email, values.password);
+      if (result.success) notifySuccess(t("welcome"));
     },
   });
 
-  const isLoading = formik.isSubmitting;
+  const isLoading = formik.isSubmitting || loading;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/40 px-4">

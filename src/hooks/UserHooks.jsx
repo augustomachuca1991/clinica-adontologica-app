@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
+import { sanitizeText } from "@/utils/sanitize";
 
 export const useUserRegistration = () => {
   const [formData, setFormData] = useState({ fullName: "", email: "", roleId: "", phone: "" });
@@ -63,14 +64,13 @@ export const useUserRegistration = () => {
     setFormError(null);
     setIsSubmitting(true);
 
-    let cleanName = formData.fullName.trim().replace(/<\/?[^>]+(>|$)/g, "");
+    let cleanName = sanitizeText(formData.fullName);
     let cleanEmail = formData.email.trim().toLowerCase();
 
     const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'\-\.]+$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    let cleanPhone = formData.phone ? formData.phone.trim() : null;
-    let selectedRole = formData.roleId;
+    let cleanPhone = formData.phone ? sanitizeText(formData.phone) : null;
 
     if (cleanName.length < 3 || !nameRegex.test(cleanName)) {
       setFormError("El nombre no es válido (debe tener al menos 3 letras, sin números ni símbolos).");
@@ -85,7 +85,7 @@ export const useUserRegistration = () => {
     }
 
     try {
-      const generatedPassword = Array.from({ length: 12 }, () =>
+      const generatedPassword = Array.from({ length: 16 }, () =>
         "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$".charAt(
           Math.floor(Math.random() * 58)
         )
@@ -104,14 +104,15 @@ export const useUserRegistration = () => {
 
       if (authError) throw authError;
 
-      // Limpiar estados locales tras el éxito
+      await supabase.auth.resetPasswordForEmail(cleanEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
       setFormData({ fullName: "", email: "", roleId: "", phone: "" });
       setSelectedRoles([]);
-
-      // REFRESCAR LA LISTA: Si registrás un usuario nuevo, volvemos a listar para que aparezca
       fetchUsers();
 
-      return { success: true, data: authData, password: generatedPassword };
+      return { success: true };
     } catch (err) {
       console.error(err);
       setFormError(err.message);

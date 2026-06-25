@@ -1,25 +1,33 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes as RouterRoutes, Route, Navigate } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import PatientProfile from "@/pages/patient-profile";
-import SettingsPanel from "@/pages/settings-panel";
-import Dashboard from "@/pages/dashboard";
-import TreatmentPlanning from "@/pages/treatment-planning";
-import PatientDirectory from "@/pages/patient-directory";
-import ClinicalRecords from "@/pages/clinical-records";
-import ClinicalNotes from "@/pages/clinical-notes";
-import Login from "@/pages/login";
 import PrivateRoute from "@/components/auth/PrivateRoute";
 import MainLayout from "@/components/ui/MainLayout";
-import SubscriptionExpired from "@/pages/subscription-expired";
-import ForgotPassword from "@/pages/forgot-password";
-import ResetPassword from "@/pages/reset-password";
-import WeeklyCalendar from "@/pages/weekly-calendar";
 import RoleGuard from "@/components/auth/RoleGuard";
 import PublicRoute from "@/components/auth/PublicRoute";
-import Terms from "@/pages/terms";
-import AdminPanel from "@/pages/admin-panel";
+import Spinner from "@/components/ui/Spinner";
+
+const Login = lazy(() => import("@/pages/login"));
+const ForgotPassword = lazy(() => import("@/pages/forgot-password"));
+const ResetPassword = lazy(() => import("@/pages/reset-password"));
+const Dashboard = lazy(() => import("@/pages/dashboard"));
+const PatientDirectory = lazy(() => import("@/pages/patient-directory"));
+const PatientProfile = lazy(() => import("@/pages/patient-profile"));
+const TreatmentPlanning = lazy(() => import("@/pages/treatment-planning"));
+const ClinicalRecords = lazy(() => import("@/pages/clinical-records"));
+const WeeklyCalendar = lazy(() => import("@/pages/weekly-calendar"));
+const ClinicalNotes = lazy(() => import("@/pages/clinical-notes"));
+const AdminPanel = lazy(() => import("@/pages/admin-panel"));
+const SettingsPanel = lazy(() => import("@/pages/settings-panel"));
+const SubscriptionExpired = lazy(() => import("@/pages/subscription-expired"));
+const Terms = lazy(() => import("@/pages/terms"));
+
+const PageSuspense = ({ children }) => (
+  <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-muted/40"><Spinner size={64} /></div>}>
+    {children}
+  </Suspense>
+);
 
 const Routes = () => {
   return (
@@ -32,41 +40,35 @@ const Routes = () => {
       <ErrorBoundary>
         <ScrollToTop />
         <RouterRoutes>
-          {/* ================= PUBLIC ================= */}
           <Route element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/login" element={<PageSuspense><Login /></PageSuspense>} />
+            <Route path="/forgot-password" element={<PageSuspense><ForgotPassword /></PageSuspense>} />
           </Route>
 
-          {/* ================= PRIVATE ================= */}
           <Route element={<PrivateRoute />}>
             <Route element={<MainLayout />}>
-              {/* RUTAS DE DENTISTA/STAFF PROTEGIDAS POR ROL */}
               <Route element={<RoleGuard allowedRoles={["dentist"]} />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/patient-directory" element={<PatientDirectory />} />
-                <Route path="/patient-profile/:id?" element={<PatientProfile />} />
-                <Route path="/treatment-planning" element={<TreatmentPlanning />} />
-                <Route path="/clinical-records" element={<ClinicalRecords />} />
-                <Route path="/weekly-calendar" element={<WeeklyCalendar />} />
-                <Route path="/clinical-notes" element={<ClinicalNotes />} />
+                <Route path="/dashboard" element={<PageSuspense><Dashboard /></PageSuspense>} />
+                <Route path="/patient-directory" element={<PageSuspense><PatientDirectory /></PageSuspense>} />
+                <Route path="/patient-profile/:id?" element={<PageSuspense><PatientProfile /></PageSuspense>} />
+                <Route path="/treatment-planning" element={<PageSuspense><TreatmentPlanning /></PageSuspense>} />
+                <Route path="/clinical-records" element={<PageSuspense><ClinicalRecords /></PageSuspense>} />
+                <Route path="/weekly-calendar" element={<PageSuspense><WeeklyCalendar /></PageSuspense>} />
+                <Route path="/clinical-notes" element={<PageSuspense><ClinicalNotes /></PageSuspense>} />
               </Route>
 
-              {/* GRUPO ADMINISTRATIVO: Solo para Admins */}
               <Route element={<RoleGuard allowedRoles={["admin"]} />}>
-                <Route path="/admin-panel" element={<AdminPanel />} />
-                <Route path="/settings-panel" element={<SettingsPanel />} />
+                <Route path="/admin-panel" element={<PageSuspense><AdminPanel /></PageSuspense>} />
+                <Route path="/settings-panel" element={<PageSuspense><SettingsPanel /></PageSuspense>} />
               </Route>
             </Route>
 
-            {/* Rutas privadas especiales sin layout */}
-            <Route path="/subscription-expired" element={<SubscriptionExpired />} />
+            <Route path="/subscription-expired" element={<PageSuspense><SubscriptionExpired /></PageSuspense>} />
           </Route>
 
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/terms" element={<PageSuspense><Terms /></PageSuspense>} />
+          <Route path="/reset-password" element={<PageSuspense><ResetPassword /></PageSuspense>} />
 
-          {/* ================= FALLBACK ================= */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </RouterRoutes>
       </ErrorBoundary>

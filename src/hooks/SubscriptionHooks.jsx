@@ -38,14 +38,14 @@ export const useSubscription = () => {
   }, []);
 
   const createSubscription = async (values) => {
-    const startDate = new Date();
-    const endDate = new Date();
-    endDate.setMonth(startDate.getMonth() + parseInt(values.duration));
+    const startDate = new Date(values.startDate);
+    const endDate = new Date(values.endDate);
 
     const { error } = await supabase.from("subscriptions").insert([
       {
         user_id: values.userId,
         status: "active",
+        current_period_start: startDate.toISOString(),
         current_period_end: endDate.toISOString(),
       },
     ]);
@@ -136,4 +136,25 @@ export const useSubscription = () => {
     createSubscription,
     renewSubscription,
   };
+};
+
+export const getSubscriptionStats = (subscriptions) => {
+  const hoy = new Date();
+  const en30Dias = new Date(hoy.getTime() + 30 * 86400000);
+
+  let active = 0;
+  let expiringSoon = 0;
+  let expired = 0;
+
+  (subscriptions || []).forEach((sub) => {
+    const fin = new Date(sub.current_period_end);
+    if (hoy <= fin) {
+      active++;
+      if (fin <= en30Dias) expiringSoon++;
+    } else {
+      expired++;
+    }
+  });
+
+  return { total: subscriptions?.length || 0, active, expiringSoon, expired };
 };

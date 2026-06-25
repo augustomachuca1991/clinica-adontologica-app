@@ -1,48 +1,54 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-import { getValidationSchema } from "@/utils/adminUtils/admin";
+import * as Yup from "yup";
 
-const DURATIONS = [
-  { value: "1", labelKey: "admin.duration.1month" },
-  { value: "3", labelKey: "admin.duration.3months" },
-  { value: "6", labelKey: "admin.duration.6months" },
-  { value: "12", labelKey: "admin.duration.1year" },
-];
-
-const CreateSubscriptionForm = ({ users, onSubmit, onCancel }) => {
+const CreateSubscriptionForm = ({ users, onSubmit }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const searchContainerRef = useRef(null);
+  const blurTimeoutRef = useRef(null);
 
-  // Schema creado dentro del componente para tener acceso a t()
-  const validationSchema = useMemo(() => getValidationSchema(t), [t]);
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        userId: Yup.string().required(t("admin.errors.userRequired")),
+        startDate: Yup.date()
+          .min(new Date().toISOString().split("T")[0], "La fecha debe ser hoy o posterior")
+          .required("Requerido"),
+        endDate: Yup.date()
+          .min(Yup.ref("startDate"), "Debe ser posterior a la fecha de inicio")
+          .required("Requerido"),
+        plan: Yup.string().required("Requerido"),
+      }),
+    [t]
+  );
 
-  useEffect(() => {
-    if (filteredUsers.length === 0) return;
-    const handler = (e) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
-        setFilteredUsers([]);
-        setSearchTerm("");
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [filteredUsers]);
+  useEffect(() => () => { if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current); }, []);
+
+  const hideDropdown = () => {
+    setFilteredUsers([]);
+    setSearchTerm("");
+  };
 
   const formik = useFormik({
-    initialValues: { userId: "", userName: "", duration: "1" },
+    initialValues: {
+      userId: "",
+      userName: "",
+      startDate: new Date().toISOString().split("T")[0],
+      endDate: "",
+      plan: "monthly",
+    },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       await onSubmit(values);
       resetForm();
-      setSearchTerm("");
-      setFilteredUsers([]);
+      hideDropdown();
     },
   });
 
   const handleSearchFocus = () => {
+    if (formik.values.userId) return;
     const sorted = [...users].sort((a, b) => a.full_name?.localeCompare(b.full_name));
     setFilteredUsers(sorted);
   };
@@ -67,63 +73,73 @@ const CreateSubscriptionForm = ({ users, onSubmit, onCancel }) => {
   const handleSelectUser = (u) => {
     formik.setValues({ ...formik.values, userId: u.id, userName: u.full_name });
     formik.setFieldTouched("userId", true);
-    setSearchTerm("");
-    setFilteredUsers([]);
+    hideDropdown();
   };
 
   const handleClearUser = () => {
     formik.setValues({ ...formik.values, userId: "", userName: "" });
     formik.setFieldTouched("userId", false);
+    setSearchTerm("");
   };
+
+  const handleInputBlur = () => {
+    formik.setFieldTouched("userId", true);
+    blurTimeoutRef.current = setTimeout(hideDropdown, 120);
+  };
+
+  const handleItemMouseDown = (e) => {
+    e.preventDefault();
+    if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+  };
+
+  useEffect(() => {
+    if (formik.values.startDate && formik.values.plan) {
+      const start = new Date(formik.values.startDate);
+      const end = new Date(start);
+      if (formik.values.plan === "yearly") {
+        end.setFullYear(end.getFullYear() + 1);
+      } else {
+        end.setMonth(end.getMonth() + 1);
+      }
+      formik.setFieldValue("endDate", end.toISOString().split("T")[0]);
+    }
+  }, [formik.values.startDate, formik.values.plan]);
 
   const hasUserError = formik.touched.userId && formik.errors.userId;
 
   return (
-    <div className="bg-card border border-border rounded-xl p-5 space-y-5">
-      <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold text-foreground">{t("admin.form.title")}</h2>
-        <button
-          type="button"
-          onClick={() => {
-            formik.resetForm();
-            setSearchTerm("");
-            setFilteredUsers([]);
-            onCancel?.();
-          }}
-          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-        >
-          {t("common.actions.cancel")}
-        </button>
+    <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+      <div className="inline-block px-2 py-1 text-[11px] font-semibold rounded bg-[#EEEDFE] text-[#3C3489]">
+        {t("admin.form.title")}
       </div>
 
-      <form className="space-y-5" onSubmit={formik.handleSubmit}>
-        {/* ── Select User ── */}
+      <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cbf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        {t("admin.form.createTitle")}
+      </div>
+
+      <form className="space-y-3" onSubmit={formik.handleSubmit}>
         <div className="space-y-1.5 relative">
-          <label className="text-xs font-medium text-muted-foreground">{t("admin.form.selectUser")}</label>
+          <label className="text-xs text-muted-foreground">{t("admin.form.selectUser")}</label>
 
-          <div className="relative">
-            <input
-              type="text"
-              placeholder={t("admin.form.searchPlaceholder")}
-              value={formik.values.userName || searchTerm}
-              onFocus={handleSearchFocus}
-              onChange={handleSearchChange}
-              onBlur={() => formik.setFieldTouched("userId", true)}
-              className={`w-full px-3 py-2 bg-background border rounded-lg text-sm text-foreground pr-8 focus:outline-none focus:ring-2 transition-all ${
-                hasUserError
-                  ? "border-red-400 focus:ring-red-200"
-                  : "border-border focus:ring-primary/20 focus:border-primary"
-              }`}
-            />
-            <span className="absolute inset-y-0 right-3 flex items-center text-[10px] text-muted-foreground pointer-events-none">
-              ▼
-            </span>
-          </div>
+          <input
+            type="text"
+            placeholder={t("admin.form.searchPlaceholder")}
+            value={formik.values.userName || searchTerm}
+            onFocus={handleSearchFocus}
+            onChange={handleSearchChange}
+            onBlur={handleInputBlur}
+            className={`w-full px-3 py-2 bg-background border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 transition-all ${
+              hasUserError
+                ? "border-red-400 focus:ring-red-200"
+                : "border-border focus:ring-primary/20 focus:border-primary"
+            }`}
+          />
 
-          {/* Error */}
           {hasUserError && <p className="text-red-500 text-[11px]">{formik.errors.userId}</p>}
 
-          {/* Dropdown */}
           {filteredUsers.length > 0 && !formik.values.userId && (
             <div className="absolute z-50 w-full bg-popover border border-border rounded-lg shadow-lg mt-1">
               <div className="text-[10px] font-semibold text-muted-foreground px-3 py-1.5 bg-muted/50 uppercase tracking-wider rounded-t-lg border-b border-border">
@@ -133,7 +149,7 @@ const CreateSubscriptionForm = ({ users, onSubmit, onCancel }) => {
                 {filteredUsers.map((u) => (
                   <li
                     key={u.id}
-                    onMouseDown={(e) => e.preventDefault()} // evita que onBlur se dispare antes del click
+                    onMouseDown={handleItemMouseDown}
                     onClick={() => handleSelectUser(u)}
                     className="px-3 py-2 hover:bg-primary/10 cursor-pointer text-xs flex flex-col gap-0.5 transition-colors"
                   >
@@ -145,66 +161,78 @@ const CreateSubscriptionForm = ({ users, onSubmit, onCancel }) => {
             </div>
           )}
 
-          {/* Sin resultados */}
           {searchTerm && filteredUsers.length === 0 && !formik.values.userId && (
             <div className="absolute z-50 w-full bg-popover border border-border rounded-lg p-3 text-center text-xs text-muted-foreground mt-1 shadow-md">
               {t("admin.form.noMatches")}
             </div>
           )}
 
-          {/* Usuario seleccionado */}
           {formik.values.userId && (
             <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
               <p className="text-[11px] text-emerald-700 font-medium">✓ {formik.values.userName}</p>
-              <button
-                type="button"
-                onClick={handleClearUser}
-                className="text-[11px] text-red-500 hover:underline font-medium"
-              >
+              <button type="button" onClick={handleClearUser} className="text-[11px] text-red-500 hover:underline font-medium">
                 {t("admin.form.changeUser")}
               </button>
             </div>
           )}
         </div>
 
-        <div className="border-t border-border" />
-
-        {/* ── Duration ── */}
-        <div className="space-y-2">
-          <label className="text-xs font-medium text-muted-foreground">{t("admin.form.durationLabel")}</label>
-          <div className="grid grid-cols-2 gap-2">
-            {DURATIONS.map((p) => (
-              <label
-                key={p.value}
-                className={`flex items-center justify-center py-2.5 px-3 rounded-lg border cursor-pointer text-xs text-center transition-all ${
-                  formik.values.duration === p.value
-                    ? "bg-primary/10 border-primary text-primary font-medium"
-                    : "bg-muted/40 border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="duration"
-                  value={p.value}
-                  checked={formik.values.duration === p.value}
-                  onChange={() => formik.setFieldValue("duration", p.value)}
-                  className="sr-only"
-                />
-                {t(p.labelKey)}
-              </label>
-            ))}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1.5">
+            <label className="text-xs text-muted-foreground">{t("admin.form.startDate")}</label>
+            <input
+              type="date"
+              name="startDate"
+              value={formik.values.startDate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
+            {formik.touched.startDate && formik.errors.startDate && (
+              <p className="text-red-500 text-[11px]">{formik.errors.startDate}</p>
+            )}
           </div>
-          {formik.touched.duration && formik.errors.duration && (
-            <p className="text-red-500 text-[11px]">{formik.errors.duration}</p>
-          )}
+
+          <div className="space-y-1.5">
+            <label className="text-xs text-muted-foreground">{t("admin.form.endDate")}</label>
+            <input
+              type="date"
+              name="endDate"
+              value={formik.values.endDate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
+            {formik.touched.endDate && formik.errors.endDate && (
+              <p className="text-red-500 text-[11px]">{formik.errors.endDate}</p>
+            )}
+          </div>
         </div>
 
-        {/* ── Submit ── */}
+        <div className="border-t border-border" />
+
+        <div className="space-y-1.5">
+          <label className="text-xs text-muted-foreground">{t("admin.form.plan")}</label>
+          <select
+            name="plan"
+            value={formik.values.plan}
+            onChange={formik.handleChange}
+            className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          >
+            <option value="monthly">{t("admin.plans.monthly")}</option>
+            <option value="yearly">{t("admin.plans.yearly")}</option>
+          </select>
+        </div>
+
         <button
           type="submit"
           disabled={formik.isSubmitting}
-          className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50"
+          className="w-full py-2.5 rounded-lg text-sm font-semibold text-white transition-all disabled:opacity-50 flex items-center justify-center gap-1.5"
+          style={{ backgroundColor: "#7c5cbf" }}
         >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 5v14" /><path d="M5 12h14" />
+          </svg>
           {formik.isSubmitting ? t("admin.form.processing") : t("admin.form.submit")}
         </button>
       </form>

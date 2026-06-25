@@ -926,8 +926,17 @@
   },
   "admin": {
     "header": {
-      "title": "Subscription Panel",
-      "subtitle": "Manage user subscriptions."
+      "title": "Administration Panel",
+      "subtitle": "Manage subscriptions and active users"
+    },
+    "badge": "{{active}} active · {{expiring}} expiring",
+    "stats": {
+      "total": "Total subscriptions",
+      "expiring": "Expiring (30d)",
+      "expired": "Expired",
+      "thisMonth": "+{{count}} this month",
+      "attention": "Require attention",
+      "notRenewed": "Not renewed"
     },
     "status": {
       "active": "Active",
@@ -966,13 +975,21 @@
       "usersCount_other": "Users ({{count}})",
       "noMatches": "No matches found",
       "changeUser": "Change",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "plan": "Plan",
       "durationLabel": "Period duration",
       "processing": "Processing...",
       "submit": "Activate subscription",
+      "createTitle": "Create subscription",
       "errors": {
         "selectUser": "Please select a valid user from the list.",
         "processError": "Error processing subscription."
       }
+    },
+    "plans": {
+      "monthly": "Monthly",
+      "yearly": "Yearly"
     },
     "duration": {
       "1month": "1 month",

@@ -100,6 +100,14 @@ const SubscriptionTable = ({ subscriptions, loading, error, openMenuId, setOpenM
   const { t, i18n } = useTranslation();
   const currentLng = i18n.language;
 
+  const activeCount = subscriptions.filter((s) => new Date(s.current_period_end) >= new Date()).length;
+  const expiringSoon = subscriptions.filter((s) => {
+    const fin = new Date(s.current_period_end);
+    const hoy = new Date();
+    const en30 = new Date(hoy.getTime() + 30 * 86400000);
+    return hoy <= fin && fin <= en30;
+  }).length;
+
   if (loading) {
     return (
       <div className="p-8 text-center">
@@ -126,21 +134,17 @@ const SubscriptionTable = ({ subscriptions, loading, error, openMenuId, setOpenM
   }
 
   return (
-    <div className="clinical-card overflow-visible">
-      {/* ── Desktop header (oculto en mobile) ── */}
-      <div className="hidden sm:grid sm:grid-cols-[1fr_auto_auto_auto] gap-4 px-4 py-3 bg-muted/50 border-b border-border rounded-t-xl">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          {t("admin.table.thUser")}
-        </span>
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground w-28">
-          {t("common.labels.status")}
-        </span>
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground w-32">
-          {t("admin.table.thExpiration")}
-        </span>
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground w-10">
-          {t("admin.table.thActions")}
-        </span>
+    <div className="bg-card border border-border rounded-xl overflow-visible">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
+        <div className="hidden sm:flex items-center gap-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <span>{t("admin.table.thUser")}</span>
+          <span className="w-28 text-center">{t("common.labels.status")}</span>
+          <span className="w-32 text-center">{t("admin.table.thExpiration")}</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] text-emerald-600 font-medium bg-emerald-50 px-2 py-0.5 rounded-full">{t("admin.badge", { active: activeCount, expiring: expiringSoon })}</span>
+          <span className="hidden sm:block text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("admin.table.thActions")}</span>
+        </div>
       </div>
 
       {/* ── Rows ── */}

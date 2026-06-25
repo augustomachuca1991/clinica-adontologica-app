@@ -924,8 +924,17 @@
   },
   "admin": {
     "header": {
-      "title": "Panel de suscripciones",
-      "subtitle": "Gestioná las suscripciones de los usuarios."
+      "title": "Panel de administración",
+      "subtitle": "Gestión de suscripciones y usuarios activos"
+    },
+    "badge": "{{active}} activas · {{expiring}} por vencer",
+    "stats": {
+      "total": "Total suscripciones",
+      "expiring": "Por vencer (30d)",
+      "expired": "Expiradas",
+      "thisMonth": "+{{count}} este mes",
+      "attention": "Requieren atención",
+      "notRenewed": "Sin renovar"
     },
     "status": {
       "active": "Activo",
@@ -964,13 +973,21 @@
       "usersCount_other": "Usuarios ({{count}})",
       "noMatches": "Sin modificaciones",
       "changeUser": "Cambiar",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de vencimiento",
+      "plan": "Plan",
       "durationLabel": "Duración del período",
       "processing": "Procesando...",
       "submit": "Activar suscripción",
+      "createTitle": "Crear suscripción",
       "errors": {
         "selectUser": "Por favor, selecciona un usuario válido de la lista.",
         "processError": "Error al procesar la suscripción."
       }
+    },
+    "plans": {
+      "monthly": "Mensual",
+      "yearly": "Anual"
     },
     "duration": {
       "1month": "1 mes",

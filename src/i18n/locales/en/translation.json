@@ -614,6 +614,11 @@
     "finishEditingFirst": "Please finish or cancel the current edit before selecting another tooth.",
     "patientHistory": "Patient History",
     "currentPlan": "Current Plan",
+    "activeIssuesList": {
+      "cavity": "Cavity on tooth #{{tooth}}",
+      "decay": "Minor decay on #{{tooth}}",
+      "sensitivity": "Gum sensitivity"
+    },
     "validation": {
       "procedureRequired": "Please select a procedure",
       "costInvalid": "Cost must be a valid number",

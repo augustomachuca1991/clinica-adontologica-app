@@ -547,6 +547,11 @@
     "finishEditingFirst": "Por favor, finaliza o cancela la edición actual antes de seleccionar otro diente.",
     "patientHistory": "Historico",
     "currentPlan": "Plan Actual",
+    "activeIssuesList": {
+      "cavity": "Caries en pieza #{{tooth}}",
+      "decay": "Caries menor en #{{tooth}}",
+      "sensitivity": "Sensibilidad gingival"
+    },
     "validation": {
       "procedureRequired": "Seleccioná un procedimiento",
       "costInvalid": "El costo debe ser un número válido",

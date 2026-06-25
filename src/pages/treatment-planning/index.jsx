@@ -277,9 +277,9 @@ const TreatmentPlanning = () => {
                 <span className="text-sm font-medium text-foreground">{t("treatment.activeIssues")}</span>
               </div>
               <div className="text-xs text-muted-foreground space-y-1">
-                <div>• Cavity on tooth #16</div>
-                <div>• Minor decay on #21</div>
-                <div>• Gum sensitivity</div>
+                <div>• {t("treatment.activeIssuesList.cavity", { tooth: 16 })}</div>
+                <div>• {t("treatment.activeIssuesList.decay", { tooth: 21 })}</div>
+                <div>• {t("treatment.activeIssuesList.sensitivity")}</div>
               </div>
             </div>
 

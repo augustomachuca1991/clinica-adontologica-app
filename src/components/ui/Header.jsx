@@ -61,7 +61,6 @@ const Header = ({ sidebarCollapsed = false }) => {
 
   const handleSearch = (e) => {
     e?.preventDefault();
-    console.log("Searching for:", searchQuery);
   };
 
   const handleNotificationClick = () => {

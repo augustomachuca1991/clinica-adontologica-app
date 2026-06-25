@@ -102,15 +102,12 @@ export const useDashboard = () => {
   }, []);
 
   const handleDismissAlert = useCallback((alertId) => {
-    console.log("Dismissing alert:", alertId);
   }, []);
 
   const handleToggleTaskComplete = useCallback((taskId, completed) => {
-    console.log("Task completion toggled:", taskId, completed);
   }, []);
 
   const handleViewTaskDetails = useCallback((taskId) => {
-    console.log("Viewing task:", taskId);
   }, []);
 
   // ── CRUD handlers ──────────────────────────────────────────────────────────

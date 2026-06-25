@@ -74,7 +74,6 @@ const PatientDirectory = () => {
   };
 
   const handleBulkAction = (action) => {
-    console.log(`Bulk action: ${action} for patients:`, selectedPatients);
     notifyInfo(
       `${action?.charAt(0)?.toUpperCase() + action?.slice(1)} action performed on ${selectedPatients?.length} patient(s)`
     );
@@ -159,7 +158,7 @@ const PatientDirectory = () => {
           filters={filters}
           onFilterChange={handleFilterChange}
           onReset={handleResetFilters}
-          onSearch={() => console.log("Search applied")}
+          onSearch={() => {}}
         />
 
         <div className="mb-4 flex items-center justify-between">

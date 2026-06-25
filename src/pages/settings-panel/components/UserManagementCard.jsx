@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Icon from "@/components/AppIcon";
 import Image from "@/components/AppImage";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Spinner from "@/components/ui/Spinner";
-import { supabase } from "@/lib/supabase";
 import { useTranslation } from "react-i18next";
-import { useUserRegistration } from "@/hooks/UserHooks";
+import { useUserRegistration, useUserList } from "@/hooks/UserHooks";
 import { toast } from "sonner";
 
 const UserManagementCard = () => {
@@ -15,38 +14,10 @@ const UserManagementCard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRole, setSelectedRole] = useState("all");
   const [showAddUser, setShowAddUser] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [newUserPassword, setNewUserPassword] = useState(null);
 
   const { formData, setFormData, formError, handleRegisterUser } = useUserRegistration();
-
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.from("user_profiles").select(`
-          id,
-          full_name,
-          email,
-          status,
-          created_at,
-          user_roles (
-            roles ( name )
-          )
-        `);
-
-      if (error) throw error;
-      setUsers(data || []);
-    } catch (error) {
-      console.error("Error fetching users:", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const { users, loading, fetchUsers } = useUserList();
 
   const roleOptions = [
     { value: "all", label: t("users.roles.all") },

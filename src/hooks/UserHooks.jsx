@@ -136,3 +136,37 @@ export const useUserRegistration = () => {
     fetchUsers,
   };
 };
+
+export const useUserList = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.from("user_profiles").select(`
+          id,
+          full_name,
+          email,
+          status,
+          created_at,
+          user_roles (
+            roles ( name )
+          )
+        `);
+
+      if (error) throw error;
+      setUsers(data || []);
+    } catch (error) {
+      console.error("Error fetching users:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  return { users, loading, fetchUsers, setUsers };
+};

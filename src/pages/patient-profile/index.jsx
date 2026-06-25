@@ -423,13 +423,9 @@ const PatientProfile = () => {
     }
   };
 
-  const handleScheduleAppointment = () => {
-    console.log("Schedule appointment clicked");
-  };
+  const handleScheduleAppointment = () => {};
 
-  const handleSendMessage = () => {
-    console.log("Send message clicked");
-  };
+  const handleSendMessage = () => {};
 
   const handleSearch = async (e) => {
     e.preventDefault();

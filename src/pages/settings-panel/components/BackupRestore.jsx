@@ -167,7 +167,7 @@ const BackupRestore = () => {
               <span className="text-sm font-medium text-foreground">-</span>
             </div>
             <div className="flex items-center justify-between py-2">
-              <span className="text-sm text-muted-foreground">Total de backups</span>
+              <span className="text-sm text-muted-foreground">{t("backup.status.total_backups")}</span>
               <span className="text-sm font-medium text-foreground">{backupHistory.length}</span>
             </div>
 
@@ -181,7 +181,7 @@ const BackupRestore = () => {
                 onClick={() => createManualBackup(selectedCategories)}
                 disabled={isCreatingBackup || selectedCategories.length === 0}
               >
-                {isCreatingBackup ? "Creando backup..." : t("backup.status.manual_btn")}
+                {isCreatingBackup ? t("backup.status.creating") : t("backup.status.manual_btn")}
               </Button>
             </div>
           </div>
@@ -197,10 +197,10 @@ const BackupRestore = () => {
               onClick={() => setSelectedCategories(DATA_CATEGORIES.map((c) => c.id))}
               className="text-xs text-primary hover:underline"
             >
-              Seleccionar todo
+              {t("backup.categories.selectAll")}
             </button>
             <button onClick={() => setSelectedCategories([])} className="text-xs text-muted-foreground hover:underline">
-              Limpiar
+              {t("backup.categories.clear")}
             </button>
           </div>
         </div>
@@ -234,7 +234,7 @@ const BackupRestore = () => {
           })}
         </div>
         {selectedCategories.length === 0 && (
-          <p className="text-xs text-red-500 mt-3">Seleccioná al menos una categoría para crear el backup.</p>
+          <p className="text-xs text-red-500 mt-3">{t("backup.categories.minSelection")}</p>
         )}
       </div>
 
@@ -251,9 +251,9 @@ const BackupRestore = () => {
 
         <div className="overflow-x-auto">
           {loadingHistory ? (
-            <div className="p-8 text-center text-sm text-muted-foreground">Cargando historial...</div>
+            <div className="p-8 text-center text-sm text-muted-foreground">{t("backup.history.loading")}</div>
           ) : backupHistory.length === 0 ? (
-            <div className="p-8 text-center text-sm text-muted-foreground">No hay backups registrados todavía.</div>
+            <div className="p-8 text-center text-sm text-muted-foreground">{t("backup.history.empty")}</div>
           ) : (
             <table className="w-full">
               <thead className="bg-muted/50 border-b border-border">

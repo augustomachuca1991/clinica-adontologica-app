@@ -18,7 +18,7 @@
   "searchOption": "Buscar una opción...",
   "itemsSelected_one": "{{count}} item seleccionado",
   "itemsSelected_other": "{{count}} items seleccionados",
-  "NoOptionsFound": "No se encontraron resultados",
+  "noOptionsFound": "No se encontraron resultados",
   "noOptionsAvailable": "No hay opciones disponibles",
   "change": "Cambiar",
   "choosePhoto": "Elegir foto de perfil",
@@ -672,6 +672,7 @@
       "all": "Todos"
     },
     "priority": {
+      "low": "Baja",
       "high": "Alta",
       "normal": "Normal",
       "urgent": "Urgente"
@@ -1419,5 +1420,277 @@
       "saveError": "Error al guardar la nota.",
       "updateSuccess": "Nota actualizada exitosamente."
     }
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "error": "Error",
+    "select": "Seleccionar",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "delete": "Eliminar",
+    "unknown": "Desconocido",
+    "all": "Todos",
+    "close": "Cerrar",
+    "deleting": "Eliminando..."
+  },
+  "backup": {
+    "status": {
+      "title": "Estado del Backup",
+      "last_backup": "Último Backup",
+      "size": "Tamaño",
+      "next_scheduled": "Próximo programado",
+      "manual_btn": "Crear Backup Manual",
+      "total_backups": "Total de backups",
+      "creating": "Creando backup..."
+    },
+    "categories": {
+      "title": "Categorías de Datos",
+      "subtitle": "Seleccioná qué categorías incluir en el backup",
+      "selectAll": "Seleccionar todo",
+      "clear": "Limpiar",
+      "minSelection": "Seleccioná al menos una categoría para crear el backup.",
+      "labels": {
+        "patient-records": "Fichas de Pacientes",
+        "clinical-notes": "Notas Clínicas",
+        "images": "Imágenes Clínicas",
+        "appointments": "Turnos",
+        "billing": "Facturación",
+        "settings": "Configuración del Sistema"
+      }
+    },
+    "history": {
+      "title": "Historial de Backups",
+      "export_btn": "Exportar Lista",
+      "th_date_time": "Fecha y Hora",
+      "th_size": "Tamaño",
+      "th_type": "Tipo",
+      "th_duration": "Duración",
+      "th_status": "Estado",
+      "th_actions": "Acciones",
+      "loading": "Cargando historial...",
+      "empty": "No hay backups registrados todavía."
+    },
+    "deleteModal": {
+      "title": "Eliminar registro",
+      "subtitle": "Esta acción no se puede deshacer.",
+      "body": "Solo se elimina el registro del historial. El archivo .json descargado no se ve afectado."
+    },
+    "restoreModal": {
+      "description": "Esta acción sobreescribirá los datos existentes con los del archivo seleccionado.",
+      "attention": "Atención",
+      "warningText": "Los registros existentes serán sobreescritos con los datos del backup. Esta acción no se puede deshacer.",
+      "clickToChange": "Click para cambiar",
+      "dragAndDrop": "Arrastrá tu archivo o hacé click",
+      "fileTypeHint": "Solo archivos .json generados por esta app",
+      "restoreCompleted": "Restore completado",
+      "restoreSuccessText": "Todos los datos fueron restaurados correctamente.",
+      "restoring": "Restaurando...",
+      "confirmRestore": "Confirmar restore"
+    },
+    "warning": {
+      "title": "Advertencia de Restauración",
+      "description": "Restaurar desde un backup reemplazará todos los datos actuales con los del backup. Esta acción no se puede deshacer. Creá siempre un backup manual antes de restaurar.",
+      "restore_btn": "Restaurar desde backup"
+    },
+    "states": {
+      "completed": "Completado",
+      "failed": "Fallido"
+    },
+    "types": {
+      "automatic": "Automático",
+      "manual": "Manual"
+    }
+  },
+  "services": {
+    "management": {
+      "form": {
+        "labelName": "Nombre",
+        "labelId": "ID",
+        "labelDescription": "Descripción"
+      },
+      "deleteCategory": {
+        "title": "Eliminar categoría",
+        "warning": "Esta acción puede afectar el funcionamiento del sistema.",
+        "effects": "Al eliminar esta categoría:",
+        "effect1": "Los servicios asociados quedarán sin categoría.",
+        "effect2": "Los tratamientos vinculados pueden verse afectados.",
+        "effect3": "Los reportes que usen esta categoría mostrarán datos incompletos.",
+        "effect4": "Esta acción no se puede deshacer.",
+        "confirmLabel": "Entiendo que esta acción puede afectar el sistema y deseo continuar."
+      }
+    }
+  },
+  "security": {
+    "status": {
+      "enabled": "Habilitado",
+      "active": "Activo",
+      "compliant": "Cumple",
+      "running": "En ejecución",
+      "configured": "Configurado",
+      "success": "Éxito",
+      "failed": "Fallido"
+    },
+    "features": {
+      "twoFactor": "Autenticación de dos factores",
+      "twoFactorDesc": "Requerir 2FA para todas las cuentas de usuario para mejorar la seguridad",
+      "sessionTimeout": "Tiempo de sesión automático",
+      "sessionTimeoutDesc": "Cerrar sesión después de 30 minutos de inactividad",
+      "passwordPolicy": "Política de contraseñas seguras",
+      "passwordPolicyDesc": "Exigir contraseñas complejas con mínimo 12 caracteres",
+      "auditLogging": "Registro de auditoría completo",
+      "auditLoggingDesc": "Rastrear todos los accesos al sistema y modificaciones de datos"
+    },
+    "compliance": {
+      "hipaa": "Cumplimiento HIPAA",
+      "hipaaDesc": "Ley de Portabilidad y Responsabilidad de Seguros de Salud",
+      "encryption": "Cifrado de datos",
+      "encryptionDesc": "Cifrado AES-256 para datos en reposo y en tránsito",
+      "backup": "Backups automatizados",
+      "backupDesc": "Backups cifrados diarios con retención de 30 días",
+      "accessControl": "Control de acceso basado en roles",
+      "accessControlDesc": "Permisos granulares basados en roles de usuario"
+    },
+    "audit": {
+      "actionLogin": "Inicio de sesión",
+      "actionRecordAccess": "Acceso a ficha de paciente",
+      "actionSettingsModified": "Configuración modificada",
+      "actionFailedLogin": "Intento de inicio de sesión fallido"
+    },
+    "complianceStatus": "Estado de Cumplimiento",
+    "exportReport": "Exportar Informe",
+    "statusLabel": "Estado:",
+    "lastAudit": "Última auditoría:",
+    "recentAuditLogs": "Registros de auditoría recientes",
+    "viewAllLogs": "Ver todos los registros",
+    "recommendation": "Recomendación de seguridad",
+    "recommendationDesc": "Se recomiendan auditorías de seguridad cada 90 días. Su próxima auditoría está programada para el 15/04/2026. Asegúrese de que todo el personal complete la capacitación en seguridad antes de la fecha de auditoría.",
+    "table": {
+      "action": "Acción",
+      "user": "Usuario",
+      "timestamp": "Fecha y Hora",
+      "ipAddress": "Dirección IP",
+      "status": "Estado"
+    }
+  },
+  "integrations": {
+    "searchPlaceholder": "Buscar integraciones...",
+    "allCategories": "Todas las categorías",
+    "categories": {
+      "accounting": "Contabilidad",
+      "marketing": "Marketing",
+      "communication": "Comunicación",
+      "scheduling": "Programación",
+      "payments": "Pagos",
+      "storage": "Almacenamiento"
+    },
+    "status": {
+      "connected": "Conectado",
+      "available": "Disponible"
+    },
+    "lastSync": {
+      "2hours": "Hace 2 horas",
+      "30min": "Hace 30 minutos",
+      "1hour": "Hace 1 hora"
+    },
+    "lastSynced": "Última sincronización:",
+    "keyFeatures": "Características principales:",
+    "disconnect": "Desconectar",
+    "connect": "Conectar",
+    "noResults": "No se encontraron integraciones que coincidan con su criterio",
+    "customIntegration": "¿Necesita una integración personalizada?",
+    "customIntegrationDesc": "Póngase en contacto con nuestro equipo de soporte para analizar opciones de integración personalizadas para su práctica. Podemos ayudar a conectar DentalCare Manager con sus herramientas y flujos de trabajo existentes.",
+    "contactSupport": "Contactar Soporte",
+    "descriptions": {
+      "quickbooks": "Sincronice datos de facturación y financieros con QuickBooks",
+      "mailchimp": "Envíe recordatorios de turnos y campañas de marketing a los pacientes",
+      "twilio": "Envíe notificaciones SMS y recordatorios de turnos a los pacientes",
+      "googleCalendar": "Sincronice turnos con Google Calendar",
+      "stripe": "Acepte pagos con tarjeta de crédito y administre transacciones de forma segura",
+      "dropbox": "Almacene y comparta documentos de pacientes e imágenes clínicas de forma segura"
+    },
+    "features": {
+      "quickbooks": {
+        "invoicing": "Facturación automatizada",
+        "paymentTracking": "Seguimiento de pagos",
+        "financialReports": "Informes financieros"
+      },
+      "mailchimp": {
+        "emailCampaigns": "Campañas de correo",
+        "newsletters": "Newsletters para pacientes",
+        "reminders": "Recordatorios automáticos"
+      },
+      "twilio": {
+        "smsReminders": "Recordatorios SMS",
+        "twoWay": "Mensajería bidireccional",
+        "bulk": "Notificaciones masivas"
+      },
+      "googleCalendar": {
+        "calendarSync": "Sincronización de calendario",
+        "appointmentBlocking": "Bloqueo de turnos",
+        "teamScheduling": "Programación de equipo"
+      },
+      "stripe": {
+        "onlinePayments": "Pagos online",
+        "paymentPlans": "Planes de pago",
+        "refundManagement": "Gestión de reembolsos"
+      },
+      "dropbox": {
+        "fileStorage": "Almacenamiento de archivos",
+        "documentSharing": "Compartir documentos",
+        "autoBackup": "Backup automático"
+      }
+    }
+  },
+  "practice": {
+    "labels": {
+      "practiceName": "Nombre del consultorio",
+      "practiceNameDesc": "Este nombre aparece en informes y comunicaciones",
+      "practicePhone": "Teléfono del consultorio",
+      "practicePhoneDesc": "Número de contacto principal del consultorio",
+      "practiceEmail": "Email del consultorio",
+      "practiceEmailDesc": "Email principal para comunicaciones del consultorio",
+      "practiceAddress": "Dirección del consultorio",
+      "practiceAddressDesc": "Ubicación física del consultorio",
+      "timezone": "Zona horaria",
+      "timezoneDesc": "Zona horaria de operación del consultorio",
+      "dateFormat": "Formato de fecha",
+      "dateFormatDesc": "Cómo se muestran las fechas",
+      "appointmentDuration": "Duración de turno predeterminada",
+      "appointmentDurationDesc": "Duración estándar del turno"
+    },
+    "timezones": {
+      "eastern": "Hora del Este (ET)",
+      "central": "Hora del Centro (CT)",
+      "mountain": "Hora de Montaña (MT)",
+      "pacific": "Hora del Pacífico (PT)"
+    },
+    "durations": {
+      "15min": "15 minutos",
+      "30min": "30 minutos",
+      "45min": "45 minutos",
+      "60min": "60 minutos"
+    },
+    "regionalSettings": "Configuración regional",
+    "workflowAutomation": "Automatización de flujo de trabajo",
+    "workflow": {
+      "autoSave": "Autoguardado de notas clínicas",
+      "autoSaveDesc": "Guardar notas automáticamente cada 2 minutos",
+      "reminders": "Enviar recordatorios de turnos",
+      "remindersDesc": "Recordatorios por email y SMS 24 horas antes",
+      "treatmentAlerts": "Alertas de finalización de tratamiento",
+      "treatmentAlertsDesc": "Notificar cuando se completen los planes de tratamiento",
+      "billingNotifications": "Notificaciones de facturación",
+      "billingNotificationsDesc": "Alertar sobre pagos pendientes y facturas"
+    },
+    "treatmentProtocols": "Protocolos de tratamiento",
+    "customTemplates": "Plantillas de tratamiento personalizadas",
+    "customTemplatesDesc": "Crear y gestionar plantillas de planes de tratamiento",
+    "addTemplate": "Agregar plantilla",
+    "clinicalGuidelines": "Guías clínicas",
+    "clinicalGuidelinesDesc": "Subir protocolos clínicos específicos del consultorio",
+    "upload": "Subir",
+    "resetDefaults": "Restablecer valores predeterminados",
+    "saveChanges": "Guardar cambios"
   }
 }

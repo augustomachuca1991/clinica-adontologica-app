@@ -1,9 +1,11 @@
 // src/components/RestoreModal.jsx
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
 
 const RestoreModal = ({ onClose, onConfirm, isRestoring, restoreProgress, restoreError, restoreSuccess }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [dragOver, setDragOver] = useState(false);
@@ -33,9 +35,9 @@ const RestoreModal = ({ onClose, onConfirm, isRestoring, restoreProgress, restor
             <Icon name="RotateCcw" size={20} className="text-error" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-foreground">Restaurar desde backup</h3>
+            <h3 className="text-base font-semibold text-foreground">{t("backup.warning.restore_btn")}</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Esta acción sobreescribirá los datos existentes con los del archivo seleccionado.
+              {t("backup.restoreModal.description")}
             </p>
           </div>
         </div>
@@ -44,8 +46,7 @@ const RestoreModal = ({ onClose, onConfirm, isRestoring, restoreProgress, restor
         <div className="bg-error/10 border border-error/20 rounded-lg p-3 flex gap-2">
           <Icon name="AlertTriangle" size={16} className="text-error flex-shrink-0 mt-0.5" />
           <p className="text-xs text-error">
-            <strong>Atención:</strong> Los registros existentes serán sobreescritos con los datos del backup. Esta
-            acción no se puede deshacer.
+            <strong>{t("backup.restoreModal.attention")}:</strong> {t("backup.restoreModal.warningText")}
           </p>
         </div>
 
@@ -77,15 +78,15 @@ const RestoreModal = ({ onClose, onConfirm, isRestoring, restoreProgress, restor
               <>
                 <p className="text-sm font-medium text-foreground">{selectedFile.name}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {(selectedFile.size / 1024).toFixed(1)} KB — Click para cambiar
+                  {(selectedFile.size / 1024).toFixed(1)} KB — {t("backup.restoreModal.clickToChange")}
                 </p>
               </>
             ) : (
               <>
                 <p className="text-sm text-muted-foreground">
-                  Arrastrá tu archivo o <span className="text-primary font-medium">hacé click</span>
+                  {t("backup.restoreModal.dragAndDrop")}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">Solo archivos .json generados por esta app</p>
+                <p className="text-xs text-muted-foreground mt-1">{t("backup.restoreModal.fileTypeHint")}</p>
               </>
             )}
           </div>
@@ -123,8 +124,8 @@ const RestoreModal = ({ onClose, onConfirm, isRestoring, restoreProgress, restor
           <div className="bg-success/10 border border-success/20 rounded-lg p-4 flex items-center gap-3">
             <Icon name="CheckCircle" size={20} className="text-success flex-shrink-0" />
             <div>
-              <p className="text-sm font-medium text-foreground">Restore completado</p>
-              <p className="text-xs text-muted-foreground">Todos los datos fueron restaurados correctamente.</p>
+              <p className="text-sm font-medium text-foreground">{t("backup.restoreModal.restoreCompleted")}</p>
+              <p className="text-xs text-muted-foreground">{t("backup.restoreModal.restoreSuccessText")}</p>
             </div>
           </div>
         )}
@@ -132,7 +133,7 @@ const RestoreModal = ({ onClose, onConfirm, isRestoring, restoreProgress, restor
         {/* Botones */}
         <div className="flex gap-3 justify-end pt-1">
           <Button variant="outline" onClick={onClose} disabled={isRestoring}>
-            {restoreSuccess ? "Cerrar" : "Cancelar"}
+            {restoreSuccess ? t("common.close") : t("common.cancel")}
           </Button>
           {!restoreSuccess && (
             <Button
@@ -141,7 +142,7 @@ const RestoreModal = ({ onClose, onConfirm, isRestoring, restoreProgress, restor
               onClick={() => selectedFile && onConfirm(selectedFile)}
               disabled={!selectedFile || isRestoring}
             >
-              {isRestoring ? "Restaurando..." : "Confirmar restore"}
+              {isRestoring ? t("backup.restoreModal.restoring") : t("backup.restoreModal.confirmRestore")}
             </Button>
           )}
         </div>

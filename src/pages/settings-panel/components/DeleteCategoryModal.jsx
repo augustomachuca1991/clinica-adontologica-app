@@ -1,9 +1,11 @@
 // src/pages/settings-panel/components/DeleteCategoryModal.jsx
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
 
 const DeleteCategoryModal = ({ category, onClose, onConfirm, isDeleting }) => {
+  const { t } = useTranslation();
   const [confirmed, setConfirmed] = useState(false);
 
   if (!category) return null;
@@ -17,9 +19,9 @@ const DeleteCategoryModal = ({ category, onClose, onConfirm, isDeleting }) => {
             <Icon name="AlertTriangle" size={20} className="text-error" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-foreground">Eliminar categoría</h3>
+            <h3 className="text-base font-semibold text-foreground">{t("services.management.deleteCategory.title")}</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Esta acción puede afectar el funcionamiento del sistema.
+              {t("services.management.deleteCategory.warning")}
             </p>
           </div>
         </div>
@@ -27,16 +29,16 @@ const DeleteCategoryModal = ({ category, onClose, onConfirm, isDeleting }) => {
         {/* Info de la categoría */}
         <div className="bg-muted/40 border border-border rounded-lg p-3 space-y-1.5 text-xs">
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Nombre</span>
+            <span className="text-muted-foreground">{t("services.management.form.labelName")}</span>
             <span className="font-medium text-foreground">{category.name}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">ID</span>
+            <span className="text-muted-foreground">{t("services.management.form.labelId")}</span>
             <span className="font-medium text-foreground">#{category.id}</span>
           </div>
           {category.description && (
             <div className="flex justify-between gap-4">
-              <span className="text-muted-foreground flex-shrink-0">Descripción</span>
+              <span className="text-muted-foreground flex-shrink-0">{t("services.management.form.labelDescription")}</span>
               <span className="font-medium text-foreground text-right">{category.description}</span>
             </div>
           )}
@@ -44,13 +46,13 @@ const DeleteCategoryModal = ({ category, onClose, onConfirm, isDeleting }) => {
 
         {/* Advertencias */}
         <div className="space-y-2">
-          <p className="text-xs font-medium text-foreground">Al eliminar esta categoría:</p>
+          <p className="text-xs font-medium text-foreground">{t("services.management.deleteCategory.effects")}</p>
           <ul className="space-y-1.5">
             {[
-              "Los servicios asociados quedarán sin categoría.",
-              "Los tratamientos vinculados pueden verse afectados.",
-              "Los reportes que usen esta categoría mostrarán datos incompletos.",
-              "Esta acción no se puede deshacer.",
+              t("services.management.deleteCategory.effect1"),
+              t("services.management.deleteCategory.effect2"),
+              t("services.management.deleteCategory.effect3"),
+              t("services.management.deleteCategory.effect4"),
             ].map((warning, i) => (
               <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
                 <Icon name="AlertCircle" size={13} className="text-error flex-shrink-0 mt-0.5" />
@@ -69,14 +71,14 @@ const DeleteCategoryModal = ({ category, onClose, onConfirm, isDeleting }) => {
             className="mt-0.5 accent-red-500"
           />
           <span className="text-xs text-foreground">
-            Entiendo que esta acción puede afectar el sistema y deseo continuar.
+            {t("services.management.deleteCategory.confirmLabel")}
           </span>
         </label>
 
         {/* Botones */}
         <div className="flex gap-3 justify-end pt-1">
           <Button variant="outline" onClick={onClose} disabled={isDeleting}>
-            Cancelar
+            {t("common.cancel")}
           </Button>
           <Button
             variant="destructive"
@@ -84,7 +86,7 @@ const DeleteCategoryModal = ({ category, onClose, onConfirm, isDeleting }) => {
             onClick={() => onConfirm(category.id)}
             disabled={!confirmed || isDeleting}
           >
-            {isDeleting ? "Eliminando..." : "Eliminar categoría"}
+            {isDeleting ? t("common.deleting") : t("services.management.deleteCategory.title")}
           </Button>
         </div>
       </div>

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { useTranslation } from "react-i18next";
 
 const IntegrationMarketplace = () => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
@@ -11,77 +13,101 @@ const IntegrationMarketplace = () => {
     {
       id: 1,
       name: "QuickBooks Online",
-      category: "Accounting",
-      description: "Sync billing and financial data with QuickBooks for seamless accounting",
+      category: t("integrations.categories.accounting"),
+      description: t("integrations.descriptions.quickbooks"),
       icon: "DollarSign",
-      status: "Connected",
-      lastSync: "2 hours ago",
-      features: ["Automated invoicing", "Payment tracking", "Financial reports"],
+      status: t("integrations.status.connected"),
+      lastSync: t("integrations.lastSync.2hours"),
+      features: [
+        t("integrations.features.quickbooks.invoicing"),
+        t("integrations.features.quickbooks.paymentTracking"),
+        t("integrations.features.quickbooks.financialReports"),
+      ],
     },
     {
       id: 2,
       name: "Mailchimp",
-      category: "Marketing",
-      description: "Send appointment reminders and marketing campaigns to patients",
+      category: t("integrations.categories.marketing"),
+      description: t("integrations.descriptions.mailchimp"),
       icon: "Mail",
-      status: "Available",
-      features: ["Email campaigns", "Patient newsletters", "Automated reminders"],
+      status: t("integrations.status.available"),
+      features: [
+        t("integrations.features.mailchimp.emailCampaigns"),
+        t("integrations.features.mailchimp.newsletters"),
+        t("integrations.features.mailchimp.reminders"),
+      ],
     },
     {
       id: 3,
       name: "Twilio SMS",
-      category: "Communication",
-      description: "Send SMS notifications and appointment reminders to patients",
+      category: t("integrations.categories.communication"),
+      description: t("integrations.descriptions.twilio"),
       icon: "MessageSquare",
-      status: "Connected",
-      lastSync: "30 minutes ago",
-      features: ["SMS reminders", "Two-way messaging", "Bulk notifications"],
+      status: t("integrations.status.connected"),
+      lastSync: t("integrations.lastSync.30min"),
+      features: [
+        t("integrations.features.twilio.smsReminders"),
+        t("integrations.features.twilio.twoWay"),
+        t("integrations.features.twilio.bulk"),
+      ],
     },
     {
       id: 4,
       name: "Google Calendar",
-      category: "Scheduling",
-      description: "Sync appointments with Google Calendar for better scheduling",
+      category: t("integrations.categories.scheduling"),
+      description: t("integrations.descriptions.googleCalendar"),
       icon: "Calendar",
-      status: "Available",
-      features: ["Calendar sync", "Appointment blocking", "Team scheduling"],
+      status: t("integrations.status.available"),
+      features: [
+        t("integrations.features.googleCalendar.calendarSync"),
+        t("integrations.features.googleCalendar.appointmentBlocking"),
+        t("integrations.features.googleCalendar.teamScheduling"),
+      ],
     },
     {
       id: 5,
       name: "Stripe Payments",
-      category: "Payments",
-      description: "Accept credit card payments and manage transactions securely",
+      category: t("integrations.categories.payments"),
+      description: t("integrations.descriptions.stripe"),
       icon: "CreditCard",
-      status: "Connected",
-      lastSync: "1 hour ago",
-      features: ["Online payments", "Payment plans", "Refund management"],
+      status: t("integrations.status.connected"),
+      lastSync: t("integrations.lastSync.1hour"),
+      features: [
+        t("integrations.features.stripe.onlinePayments"),
+        t("integrations.features.stripe.paymentPlans"),
+        t("integrations.features.stripe.refundManagement"),
+      ],
     },
     {
       id: 6,
       name: "Dropbox",
-      category: "Storage",
-      description: "Store and share patient documents and clinical images securely",
+      category: t("integrations.categories.storage"),
+      description: t("integrations.descriptions.dropbox"),
       icon: "Cloud",
-      status: "Available",
-      features: ["File storage", "Document sharing", "Automatic backup"],
+      status: t("integrations.status.available"),
+      features: [
+        t("integrations.features.dropbox.fileStorage"),
+        t("integrations.features.dropbox.documentSharing"),
+        t("integrations.features.dropbox.autoBackup"),
+      ],
     },
   ];
 
   const categories = [
-    { value: "all", label: "All Categories", count: integrations?.length },
-    { value: "accounting", label: "Accounting", count: 1 },
-    { value: "marketing", label: "Marketing", count: 1 },
-    { value: "communication", label: "Communication", count: 1 },
-    { value: "scheduling", label: "Scheduling", count: 1 },
-    { value: "payments", label: "Payments", count: 1 },
-    { value: "storage", label: "Storage", count: 1 },
+    { value: "all", label: t("integrations.allCategories"), count: integrations?.length },
+    { value: "accounting", label: t("integrations.categories.accounting"), count: 1 },
+    { value: "marketing", label: t("integrations.categories.marketing"), count: 1 },
+    { value: "communication", label: t("integrations.categories.communication"), count: 1 },
+    { value: "scheduling", label: t("integrations.categories.scheduling"), count: 1 },
+    { value: "payments", label: t("integrations.categories.payments"), count: 1 },
+    { value: "storage", label: t("integrations.categories.storage"), count: 1 },
   ];
 
   const filteredIntegrations = integrations?.filter((integration) => {
     const matchesSearch =
       integration?.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
       integration?.description?.toLowerCase()?.includes(searchQuery?.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || integration?.category?.toLowerCase() === selectedCategory;
+    const matchesCategory = selectedCategory === "all" || integration?.category?.toLowerCase() === selectedCategory?.toLowerCase();
     return matchesSearch && matchesCategory;
   });
 
@@ -91,7 +117,7 @@ const IntegrationMarketplace = () => {
         <div className="flex-1 w-full lg:w-auto">
           <Input
             type="search"
-            placeholder="Search integrations..."
+            placeholder={t("integrations.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e?.target?.value)}
             className="w-full"
@@ -125,11 +151,11 @@ const IntegrationMarketplace = () => {
               </div>
               <span
                 className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
-                  integration?.status === "Connected" ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
+                  integration?.status === t("integrations.status.connected") ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
                 }`}
               >
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${integration?.status === "Connected" ? "bg-success" : "bg-muted-foreground"}`}
+                  className={`w-1.5 h-1.5 rounded-full ${integration?.status === t("integrations.status.connected") ? "bg-success" : "bg-muted-foreground"}`}
                 />
                 {integration?.status}
               </span>
@@ -139,7 +165,7 @@ const IntegrationMarketplace = () => {
             <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{integration?.description}</p>
 
             <div className="mb-4">
-              <p className="text-xs font-medium text-muted-foreground mb-2">Key Features:</p>
+              <p className="text-xs font-medium text-muted-foreground mb-2">{t("integrations.keyFeatures")}</p>
               <ul className="space-y-1">
                 {integration?.features?.map((feature, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-xs text-foreground">
@@ -150,25 +176,25 @@ const IntegrationMarketplace = () => {
               </ul>
             </div>
 
-            {integration?.status === "Connected" && integration?.lastSync && (
+            {integration?.status === t("integrations.status.connected") && integration?.lastSync && (
               <div className="mb-3 pb-3 border-b border-border">
-                <p className="text-xs text-muted-foreground">Last synced: {integration?.lastSync}</p>
+                <p className="text-xs text-muted-foreground">{t("integrations.lastSynced")} {integration?.lastSync}</p>
               </div>
             )}
 
             <div className="flex gap-2">
-              {integration?.status === "Connected" ? (
+              {integration?.status === t("integrations.status.connected") ? (
                 <>
                   <Button variant="outline" size="sm" className="flex-1" iconName="Settings">
-                    Configure
+                    {t("common.configure")}
                   </Button>
                   <Button variant="ghost" size="sm" className="flex-1" iconName="Unplug">
-                    Disconnect
+                    {t("integrations.disconnect")}
                   </Button>
                 </>
               ) : (
                 <Button variant="default" size="sm" className="w-full" iconName="Plus">
-                  Connect
+                  {t("integrations.connect")}
                 </Button>
               )}
             </div>
@@ -178,20 +204,19 @@ const IntegrationMarketplace = () => {
       {filteredIntegrations?.length === 0 && (
         <div className="text-center py-12">
           <Icon name="Package" size={48} className="mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">No integrations found matching your criteria</p>
+          <p className="text-muted-foreground">{t("integrations.noResults")}</p>
         </div>
       )}
       <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
         <div className="flex items-start gap-3">
           <Icon name="Lightbulb" size={20} className="text-primary flex-shrink-0 mt-0.5" />
           <div>
-            <h5 className="font-medium text-sm text-foreground mb-1">Need a Custom Integration?</h5>
+            <h5 className="font-medium text-sm text-foreground mb-1">{t("integrations.customIntegration")}</h5>
             <p className="text-xs text-muted-foreground mb-3">
-              Contact our support team to discuss custom integration options for your practice. We can help connect DentalCare Manager with
-              your existing tools and workflows.
+              {t("integrations.customIntegrationDesc")}
             </p>
             <Button variant="outline" size="sm" iconName="Mail">
-              Contact Support
+              {t("integrations.contactSupport")}
             </Button>
           </div>
         </div>

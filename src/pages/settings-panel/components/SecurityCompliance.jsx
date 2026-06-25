@@ -1,41 +1,43 @@
 import React, { useState } from "react";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
+import { useTranslation } from "react-i18next";
 
 const SecurityCompliance = () => {
+  const { t } = useTranslation();
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
 
   const securityFeatures = [
     {
       id: "two-factor",
-      title: "Two-Factor Authentication",
-      description: "Require 2FA for all user accounts to enhance security",
+      title: t("security.features.twoFactor"),
+      description: t("security.features.twoFactorDesc"),
       icon: "Shield",
-      status: "Enabled",
+      status: t("security.status.enabled"),
       enabled: true,
     },
     {
       id: "session-timeout",
-      title: "Automatic Session Timeout",
-      description: "Log out users after 30 minutes of inactivity",
+      title: t("security.features.sessionTimeout"),
+      description: t("security.features.sessionTimeoutDesc"),
       icon: "Clock",
-      status: "Enabled",
+      status: t("security.status.enabled"),
       enabled: true,
     },
     {
       id: "password-policy",
-      title: "Strong Password Policy",
-      description: "Enforce complex passwords with minimum 12 characters",
+      title: t("security.features.passwordPolicy"),
+      description: t("security.features.passwordPolicyDesc"),
       icon: "Key",
-      status: "Enabled",
+      status: t("security.status.enabled"),
       enabled: true,
     },
     {
       id: "audit-logging",
-      title: "Comprehensive Audit Logging",
-      description: "Track all system access and data modifications",
+      title: t("security.features.auditLogging"),
+      description: t("security.features.auditLoggingDesc"),
       icon: "FileText",
-      status: "Active",
+      status: t("security.status.active"),
       enabled: true,
     },
   ];
@@ -43,36 +45,36 @@ const SecurityCompliance = () => {
   const complianceItems = [
     {
       id: "hipaa",
-      title: "HIPAA Compliance",
-      description: "Healthcare Insurance Portability and Accountability Act",
-      status: "Compliant",
+      title: t("security.compliance.hipaa"),
+      description: t("security.compliance.hipaaDesc"),
+      status: t("security.status.compliant"),
       lastAudit: "01/10/2026",
       icon: "CheckCircle",
       color: "text-success",
     },
     {
       id: "encryption",
-      title: "Data Encryption",
-      description: "AES-256 encryption for data at rest and in transit",
-      status: "Active",
+      title: t("security.compliance.encryption"),
+      description: t("security.compliance.encryptionDesc"),
+      status: t("security.status.active"),
       lastAudit: "01/15/2026",
       icon: "Lock",
       color: "text-success",
     },
     {
       id: "backup",
-      title: "Automated Backups",
-      description: "Daily encrypted backups with 30-day retention",
-      status: "Running",
+      title: t("security.compliance.backup"),
+      description: t("security.compliance.backupDesc"),
+      status: t("security.status.running"),
       lastAudit: "01/16/2026",
       icon: "Database",
       color: "text-success",
     },
     {
       id: "access-control",
-      title: "Role-Based Access Control",
-      description: "Granular permissions based on user roles",
-      status: "Configured",
+      title: t("security.compliance.accessControl"),
+      description: t("security.compliance.accessControlDesc"),
+      status: t("security.status.configured"),
       lastAudit: "01/12/2026",
       icon: "Users",
       color: "text-success",
@@ -82,35 +84,35 @@ const SecurityCompliance = () => {
   const auditLogs = [
     {
       id: 1,
-      action: "User Login",
+      action: t("security.audit.actionLogin"),
       user: "Dr. Sarah Johnson",
       timestamp: "01/16/2026 09:15 AM",
       ipAddress: "192.168.1.100",
-      status: "Success",
+      status: t("security.status.success"),
     },
     {
       id: 2,
-      action: "Patient Record Access",
+      action: t("security.audit.actionRecordAccess"),
       user: "Dr. Michael Chen",
       timestamp: "01/16/2026 09:30 AM",
       ipAddress: "192.168.1.101",
-      status: "Success",
+      status: t("security.status.success"),
     },
     {
       id: 3,
-      action: "Settings Modified",
+      action: t("security.audit.actionSettingsModified"),
       user: "Emily Rodriguez",
       timestamp: "01/16/2026 10:00 AM",
       ipAddress: "192.168.1.102",
-      status: "Success",
+      status: t("security.status.success"),
     },
     {
       id: 4,
-      action: "Failed Login Attempt",
-      user: "Unknown",
+      action: t("security.audit.actionFailedLogin"),
+      user: t("common.unknown"),
       timestamp: "01/16/2026 10:15 AM",
       ipAddress: "203.0.113.45",
-      status: "Failed",
+      status: t("security.status.failed"),
     },
   ];
 
@@ -138,7 +140,7 @@ const SecurityCompliance = () => {
                 </div>
                 <p className="text-xs text-muted-foreground mb-3">{feature?.description}</p>
                 <Button variant="outline" size="sm" className="w-full">
-                  Configure
+                  {t("common.configure")}
                 </Button>
               </div>
             </div>
@@ -147,9 +149,9 @@ const SecurityCompliance = () => {
       </div>
       <div className="border-t border-border pt-6">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-headline font-semibold text-base text-foreground">Compliance Status</h4>
+          <h4 className="font-headline font-semibold text-base text-foreground">{t("security.complianceStatus")}</h4>
           <Button variant="outline" size="sm" iconName="Download">
-            Export Report
+            {t("security.exportReport")}
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -162,9 +164,9 @@ const SecurityCompliance = () => {
                   <p className="text-xs text-muted-foreground mb-2">{item?.description}</p>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">
-                      Status: <span className={item?.color}>{item?.status}</span>
+                      {t("security.statusLabel")} <span className={item?.color}>{item?.status}</span>
                     </span>
-                    <span className="text-muted-foreground">Last audit: {item?.lastAudit}</span>
+                    <span className="text-muted-foreground">{t("security.lastAudit")} {item?.lastAudit}</span>
                   </div>
                 </div>
               </div>
@@ -174,9 +176,9 @@ const SecurityCompliance = () => {
       </div>
       <div className="border-t border-border pt-6">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-headline font-semibold text-base text-foreground">Recent Audit Logs</h4>
+          <h4 className="font-headline font-semibold text-base text-foreground">{t("security.recentAuditLogs")}</h4>
           <Button variant="outline" size="sm" iconName="ExternalLink">
-            View All Logs
+            {t("security.viewAllLogs")}
           </Button>
         </div>
         <div className="bg-card border border-border rounded-lg overflow-hidden">
@@ -184,11 +186,11 @@ const SecurityCompliance = () => {
             <table className="w-full">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Action</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">User</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Timestamp</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">IP Address</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t("security.table.action")}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t("security.table.user")}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t("security.table.timestamp")}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t("security.table.ipAddress")}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t("security.table.status")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -200,7 +202,7 @@ const SecurityCompliance = () => {
                     <td className="px-4 py-3 text-sm text-muted-foreground whitespace-nowrap font-mono">{log?.ipAddress}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${log?.status === "Success" ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${log?.status === t("security.status.success") ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}
                       >
                         {log?.status}
                       </span>
@@ -216,10 +218,9 @@ const SecurityCompliance = () => {
         <div className="flex items-start gap-3">
           <Icon name="AlertTriangle" size={20} className="text-warning flex-shrink-0 mt-0.5" />
           <div>
-            <h5 className="font-medium text-sm text-foreground mb-1">Security Recommendation</h5>
+            <h5 className="font-medium text-sm text-foreground mb-1">{t("security.recommendation")}</h5>
             <p className="text-xs text-muted-foreground">
-              Regular security audits are recommended every 90 days. Your next audit is scheduled for 04/15/2026. Ensure all staff complete
-              security training before the audit date.
+              {t("security.recommendationDesc")}
             </p>
           </div>
         </div>

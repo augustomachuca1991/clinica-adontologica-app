@@ -1,9 +1,11 @@
 // src/components/DeleteBackupModal.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
 
 const DeleteBackupModal = ({ backup, onClose, onConfirm, isDeleting, formatSize }) => {
+  const { t } = useTranslation();
   if (!backup) return null;
 
   const date = new Date(backup.created_at).toLocaleDateString("es-AR", {
@@ -23,42 +25,41 @@ const DeleteBackupModal = ({ backup, onClose, onConfirm, isDeleting, formatSize 
             <Icon name="Trash2" size={20} className="text-error" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-foreground">Eliminar registro</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">Esta acción no se puede deshacer.</p>
+            <h3 className="text-base font-semibold text-foreground">{t("backup.deleteModal.title")}</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">{t("backup.deleteModal.subtitle")}</p>
           </div>
         </div>
 
         {/* Info del backup a eliminar */}
         <div className="bg-muted/40 border border-border rounded-lg p-3 space-y-1.5 text-xs">
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Fecha</span>
+            <span className="text-muted-foreground">{t("backup.history.th_date_time")}</span>
             <span className="font-medium text-foreground">{date}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Tipo</span>
+            <span className="text-muted-foreground">{t("backup.history.th_type")}</span>
             <span className="font-medium text-foreground capitalize">{backup.type}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Tamaño</span>
+            <span className="text-muted-foreground">{t("backup.history.th_size")}</span>
             <span className="font-medium text-foreground">{formatSize(backup.size_bytes)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Estado</span>
+            <span className="text-muted-foreground">{t("backup.history.th_status")}</span>
             <span className={`font-medium capitalize ${backup.status === "completed" ? "text-success" : "text-error"}`}>
-              {backup.status === "completed" ? "Completado" : "Fallido"}
+              {backup.status === "completed" ? t("backup.states.completed") : t("backup.states.failed")}
             </span>
           </div>
         </div>
 
         <p className="text-sm text-muted-foreground">
-          Solo se elimina el <strong className="text-foreground">registro</strong> del historial. El archivo `.json`
-          descargado no se ve afectado.
+          {t("backup.deleteModal.body")}
         </p>
 
         {/* Botones */}
         <div className="flex gap-3 justify-end pt-1">
           <Button variant="outline" onClick={onClose} disabled={isDeleting}>
-            Cancelar
+            {t("common.cancel")}
           </Button>
           <Button
             variant="destructive"
@@ -66,7 +67,7 @@ const DeleteBackupModal = ({ backup, onClose, onConfirm, isDeleting, formatSize 
             onClick={() => onConfirm(backup.id)}
             disabled={isDeleting}
           >
-            {isDeleting ? "Eliminando..." : "Eliminar"}
+            {isDeleting ? t("common.deleting") : t("common.delete")}
           </Button>
         </div>
       </div>

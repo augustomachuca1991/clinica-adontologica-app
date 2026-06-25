@@ -46,7 +46,6 @@ const CommunicationsTab = ({ communications }) => {
   };
 
   const handleSendMessage = () => {
-    console.log("Sending message:", { messageType, messageSubject, messageContent });
     setMessageSubject("");
     setMessageContent("");
   };

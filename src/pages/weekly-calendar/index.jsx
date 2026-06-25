@@ -4,6 +4,8 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/AppIcon";
 import { useAppointments } from "@/hooks/AppointmentsHooks";
 import ScheduleAppointmentModal from "@/pages/dashboard/components/ScheduleAppointmentModal";
+import AppointmentCard from "@/pages/weekly-calendar/components/AppointmentCard";
+import MobileActionSheet from "@/pages/weekly-calendar/components/MobileActionSheet";
 import { notifyError, notifySuccess, notifyConfirm } from "@/utils/notifications";
 
 const isTouchDevice = () => "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
@@ -187,6 +189,8 @@ const WeeklyCalendar = () => {
     return styles[status] || styles.default;
   };
 
+  const touchDevice = isTouchDevice();
+
   return (
     <>
       <div className="space-y-6">
@@ -262,47 +266,13 @@ const WeeklyCalendar = () => {
                           ${time.endsWith(":00") ? "border-b-muted-foreground/20" : "border-b-border/50"}`}
                       >
                         {appointment && (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              isTouchDevice() ? setActiveMenu(appointment) : handleReschedule(e, appointment);
-                            }}
-                            className={`absolute inset-x-1 top-1 rounded-md border-l-4 p-1.5 overflow-hidden shadow-md animate-in fade-in zoom-in duration-200 group/appt ${getStatusStyles(appointment.status)}`}
-                            style={{ height: `${(parseInt(appointment.duration) / 15) * 48 - 4}px`, zIndex: 20 }}
-                          >
-                            <div className="absolute right-1 top-1 hidden lg:flex flex-col gap-1 opacity-0 group-hover/appt:opacity-100 transition-opacity z-30">
-                              <button
-                                onClick={(e) => handleReschedule(e, appointment)}
-                                className="p-1 bg-white/80 hover:bg-white rounded shadow-sm text-blue-600 transition-colors"
-                              >
-                                <Icon name="CalendarClock" size={12} />
-                              </button>
-                              <button
-                                onClick={(e) => handleDeleteAppointment(e, appointment.id)}
-                                className="p-1 bg-white/80 hover:bg-red-50 rounded shadow-sm text-red-600 transition-colors"
-                              >
-                                <Icon name="Trash2" size={12} />
-                              </button>
-                            </div>
-                            <div className="flex flex-col h-full pr-4">
-                              <div className="flex items-center gap-1 mb-0.5">
-                                <Icon name="Clock" size={8} />
-                                <span className="text-[8px] font-bold uppercase tracking-wider italic">
-                                  {appointment.time}
-                                </span>
-                              </div>
-                              <p className="text-[10px] font-bold truncate leading-tight">{appointment.patientName}</p>
-                              <p className="text-[9px] opacity-90 truncate leading-tight italic">
-                                {appointment.treatment}
-                              </p>
-                              {parseInt(appointment.duration) > 30 && (
-                                <div className="mt-auto pt-1 border-t border-current/10 flex justify-between items-center">
-                                  <span className="text-[8px] font-medium">{appointment.duration} min</span>
-                                  <Icon name="CheckCircle" size={10} className="opacity-50" />
-                                </div>
-                              )}
-                            </div>
-                          </div>
+                          <AppointmentCard
+                            appointment={appointment}
+                            onReschedule={handleReschedule}
+                            onDelete={handleDeleteAppointment}
+                            isTouchDevice={touchDevice}
+                            setActiveMenu={setActiveMenu}
+                          />
                         )}
                         {!appointment && (
                           <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center">
@@ -330,62 +300,12 @@ const WeeklyCalendar = () => {
         isLoading={isSaving}
       />
 
-      {/* Mobile action sheet */}
-      {activeMenu && (
-        <div
-          className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-          onClick={() => setActiveMenu(null)}
-        >
-          <div
-            className="bg-white w-full max-w-sm rounded-t-2xl sm:rounded-2xl overflow-hidden animate-in slide-in-from-bottom duration-300 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-5 border-b bg-gray-50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                  <Icon name="User" size={20} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg text-black leading-tight">{activeMenu.patientName}</h3>
-                  <p className="text-xs text-muted-foreground">
-                    {activeMenu.time} - {activeMenu.treatment}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 flex flex-col gap-2">
-              <Button
-                variant="outline"
-                className="justify-start h-14 text-base font-medium border-gray-200"
-                onClick={() => {
-                  handleReschedule(null, activeMenu);
-                  setActiveMenu(null);
-                }}
-              >
-                <Icon name="CalendarClock" size={20} className="mr-3 text-blue-600" />
-                {t("appointment.reschedule") || "Reprogramar Cita"}
-              </Button>
-              <Button
-                variant="outline"
-                className="justify-start h-14 text-base font-medium text-red-600 border-red-100 hover:bg-red-50"
-                onClick={() => {
-                  handleDeleteAppointment({ stopPropagation: () => {} }, activeMenu.id);
-                  setActiveMenu(null);
-                }}
-              >
-                <Icon name="Trash2" size={20} className="mr-3" />
-                {t("delete") || "Eliminar Cita"}
-              </Button>
-              <button
-                className="w-full py-4 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors"
-                onClick={() => setActiveMenu(null)}
-              >
-                {t("cancel") || "Cancelar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <MobileActionSheet
+        appointment={activeMenu}
+        onReschedule={handleReschedule}
+        onDelete={handleDeleteAppointment}
+        onClose={() => setActiveMenu(null)}
+      />
     </>
   );
 };

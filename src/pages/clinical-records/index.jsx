@@ -10,6 +10,7 @@ import RecordDetailsModal from "@/pages/clinical-records/components/RecordDetail
 import StatsOverview from "@/pages/clinical-records/components/StatsOverview";
 import { useGlobalClinicalRegistry } from "@/hooks/GlobalClinicalRegistryHooks";
 import { useClinicalNotes } from "@/hooks/ClinicalNotesHooks";
+import { notifySuccess, notifyError } from "@/utils/notifications";
 
 const ClinicalRecords = () => {
   const [viewMode, setViewMode] = useState("grid");

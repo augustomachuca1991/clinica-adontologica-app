@@ -47,11 +47,7 @@ export default defineConfig({
             handler: "CacheFirst",
             options: { cacheName: "supabase-storage", expiration: { maxEntries: 50, maxAgeSeconds: 86400 * 30 } },
           },
-          {
-            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
-            handler: "CacheFirst",
-            options: { cacheName: "google-fonts", expiration: { maxEntries: 10, maxAgeSeconds: 86400 * 365 } },
-          },
+
         ],
       },
     }),

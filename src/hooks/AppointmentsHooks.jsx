@@ -237,11 +237,31 @@ export const useAppointments = () => {
     }
   };
 
+  const updateStatus = async (id, newStatus) => {
+    try {
+      const { error } = await supabase
+        .from("appointments")
+        .update({ status: newStatus })
+        .eq("id", id)
+        .eq("provider_id", user.id);
+
+      if (error) throw error;
+
+      // Actualiza localmente sin refetch para que sea instantáneo
+      setAppointments((prev) => prev.map((appt) => (appt.id === id ? { ...appt, status: newStatus } : appt)));
+      return { success: true };
+    } catch (err) {
+      console.error("Error updating status:", err.message);
+      return { success: false, error: err.message };
+    }
+  };
+
   return {
     appointments,
     fetchAppointments,
     addAppointment,
     updateAppointment,
+    updateStatus,
     deleteAppointment,
     checkOverlap,
     loading,

@@ -10,6 +10,19 @@ import { notifyError, notifySuccess, notifyConfirm } from "@/utils/notifications
 
 const isTouchDevice = () => "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 
+const getWeekStart = () => {
+  const today = new Date();
+  const day = today.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  const monday = new Date(today);
+  monday.setDate(today.getDate() + diff);
+  monday.setHours(0, 0, 0, 0);
+  return monday;
+};
+
+const fmt = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
 const WeeklyCalendar = () => {
   const { t } = useTranslation();
   const {
@@ -17,6 +30,7 @@ const WeeklyCalendar = () => {
     fetchAppointments,
     addAppointment,
     updateAppointment,
+    updateStatus,
     deleteAppointment,
     loading: isSaving,
   } = useAppointments();
@@ -24,21 +38,20 @@ const WeeklyCalendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [weekStart, setWeekStart] = useState(getWeekStart);
+  const [mobileDayIndex, setMobileDayIndex] = useState(() => {
+    const today = new Date().getDay();
+    return today === 0 ? 0 : Math.min(today - 1, 5);
+  });
 
-  const timeSlots = [
-    ...Array.from({ length: 17 }, (_, i) => {
-      const h = Math.floor(i / 4) + 9;
-      const m = (i % 4) * 15;
-      return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
-    }),
-    ...Array.from({ length: 17 }, (_, i) => {
-      const h = Math.floor(i / 4) + 17;
-      const m = (i % 4) * 15;
-      return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
-    }),
-  ];
+  const timeSlots = Array.from({ length: 34 }, (_, i) => {
+    const totalMinutes = 9 * 60 + i * 15;
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  });
 
-  const daysOfWeek = [
+  const DAY_NAMES_SHORT = [
     t("days.monday"),
     t("days.tuesday"),
     t("days.wednesday"),
@@ -47,16 +60,14 @@ const WeeklyCalendar = () => {
     t("days.saturday"),
   ];
 
-  const dayMap = useMemo(
-    () => ({
-      [t("days.monday")]: 1,
-      [t("days.tuesday")]: 2,
-      [t("days.wednesday")]: 3,
-      [t("days.thursday")]: 4,
-      [t("days.friday")]: 5,
-      [t("days.saturday")]: 6,
-    }),
-    [t]
+  const weekDates = useMemo(
+    () =>
+      Array.from({ length: 6 }, (_, i) => {
+        const d = new Date(weekStart);
+        d.setDate(weekStart.getDate() + i);
+        return d;
+      }),
+    [weekStart]
   );
 
   useEffect(() => {
@@ -65,57 +76,43 @@ const WeeklyCalendar = () => {
 
   const appointmentsMap = useMemo(() => {
     const map = {};
-    if (!appointments || appointments.length === 0) return map;
     appointments.forEach((appt) => {
       const d = appt.date;
       if (isNaN(d.getTime())) return;
-      const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      const dateKey = fmt(d);
       const timeKey = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
       map[`${dateKey}-${timeKey}`] = appt;
     });
     return map;
   }, [appointments]);
 
-  const getCellDate = (day) => {
-    const today = new Date();
-    const currentDayIndex = today.getDay();
-    const targetDayIndex = dayMap[day];
-    const diff = targetDayIndex - (currentDayIndex === 0 ? 7 : currentDayIndex);
-    const cellDate = new Date(today);
-    cellDate.setDate(today.getDate() + diff);
-    const y = cellDate.getFullYear();
-    const m = String(cellDate.getMonth() + 1).padStart(2, "0");
-    const d = String(cellDate.getDate()).padStart(2, "0");
-    return { cellDate, dateKey: `${y}-${m}-${d}` };
+  const navigateWeek = (dir) => {
+    setWeekStart((prev) => {
+      const d = new Date(prev);
+      d.setDate(prev.getDate() + dir * 7);
+      return d;
+    });
   };
 
-  const handleCellClick = (dayName, time) => {
-    const { dateKey } = getCellDate(dayName);
+  const goToToday = () => {
+    setWeekStart(getWeekStart());
+    const today = new Date().getDay();
+    setMobileDayIndex(today === 0 ? 0 : Math.min(today - 1, 5));
+  };
+
+  const handleCellClick = (dateKey, time) => {
     setSelectedSlot({ date: dateKey, time, status: "scheduled" });
     setIsModalOpen(true);
   };
 
-  // ─── handleSaveAppointment ────────────────────────────────────────────────────
-  // La validación de solapamiento la hace el hook con operadores estrictos (< y >)
-  // lo que permite citas consecutivas. No hay validación local redundante.
   const handleSaveAppointment = async (appointmentData) => {
     const d = new Date(appointmentData.date);
-    const y = d.getFullYear();
-    const mo = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    const datePart = `${y}-${mo}-${day}`;
+    const datePart = fmt(d);
     const timePart =
       appointmentData.time || `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
-
     const isEditing = !!appointmentData.id;
-
-    const payload = {
-      ...appointmentData,
-      date: `${datePart}T${timePart}:00`,
-    };
-
+    const payload = { ...appointmentData, date: `${datePart}T${timePart}:00` };
     const res = isEditing ? await updateAppointment(appointmentData.id, payload) : await addAppointment(payload);
-
     if (res.success) {
       setIsModalOpen(false);
       setSelectedSlot(null);
@@ -123,19 +120,11 @@ const WeeklyCalendar = () => {
       await fetchAppointments();
       return;
     }
-
-    // El hook devuelve conflict: true cuando hay solapamiento real
-    // y un mensaje con el nombre del paciente y el horario exacto
     notifyError(res.error || t("appointment.msgError"));
   };
 
-  const handleAddAppointment = () => {
-    setSelectedSlot(null);
-    setIsModalOpen(true);
-  };
-
   const handleDeleteAppointment = async (e, id) => {
-    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
+    if (e?.stopPropagation) e.stopPropagation();
     notifyConfirm(t("appointment.confirmDeleteTitle"), t("appointment.confirmDeleteDescription"), async () => {
       const res = await deleteAppointment(id);
       if (res.success) {
@@ -148,143 +137,238 @@ const WeeklyCalendar = () => {
   };
 
   const handleReschedule = (e, appointment) => {
-    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
+    if (e?.stopPropagation) e.stopPropagation();
     const d = new Date(appointment.date);
-    const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     setSelectedSlot({
       ...appointment,
-      id: appointment.id,
-      patientId: appointment.patientId,
-      patientName: appointment.patientName,
-      patientImage: appointment.patientImage,
-      date: localDate,
-      time: appointment.time,
+      date: fmt(d),
       duration: String(appointment.duration).replace(" min", ""),
-      treatment: appointment.treatment,
     });
     setIsModalOpen(true);
   };
 
-  const statusLegend = [
-    { label: t("common.status.scheduled"), status: "scheduled" },
-    { label: t("common.status.confirmed"), status: "confirmed" },
-    { label: t("common.status.pending"), status: "pending" },
-    { label: t("common.status.inProgress"), status: "in-progress" },
-    { label: t("common.status.completed"), status: "completed" },
-    { label: t("common.status.cancelled"), status: "cancelled" },
-    { label: t("common.status.noShow"), status: "no-show" },
-  ];
-
-  const getStatusStyles = (status) => {
-    const styles = {
-      scheduled: "bg-blue-100 border-blue-500 text-blue-700",
-      confirmed: "bg-emerald-100 border-emerald-500 text-emerald-700",
-      pending: "bg-amber-100 border-amber-500 text-amber-700",
-      "in-progress": "bg-purple-100 border-purple-500 text-purple-700",
-      completed: "bg-slate-100 border-slate-400 text-slate-600",
-      cancelled: "bg-red-100 border-red-500 text-red-700",
-      "no-show": "bg-gray-100 border-gray-400 text-gray-500",
-      default: "bg-primary/15 border-primary text-primary-dark",
-    };
-    return styles[status] || styles.default;
+  const handleStatusChange = async (id, newStatus) => {
+    const res = await updateStatus(id, newStatus);
+    if (res.success) {
+      notifySuccess(t("appointment.msgStatusUpdated"));
+    } else {
+      notifyError(res.error);
+    }
   };
 
   const touchDevice = isTouchDevice();
+  const todayKey = fmt(new Date());
+
+  // ── Columna de horas — compartida desktop y mobile ──
+  const TimeColumn = () => (
+    <div>
+      {timeSlots.map((time) => (
+        <div key={time} className={`h-12 relative border-r border-border ${time.endsWith(":00") ? "bg-muted/10" : ""}`}>
+          {time.endsWith(":00") && (
+            <span className="absolute top-0 right-2 -translate-y-1/2 text-[10px] text-muted-foreground tabular-nums bg-background px-0.5 leading-none">
+              {time}
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  // ── Columna de un día — compartida desktop y mobile ──
+  const DayColumn = ({ date }) => {
+    const dateKey = fmt(date);
+    const isToday = dateKey === todayKey;
+    return (
+      <div className="flex flex-col">
+        {timeSlots.map((time) => {
+          const appointment = appointmentsMap[`${dateKey}-${time}`];
+          return (
+            <div
+              key={time}
+              onClick={() => !appointment && handleCellClick(dateKey, time)}
+              className={`
+                h-12 border-b border-r border-border relative
+                ${time.endsWith(":00") ? "border-b-muted-foreground/20" : "border-b-border/40"}
+                ${appointment ? "z-10" : "hover:bg-primary/5 cursor-pointer group"}
+                ${isToday ? "bg-primary/[0.02]" : ""}
+              `}
+            >
+              {appointment && (
+                <AppointmentCard
+                  appointment={appointment}
+                  onReschedule={handleReschedule}
+                  onDelete={handleDeleteAppointment}
+                  onStatusChange={handleStatusChange}
+                  isTouchDevice={touchDevice}
+                  setActiveMenu={setActiveMenu}
+                />
+              )}
+              {!appointment && (
+                <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <Icon name="Plus" size={14} className="text-primary/40" />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const monthLabel = weekDates[0].toLocaleDateString(undefined, {
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+      <div className="space-y-4">
+        {/* ── Header ── */}
+        <div className="flex items-center justify-between gap-2 flex-wrap">
           <div>
-            <h1 className="text-2xl font-headline font-bold text-foreground">{t("calendar.title")}</h1>
-            <p className="text-muted-foreground">{t("calendar.subtitle")}</p>
+            <h1 className="text-2xl font-headline font-bold text-foreground capitalize">{monthLabel}</h1>
+            <p className="text-muted-foreground text-sm">{t("calendar.subtitle")}</p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="tertiary" size="sm" iconName="ChevronLeft" />
-            <Button variant="tertiary" size="sm" iconName="ChevronRight" />
-            <Button variant="default" size="sm" iconName="Plus" onClick={handleAddAppointment}>
+          <div className="flex items-center gap-2">
+            <Button variant="tertiary" size="sm" onClick={goToToday}>
+              Hoy
+            </Button>
+            <Button variant="tertiary" size="sm" iconName="ChevronLeft" onClick={() => navigateWeek(-1)} />
+            <Button variant="tertiary" size="sm" iconName="ChevronRight" onClick={() => navigateWeek(1)} />
+            <Button
+              variant="default"
+              size="sm"
+              iconName="Plus"
+              onClick={() => {
+                setSelectedSlot(null);
+                setIsModalOpen(true);
+              }}
+            >
               {t("calendar.newAppointment")}
             </Button>
           </div>
         </div>
 
-        {/* Leyenda */}
-        <div className="w-full bg-muted/5 border-y border-border px-6 py-3">
-          <div className="flex flex-wrap items-center justify-start gap-x-6 gap-y-3">
-            {statusLegend.map((item) => (
-              <div key={item.status} className="flex items-center gap-2 group">
-                <span
-                  className={`w-3 h-3 rounded-full border shadow-sm transition-transform group-hover:scale-110
-                    ${getStatusStyles(item.status).split(" ")[1]}
-                    ${getStatusStyles(item.status).split(" ")[0]}`}
-                />
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
-                  {item.label}
-                </span>
-              </div>
-            ))}
-          </div>
+        {/* ── Leyenda ── */}
+        <div className="flex flex-wrap gap-x-4 gap-y-2 px-1">
+          {[
+            { label: t("common.status.scheduled"), color: "bg-indigo-400" },
+            { label: t("common.status.confirmed"), color: "bg-emerald-400" },
+            { label: t("common.status.pending"), color: "bg-amber-400" },
+            { label: t("common.status.inProgress"), color: "bg-violet-400" },
+            { label: t("common.status.completed"), color: "bg-slate-400" },
+            { label: t("common.status.cancelled"), color: "bg-red-400" },
+            { label: t("common.status.noShow"), color: "bg-gray-400" },
+          ].map((item) => (
+            <div key={item.label} className="flex items-center gap-1.5">
+              <span className={`w-2.5 h-2.5 rounded-sm flex-shrink-0 ${item.color}`} />
+              <span className="text-[11px] text-muted-foreground">{item.label}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Grilla */}
-        <div className="clinical-card overflow-hidden border-none shadow-xl">
+        {/* ══════════════════════════════════════════
+            DESKTOP — grilla completa
+        ══════════════════════════════════════════ */}
+        <div className="hidden md:block clinical-card overflow-hidden border-none shadow-xl">
           <div className="overflow-x-auto">
             {/* Cabecera días */}
-            <div className="min-w-[800px] grid grid-cols-[80px_repeat(6,1fr)] border-b border-border bg-muted/30">
-              <div className="p-4 border-r border-border" />
-              {daysOfWeek.map((day) => (
-                <div
-                  key={day}
-                  className="p-4 text-center font-semibold text-sm text-foreground border-r border-border last:border-0"
-                >
-                  {day}
-                </div>
-              ))}
+            <div className="min-w-[700px] grid grid-cols-[56px_repeat(6,1fr)] border-b border-border bg-muted/20">
+              <div className="border-r border-border" />
+              {weekDates.map((date, i) => {
+                const isToday = fmt(date) === todayKey;
+                return (
+                  <div
+                    key={i}
+                    className={`p-3 text-center border-r border-border last:border-0 ${isToday ? "bg-primary/5" : ""}`}
+                  >
+                    <span
+                      className={`block text-[11px] font-medium uppercase tracking-wide ${
+                        isToday ? "text-primary" : "text-muted-foreground"
+                      }`}
+                    >
+                      {DAY_NAMES_SHORT[i]}
+                    </span>
+                    <span
+                      className={`block text-lg font-semibold leading-tight mt-0.5 ${
+                        isToday ? "text-primary" : "text-foreground"
+                      }`}
+                    >
+                      {date.getDate()}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Cuerpo */}
-            <div className="min-w-[800px] grid grid-cols-[80px_repeat(6,1fr)]">
-              {timeSlots.map((time) => (
-                <React.Fragment key={time}>
-                  <div
-                    className={`p-2 text-xs font-medium text-muted-foreground text-right pr-4 border-r border-border flex items-center justify-end ${time.endsWith(":00") ? "bg-muted/20" : ""}`}
-                  >
-                    {time.endsWith(":00") || time.endsWith(":30") ? time : ""}
-                  </div>
-
-                  {daysOfWeek.map((day) => {
-                    const { dateKey } = getCellDate(day);
-                    const appointment = appointmentsMap[`${dateKey}-${time}`];
-
-                    return (
-                      <div
-                        key={`${day}-${time}`}
-                        onClick={() => !appointment && handleCellClick(day, time)}
-                        className={`h-12 border-r border-b border-border relative group transition-all
-                          ${appointment ? "z-10" : "hover:bg-primary/5 cursor-pointer"}
-                          ${time.endsWith(":00") ? "border-b-muted-foreground/20" : "border-b-border/50"}`}
-                      >
-                        {appointment && (
-                          <AppointmentCard
-                            appointment={appointment}
-                            onReschedule={handleReschedule}
-                            onDelete={handleDeleteAppointment}
-                            isTouchDevice={touchDevice}
-                            setActiveMenu={setActiveMenu}
-                          />
-                        )}
-                        {!appointment && (
-                          <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center">
-                            <Icon name="Plus" size={14} className="text-primary/40" />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </React.Fragment>
+            <div className="min-w-[700px] grid grid-cols-[56px_repeat(6,1fr)]">
+              <TimeColumn />
+              {weekDates.map((date, i) => (
+                <DayColumn key={i} date={date} />
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════════
+            MOBILE — un día a la vez
+        ══════════════════════════════════════════ */}
+        <div className="md:hidden">
+          {/* Selector de día */}
+          <div className="grid grid-cols-6 gap-1 mb-3">
+            {weekDates.map((date, i) => {
+              const isToday = fmt(date) === todayKey;
+              const isActive = i === mobileDayIndex;
+              return (
+                <button
+                  key={i}
+                  onClick={() => setMobileDayIndex(i)}
+                  className={`
+                    flex flex-col items-center py-2 px-1 rounded-lg transition-colors
+                    ${
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : isToday
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-muted"
+                    }
+                  `}
+                >
+                  <span className="text-[10px] font-medium uppercase">{DAY_NAMES_SHORT[i].slice(0, 3)}</span>
+                  <span className="text-base font-semibold leading-tight">{date.getDate()}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Grilla del día seleccionado */}
+          <div className="clinical-card overflow-hidden border-none shadow-md">
+            <div className="grid grid-cols-[48px_1fr]">
+              <TimeColumn />
+              <DayColumn date={weekDates[mobileDayIndex]} />
+            </div>
+          </div>
+
+          {/* Navegación semana */}
+          <div className="flex items-center justify-between mt-3 px-1">
+            <button
+              onClick={() => navigateWeek(-1)}
+              className="text-sm text-muted-foreground flex items-center gap-1 hover:text-foreground transition-colors"
+            >
+              <Icon name="ChevronLeft" size={16} />
+              Semana anterior
+            </button>
+            <button onClick={goToToday} className="text-sm text-primary font-medium">
+              Hoy
+            </button>
+            <button
+              onClick={() => navigateWeek(1)}
+              className="text-sm text-muted-foreground flex items-center gap-1 hover:text-foreground transition-colors"
+            >
+              Semana siguiente
+              <Icon name="ChevronRight" size={16} />
+            </button>
           </div>
         </div>
       </div>
@@ -304,6 +388,7 @@ const WeeklyCalendar = () => {
         appointment={activeMenu}
         onReschedule={handleReschedule}
         onDelete={handleDeleteAppointment}
+        onStatusChange={handleStatusChange}
         onClose={() => setActiveMenu(null)}
       />
     </>

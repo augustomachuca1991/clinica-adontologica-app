@@ -60,7 +60,7 @@ const NoteDetailModal = memo(({ note, open, onClose, onEdit, onDelete, onToggleP
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
               >
                 <Icon name="Edit2" size={13} />
-                {t("clinicalNotes.detail.actionEdit")}
+                {t("common.actions.edit")}
               </button>
 
               <button
@@ -69,7 +69,7 @@ const NoteDetailModal = memo(({ note, open, onClose, onEdit, onDelete, onToggleP
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-red-200 text-xs font-medium text-red-600 hover:bg-red-50 transition-all ml-auto"
               >
                 <Icon name="Trash2" size={13} />
-                {t("clinicalNotes.detail.actionDelete")}
+                {t("common.actions.delete")}
               </button>
             </div>
           )}

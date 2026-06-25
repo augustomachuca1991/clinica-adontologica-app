@@ -71,7 +71,7 @@ const StepPersonal = ({
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div className="md:col-span-2">
-        <Field label={t("patient.fields.fullName")}>
+        <Field label={t("common.labels.fullName")}>
           <Input
             value={form.name}
             onChange={(e) => set("name", e.target.value)}
@@ -82,7 +82,7 @@ const StepPersonal = ({
       <Field label={t("patient.fields.birthDate")}>
         <Input type="date" value={form.dateOfBirth} onChange={(e) => set("dateOfBirth", e.target.value)} />
       </Field>
-      <Field label={t("patient.fields.gender")}>
+      <Field label={t("common.labels.gender")}>
         <Select
           options={genderOptions}
           value={form.gender}
@@ -90,7 +90,7 @@ const StepPersonal = ({
           placeholder={t("common.select")}
         />
       </Field>
-      <Field label={t("patient.fields.bloodType")}>
+      <Field label={t("common.labels.bloodType")}>
         <Select
           options={BLOOD_OPTIONS}
           value={form.bloodType}
@@ -113,7 +113,7 @@ const StepPersonal = ({
 const StepContact = ({ form, set, t }) => (
   <div className="space-y-5">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      <Field label={t("patient.fields.email")}>
+      <Field label={t("common.labels.email")}>
         <Input
           type="email"
           value={form.email}
@@ -121,7 +121,7 @@ const StepContact = ({ form, set, t }) => (
           placeholder="ejemplo@email.com"
         />
       </Field>
-      <Field label={t("patient.fields.phone")}>
+      <Field label={t("common.labels.phone")}>
         <Input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+54 11 0000-0000" />
       </Field>
       <div className="md:col-span-2">
@@ -158,13 +158,13 @@ const StepMedical = ({ form, set, genderOptions, insuranceOptions, currentStatus
         color: "text-red-600 bg-red-50",
       },
       {
-        label: t("patient.fields.gender"),
+        label: t("common.labels.gender"),
         value: genderOptions.find((o) => o.value === form.gender)?.label,
         icon: "User",
         color: "text-blue-600 bg-blue-50",
       },
       {
-        label: t("patient.fields.status"),
+        label: t("common.labels.status"),
         value: currentStatus.label,
         icon: "Activity",
         color: `${currentStatus.text} ${currentStatus.light}`,
@@ -218,8 +218,8 @@ const StepEmergency = ({ form, setEmergency, insuranceOptions, t }) => {
   const summaryRows = useMemo(
     () => [
       { label: t("patient.summary.name"), value: form.name },
-      { label: t("patient.fields.email"), value: form.email },
-      { label: t("patient.fields.phone"), value: form.phone },
+      { label: t("common.labels.email"), value: form.email },
+      { label: t("common.labels.phone"), value: form.phone },
       { label: t("patient.fields.city"), value: form.city },
       { label: t("patient.summary.insurance"), value: insuranceOptions.find((o) => o.value === form.insurance)?.label },
       { label: t("patient.summary.bloodType"), value: form.bloodType?.toUpperCase() },
@@ -240,9 +240,9 @@ const StepEmergency = ({ form, setEmergency, insuranceOptions, t }) => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Field label={t("patient.fields.fullName")}>
+          <Field label={t("common.labels.fullName")}>
             <Input
-              placeholder={t("patient.fields.fullName")}
+              placeholder={t("common.labels.fullName")}
               value={form.emergencyContact.name}
               onChange={(e) => setEmergency("name", e.target.value)}
             />
@@ -254,14 +254,14 @@ const StepEmergency = ({ form, setEmergency, insuranceOptions, t }) => {
               onChange={(e) => setEmergency("relationship", e.target.value)}
             />
           </Field>
-          <Field label={t("patient.fields.phone")}>
+          <Field label={t("common.labels.phone")}>
             <Input
               placeholder="+54 11 0000-0000"
               value={form.emergencyContact.phone}
               onChange={(e) => setEmergency("phone", e.target.value)}
             />
           </Field>
-          <Field label={t("patient.fields.email")}>
+          <Field label={t("common.labels.email")}>
             <Input
               type="email"
               placeholder="emergencia@email.com"

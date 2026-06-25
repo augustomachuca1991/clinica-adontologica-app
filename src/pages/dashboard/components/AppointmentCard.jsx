@@ -39,7 +39,7 @@ const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
             <h4 className="font-headline font-semibold text-sm md:text-base text-foreground truncate">{appointment?.patientName}</h4>
 
             <span className={`inline-flex items-center rounded-xl px-2 py-1 text-xs font-medium inset-ring ${getStatusColor()}`}>
-              {t(`appointment.status.${appointment?.status}`)}
+              {t(`common.status.${appointment?.status}`)}
             </span>
           </div>
           <p className="text-sm text-muted-foreground mb-2">{appointment?.treatment}</p>

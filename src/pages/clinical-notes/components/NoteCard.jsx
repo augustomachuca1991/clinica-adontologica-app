@@ -47,7 +47,7 @@ const NoteCard = memo(({ note, onView, onEdit, onDelete, onTogglePrivate, isOwn 
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
             >
               <Icon name="Edit2" size={13} />
-              {t("clinicalNotes.card.actionEdit")}
+              {t("common.actions.edit")}
             </button>
 
             <button
@@ -62,7 +62,7 @@ const NoteCard = memo(({ note, onView, onEdit, onDelete, onTogglePrivate, isOwn 
             <button
               type="button"
               onClick={() => onDelete(note.id)}
-              aria-label={t("clinicalNotes.card.actionDelete")}
+              aria-label={t("common.actions.delete")}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all ml-auto"
             >
               <Icon name="Trash2" size={13} />

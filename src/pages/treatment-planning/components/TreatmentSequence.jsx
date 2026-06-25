@@ -44,11 +44,11 @@ const TreatmentSequence = ({ treatments, services, onReorder, onRemove, onEdit }
   const getStatusIconLabel = (status) => {
     switch (status) {
       case "completed":
-        return { icon: "Check", label: t("treatment.status.completed"), classIcon: "text-success" };
+        return { icon: "Check", label: t("common.status.completed"), classIcon: "text-success" };
       case "inProgress":
-        return { icon: "Clock", label: t("treatment.status.inProgress"), classIcon: "text-warning" };
+        return { icon: "Clock", label: t("common.status.inProgress"), classIcon: "text-warning" };
       case "planned":
-        return { icon: "Calendar", label: t("treatment.status.planned"), classIcon: "text-primary" };
+        return { icon: "Calendar", label: t("common.status.planned"), classIcon: "text-primary" };
       default:
         return { icon: "Circle" };
     }

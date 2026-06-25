@@ -37,7 +37,7 @@ export const STATUS_KEYS = ["confirmed", "pending", "cancelled", "scheduled", "i
 export const getStatusOptions = (t) =>
   STATUS_KEYS.map((key) => ({
     value: key,
-    label: t(`appointment.status.${key}`),
+    label: t(`common.status.${key}`),
   }));
 
 // ─── Schema de validación ──────────────────────────────────────────────────────

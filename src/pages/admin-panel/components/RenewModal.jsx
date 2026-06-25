@@ -18,7 +18,7 @@ const RenewModal = ({ subscription, renewalDate, onDateChange, onConfirm, onCanc
             {subscription.user_profiles?.full_name}
           </p>
           <p>
-            <strong className="text-foreground">{t("admin.modals.shared.email")}:</strong>{" "}
+            <strong className="text-foreground">{t("common.labels.email")}:</strong>{" "}
             {subscription.user_profiles?.email}
           </p>
         </div>
@@ -40,7 +40,7 @@ const RenewModal = ({ subscription, renewalDate, onDateChange, onConfirm, onCanc
             disabled={isRenewing}
             className="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
           >
-            {t("admin.modals.shared.cancel")}
+            {t("common.actions.cancel")}
           </button>
           <button
             type="button"

@@ -105,7 +105,7 @@ const PatientCard = memo(({ patient, onQuickAction }) => {
               {patient?.name}
             </Link>
             <span className={cn("text-[11px] font-semibold px-2 py-0.5 rounded-full", badgeClass)}>
-              {t(`patient.status.${patient?.status}`)}
+              {t(`common.status.${patient?.status}`)}
             </span>
           </div>
           <span className="text-xs text-muted-foreground">ID: {patient?.patientId}</span>

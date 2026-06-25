@@ -94,7 +94,7 @@ const UserManagementCard = () => {
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                label={t("users.labels.full_name")}
+                label={t("common.labels.fullName")}
                 type="text"
                 placeholder={t("users.placeholders.full_name")}
                 required
@@ -102,7 +102,7 @@ const UserManagementCard = () => {
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
               />
               <Input
-                label={t("users.labels.email")}
+                label={t("common.labels.email")}
                 type="email"
                 placeholder={t("users.placeholders.email")}
                 required
@@ -121,7 +121,7 @@ const UserManagementCard = () => {
                 }}
               />
               <Input
-                label={t("users.labels.phone")}
+                label={t("common.labels.phone")}
                 type="tel"
                 placeholder={t("users.placeholders.phone")}
                 value={formData.phone || ""}
@@ -201,7 +201,7 @@ const UserManagementCard = () => {
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-success" : "bg-muted-foreground"}`}
                         />
-                        {user?.status || t("users.status.inactive")}
+                        {user?.status || t("common.status.inactive")}
                       </span>
                     </div>
                     <p className="text-xs md:text-sm text-muted-foreground truncate">{user?.email}</p>

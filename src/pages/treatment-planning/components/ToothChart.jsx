@@ -91,15 +91,15 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
         <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded bg-success" />
-            <span className="text-muted-foreground">{t("treatment.status.completed")}</span>
+            <span className="text-muted-foreground">{t("common.status.completed")}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded bg-warning" />
-            <span className="text-muted-foreground">{t("treatment.status.inProgress")}</span>
+            <span className="text-muted-foreground">{t("common.status.inProgress")}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded bg-primary" />
-            <span className="text-muted-foreground">{t("treatment.status.planned")}</span>
+            <span className="text-muted-foreground">{t("common.status.planned")}</span>
           </div>
         </div>
       </div>

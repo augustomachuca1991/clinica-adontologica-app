@@ -46,7 +46,7 @@ export const getMaritalStatusOptions = (t) => [
 export const getStatusOptions = (t) => [
   {
     id: "active",
-    label: t("patient.status.active"),
+    label: t("common.status.active"),
     color: "bg-emerald-500",
     ring: "ring-emerald-200",
     text: "text-emerald-700",
@@ -54,7 +54,7 @@ export const getStatusOptions = (t) => [
   },
   {
     id: "pending",
-    label: t("patient.status.pending"),
+    label: t("common.status.pending"),
     color: "bg-amber-500",
     ring: "ring-amber-200",
     text: "text-amber-700",
@@ -62,7 +62,7 @@ export const getStatusOptions = (t) => [
   },
   {
     id: "inactive",
-    label: t("patient.status.inactive"),
+    label: t("common.status.inactive"),
     color: "bg-slate-400",
     ring: "ring-slate-200",
     text: "text-slate-600",

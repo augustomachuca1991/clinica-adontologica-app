@@ -30,7 +30,7 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
     const config = statusConfig?.[status] || statusConfig?.inactive;
     return (
       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config?.bg} ${config?.text}`}>
-        {t(`patientCard.status.${config?.label}`)}
+        {t(`common.status.${config?.label}`)}
       </span>
     );
   };
@@ -53,7 +53,7 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   onClick={() => onSort("name")}
                   className="flex items-center gap-2 text-xs md:text-sm font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base"
                 >
-                  {t("patientTable.columns.patient")}
+                  {t("common.labels.name")}
                   {getSortIcon("name")}
                 </button>
               </th>
@@ -83,7 +83,7 @@ const PatientTable = ({ patients, selectedPatients, onSelectPatient, onSelectAll
                   onClick={() => onSort("status")}
                   className="flex items-center gap-2 text-xs md:text-sm font-headline font-semibold text-foreground hover:text-primary transition-colors duration-base"
                 >
-                  {t("patientTable.columns.status")}
+                  {t("common.labels.status")}
                   {getSortIcon("status")}
                 </button>
               </th>

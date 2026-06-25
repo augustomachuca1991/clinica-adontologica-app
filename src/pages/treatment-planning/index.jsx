@@ -285,13 +285,13 @@ const TreatmentPlanning = () => {
               </div>
               <div className="text-xs text-muted-foreground space-y-1">
                 <div>
-                  {t("treatment.status.planned")}: {summary.planned}
+                  {t("common.status.planned")}: {summary.planned}
                 </div>
                 <div>
-                  {t("treatment.status.inProgress")}: {summary.inProgress}
+                  {t("common.status.inProgress")}: {summary.inProgress}
                 </div>
                 <div>
-                  {t("treatment.status.completed")}: {summary.completed}
+                  {t("common.status.completed")}: {summary.completed}
                 </div>
               </div>
             </div>

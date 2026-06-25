@@ -33,7 +33,7 @@ const DeleteProviderModal = ({ provider, onClose, onConfirm, isDeleting }) => {
         </p>
         <div className="flex gap-3 justify-end">
           <Button variant="outline" onClick={onClose} disabled={isDeleting}>
-            {t("providers.management.deleteModal.btnCancel")}
+            {t("common.actions.cancel")}
           </Button>
           <Button
             variant="destructive"
@@ -42,7 +42,7 @@ const DeleteProviderModal = ({ provider, onClose, onConfirm, isDeleting }) => {
           >
             {isDeleting
               ? t("providers.management.deleteModal.btnDeleting")
-              : t("providers.management.deleteModal.btnConfirm")}
+              : t("common.actions.delete")}
           </Button>
         </div>
       </div>
@@ -103,8 +103,8 @@ const ViewProviderModal = ({ provider, onClose, onEdit }) => {
               className={`w-1.5 h-1.5 rounded-full ${provider.is_active ? "bg-green-500" : "bg-muted-foreground"}`}
             />
             {provider.is_active
-              ? t("providers.management.status.active")
-              : t("providers.management.status.inactive")}
+              ? t("common.status.active")
+              : t("common.status.inactive")}
           </span>
         </div>
 
@@ -122,10 +122,10 @@ const ViewProviderModal = ({ provider, onClose, onEdit }) => {
 
         <div className="flex gap-3 justify-end border-t border-border pt-4">
           <Button variant="outline" onClick={onClose}>
-            {t("providers.management.viewModal.btnClose")}
+            {t("common.actions.close")}
           </Button>
           <Button variant="default" iconName="Edit" iconPosition="left" onClick={() => onEdit(provider)}>
-            {t("providers.management.list.btnEdit")}
+            {t("common.actions.edit")}
           </Button>
         </div>
       </div>
@@ -319,7 +319,7 @@ const ProvidersManagement = () => {
                     : "bg-background text-muted-foreground hover:bg-muted"
                 }`}
               >
-                {t(`providers.management.filter.${status}`)}
+                {t(`common.status.${status}`)}
               </button>
             ))}
           </div>
@@ -339,19 +339,19 @@ const ProvidersManagement = () => {
       <div className="grid grid-cols-3 gap-3">
         {[
           {
-            label: t("providers.management.stats.total"),
+            label: t("common.labels.total"),
             value: providers.length,
             icon: "Users",
             color: "text-primary bg-primary/10",
           },
           {
-            label: t("providers.management.stats.active"),
+            label: t("common.status.active"),
             value: providers.filter((p) => p.is_active).length,
             icon: "UserCheck",
             color: "text-green-600 bg-green-100",
           },
           {
-            label: t("providers.management.stats.inactive"),
+            label: t("common.status.inactive"),
             value: providers.filter((p) => !p.is_active).length,
             icon: "UserX",
             color: "text-muted-foreground bg-muted",
@@ -464,8 +464,8 @@ const ProvidersManagement = () => {
                 </button>
                 <span className="text-sm text-foreground">
                   {formData.is_active
-                    ? t("providers.management.status.active")
-                    : t("providers.management.status.inactive")}
+                    ? t("common.status.active")
+                    : t("common.status.inactive")}
                 </span>
               </div>
 
@@ -476,11 +476,11 @@ const ProvidersManagement = () => {
 
             <div className="flex gap-3 justify-end">
               <Button variant="outline" type="button" onClick={closeForm}>
-                {t("providers.management.form.btnCancel")}
+                {t("common.actions.cancel")}
               </Button>
               <Button variant="default" type="submit" disabled={isSubmitting}>
                 {isSubmitting
-                  ? t("providers.management.form.btnSaving")
+                  ? t("common.saving")
                   : editingProvider
                     ? t("providers.management.form.btnSave")
                     : t("providers.management.form.btnCreate")}
@@ -530,8 +530,8 @@ const ProvidersManagement = () => {
                           }`}
                         />
                         {provider.is_active
-                          ? t("providers.management.status.active")
-                          : t("providers.management.status.inactive")}
+                          ? t("common.status.active")
+                          : t("common.status.inactive")}
                       </span>
                     </div>
 
@@ -596,7 +596,7 @@ const ProvidersManagement = () => {
                     className="flex-1 lg:flex-none"
                     onClick={() => openForm(provider)}
                   >
-                    {t("providers.management.list.btnEdit")}
+                    {t("common.actions.edit")}
                   </Button>
                   <Button
                     variant="ghost"

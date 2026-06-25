@@ -177,7 +177,7 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
     <div key="personal" className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="md:col-span-2">
-          <Field label={t("patient.fields.fullName")} required error={formik.touched.name && formik.errors.name}>
+          <Field label={t("common.labels.fullName")} required error={formik.touched.name && formik.errors.name}>
             <Input name="name" placeholder={t("patient.placeholders.fullName")} {...formik.getFieldProps("name")} />
           </Field>
         </div>
@@ -188,7 +188,7 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
         >
           <Input type="date" name="dateOfBirth" {...formik.getFieldProps("dateOfBirth")} />
         </Field>
-        <Field label={t("patient.fields.gender")}>
+        <Field label={t("common.labels.gender")}>
           <Select
             options={genderOptions}
             value={formik.values.gender}
@@ -196,7 +196,7 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
             placeholder={t("common.select")}
           />
         </Field>
-        <Field label={t("patient.fields.bloodType")}>
+        <Field label={t("common.labels.bloodType")}>
           <Select
             options={BLOOD_OPTIONS}
             value={formik.values.bloodType}
@@ -218,10 +218,10 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
     // STEP 1 — Contacto
     <div key="contacto" className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Field label={t("patient.fields.email")} required error={formik.touched.email && formik.errors.email}>
+        <Field label={t("common.labels.email")} required error={formik.touched.email && formik.errors.email}>
           <Input name="email" type="email" placeholder="ejemplo@email.com" {...formik.getFieldProps("email")} />
         </Field>
-        <Field label={t("patient.fields.phone")}>
+        <Field label={t("common.labels.phone")}>
           <PhoneInput
             international
             defaultCountry="AR"
@@ -297,9 +297,9 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Field label={t("patient.fields.fullName")}>
+          <Field label={t("common.labels.fullName")}>
             <Input
-              placeholder={t("patient.fields.fullName")}
+              placeholder={t("common.labels.fullName")}
               {...formik.getFieldProps("emergencyContact.name")}
               error={formik.touched.emergencyContact?.name ? formik.errors.emergencyContact?.name : undefined}
             />
@@ -310,11 +310,11 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
               {...formik.getFieldProps("emergencyContact.relationship")}
             />
           </Field>
-          <Field label={t("patient.fields.phone")}>
+          <Field label={t("common.labels.phone")}>
             <Input placeholder="+54 11 0000-0000" {...formik.getFieldProps("emergencyContact.phone")} />
           </Field>
           <Field
-            label={t("patient.fields.email")}
+            label={t("common.labels.email")}
             error={formik.touched.emergencyContact?.email ? formik.errors.emergencyContact?.email : undefined}
           >
             <Input
@@ -376,9 +376,9 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
         <div className="p-4 grid grid-cols-2 gap-x-6 gap-y-3">
           {[
             { label: t("patient.summary.name"), value: formik.values.name },
-            { label: t("patient.fields.email"), value: formik.values.email },
+            { label: t("common.labels.email"), value: formik.values.email },
             { label: t("patient.fields.birthDate"), value: formik.values.dateOfBirth },
-            { label: t("patient.fields.phone"), value: formik.values.phone },
+            { label: t("common.labels.phone"), value: formik.values.phone },
             {
               label: t("patient.summary.insurance"),
               value: insuranceOptions.find((o) => o.value === formik.values.insurance)?.label,

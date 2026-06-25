@@ -13,7 +13,7 @@ const SecurityCompliance = () => {
       title: t("security.features.twoFactor"),
       description: t("security.features.twoFactorDesc"),
       icon: "Shield",
-      status: t("security.status.enabled"),
+      status: t("common.status.enabled"),
       enabled: true,
     },
     {
@@ -21,7 +21,7 @@ const SecurityCompliance = () => {
       title: t("security.features.sessionTimeout"),
       description: t("security.features.sessionTimeoutDesc"),
       icon: "Clock",
-      status: t("security.status.enabled"),
+      status: t("common.status.enabled"),
       enabled: true,
     },
     {
@@ -29,7 +29,7 @@ const SecurityCompliance = () => {
       title: t("security.features.passwordPolicy"),
       description: t("security.features.passwordPolicyDesc"),
       icon: "Key",
-      status: t("security.status.enabled"),
+      status: t("common.status.enabled"),
       enabled: true,
     },
     {
@@ -37,7 +37,7 @@ const SecurityCompliance = () => {
       title: t("security.features.auditLogging"),
       description: t("security.features.auditLoggingDesc"),
       icon: "FileText",
-      status: t("security.status.active"),
+      status: t("common.status.active"),
       enabled: true,
     },
   ];
@@ -47,7 +47,7 @@ const SecurityCompliance = () => {
       id: "hipaa",
       title: t("security.compliance.hipaa"),
       description: t("security.compliance.hipaaDesc"),
-      status: t("security.status.compliant"),
+      status: t("common.status.compliant"),
       lastAudit: "01/10/2026",
       icon: "CheckCircle",
       color: "text-success",
@@ -56,7 +56,7 @@ const SecurityCompliance = () => {
       id: "encryption",
       title: t("security.compliance.encryption"),
       description: t("security.compliance.encryptionDesc"),
-      status: t("security.status.active"),
+      status: t("common.status.active"),
       lastAudit: "01/15/2026",
       icon: "Lock",
       color: "text-success",
@@ -65,7 +65,7 @@ const SecurityCompliance = () => {
       id: "backup",
       title: t("security.compliance.backup"),
       description: t("security.compliance.backupDesc"),
-      status: t("security.status.running"),
+      status: t("common.status.running"),
       lastAudit: "01/16/2026",
       icon: "Database",
       color: "text-success",
@@ -74,7 +74,7 @@ const SecurityCompliance = () => {
       id: "access-control",
       title: t("security.compliance.accessControl"),
       description: t("security.compliance.accessControlDesc"),
-      status: t("security.status.configured"),
+      status: t("common.status.configured"),
       lastAudit: "01/12/2026",
       icon: "Users",
       color: "text-success",
@@ -88,7 +88,7 @@ const SecurityCompliance = () => {
       user: "Dr. Sarah Johnson",
       timestamp: "01/16/2026 09:15 AM",
       ipAddress: "192.168.1.100",
-      status: t("security.status.success"),
+      status: t("common.status.success"),
     },
     {
       id: 2,
@@ -96,7 +96,7 @@ const SecurityCompliance = () => {
       user: "Dr. Michael Chen",
       timestamp: "01/16/2026 09:30 AM",
       ipAddress: "192.168.1.101",
-      status: t("security.status.success"),
+      status: t("common.status.success"),
     },
     {
       id: 3,
@@ -104,7 +104,7 @@ const SecurityCompliance = () => {
       user: "Emily Rodriguez",
       timestamp: "01/16/2026 10:00 AM",
       ipAddress: "192.168.1.102",
-      status: t("security.status.success"),
+      status: t("common.status.success"),
     },
     {
       id: 4,
@@ -112,7 +112,7 @@ const SecurityCompliance = () => {
       user: t("common.unknown"),
       timestamp: "01/16/2026 10:15 AM",
       ipAddress: "203.0.113.45",
-      status: t("security.status.failed"),
+      status: t("common.status.failed"),
     },
   ];
 
@@ -202,7 +202,7 @@ const SecurityCompliance = () => {
                     <td className="px-4 py-3 text-sm text-muted-foreground whitespace-nowrap font-mono">{log?.ipAddress}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${log?.status === t("security.status.success") ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${log?.status === t("common.status.success") ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}
                       >
                         {log?.status}
                       </span>

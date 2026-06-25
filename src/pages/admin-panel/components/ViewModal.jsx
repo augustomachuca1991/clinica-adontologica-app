@@ -56,7 +56,7 @@ const ViewModal = ({ subscription, onClose }) => {
                     subscription.status === "active" ? "bg-emerald-500" : "bg-red-500"
                   }`}
                 />
-                {subscription.status === "active" ? t("admin.status.active") : t("admin.status.inactive")}
+                {subscription.status === "active" ? t("common.status.active") : t("common.status.inactive")}
               </span>
             </div>
             <div className="bg-muted/30 p-3 rounded-lg border border-border">

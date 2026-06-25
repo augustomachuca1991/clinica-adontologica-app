@@ -23,7 +23,7 @@ const ConfirmDeleteModal = React.memo(({ open, onClose, onConfirm, isSubmitting 
             disabled={isSubmitting}
             className="flex-1 px-4 py-2.5 rounded-lg border border-border text-sm font-medium text-muted-foreground hover:bg-muted transition-all disabled:opacity-50"
           >
-            {t("clinicalNotes.modals.delete.cancel")}
+            {t("common.actions.cancel")}
           </button>
 
           <button
@@ -37,7 +37,7 @@ const ConfirmDeleteModal = React.memo(({ open, onClose, onConfirm, isSubmitting 
             ) : (
               <Icon name="Trash2" size={14} />
             )}
-            {t("clinicalNotes.modals.delete.confirm")}
+            {t("common.actions.delete")}
           </button>
         </div>
       </div>

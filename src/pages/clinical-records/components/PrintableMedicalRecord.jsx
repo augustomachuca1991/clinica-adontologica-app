@@ -25,7 +25,7 @@ const PrintableMedicalRecord = React.forwardRef(({ record, treatmentHistory }, r
       {/* DATOS DEL PACIENTE */}
       <div className="grid grid-cols-2 gap-4 mb-8 bg-muted/30 p-4 rounded-lg">
         <div>
-          <label className="text-xs font-bold text-muted-foreground uppercase">{t("printableRecord.patientData.label")}</label>
+          <label className="text-xs font-bold text-muted-foreground uppercase">{t("common.labels.patient")}</label>
           <p className="text-lg font-semibold">{record?.patientName}</p>
         </div>
         <div>
@@ -72,7 +72,7 @@ const PrintableMedicalRecord = React.forwardRef(({ record, treatmentHistory }, r
           <thead>
             <tr className="bg-muted">
               <th className="p-2 border">{t("printableRecord.historyLog.date")}</th>
-              <th className="p-2 border">{t("printableRecord.historyLog.status")}</th>
+              <th className="p-2 border">{t("common.labels.status")}</th>
               <th className="p-2 border">{t("printableRecord.historyLog.professional")}</th>
             </tr>
           </thead>
@@ -80,7 +80,7 @@ const PrintableMedicalRecord = React.forwardRef(({ record, treatmentHistory }, r
             {treatmentHistory?.map((item) => (
               <tr key={item.id}>
                 <td className="p-2 border">{item.date}</td>
-                <td className="p-2 border lowercase">{t(`records.recordsModal.tabs.overview.status.${item?.status}`)}</td>
+                <td className="p-2 border lowercase">{t(`common.status.${item?.status}`)}</td>
                 <td className="p-2 border">{item.provider?.name}</td>
               </tr>
             ))}

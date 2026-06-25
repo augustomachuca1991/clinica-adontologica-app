@@ -1029,7 +1029,60 @@
     "continue": "Continue",
     "saveChanges": "Save Changes",
     "close": "Close",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "configure": "Configure",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "scheduled": "Scheduled",
+      "cancelled": "Cancelled",
+      "planned": "Planned",
+      "success": "Success",
+      "failed": "Failed",
+      "running": "Running",
+      "configured": "Configured",
+      "compliant": "Compliant",
+      "enabled": "Enabled",
+      "connected": "Connected",
+      "available": "Available",
+      "all": "All",
+      "confirmed": "Confirmed",
+      "noShow": "No Show",
+      "total": "Total",
+      "in-progress": "In Progress",
+      "no-show": "No Show"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "close": "Close",
+      "export": "Export",
+      "configure": "Configure",
+      "upload": "Upload",
+      "connect": "Connect",
+      "disconnect": "Disconnect"
+    },
+    "labels": {
+      "email": "Email",
+      "phone": "Phone",
+      "fullName": "Full Name",
+      "gender": "Gender",
+      "bloodType": "Blood Type",
+      "duration": "Duration",
+      "status": "Status",
+      "address": "Address",
+      "city": "City",
+      "date": "Date",
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "patient": "Patient"
+    }
   },
   "roles": {
     "administrator": "Administrator",
@@ -1212,14 +1265,6 @@
       "days_30": "30 days",
       "days_90": "90 days",
       "year_1": "1 year"
-    },
-    "types": {
-      "automatic": "Automatic",
-      "manual": "Manual"
-    },
-    "states": {
-      "completed": "Completed",
-      "failed": "Failed"
     }
   },
   "services": {
@@ -1459,30 +1504,7 @@
       "updateError": "Error updating the note."
     }
   },
-  "common": {
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "error": "Error",
-    "select": "Select",
-    "save": "Save",
-    "saving": "Saving...",
-    "delete": "Delete",
-    "unknown": "Unknown",
-    "all": "All",
-    "close": "Close",
-    "deleting": "Deleting...",
-    "configure": "Configure"
-  },
   "security": {
-    "status": {
-      "enabled": "Enabled",
-      "active": "Active",
-      "compliant": "Compliant",
-      "running": "Running",
-      "configured": "Configured",
-      "success": "Success",
-      "failed": "Failed"
-    },
     "features": {
       "twoFactor": "Two-Factor Authentication",
       "twoFactorDesc": "Require 2FA for all user accounts to enhance security",

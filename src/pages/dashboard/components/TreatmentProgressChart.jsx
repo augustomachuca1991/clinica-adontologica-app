@@ -9,13 +9,13 @@ const TreatmentProgressChart = ({ data, t }) => {
           <p className="text-sm font-medium text-foreground mb-2">{payload[0].payload.month}</p>
           <div className="space-y-1">
             <p className="text-xs text-success">
-              {t("dashboard.treatmentProgress.completed")}: {payload[0].value}
+              {t("common.status.completed")}: {payload[0].value}
             </p>
             <p className="text-xs text-warning">
-              {t("dashboard.treatmentProgress.inProgress")}: {payload[1].value}
+              {t("common.status.inProgress")}: {payload[1].value}
             </p>
             <p className="text-xs text-primary">
-              {t("dashboard.treatmentProgress.scheduled")}: {payload[2].value}
+              {t("common.status.scheduled")}: {payload[2].value}
             </p>
           </div>
         </div>
@@ -41,11 +41,11 @@ const TreatmentProgressChart = ({ data, t }) => {
             formatter={(value) => {
               switch (value) {
                 case "completed":
-                  return t("dashboard.treatmentProgress.completed");
+                  return t("common.status.completed");
                 case "inProgress":
-                  return t("dashboard.treatmentProgress.inProgress");
+                  return t("common.status.inProgress");
                 case "scheduled":
-                  return t("dashboard.treatmentProgress.scheduled");
+                  return t("common.status.scheduled");
                 default:
                   return value;
               }

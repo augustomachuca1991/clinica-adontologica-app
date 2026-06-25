@@ -211,7 +211,7 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
 
         <div className="sticky bottom-0 bg-card border-t border-border px-6 py-4 flex items-center justify-end gap-3">
           <Button variant="outline" onClick={onClose}>
-            {t("records.recordsModal.tabs.clinicalNotes.button.cancel")}
+            {t("common.actions.cancel")}
           </Button>
           <Button
             variant="default"
@@ -222,7 +222,7 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
             className={isSaving ? "animate-pulse" : ""}
           >
             {isSaving
-              ? t("saving")
+              ? t("common.saving")
               : t("records.recordsModal.tabs.clinicalNotes.button.saveNote")}
           </Button>
         </div>

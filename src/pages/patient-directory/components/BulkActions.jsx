@@ -19,10 +19,10 @@ const BulkActions = ({ selectedCount, onAction }) => {
 
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" onClick={() => onAction("export")} iconName="Download" iconPosition="left">
-              {t("bulkActions.export")}
+              {t("common.actions.export")}
             </Button>
             <Button variant="outline" size="sm" onClick={() => onAction("email")} iconName="Mail" iconPosition="left">
-              {t("bulkActions.email")}
+              {t("common.labels.email")}
             </Button>
             <Button variant="outline" size="sm" onClick={() => onAction("schedule")} iconName="Calendar" iconPosition="left">
               {t("bulkActions.schedule")}
@@ -31,7 +31,7 @@ const BulkActions = ({ selectedCount, onAction }) => {
               {t("bulkActions.addTag")}
             </Button>
             <Button variant="destructive" size="sm" onClick={() => onAction("delete")} iconName="Trash2" iconPosition="left">
-              {t("bulkActions.delete")}
+              {t("common.actions.delete")}
             </Button>
           </div>
         </div>

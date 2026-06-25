@@ -171,7 +171,7 @@ const NotificationPreferences = () => {
                         {t("notifications.table.type")}
                       </th>
                       <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">
-                        {t("notifications.table.email")}
+                        {t("common.labels.email")}
                       </th>
                       <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">
                         {t("notifications.table.push")}

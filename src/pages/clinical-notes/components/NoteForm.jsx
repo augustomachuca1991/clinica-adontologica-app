@@ -111,7 +111,7 @@ const NoteForm = ({ initial = {}, onSubmit, onCancel, isSubmitting }) => {
           disabled={isSubmitting}
           className="flex-1 px-4 py-2.5 rounded-lg border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all disabled:opacity-50"
         >
-          {t("clinicalNotes.form.cancel")}
+          {t("common.actions.cancel")}
         </button>
 
         <button

@@ -74,10 +74,10 @@ const UploadImageModal = ({ isOpen, onClose, onUploadSuccess, recordId }) => {
 
           <div className="flex gap-3 mt-6">
             <Button variant="outline" className="flex-1" onClick={onClose}>
-              {t("cancel")}
+              {t("common.actions.cancel")}
             </Button>
             <Button variant="default" className="flex-1" disabled={!file || uploading} onClick={handleUpload}>
-              {uploading ? "..." : t("save")}
+              {uploading ? "..." : t("common.actions.save")}
             </Button>
           </div>
         </div>

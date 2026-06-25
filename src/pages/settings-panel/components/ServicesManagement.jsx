@@ -169,11 +169,11 @@ const ServicesManagement = () => {
             </div>
             <div className="flex gap-3 justify-end">
               <Button variant="outline" type="button" onClick={closeForm}>
-                {t("services.management.form.btnCancel")}
+                {t("common.actions.cancel")}
               </Button>
               <Button variant="default" type="submit" disabled={isSubmitting}>
                 {isSubmitting
-                  ? t("services.management.form.btnSaving")
+                  ? t("common.saving")
                   : editingCategory
                     ? t("services.management.form.btnSave")
                     : t("services.management.form.btnCreate")}
@@ -225,7 +225,7 @@ const ServicesManagement = () => {
                   className="flex-1 lg:flex-none"
                   onClick={() => openForm(category)}
                 >
-                  {t("services.management.list.btnEdit")}
+                  {t("common.actions.edit")}
                 </Button>
                 <Button
                   variant="ghost"

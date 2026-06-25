@@ -36,9 +36,9 @@ const TreatmentForm = ({
   ];
 
   const statusOptions = [
-    { value: "planned", label: t("records.card.status.planned") },
-    { value: "inProgress", label: t("records.card.status.inProgress") },
-    { value: "completed", label: t("records.card.status.completed") },
+    { value: "planned", label: t("common.status.planned") },
+    { value: "inProgress", label: t("common.status.inProgress") },
+    { value: "completed", label: t("common.status.completed") },
   ];
 
   useEffect(() => {
@@ -172,7 +172,7 @@ const TreatmentForm = ({
           {editingTreatment ? t("treatment.updateTreatment") : t("treatment.addTreatment")}
         </Button>
         <Button type="button" variant="outline" fullWidth onClick={onCancel}>
-          {t("cancel")}
+          {t("common.actions.cancel")}
         </Button>
       </div>
     </form>

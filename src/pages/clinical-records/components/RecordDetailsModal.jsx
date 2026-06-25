@@ -94,7 +94,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
       try {
         await removeAttachmentFromDB(record.id, updatedAttachments);
         setCurrentAttachments(updatedAttachments);
-        notifySuccess(t("delete"));
+        notifySuccess(t("common.actions.delete"));
       } catch (error) {
         notifyError("error" + error.message);
       }
@@ -157,7 +157,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                       className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium border mt-2 uppercase ${getStatusColor(record?.status)}`}
                     >
                       <Icon name="Circle" size={8} className="fill-current" />
-                      {t(`records.recordsModal.tabs.overview.status.${currentRecordData?.status}`)}
+                      {t(`common.status.${currentRecordData?.status}`)}
                     </span>
                   </div>
                   <div>
@@ -311,7 +311,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                               handleDeleteImage(index);
                             }}
                             className="bg-black/50 hover:bg-black/70 text-white p-1.5 rounded backdrop-blur-sm transition-colors"
-                            title={t("delete")}
+                            title={t("common.actions.delete")}
                           >
                             <Icon name="X" size={16} />
                           </button>
@@ -369,7 +369,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
                             className={`font-bold px-2 py-0.5 rounded-full text-[10px] border ${getStatusColor(item.status)}`}
                           >
                             &nbsp;
-                            {t(`records.recordsModal.tabs.history.activity.status.${item?.status}`).toUpperCase()}
+                            {t(`common.status.${item?.status}`).toUpperCase()}
                             &nbsp;
                           </span>
                           <span className="text-sm text-muted-foreground">
@@ -399,7 +399,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
             {t("records.recordsModal.button.print")}
           </Button>
           <Button variant="default" onClick={onClose}>
-            {t("records.recordsModal.button.close")}
+            {t("common.actions.close")}
           </Button>
         </div>
       </div>

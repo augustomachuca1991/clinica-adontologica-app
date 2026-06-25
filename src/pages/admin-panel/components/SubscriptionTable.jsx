@@ -133,7 +133,7 @@ const SubscriptionTable = ({ subscriptions, loading, error, openMenuId, setOpenM
           {t("admin.table.thUser")}
         </span>
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground w-28">
-          {t("admin.table.thStatus")}
+          {t("common.labels.status")}
         </span>
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground w-32">
           {t("admin.table.thExpiration")}

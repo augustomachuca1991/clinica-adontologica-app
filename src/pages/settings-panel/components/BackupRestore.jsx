@@ -299,7 +299,7 @@ const BackupRestore = () => {
                             isAutomatic ? "bg-primary/10 text-primary" : "bg-secondary/10 text-secondary"
                           }`}
                         >
-                          {isAutomatic ? t("backup.types.automatic") : t("backup.types.manual")}
+                          {isAutomatic ? t("common.labels.automatic") : t("common.labels.manual")}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
@@ -312,7 +312,7 @@ const BackupRestore = () => {
                           }`}
                         >
                           <span className={`w-1.5 h-1.5 rounded-full ${isCompleted ? "bg-success" : "bg-error"}`} />
-                          {isCompleted ? t("backup.states.completed") : t("backup.states.failed")}
+                          {isCompleted ? t("common.status.completed") : t("common.status.failed")}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">

@@ -1020,13 +1020,66 @@
     "saving": "Guardando...",
     "delete": "Eliminar",
     "unknown": "Desconocido",
-    "all": "Todas",
+    "all": "Todos",
     "loading": "Cargando notas...",
     "clearFilter": "Limpiar filtros",
     "back": "Atrás",
     "continue": "Continuar",
     "saveChanges": "Guardar cambios",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "deleting": "Eliminando...",
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "pending": "Pendiente",
+      "completed": "Completado",
+      "inProgress": "En curso",
+      "scheduled": "Programado",
+      "cancelled": "Cancelado",
+      "planned": "Planificado",
+      "success": "Éxito",
+      "failed": "Fallido",
+      "running": "En ejecución",
+      "configured": "Configurado",
+      "compliant": "Cumple",
+      "enabled": "Habilitado",
+      "connected": "Conectado",
+      "available": "Disponible",
+      "all": "Todos",
+      "confirmed": "Confirmado",
+      "noShow": "No Show",
+      "total": "Total",
+      "in-progress": "En curso",
+      "no-show": "No Show"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "close": "Cerrar",
+      "export": "Exportar",
+      "configure": "Configurar",
+      "upload": "Subir",
+      "connect": "Conectar",
+      "disconnect": "Desconectar"
+    },
+    "labels": {
+      "email": "Email",
+      "phone": "Teléfono",
+      "fullName": "Nombre completo",
+      "gender": "Género",
+      "bloodType": "Grupo sanguíneo",
+      "duration": "Duración",
+      "status": "Estado",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "date": "Fecha",
+      "id": "ID",
+      "name": "Nombre",
+      "description": "Descripción",
+      "patient": "Paciente"
+    }
   },
   "roles": {
     "administrator": "Administrador",
@@ -1145,11 +1198,16 @@
       "size": "Tamaño del Respaldo",
       "next_scheduled": "Próximo Programado",
       "storage_used": "Almacenamiento Usado",
-      "manual_btn": "Crear Respaldo Manual"
+      "manual_btn": "Crear Respaldo Manual",
+      "total_backups": "Total de backups",
+      "creating": "Creando backup..."
     },
     "categories": {
       "title": "Categorías de Datos",
       "subtitle": "Selecciona qué categorías de datos incluir en los respaldos",
+      "selectAll": "Seleccionar todo",
+      "clear": "Limpiar",
+      "minSelection": "Seleccioná al menos una categoría para crear el backup.",
       "labels": {
         "patient-records": "Expedientes de Pacientes",
         "clinical-notes": "Notas Clínicas",
@@ -1167,7 +1225,26 @@
       "th_type": "Tipo",
       "th_duration": "Duración",
       "th_status": "Estado",
-      "th_actions": "Acciones"
+      "th_actions": "Acciones",
+      "loading": "Cargando historial...",
+      "empty": "No hay backups registrados todavía."
+    },
+    "deleteModal": {
+      "title": "Eliminar registro",
+      "subtitle": "Esta acción no se puede deshacer.",
+      "body": "Solo se elimina el registro del historial. El archivo .json descargado no se ve afectado."
+    },
+    "restoreModal": {
+      "description": "Esta acción sobreescribirá los datos existentes con los del archivo seleccionado.",
+      "attention": "Atención",
+      "warningText": "Los registros existentes serán sobreescritos con los datos del backup. Esta acción no se puede deshacer.",
+      "clickToChange": "Click para cambiar",
+      "dragAndDrop": "Arrastrá tu archivo o hacé click",
+      "fileTypeHint": "Solo archivos .json generados por esta app",
+      "restoreCompleted": "Restore completado",
+      "restoreSuccessText": "Todos los datos fueron restaurados correctamente.",
+      "restoring": "Restaurando...",
+      "confirmRestore": "Confirmar restore"
     },
     "warning": {
       "title": "Advertencia de Restauración",
@@ -1185,14 +1262,6 @@
       "days_30": "30 días",
       "days_90": "90 días",
       "year_1": "1 año"
-    },
-    "types": {
-      "automatic": "Automático",
-      "manual": "Manual"
-    },
-    "states": {
-      "completed": "Completado",
-      "failed": "Fallido"
     }
   },
   "services": {
@@ -1222,6 +1291,16 @@
         "btnEdit": "Editar",
         "emptySearch": "No se encontraron categorías",
         "emptyDefault": "No hay categorías creadas todavía"
+      },
+      "deleteCategory": {
+        "title": "Eliminar categoría",
+        "warning": "Esta acción puede afectar el funcionamiento del sistema.",
+        "effects": "Al eliminar esta categoría:",
+        "effect1": "Los servicios asociados quedarán sin categoría.",
+        "effect2": "Los tratamientos vinculados pueden verse afectados.",
+        "effect3": "Los reportes que usen esta categoría mostrarán datos incompletos.",
+        "effect4": "Esta acción no se puede deshacer.",
+        "confirmLabel": "Entiendo que esta acción puede afectar el sistema y deseo continuar."
       }
     }
   },
@@ -1421,116 +1500,8 @@
       "updateSuccess": "Nota actualizada exitosamente."
     }
   },
-  "common": {
-    "cancel": "Cancelar",
-    "edit": "Editar",
-    "error": "Error",
-    "select": "Seleccionar",
-    "save": "Guardar",
-    "saving": "Guardando...",
-    "delete": "Eliminar",
-    "unknown": "Desconocido",
-    "all": "Todos",
-    "close": "Cerrar",
-    "deleting": "Eliminando..."
-  },
-  "backup": {
-    "status": {
-      "title": "Estado del Backup",
-      "last_backup": "Último Backup",
-      "size": "Tamaño",
-      "next_scheduled": "Próximo programado",
-      "manual_btn": "Crear Backup Manual",
-      "total_backups": "Total de backups",
-      "creating": "Creando backup..."
-    },
-    "categories": {
-      "title": "Categorías de Datos",
-      "subtitle": "Seleccioná qué categorías incluir en el backup",
-      "selectAll": "Seleccionar todo",
-      "clear": "Limpiar",
-      "minSelection": "Seleccioná al menos una categoría para crear el backup.",
-      "labels": {
-        "patient-records": "Fichas de Pacientes",
-        "clinical-notes": "Notas Clínicas",
-        "images": "Imágenes Clínicas",
-        "appointments": "Turnos",
-        "billing": "Facturación",
-        "settings": "Configuración del Sistema"
-      }
-    },
-    "history": {
-      "title": "Historial de Backups",
-      "export_btn": "Exportar Lista",
-      "th_date_time": "Fecha y Hora",
-      "th_size": "Tamaño",
-      "th_type": "Tipo",
-      "th_duration": "Duración",
-      "th_status": "Estado",
-      "th_actions": "Acciones",
-      "loading": "Cargando historial...",
-      "empty": "No hay backups registrados todavía."
-    },
-    "deleteModal": {
-      "title": "Eliminar registro",
-      "subtitle": "Esta acción no se puede deshacer.",
-      "body": "Solo se elimina el registro del historial. El archivo .json descargado no se ve afectado."
-    },
-    "restoreModal": {
-      "description": "Esta acción sobreescribirá los datos existentes con los del archivo seleccionado.",
-      "attention": "Atención",
-      "warningText": "Los registros existentes serán sobreescritos con los datos del backup. Esta acción no se puede deshacer.",
-      "clickToChange": "Click para cambiar",
-      "dragAndDrop": "Arrastrá tu archivo o hacé click",
-      "fileTypeHint": "Solo archivos .json generados por esta app",
-      "restoreCompleted": "Restore completado",
-      "restoreSuccessText": "Todos los datos fueron restaurados correctamente.",
-      "restoring": "Restaurando...",
-      "confirmRestore": "Confirmar restore"
-    },
-    "warning": {
-      "title": "Advertencia de Restauración",
-      "description": "Restaurar desde un backup reemplazará todos los datos actuales con los del backup. Esta acción no se puede deshacer. Creá siempre un backup manual antes de restaurar.",
-      "restore_btn": "Restaurar desde backup"
-    },
-    "states": {
-      "completed": "Completado",
-      "failed": "Fallido"
-    },
-    "types": {
-      "automatic": "Automático",
-      "manual": "Manual"
-    }
-  },
-  "services": {
-    "management": {
-      "form": {
-        "labelName": "Nombre",
-        "labelId": "ID",
-        "labelDescription": "Descripción"
-      },
-      "deleteCategory": {
-        "title": "Eliminar categoría",
-        "warning": "Esta acción puede afectar el funcionamiento del sistema.",
-        "effects": "Al eliminar esta categoría:",
-        "effect1": "Los servicios asociados quedarán sin categoría.",
-        "effect2": "Los tratamientos vinculados pueden verse afectados.",
-        "effect3": "Los reportes que usen esta categoría mostrarán datos incompletos.",
-        "effect4": "Esta acción no se puede deshacer.",
-        "confirmLabel": "Entiendo que esta acción puede afectar el sistema y deseo continuar."
-      }
-    }
-  },
+
   "security": {
-    "status": {
-      "enabled": "Habilitado",
-      "active": "Activo",
-      "compliant": "Cumple",
-      "running": "En ejecución",
-      "configured": "Configurado",
-      "success": "Éxito",
-      "failed": "Fallido"
-    },
     "features": {
       "twoFactor": "Autenticación de dos factores",
       "twoFactorDesc": "Requerir 2FA para todas las cuentas de usuario para mejorar la seguridad",

@@ -50,13 +50,13 @@ const MobileActionSheet = ({ appointment, onReschedule, onDelete, onClose }) => 
             }}
           >
             <Icon name="Trash2" size={20} className="mr-3" />
-            {t("delete")}
+            {t("common.actions.delete")}
           </Button>
           <button
             className="w-full py-4 text-sm font-bold text-gray-500 hover:text-gray-700 transition-colors"
             onClick={onClose}
           >
-            {t("cancel")}
+            {t("common.actions.cancel")}
           </button>
         </div>
       </div>

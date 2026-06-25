@@ -13,11 +13,11 @@ export const notifyConfirm = (title, description, onConfirm) => {
     position: "top-center",
     important: true,
     action: {
-      label: i18n.t("delete"),
+      label: i18n.t("common.actions.delete"),
       onClick: onConfirm,
     },
     cancel: {
-      label: i18n.t("cancel"),
+      label: i18n.t("common.actions.cancel"),
       onClick: () => {},
     },
   });

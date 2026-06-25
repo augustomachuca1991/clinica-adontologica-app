@@ -14,19 +14,19 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
     const colors = {
       completed: {
         classColor: "bg-success/10 text-success border-success",
-        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+        label: t(`common.status.${status}`),
       },
       inProgress: {
         classColor: "bg-warning/10 text-warning border-warning",
-        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+        label: t(`common.status.${status}`),
       },
       planned: {
         classColor: "bg-primary/10 text-primary border-primary",
-        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+        label: t(`common.status.${status}`),
       },
       cancelled: {
         classColor: `bg-muted text-muted-foreground border-border`,
-        label: t(`records.recordsModal.tabs.clinicalNotes.status.${status}`),
+        label: t(`common.status.${status}`),
       },
     };
     return colors?.[status] || colors?.planned;

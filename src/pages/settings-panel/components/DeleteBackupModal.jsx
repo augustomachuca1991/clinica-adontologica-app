@@ -47,7 +47,7 @@ const DeleteBackupModal = ({ backup, onClose, onConfirm, isDeleting, formatSize 
           <div className="flex justify-between">
             <span className="text-muted-foreground">{t("backup.history.th_status")}</span>
             <span className={`font-medium capitalize ${backup.status === "completed" ? "text-success" : "text-error"}`}>
-              {backup.status === "completed" ? t("backup.states.completed") : t("backup.states.failed")}
+              {backup.status === "completed" ? t("common.status.completed") : t("common.status.failed")}
             </span>
           </div>
         </div>

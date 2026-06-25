@@ -274,7 +274,7 @@ const ClinicalNotesTab = ({ record }) => {
       async () => {
         const result = await deleteNote(id);
         if (result.success) {
-          notifySuccess(t("delete"));
+          notifySuccess(t("common.actions.delete"));
         } else {
           notifyError(result.error);
         }

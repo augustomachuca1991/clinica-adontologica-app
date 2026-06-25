@@ -55,7 +55,7 @@ const ForgotPassword = () => {
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           <div className="relative">
             <Input
-              label={t("forgotPassword.emailLabel")}
+              label={t("common.labels.email")}
               type="email"
               name="email"
               placeholder={t("forgotPassword.emailPlaceholder")}

@@ -166,13 +166,13 @@ const WeeklyCalendar = () => {
   };
 
   const statusLegend = [
-    { label: t("appointment.status.scheduled"), status: "scheduled" },
-    { label: t("appointment.status.confirmed"), status: "confirmed" },
-    { label: t("appointment.status.pending"), status: "pending" },
-    { label: t("appointment.status.in-progress"), status: "in-progress" },
-    { label: t("appointment.status.completed"), status: "completed" },
-    { label: t("appointment.status.cancelled"), status: "cancelled" },
-    { label: t("appointment.status.no-show"), status: "no-show" },
+    { label: t("common.status.scheduled"), status: "scheduled" },
+    { label: t("common.status.confirmed"), status: "confirmed" },
+    { label: t("common.status.pending"), status: "pending" },
+    { label: t("common.status.inProgress"), status: "in-progress" },
+    { label: t("common.status.completed"), status: "completed" },
+    { label: t("common.status.cancelled"), status: "cancelled" },
+    { label: t("common.status.noShow"), status: "no-show" },
   ];
 
   const getStatusStyles = (status) => {

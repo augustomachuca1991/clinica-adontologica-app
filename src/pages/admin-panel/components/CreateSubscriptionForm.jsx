@@ -92,7 +92,7 @@ const CreateSubscriptionForm = ({ users, onSubmit, onCancel }) => {
           }}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          {t("admin.form.cancel")}
+          {t("common.actions.cancel")}
         </button>
       </div>
 

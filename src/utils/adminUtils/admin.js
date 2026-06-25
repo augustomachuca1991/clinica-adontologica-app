@@ -59,7 +59,7 @@ export function getSubscriptionStatus(subscription, t) {
     const diasRestantes = Math.ceil((finPeriodo - hoy) / (1000 * 60 * 60 * 24));
     return {
       key: "active",
-      texto: t("admin.status.active"),
+      texto: t("common.status.active"),
       claseBg: "bg-emerald-100 text-emerald-800",
       claseCirculo: "bg-emerald-500",
       textoDias: t("admin.status.expiresIn", { count: diasRestantes }),
@@ -77,7 +77,7 @@ export function getSubscriptionStatus(subscription, t) {
   } else {
     return {
       key: "expired",
-      texto: t("admin.status.inactive"),
+      texto: t("common.status.inactive"),
       claseBg: "bg-red-100 text-red-700",
       claseCirculo: "bg-red-500",
       textoDias: t("admin.status.expiredAgo", { count: diasVencido }),

@@ -11,13 +11,13 @@ const DemographicsTab = ({ patient }) => {
       title: t("profile.tabs.demographics.section.title"),
       icon: "User",
       fields: [
-        { label: t("profile.tabs.demographics.section.fullName"), value: patient?.name },
+        { label: t("common.labels.fullName"), value: patient?.name },
         { label: t("profile.tabs.demographics.section.dateOfBirth"), value: formatDateLang(patient?.dateOfBirth, i18n.language) },
         {
-          label: t("profile.tabs.demographics.section.gender"),
+          label: t("common.labels.gender"),
           value: t(`gender.${patient?.gender || "preferNotToSay"}`) || t("profile.notSpecified"),
         },
-        { label: t("profile.tabs.demographics.section.bloodType"), value: patient?.bloodType || t("profile.notSpecified") },
+        { label: t("common.labels.bloodType"), value: patient?.bloodType || t("profile.notSpecified") },
         {
           label: t("profile.tabs.demographics.section.maritalStatus"),
           value: t(`maritalStatus.${patient?.maritalStatus || "notSpecified"}`) || t("profile.notSpecified"),
@@ -28,8 +28,8 @@ const DemographicsTab = ({ patient }) => {
       title: t("profile.tabs.demographics.section.contactInformation"),
       icon: "Phone",
       fields: [
-        { label: t("profile.tabs.demographics.section.primaryPhone"), value: patient?.phone || t("profile.notSpecified") },
-        { label: t("profile.tabs.demographics.section.emailAddress"), value: patient?.email },
+        { label: t("common.labels.phone"), value: patient?.phone || t("profile.notSpecified") },
+        { label: t("common.labels.email"), value: patient?.email },
         { label: t("profile.tabs.demographics.section.address"), value: patient?.address || t("profile.notSpecified") },
         { label: t("profile.tabs.demographics.section.city"), value: patient?.city || t("profile.notSpecified") },
         { label: t("profile.tabs.demographics.section.state"), value: patient?.state || t("profile.notSpecified") },

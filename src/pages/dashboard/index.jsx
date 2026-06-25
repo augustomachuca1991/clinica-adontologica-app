@@ -83,7 +83,7 @@ const Dashboard = () => {
 
             <SectionCard
               title={t("dashboard.treatmentProgress.title")}
-              actionLabel={t("dashboard.treatmentProgress.export")}
+              actionLabel={t("common.actions.export")}
               actionIcon="Download"
               onAction={() => {}}
             >

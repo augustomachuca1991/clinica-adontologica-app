@@ -11,34 +11,34 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   const statusOptions = [
     {
       value: "all",
-      label: t("directory.panelFilter.patientStatusOptions.all"),
+      label: t("common.status.all"),
     },
     {
       value: "active",
-      label: t("directory.panelFilter.patientStatusOptions.active"),
+      label: t("common.status.active"),
     },
     {
       value: "pending",
-      label: t("directory.panelFilter.patientStatusOptions.pending"),
+      label: t("common.status.pending"),
     },
     {
       value: "inactive",
-      label: t("directory.panelFilter.patientStatusOptions.inactive"),
+      label: t("common.status.inactive"),
     },
   ];
 
   const appointmentOptions = [
-    { value: "all", label: t("appointment.status.all") },
-    { value: "scheduled", label: t("appointment.status.scheduled") },
-    { value: "confirmed", label: t("appointment.status.confirmed") },
-    { value: "completed", label: t("appointment.status.completed") },
-    { value: "in-progress", label: t("appointment.status.in-progress") },
-    { value: "cancelled", label: t("appointment.status.cancelled") },
-    { value: "no-show", label: t("appointment.status.no-show") },
+    { value: "all", label: t("common.status.all") },
+    { value: "scheduled", label: t("common.status.scheduled") },
+    { value: "confirmed", label: t("common.status.confirmed") },
+    { value: "completed", label: t("common.status.completed") },
+    { value: "in-progress", label: t("common.status.inProgress") },
+    { value: "cancelled", label: t("common.status.cancelled") },
+    { value: "no-show", label: t("common.status.noShow") },
   ];
 
   const insuranceOptions = [
-    { value: "all", label: t("appointment.status.all") },
+    { value: "all", label: t("common.status.all") },
     { value: "osde", label: "OSDE" },
     { value: "swiss_medical", label: "Swiss Medical" },
     { value: "galeno", label: "Galeno" },
@@ -50,7 +50,7 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   ];
 
   const treatmentOptions = useMemo(() => {
-    const options = [{ value: "all", label: t("appointment.status.all") }];
+    const options = [{ value: "all", label: t("common.status.all") }];
     if (services && services.length > 0) {
       const dbOptions = services.map((service) => ({
         value: service.id,

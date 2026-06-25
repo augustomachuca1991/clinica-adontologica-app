@@ -16,7 +16,7 @@ const IntegrationMarketplace = () => {
       category: t("integrations.categories.accounting"),
       description: t("integrations.descriptions.quickbooks"),
       icon: "DollarSign",
-      status: t("integrations.status.connected"),
+      status: t("common.status.connected"),
       lastSync: t("integrations.lastSync.2hours"),
       features: [
         t("integrations.features.quickbooks.invoicing"),
@@ -30,7 +30,7 @@ const IntegrationMarketplace = () => {
       category: t("integrations.categories.marketing"),
       description: t("integrations.descriptions.mailchimp"),
       icon: "Mail",
-      status: t("integrations.status.available"),
+      status: t("common.status.available"),
       features: [
         t("integrations.features.mailchimp.emailCampaigns"),
         t("integrations.features.mailchimp.newsletters"),
@@ -43,7 +43,7 @@ const IntegrationMarketplace = () => {
       category: t("integrations.categories.communication"),
       description: t("integrations.descriptions.twilio"),
       icon: "MessageSquare",
-      status: t("integrations.status.connected"),
+      status: t("common.status.connected"),
       lastSync: t("integrations.lastSync.30min"),
       features: [
         t("integrations.features.twilio.smsReminders"),
@@ -57,7 +57,7 @@ const IntegrationMarketplace = () => {
       category: t("integrations.categories.scheduling"),
       description: t("integrations.descriptions.googleCalendar"),
       icon: "Calendar",
-      status: t("integrations.status.available"),
+      status: t("common.status.available"),
       features: [
         t("integrations.features.googleCalendar.calendarSync"),
         t("integrations.features.googleCalendar.appointmentBlocking"),
@@ -70,7 +70,7 @@ const IntegrationMarketplace = () => {
       category: t("integrations.categories.payments"),
       description: t("integrations.descriptions.stripe"),
       icon: "CreditCard",
-      status: t("integrations.status.connected"),
+      status: t("common.status.connected"),
       lastSync: t("integrations.lastSync.1hour"),
       features: [
         t("integrations.features.stripe.onlinePayments"),
@@ -84,7 +84,7 @@ const IntegrationMarketplace = () => {
       category: t("integrations.categories.storage"),
       description: t("integrations.descriptions.dropbox"),
       icon: "Cloud",
-      status: t("integrations.status.available"),
+      status: t("common.status.available"),
       features: [
         t("integrations.features.dropbox.fileStorage"),
         t("integrations.features.dropbox.documentSharing"),
@@ -151,11 +151,11 @@ const IntegrationMarketplace = () => {
               </div>
               <span
                 className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
-                  integration?.status === t("integrations.status.connected") ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
+                  integration?.status === t("common.status.connected") ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"
                 }`}
               >
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${integration?.status === t("integrations.status.connected") ? "bg-success" : "bg-muted-foreground"}`}
+                  className={`w-1.5 h-1.5 rounded-full ${integration?.status === t("common.status.connected") ? "bg-success" : "bg-muted-foreground"}`}
                 />
                 {integration?.status}
               </span>
@@ -176,14 +176,14 @@ const IntegrationMarketplace = () => {
               </ul>
             </div>
 
-            {integration?.status === t("integrations.status.connected") && integration?.lastSync && (
+            {integration?.status === t("common.status.connected") && integration?.lastSync && (
               <div className="mb-3 pb-3 border-b border-border">
                 <p className="text-xs text-muted-foreground">{t("integrations.lastSynced")} {integration?.lastSync}</p>
               </div>
             )}
 
             <div className="flex gap-2">
-              {integration?.status === t("integrations.status.connected") ? (
+              {integration?.status === t("common.status.connected") ? (
                 <>
                   <Button variant="outline" size="sm" className="flex-1" iconName="Settings">
                     {t("common.configure")}

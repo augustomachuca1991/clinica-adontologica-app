@@ -116,7 +116,7 @@ const QuickAddServiceModal = ({ isOpen, onSaved, onClose, onRefresh }) => {
             type="button"
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md hover:bg-muted"
-            aria-label={t("quickAddServiceModal.close")}
+            aria-label={t("common.actions.close")}
           >
             <Icon name="X" size={18} />
           </button>

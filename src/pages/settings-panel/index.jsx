@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import Icon from "@/components/AppIcon";
-import UserManagementCard from "@/pages/settings-panel/components/UserManagementCard";
-import PracticeCustomization from "@/pages/settings-panel/components/PracticeCustomization";
-import SecurityCompliance from "@/pages/settings-panel/components/SecurityCompliance";
-import IntegrationMarketplace from "@/pages/settings-panel/components/IntegrationMarketplace";
-import NotificationPreferences from "@/pages/settings-panel/components/NotificationPreferences";
-import BackupRestore from "@/pages/settings-panel/components/BackupRestore";
-import ServicesManagement from "@/pages/settings-panel/components/ServicesManagement";
-import ProvidersManagement from "@/pages/settings-panel/components/ProvidersManagement";
+import Spinner from "@/components/ui/Spinner";
 import { useBackup } from "@/hooks/BackupHooks";
+
+const UserManagementCard = lazy(() => import("@/pages/settings-panel/components/UserManagementCard"));
+const PracticeCustomization = lazy(() => import("@/pages/settings-panel/components/PracticeCustomization"));
+const SecurityCompliance = lazy(() => import("@/pages/settings-panel/components/SecurityCompliance"));
+const IntegrationMarketplace = lazy(() => import("@/pages/settings-panel/components/IntegrationMarketplace"));
+const NotificationPreferences = lazy(() => import("@/pages/settings-panel/components/NotificationPreferences"));
+const BackupRestore = lazy(() => import("@/pages/settings-panel/components/BackupRestore"));
+const ServicesManagement = lazy(() => import("@/pages/settings-panel/components/ServicesManagement"));
+const ProvidersManagement = lazy(() => import("@/pages/settings-panel/components/ProvidersManagement"));
 
 const SettingsPanel = () => {
   const { t } = useTranslation();
@@ -72,26 +74,37 @@ const SettingsPanel = () => {
     : null;
 
   const renderTabContent = () => {
-    switch (activeTab) {
-      case "users":
-        return <UserManagementCard />;
-      case "practice":
-        return <PracticeCustomization />;
-      case "security":
-        return <SecurityCompliance />;
-      case "integrations":
-        return <IntegrationMarketplace />;
-      case "notifications":
-        return <NotificationPreferences />;
-      case "backup":
-        return <BackupRestore />;
-      case "services":
-        return <ServicesManagement />;
-      case "providers":
-        return <ProvidersManagement />;
-      default:
-        return null;
-    }
+    const fallback = (
+      <div className="flex justify-center py-12">
+        <Spinner />
+      </div>
+    );
+    return (
+      <Suspense fallback={fallback}>
+        {(() => {
+          switch (activeTab) {
+            case "users":
+              return <UserManagementCard />;
+            case "practice":
+              return <PracticeCustomization />;
+            case "security":
+              return <SecurityCompliance />;
+            case "integrations":
+              return <IntegrationMarketplace />;
+            case "notifications":
+              return <NotificationPreferences />;
+            case "backup":
+              return <BackupRestore />;
+            case "services":
+              return <ServicesManagement />;
+            case "providers":
+              return <ProvidersManagement />;
+            default:
+              return null;
+          }
+        })()}
+      </Suspense>
+    );
   };
 
   const handleTabChange = (tabId) => {

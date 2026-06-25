@@ -7,7 +7,7 @@ import Select from "@/components/ui/Select";
 import Image from "@/components/AppImage";
 import { cn } from "@/utils/cn";
 import Field from "@/components/ui/Field";
-import StepIndicator from "@/pages/patient-directory/components/StepIndicator";
+import StepIndicator from "@/components/ui/StepIndicator";
 import { useEditPatientForm, BLOOD_OPTIONS } from "@/hooks/PatientFormHooks";
 
 // ─── Step sub-components ─────────────────────────────────────────────────────

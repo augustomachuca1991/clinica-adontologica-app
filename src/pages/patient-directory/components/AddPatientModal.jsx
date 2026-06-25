@@ -1,11 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import Field from "@/components/ui/Field";
+import StepIndicator from "@/components/ui/StepIndicator";
+import AvatarUploader from "@/components/ui/AvatarUploader";
+import TagPill from "@/components/ui/TagPill";
 import LoadSending from "@/components/ui/LoadSending";
 import Icon from "@/components/AppIcon";
-import Image from "@/components/AppImage";
 import { cn } from "@/utils/cn";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
@@ -480,118 +483,5 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
     </div>
   );
 };
-
-// ─── Componentes Auxiliares Estáticos ─────────────────────────────────────────
-const Field = ({ label, required, children, error }) => (
-  <div className="flex flex-col gap-1.5">
-    {label && (
-      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-        {label}
-        {required && <span className="text-red-500 ml-0.5">*</span>}
-      </label>
-    )}
-    {children}
-    {error && (
-      <p className="text-xs text-red-500 flex items-center gap-1">
-        <Icon name="AlertCircle" size={11} />
-        {error}
-      </p>
-    )}
-  </div>
-);
-
-const StepIndicator = ({ current, total, steps }) => (
-  <div className="flex items-center gap-0">
-    {steps.map((step, i) => {
-      const done = i < current;
-      const active = i === current;
-      return (
-        <React.Fragment key={step.id}>
-          <div className="flex flex-col items-center gap-1.5">
-            <div
-              className={cn(
-                "w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 border",
-                done && "bg-primary border-primary text-primary-foreground shadow-sm",
-                active && "bg-primary/10 border-primary text-primary scale-110 shadow-md",
-                !done && !active && "bg-muted/50 border-border text-muted-foreground"
-              )}
-            >
-              {done ? <Icon name="Check" size={14} /> : <Icon name={step.icon} size={14} />}
-            </div>
-            <span
-              className={cn(
-                "text-[10px] font-semibold uppercase tracking-wider transition-colors",
-                active ? "text-primary" : done ? "text-foreground" : "text-muted-foreground"
-              )}
-            >
-              {step.label}
-            </span>
-          </div>
-          {i < total - 1 && (
-            <div
-              className={cn(
-                "h-px flex-1 mx-2 mb-4 transition-all duration-500",
-                i < current ? "bg-primary" : "bg-border"
-              )}
-            />
-          )}
-        </React.Fragment>
-      );
-    })}
-  </div>
-);
-
-const AvatarUploader = ({ preview, imageFile, onFileChange, t }) => {
-  const ref = useRef(null);
-  return (
-    <div className="flex items-center gap-5">
-      <div
-        onClick={() => ref.current.click()}
-        className="relative w-24 h-24 rounded-2xl cursor-pointer group flex-shrink-0 overflow-hidden border-2 border-dashed border-border hover:border-primary transition-colors"
-      >
-        {preview ? (
-          <Image src={preview} alt="Preview" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full bg-muted/30 flex items-center justify-center">
-            <Icon
-              name="Camera"
-              size={24}
-              className="text-muted-foreground group-hover:text-primary transition-colors"
-            />
-          </div>
-        )}
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <Icon name="Upload" size={18} className="text-white" />
-        </div>
-      </div>
-      <div className="space-y-1.5">
-        <p className="text-sm font-medium text-foreground">{t("patient.avatarUploader.title")}</p>
-        <p className="text-xs text-muted-foreground">{t("patient.avatarUploader.meta")}</p>
-        <Button variant="outline" size="sm" type="button" onClick={() => ref.current.click()}>
-          <Icon name={preview ? "RefreshCw" : "Upload"} size={13} className="mr-2" />
-          {preview ? t("patient.avatarUploader.change") : t("patient.avatarUploader.upload")}
-        </Button>
-        {imageFile && <p className="text-[10px] text-muted-foreground truncate max-w-[180px]">{imageFile.name}</p>}
-      </div>
-      <input type="file" ref={ref} onChange={onFileChange} className="hidden" accept="image/*" />
-    </div>
-  );
-};
-
-const TagPill = ({ tag, selected, onToggle, label }) => (
-  <button
-    type="button"
-    onClick={() => onToggle(tag)}
-    className={cn(
-      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 active:scale-95",
-      selected
-        ? "bg-primary text-primary-foreground border-primary shadow-sm"
-        : "bg-background text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
-    )}
-  >
-    {selected && <Icon name="Check" size={10} />}
-    {label}
-  </button>
-);
 
 export default AddPatientModal;

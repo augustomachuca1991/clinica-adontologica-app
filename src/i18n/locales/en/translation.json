@@ -95,7 +95,7 @@
         "swissMedical": "Swiss Medical",
         "osde": "OSDE",
         "omint": "Omint",
-        "other": "Otros"
+        "other": "Other"
       },
       "tags": {
         "selectedLegend": "Selected tags",
@@ -540,9 +540,9 @@
             "actionLabel": "Status changed to",
             "by": "by",
             "status": {
-              "completed": "Completado",
-              "inProgress": "En curso",
-              "planned": "Planificado"
+              "completed": "Completed",
+              "inProgress": "In Progress",
+              "planned": "Planned"
             }
           }
         }

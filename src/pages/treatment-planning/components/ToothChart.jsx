@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
   const { t } = useTranslation();
-  const [hoveredTooth, setHoveredTooth] = useState(null);
 
   const upperTeeth = [
     { number: 18, position: "upper-right" },
@@ -60,7 +59,7 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
     if (toothTreatments.some((t) => t.status === "inProgress")) return "bg-warning text-warning-foreground";
     if (toothTreatments.some((t) => t.status === "planned")) return "bg-primary text-primary-foreground";
 
-    if (isSelected) return "bg-accent text-accent-foreground";
+    if (isSelected) return "bg-primary text-primary-foreground";
 
     return "bg-muted text-muted-foreground hover:bg-muted/80";
   };
@@ -69,17 +68,21 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
     const status = getToothStatus(tooth?.number);
     const colorClass = getToothColor(tooth?.number);
     const isSelected = selectedTeeth?.includes(tooth?.number);
+    const treatment = treatments?.find((t) => String(t?.toothNumber) === String(tooth?.number));
 
     return (
       <button
         onClick={() => onToothSelect(tooth?.number)}
-        onMouseEnter={() => setHoveredTooth(tooth?.number)}
-        onMouseLeave={() => setHoveredTooth(null)}
-        className={`relative w-8 h-10 md:w-10 md:h-12 lg:w-12 lg:h-14 rounded-md transition-all duration-base hover:scale-110 hover:z-10 ${colorClass} ${isSelected ? "ring-2 ring-ring ring-offset-2" : ""} focus-clinical`}
-        aria-label={`Tooth ${tooth?.number}`}
+        className={`relative group w-8 h-10 md:w-10 md:h-12 lg:w-12 lg:h-14 rounded-md transition-all duration-base hover:scale-110 hover:z-10 ${colorClass} ${isSelected ? "ring-2 ring-ring ring-offset-2" : ""} focus-clinical`}
+        aria-label={`${t("tooth")} ${tooth?.number}`}
       >
         <span className="text-xs md:text-sm font-medium">{tooth?.number}</span>
         {status !== "normal" && status !== "selected" && <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-background border-2 border-current" />}
+
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 rounded-md bg-foreground text-background text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-fast pointer-events-none z-20 shadow-clinical-md">
+          {t("tooth")} #{tooth?.number}
+          {treatment && <span className="text-background/70"> — {treatment.procedure}</span>}
+        </div>
       </button>
     );
   };
@@ -126,12 +129,6 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
           </div>
         </div>
       </div>
-      {hoveredTooth && (
-        <div className="mt-4 p-3 bg-muted rounded-md">
-          <div className="text-sm font-medium text-foreground">Tooth #{hoveredTooth}</div>
-          {treatments?.find((t) => t?.toothNumber === hoveredTooth) && <div className="text-xs text-muted-foreground mt-1">{treatments?.find((t) => t?.toothNumber === hoveredTooth)?.procedure}</div>}
-        </div>
-      )}
     </div>
   );
 };

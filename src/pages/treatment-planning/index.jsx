@@ -162,9 +162,14 @@ const TreatmentPlanning = () => {
       setEditingTreatment(null);
     } else {
       // CASO C: Es un tratamiento nuevo desde cero
-      // Generamos un ID temporal para que React pueda manejarlo en la lista local
-      const newTreatment = { ...treatmentData, id: Date.now(), isPersisted: false };
-      setTreatments((prev) => [...prev, newTreatment]);
+      // Crea un tratamiento por cada diente seleccionado
+      const newTreatments = selectedTeeth.map((toothNum, idx) => ({
+        ...treatmentData,
+        toothNumber: toothNum,
+        id: Date.now() + idx,
+        isPersisted: false,
+      }));
+      setTreatments((prev) => [...prev, ...newTreatments]);
     }
 
     setShowTreatmentForm(false);
@@ -315,7 +320,7 @@ const TreatmentPlanning = () => {
                   services={services}
                   isEditingHistory={editingTreatment?.isPersisted}
                   loading={loadingServices}
-                  selectedTooth={selectedTeeth?.[0]}
+                  selectedTeeth={selectedTeeth}
                   onSubmit={handleAddTreatment}
                   onCancel={() => {
                     setShowTreatmentForm(false);

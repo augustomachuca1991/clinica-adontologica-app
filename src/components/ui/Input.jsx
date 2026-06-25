@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 import Icon from "@/components/AppIcon";
 
 const Input = React.forwardRef(
-  ({ className, type = "text", label, description, error, required = false, id, checked, color, ...props }, ref) => {
+  ({ className, type = "text", label, description, error, required = false, id, checked, color, suffix, ...props }, ref) => {
     // Generate unique ID if not provided
     const inputId = id || `input-${Math.random()?.toString(36)?.substr(2, 9)}`;
 
@@ -84,13 +84,20 @@ const Input = React.forwardRef(
           </label>
         )}
 
-        <input
-          type={type}
-          className={cn(baseInputClasses, error && "border-destructive focus-visible:ring-destructive", className)}
-          ref={ref}
-          id={inputId}
-          {...props}
-        />
+        <div className="relative">
+          <input
+            type={type}
+            className={cn(baseInputClasses, suffix && "pr-10", error && "border-destructive focus-visible:ring-destructive", className)}
+            ref={ref}
+            id={inputId}
+            {...props}
+          />
+          {suffix && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm pointer-events-none select-none">
+              {suffix}
+            </span>
+          )}
+        </div>
 
         {description && !error && <p className="text-sm text-muted-foreground">{description}</p>}
 

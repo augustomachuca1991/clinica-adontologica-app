@@ -1,14 +1,36 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useMemo } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import Icon from "@/components/AppIcon";
+import StatusStepper from "@/pages/treatment-planning/components/StatusStepper";
 import { useTranslation } from "react-i18next";
-/* import { useTreatmentServices } from "@/hooks/TreatmentServicesHooks"; */
+
+const getInitialValues = (editingTreatment) =>
+  editingTreatment
+    ? {
+        procedure: (editingTreatment.procedure || editingTreatment.service_id)?.toString() || "",
+        cost: editingTreatment.cost ?? "",
+        duration: editingTreatment.duration ?? "",
+        priority: editingTreatment.priority || "medium",
+        status: editingTreatment.status === "in-progress" ? "inProgress" : editingTreatment.status || "planned",
+        notes: editingTreatment.notes ?? "",
+      }
+    : {
+        procedure: "",
+        cost: "",
+        duration: "",
+        priority: "medium",
+        status: "planned",
+        notes: "",
+      };
 
 const TreatmentForm = ({
   services,
   loading,
-  selectedTooth,
+  selectedTeeth,
   onSubmit,
   onCancel,
   editingTreatment,
@@ -16,50 +38,49 @@ const TreatmentForm = ({
 }) => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState(
-    editingTreatment || {
-      toothNumber: selectedTooth,
-      procedure: "",
-      cost: "",
-      duration: "",
-      priority: "medium",
-      status: "planned",
-      notes: "",
-    }
+  const displayTeeth = editingTreatment ? [editingTreatment.toothNumber] : (selectedTeeth || []);
+
+  const validationSchema = useMemo(
+    () =>
+      Yup.object({
+        procedure: Yup.string().required(t("treatment.validation.procedureRequired")),
+        cost: Yup.number()
+          .typeError(t("treatment.validation.costInvalid"))
+          .required(t("common.errors.required"))
+          .min(0, t("treatment.validation.costMin")),
+        duration: Yup.number()
+          .typeError(t("treatment.validation.durationInvalid"))
+          .integer(t("treatment.validation.durationInteger"))
+          .min(1, t("treatment.validation.durationMin"))
+          .nullable(true)
+          .transform((value) => (isNaN(value) ? null : value)),
+        priority: Yup.string().required(t("common.errors.required")),
+        status: Yup.string().required(t("common.errors.required")),
+      }),
+    [t]
   );
 
+  const formik = useFormik({
+    initialValues: getInitialValues(editingTreatment),
+    validationSchema,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      const toothCount = displayTeeth?.length || 1;
+      onSubmit({
+        ...values,
+        id: editingTreatment?.id || Date.now(),
+        cost: parseFloat(values.cost) / toothCount,
+        duration: values.duration ? String(Math.round(parseInt(values.duration, 10) / toothCount)) : "",
+      });
+    },
+  });
+
   const priorityOptions = [
-    { value: "urgent", label: "Urgent" },
-    { value: "high", label: "High Priority" },
-    { value: "medium", label: "Medium Priority" },
-    { value: "low", label: "Low Priority" },
+    { value: "urgent", label: t("treatment.priority.urgent") },
+    { value: "high", label: t("treatment.priority.high") },
+    { value: "medium", label: t("treatment.priority.medium") },
+    { value: "low", label: t("treatment.priority.low") },
   ];
-
-  const statusOptions = [
-    { value: "planned", label: t("common.status.planned") },
-    { value: "inProgress", label: t("common.status.inProgress") },
-    { value: "completed", label: t("common.status.completed") },
-  ];
-
-  useEffect(() => {
-    if (editingTreatment) {
-      setFormData({
-        ...editingTreatment,
-        procedure: (editingTreatment.procedure || editingTreatment.service_id)?.toString() || "",
-        status: editingTreatment.status === "in-progress" ? "inProgress" : editingTreatment.status,
-      });
-    } else {
-      setFormData({
-        toothNumber: selectedTooth,
-        procedure: "",
-        cost: "",
-        duration: "",
-        priority: "medium",
-        status: "planned",
-        notes: "",
-      });
-    }
-  }, [editingTreatment, selectedTooth]);
 
   const procedureOptions = useMemo(() => {
     if (!services || !Array.isArray(services) || services.length === 0) {
@@ -67,7 +88,6 @@ const TreatmentForm = ({
     }
 
     return services.map((s) => {
-      // Evaluamos todas las estructuras posibles que pueda devolver tu Hook
       const actualService = s.service ? s.service : s;
 
       return {
@@ -78,51 +98,52 @@ const TreatmentForm = ({
   }, [services]);
 
   const handleProcedureChange = (serviceId) => {
-    const idStr = serviceId?.toString(); // Forzamos string para comparar de forma segura
+    const idStr = serviceId?.toString();
+    formik.setFieldValue("procedure", idStr);
 
-    // Buscamos considerando ambas estructuras (anidada o plana)
     const selectedService = services.find((s) => {
       const actualService = s.service ? s.service : s;
       return actualService.id?.toString() === idStr;
     });
 
-    // Extraemos la información real del servicio (costo y duración)
     const serviceData = selectedService?.service ? selectedService.service : selectedService;
+    const toothCount = displayTeeth?.length || 1;
 
-    setFormData({
-      ...formData,
-      procedure: idStr,
-      cost: serviceData ? serviceData.base_cost : "",
-      duration: serviceData ? `${serviceData.estimated_duration_min}` : "",
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e?.preventDefault();
-    onSubmit({
-      ...formData,
-      id: editingTreatment?.id || Date.now(),
-      cost: parseFloat(formData?.cost),
-    });
+    if (serviceData) {
+      const unitCost = serviceData.base_cost;
+      const unitDuration = serviceData.estimated_duration_min;
+      formik.setFieldValue("cost", unitCost ? (parseFloat(unitCost) * toothCount).toString() : "");
+      formik.setFieldValue("duration", unitDuration ? String(unitDuration * toothCount) : "");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input
-          label={t("treatment.formLabel.toothNumber")}
-          type="text"
-          value={formData?.toothNumber}
-          disabled
-          required
-        />
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground">
+            {t("treatment.formLabel.toothNumber")}
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {displayTeeth.map((toothNum) => (
+              <span
+                key={toothNum}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-primary/10 text-primary text-sm font-medium"
+              >
+                <Icon name="Hash" size={14} />
+                {toothNum}
+              </span>
+            ))}
+          </div>
+        </div>
 
         <Select
           label={loading ? t("loading") : t("treatment.formLabel.procedure")}
           options={procedureOptions}
-          value={formData?.procedure}
+          value={formik.values.procedure}
           onChange={handleProcedureChange}
           disabled={loading || isEditingHistory}
+          error={formik.touched.procedure && formik.errors.procedure}
           required
         />
 
@@ -130,42 +151,47 @@ const TreatmentForm = ({
           label={t("treatment.formLabel.estimatedCost")}
           type="number"
           placeholder={t("treatment.formPlaceholder.estimatedCost")}
-          value={formData?.cost}
+          value={formik.values.cost}
           disabled={isEditingHistory}
-          onChange={(e) => setFormData({ ...formData, cost: e?.target?.value })}
+          onChange={formik.handleChange("cost")}
+          onBlur={formik.handleBlur("cost")}
+          error={formik.touched.cost && formik.errors.cost}
           required
         />
         <Input
           label={t("treatment.formLabel.duration")}
-          type="text"
+          type="number"
+          min={1}
           placeholder={t("treatment.formPlaceholder.duration")}
-          value={formData?.duration}
-          onChange={(e) => setFormData({ ...formData, duration: e?.target?.value })}
-          required
+          value={formik.values.duration}
+          onChange={formik.handleChange("duration")}
+          onBlur={formik.handleBlur("duration")}
+          disabled={isEditingHistory}
+          error={formik.touched.duration && formik.errors.duration}
+          suffix={t("treatment.durationUnit")}
         />
 
         <Select
           label={t("treatment.formLabel.priority")}
           options={priorityOptions}
-          value={formData?.priority}
-          onChange={(value) => setFormData({ ...formData, priority: value })}
+          value={formik.values.priority}
+          onChange={(value) => formik.setFieldValue("priority", value)}
+          error={formik.touched.priority && formik.errors.priority}
           required
         />
 
-        <Select
-          label={t("treatment.formLabel.status")}
-          options={statusOptions}
-          value={formData?.status}
-          onChange={(value) => setFormData({ ...formData, status: value })}
-          required
+        <StatusStepper
+          currentStatus={formik.values.status}
+          onChange={(value) => formik.setFieldValue("status", value)}
+          isNew={!editingTreatment}
         />
       </div>
       <Input
         label={t("treatment.formLabel.notes")}
         type="text"
         placeholder={t("treatment.formPlaceholder.notes")}
-        value={formData?.notes}
-        onChange={(e) => setFormData({ ...formData, notes: e?.target?.value })}
+        value={formik.values.notes}
+        onChange={formik.handleChange("notes")}
       />
       <div className="flex items-center gap-3 pt-4">
         <Button type="submit" variant="default" fullWidth>

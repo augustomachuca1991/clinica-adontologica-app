@@ -83,7 +83,7 @@ const TreatmentSequence = ({ treatments, services, onReorder, onRemove, onEdit }
               <span
                 className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${priorityBadgeStyles[treatment?.priority] || ""}`}
               >
-                {treatment?.priority}
+                {t(`treatment.priority.${treatment?.priority}`)}
               </span>
             </div>
             <div className="flex items-center gap-2 mt-1 text-xs md:text-sm text-muted-foreground">

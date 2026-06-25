@@ -572,7 +572,9 @@
     "status": {
       "completed": "Completed",
       "inProgress": "In Progress",
-      "planned": "Planned"
+      "planned": "Planned",
+      "advanceTo": "Advance to {{status}}",
+      "completedLabel": "Treatment completed"
     },
     "upperJaw": "Upper Jaw",
     "lowerJaw": "Lower Jaw",
@@ -588,14 +590,15 @@
       "toothNumber": "Tooth Number",
       "procedure": "Procedure",
       "estimatedCost": "Estimated Cost",
-      "duration": "Duration (days)",
+      "duration": "Duration",
       "priority": "Priority",
       "status": "Status",
       "notes": "Treatment Notes"
     },
+    "durationUnit": "min",
     "formPlaceholder": {
       "estimatedCost": "e.g., 150.00",
-      "duration": "e.g., 7 weeks",
+      "duration": "Duration",
       "notes": "Additional notes or special considerations..."
     },
     "priority": {
@@ -610,7 +613,15 @@
     "updateSuccess": "Treatment updated successfully",
     "finishEditingFirst": "Please finish or cancel the current edit before selecting another tooth.",
     "patientHistory": "Patient History",
-    "currentPlan": "Current Plan"
+    "currentPlan": "Current Plan",
+    "validation": {
+      "procedureRequired": "Please select a procedure",
+      "costInvalid": "Cost must be a valid number",
+      "costMin": "Cost must be a positive value",
+      "durationInvalid": "Duration must be a valid number",
+      "durationInteger": "Duration must be a whole number",
+      "durationMin": "Duration must be at least 1 minute"
+    }
   },
   "sidebar": {
     "toggle": "Collapse"
@@ -1049,6 +1060,9 @@
     "close": "Close",
     "deleting": "Deleting...",
     "configure": "Configure",
+    "errors": {
+      "required": "This field is required"
+    },
     "status": {
       "active": "Active",
       "inactive": "Inactive",

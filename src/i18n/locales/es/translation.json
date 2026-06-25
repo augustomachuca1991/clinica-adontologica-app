@@ -505,7 +505,9 @@
     "status": {
       "completed": "Completado",
       "inProgress": "En curso",
-      "planned": "Planificado"
+      "planned": "Planificado",
+      "advanceTo": "Avanzar a {{status}}",
+      "completedLabel": "Tratamiento completado"
     },
     "upperJaw": "Maxilar Superior",
     "lowerJaw": "Maxilar Inferior",
@@ -526,9 +528,10 @@
       "status": "Estado",
       "notes": "Notas del tratamiento"
     },
+    "durationUnit": "min",
     "formPlaceholder": {
       "estimatedCost": "ej., 150.00",
-      "duration": "ej., 7 semanas",
+      "duration": "Duración",
       "notes": "Notas adicionales o consideraciones especiales..."
     },
     "priority": {
@@ -543,7 +546,15 @@
     "updateSuccess": "Tratamiento actualizado correctamente",
     "finishEditingFirst": "Por favor, finaliza o cancela la edición actual antes de seleccionar otro diente.",
     "patientHistory": "Historico",
-    "currentPlan": "Plan Actual"
+    "currentPlan": "Plan Actual",
+    "validation": {
+      "procedureRequired": "Seleccioná un procedimiento",
+      "costInvalid": "El costo debe ser un número válido",
+      "costMin": "El costo debe ser un valor positivo",
+      "durationInvalid": "La duración debe ser un número válido",
+      "durationInteger": "La duración debe ser un número entero",
+      "durationMin": "La duración debe ser al menos 1 minuto"
+    }
   },
   "profile": {
     "title": "Ficha del paciente",
@@ -1046,6 +1057,9 @@
     "saveChanges": "Guardar cambios",
     "close": "Cerrar",
     "deleting": "Eliminando...",
+    "errors": {
+      "required": "Este campo es obligatorio"
+    },
     "status": {
       "active": "Activo",
       "inactive": "Inactivo",

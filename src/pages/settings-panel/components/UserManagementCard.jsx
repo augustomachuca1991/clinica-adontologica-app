@@ -8,6 +8,7 @@ import Spinner from "@/components/ui/Spinner";
 import { supabase } from "@/lib/supabase";
 import { useTranslation } from "react-i18next";
 import { useUserRegistration } from "@/hooks/UserHooks";
+import { toast } from "sonner";
 
 const UserManagementCard = () => {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ const UserManagementCard = () => {
   const [showAddUser, setShowAddUser] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [newUserPassword, setNewUserPassword] = useState(null);
 
   const { formData, setFormData, formError, handleRegisterUser } = useUserRegistration();
 
@@ -64,6 +66,7 @@ const UserManagementCard = () => {
   const onSubmit = async (e) => {
     const result = await handleRegisterUser(e);
     if (result?.success) {
+      setNewUserPassword(result.password);
       setShowAddUser(false);
       await fetchUsers();
     }
@@ -164,6 +167,37 @@ const UserManagementCard = () => {
               </Button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* Contraseña generada */}
+      {newUserPassword && (
+        <div className="bg-success/10 border border-success/30 rounded-lg p-4 flex items-start gap-3">
+          <Icon name="Key" size={20} className="text-success mt-0.5 flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-success mb-1">{t("users.password_generated_title") || "Usuario creado"}</p>
+            <p className="text-xs text-muted-foreground mb-2">{t("users.password_generated_desc") || "Contraseña temporal del nuevo usuario:"}</p>
+            <div className="flex items-center gap-2">
+              <code className="bg-background border border-border rounded px-3 py-1.5 text-sm font-mono select-all">
+                {newUserPassword}
+              </code>
+              <Button
+                variant="outline"
+                size="icon"
+                iconName="Copy"
+                onClick={() => {
+                  navigator.clipboard.writeText(newUserPassword);
+                  toast.success(t("common.copied") || "¡Copiado!");
+                }}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                iconName="X"
+                onClick={() => setNewUserPassword(null)}
+              />
+            </div>
+          </div>
         </div>
       )}
 

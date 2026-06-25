@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
-import { t } from "i18next";
 
 export const useAppointments = () => {
   const [loading, setLoading] = useState(false);

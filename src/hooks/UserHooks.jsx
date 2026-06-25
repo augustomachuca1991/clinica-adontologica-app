@@ -85,9 +85,15 @@ export const useUserRegistration = () => {
     }
 
     try {
+      const generatedPassword = Array.from({ length: 12 }, () =>
+        "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$".charAt(
+          Math.floor(Math.random() * 58)
+        )
+      ).join("");
+
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: cleanEmail,
-        password: "12345678",
+        password: generatedPassword,
         options: {
           data: {
             full_name: cleanName,
@@ -105,7 +111,7 @@ export const useUserRegistration = () => {
       // REFRESCAR LA LISTA: Si registrás un usuario nuevo, volvemos a listar para que aparezca
       fetchUsers();
 
-      return { success: true, data: authData };
+      return { success: true, data: authData, password: generatedPassword };
     } catch (err) {
       console.error(err);
       setFormError(err.message);

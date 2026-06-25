@@ -1,8 +1,9 @@
 import React from "react";
 import Button from "@/components/ui/Button";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const BulkActions = ({ selectedCount, onAction }) => {
+  const { t } = useTranslation();
   if (selectedCount === 0) return null;
 
   return (

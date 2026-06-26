@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase"; // ajustá el path a tu cliente
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 export function useRecentActivity(providerId) {
   const [activities, setActivities] = useState([]);

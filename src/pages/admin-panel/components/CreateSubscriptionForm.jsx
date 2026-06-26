@@ -227,8 +227,7 @@ const CreateSubscriptionForm = ({ users, onSubmit }) => {
         <button
           type="submit"
           disabled={formik.isSubmitting}
-          className="w-full py-2.5 rounded-lg text-sm font-semibold text-white transition-all disabled:opacity-50 flex items-center justify-center gap-1.5"
-          style={{ backgroundColor: "#7c5cbf" }}
+          className="w-full py-2.5 rounded-lg text-sm font-semibold text-white transition-all disabled:opacity-50 flex items-center justify-center gap-1.5 bg-primary hover:bg-primary/90"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 5v14" /><path d="M5 12h14" />

@@ -225,6 +225,12 @@
     "button": {
       "addNewPatient": "Nuevo paciente"
     },
+    "stats": {
+      "total": "Total pacientes",
+      "active": "Pacientes activos",
+      "upcoming": "Próximos turnos",
+      "overdue": "Tratamientos vencidos"
+    },
     "panelFilter": {
       "title": "Buscar y Filtrar Pacientes",
       "searchPatientLabel": "Paciente",
@@ -324,6 +330,17 @@
     "subtitle": "Historial de tratamientos completo y gestión de documentación",
     "button": {
       "newRecord": "Nuevo Registro"
+    },
+    "stats": {
+      "total": "Total registros",
+      "completed": "Completados",
+      "inProgress": "En progreso",
+      "planned": "Planificados",
+      "trends": {
+        "thisMonth": "+{{percent}}% este mes",
+        "positive": "+{{percent}}%",
+        "negative": "−{{percent}}%"
+      }
     },
     "panelFilter": {
       "title": "Buscar y Filtrar",

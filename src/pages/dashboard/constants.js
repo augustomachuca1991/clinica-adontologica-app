@@ -1,8 +1,8 @@
 export const QUICK_ACTIONS = [
-  { icon: "UserPlus", label: "newPatient", color: "var(--color-primary)" },
-  { icon: "AlarmClockCheck", label: "scheduleAppointment", color: "var(--color-success)" },
-  { icon: "FileText", label: "addNote", color: "var(--color-warning)" },
-  { icon: "Calendar", label: "weekly", color: "var(--color-accent)" },
+  { icon: "UserPlus", label: "newPatient", color: "#00f0ff" },
+  { icon: "AlarmClockCheck", label: "scheduleAppointment", color: "#0091ff" },
+  { icon: "FileText", label: "addNote", color: "#ff6b4a" },
+  { icon: "Calendar", label: "weekly", color: "#90007f" },
 ];
 
 export const TREATMENT_DATA = [

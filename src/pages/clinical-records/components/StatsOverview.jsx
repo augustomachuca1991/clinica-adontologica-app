@@ -1,97 +1,109 @@
-// pages/clinical-records/components/StatsOverview.jsx
 import React, { memo, useMemo } from "react";
-import Icon from "@/components/AppIcon";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/cn";
 
-// ── Constantes estáticas ──────────────────────────────────────────────────────
-
-const ICON_COLOR = {
-  primary: "bg-primary/10 text-primary",
-  success: "bg-success/10 text-success",
-  warning: "bg-warning/10 text-warning",
+// ── Mini sparkbar estática por métrica ──────────────────────────────────────
+const SPARKBARS = {
+  totalRecords: [8, 11, 9, 13, 18],
+  completed: [9, 12, 10, 14, 18],
+  inProgress: [18, 14, 12, 10, 8],
+  planned: [6, 9, 11, 13, 18],
 };
 
-// ── Sub-componentes ───────────────────────────────────────────────────────────
+const COLORS = {
+  totalRecords: { dot: "bg-primary", bar: "bg-primary", trend: "text-primary" },
+  completed: { dot: "bg-success", bar: "bg-success", trend: "text-success" },
+  inProgress: { dot: "bg-warning", bar: "bg-warning", trend: "text-warning" },
+  planned: { dot: "bg-secondary", bar: "bg-secondary", trend: "text-secondary" },
+};
 
-const TrendBadge = memo(({ trend, trendUp }) => (
-  <span
-    className={cn(
-      "inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full",
-      trendUp ? "bg-success/10 text-success" : "bg-error/10 text-error"
-    )}
-  >
-    <Icon name={trendUp ? "TrendingUp" : "TrendingDown"} size={12} />
-    {trend}
-  </span>
-));
-TrendBadge.displayName = "TrendBadge";
-
-const StatCard = memo(({ label, value, icon, color, trend, trendUp, delay }) => (
-  <div className="clinical-card p-4 flex flex-col gap-3 fade-in-up" style={{ animationDelay: `${delay}ms` }}>
-    <div className="flex items-center justify-between">
+// ── SparkBar ────────────────────────────────────────────────────────────────
+const SparkBar = memo(({ heights, colorClass }) => (
+  <div className="flex items-end gap-[3px] h-5">
+    {heights.map((h, i) => (
       <div
-        className={cn("w-9 h-9 rounded-lg flex items-center justify-center", ICON_COLOR[color] ?? ICON_COLOR.primary)}
-      >
-        <Icon name={icon} size={17} />
-      </div>
-      <TrendBadge trend={trend} trendUp={trendUp} />
-    </div>
-
-    <div className="h-px bg-border" />
-
-    <div className="flex flex-col gap-0.5">
-      <p className="text-2xl md:text-3xl font-headline font-bold text-foreground leading-none">{value ?? "—"}</p>
-      <p className="text-xs text-muted-foreground">{label}</p>
-    </div>
+        key={i}
+        className={cn(
+          "w-1 rounded-sm transition-all",
+          colorClass,
+          i < heights.length - 1 ? "opacity-40" : "opacity-100"
+        )}
+        style={{ height: `${h}px` }}
+      />
+    ))}
   </div>
 ));
-StatCard.displayName = "StatCard";
+SparkBar.displayName = "SparkBar";
 
-// ── Componente principal ──────────────────────────────────────────────────────
+// ── StatItem ────────────────────────────────────────────────────────────────
+const StatItem = memo(({ label, value, trendLabel, trendUp, metricKey, isLast }) => {
+  const color = COLORS[metricKey];
 
+  return (
+    <div className={cn("flex flex-col gap-3 px-5 py-4", !isLast && "border-r border-border")}>
+      {/* Label + dot */}
+      <div className="flex items-center gap-2">
+        <span className={cn("w-2 h-2 rounded-full flex-shrink-0", color.dot)} />
+        <span className="text-xs text-muted-foreground">{label}</span>
+      </div>
+
+      {/* Valor */}
+      <div className="text-[28px] font-headline font-semibold text-foreground leading-none">{value ?? "—"}</div>
+
+      {/* Footer: trend + sparkbar */}
+      <div className="flex items-center justify-between">
+        <span className={cn("text-[11px] font-medium", trendUp ? "text-success" : "text-error")}>
+          {trendUp ? "↑" : "↓"} {trendLabel}
+        </span>
+        <SparkBar heights={SPARKBARS[metricKey]} colorClass={color.bar} />
+      </div>
+    </div>
+  );
+});
+StatItem.displayName = "StatItem";
+
+// ── StatsOverview ────────────────────────────────────────────────────────────
 const StatsOverview = memo(({ stats }) => {
-  const statCards = useMemo(
+  const { t } = useTranslation();
+
+  const items = useMemo(
     () => [
       {
-        label: "Total Records",
+        metricKey: "totalRecords",
+        label: t("records.stats.total"),
         value: stats?.totalRecords,
-        icon: "FileText",
-        color: "primary",
-        trend: "+12%",
+        trendLabel: t("records.stats.trends.thisMonth", { percent: 12 }),
         trendUp: true,
       },
       {
-        label: "Completed",
+        metricKey: "completed",
+        label: t("records.stats.completed"),
         value: stats?.completed,
-        icon: "CheckCircle",
-        color: "success",
-        trend: "+8%",
+        trendLabel: t("records.stats.trends.positive", { percent: 8 }),
         trendUp: true,
       },
       {
-        label: "In Progress",
+        metricKey: "inProgress",
+        label: t("records.stats.inProgress"),
         value: stats?.inProgress,
-        icon: "Clock",
-        color: "warning",
-        trend: "-3%",
+        trendLabel: t("records.stats.trends.negative", { percent: 3 }),
         trendUp: false,
       },
       {
-        label: "Planned",
+        metricKey: "planned",
+        label: t("records.stats.planned"),
         value: stats?.planned,
-        icon: "Calendar",
-        color: "primary",
-        trend: "+15%",
+        trendLabel: t("records.stats.trends.positive", { percent: 15 }),
         trendUp: true,
       },
     ],
-    [stats]
+    [stats, t]
   );
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-      {statCards.map((stat, index) => (
-        <StatCard key={stat.label} {...stat} delay={index * 50} />
+    <div className="clinical-card grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 divide-border overflow-hidden">
+      {items.map((item, i) => (
+        <StatItem key={item.metricKey} {...item} isLast={i === items.length - 1} />
       ))}
     </div>
   );

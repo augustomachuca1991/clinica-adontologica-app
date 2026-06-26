@@ -75,16 +75,16 @@ const APP_NAME = import.meta.env.VITE_APP_NAME || "Orion Software";
 // ── NavItem ───────────────────────────────────────────────────────────────────
 
 const NavItem = memo(({ item, isActive, isCollapsed, onClick, t }) => (
-  <li>
+  <li style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.05)" }}>
     <Link
       to={item.path}
       onClick={onClick}
       title={isCollapsed ? t(item.label) : undefined}
       className={cn(
-        "flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-base group",
+        "flex items-center gap-3 px-3 py-3 rounded-md transition-all duration-base group",
         isActive
-          ? "bg-primary text-primary-foreground shadow-clinical-sm"
-          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          ? "text-[#00f0ff] bg-[rgba(0,240,255,0.08)]"
+          : "text-[rgba(255,255,255,0.6)] hover:text-[rgba(255,255,255,0.9)] hover:bg-[rgba(255,255,255,0.04)]"
       )}
     >
       <Icon
@@ -98,10 +98,12 @@ const NavItem = memo(({ item, isActive, isCollapsed, onClick, t }) => (
       {!isCollapsed && (
         <div className="flex-1 min-w-0">
           <div className="font-medium text-sm truncate">{t(item.label)}</div>
-          {!isActive && <div className="text-xs opacity-70 truncate">{t(item.description)}</div>}
+          {!isActive && <div className="text-xs opacity-60 truncate">{t(item.description)}</div>}
         </div>
       )}
-      {isActive && !isCollapsed && <div className="w-1 h-6 bg-primary-foreground rounded-full" />}
+      {isActive && !isCollapsed && (
+        <span className="text-[#00f0ff] text-lg font-light">›</span>
+      )}
     </Link>
   </li>
 ));
@@ -148,17 +150,24 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
       {/* ── Sidebar panel ── */}
       <div
         className={cn(
-          "fixed top-0 left-0 h-full bg-card border-r border-border shadow-clinical-md transition-all duration-700 ease-in-out z-40",
+          "fixed top-0 left-0 h-full transition-all duration-700 ease-in-out z-40",
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           isCollapsed ? "w-20" : "w-64"
         )}
+        style={{
+          background: "rgba(255, 255, 255, 0.02)",
+          borderRight: "1px solid rgba(255, 255, 255, 0.12)",
+          borderRadius: "0 16px 16px 0",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+        }}
       >
         {/* HEADER */}
         <div
-          className="relative flex items-center justify-center h-14 border-b border-border bg-primary/5 cursor-pointer"
+          className="relative flex items-center justify-center h-14 cursor-pointer"
           onClick={handleHomeClick}
           role="button"
           aria-label="Ir al inicio"
+          style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}
         >
           <Image src={isCollapsed ? logoIsotipo : logo} alt={`${APP_NAME} Logo`} className="h-12 w-auto" />
 
@@ -192,10 +201,10 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
         </nav>
 
         {/* FOOTER — collapse toggle (solo desktop) */}
-        <div className="border-t border-border p-4">
+        <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }} className="p-4">
           <button
             onClick={onToggle}
-            className="hidden lg:flex items-center justify-center w-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-all duration-base focus-clinical"
+            className="hidden lg:flex items-center justify-center w-full px-3 py-2 text-sm font-medium text-[rgba(255,255,255,0.4)] hover:text-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.04)] rounded-md transition-all duration-base focus-clinical"
             aria-label={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
           >
             <Icon name={isCollapsed ? "ArrowRightToLine" : "ArrowLeftToLine"} size={20} />

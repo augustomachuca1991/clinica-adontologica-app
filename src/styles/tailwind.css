@@ -4,64 +4,60 @@
 
 @layer base {
   :root {
-    /* ── Primario — Violeta Orion ── */
-    --color-primary: #7c5cbf;
-    --color-primary-foreground: #ffffff;
-    --color-primary-light: #ede8f9;
-    --color-primary-dark: #5a3f99;
+    /* ── Brand Principal ── */
+    --color-primary: #00f0ff;
+    --color-primary-foreground: #0d5c63;
 
-    /* ── Secundario — Slate neutro ── */
-    --color-secondary: #5e6e85;
+    --color-secondary: #0091ff;
     --color-secondary-foreground: #ffffff;
 
-    /* ── Acento — Teal clínico ── */
-    --color-accent: #0e8a7a;
+    --color-accent: #ff6b4a;
     --color-accent-foreground: #ffffff;
 
     /* ── Superficies ── */
-    --color-background: #f7f6fb;
-    --color-foreground: #1c1733;
+    --color-background: #0d5c63;
+    --color-foreground: #ffffff;
 
-    --color-card: #ffffff;
-    --color-card-foreground: #1c1733;
+    --color-card: rgba(255, 255, 255, 0.04);
+    --color-card-foreground: #ffffff;
 
-    --color-popover: #ffffff;
-    --color-popover-foreground: #1c1733;
+    --color-popover: rgba(255, 255, 255, 0.06);
+    --color-popover-foreground: #ffffff;
 
     /* ── Muted ── */
-    --color-muted: #eeecf6;
-    --color-muted-foreground: #6b6880;
+    --color-muted: rgba(255, 255, 255, 0.06);
+    --color-muted-foreground: rgba(255, 255, 255, 0.70);
 
     /* ── Bordes e inputs ── */
-    --color-border: #ddd9ee;
-    --color-input: #f0eef9;
-    --color-ring: #7c5cbf;
+    --color-border: rgba(255, 255, 255, 0.15);
+    --color-input: rgba(255, 255, 255, 0.08);
+    --color-ring: #00f0ff;
 
     /* ── Estados ── */
-    --color-success: #0e9e6e;
-    --color-success-foreground: #ffffff;
-    --color-success-light: #e0f5ee;
+    --color-success: #00f0ff;
+    --color-success-foreground: #0d5c63;
+    --color-success-light: rgba(0, 240, 255, 0.12);
 
-    --color-warning: #d08a00;
+    --color-warning: #ff6b4a;
     --color-warning-foreground: #ffffff;
-    --color-warning-light: #fef3d0;
+    --color-warning-light: rgba(255, 107, 74, 0.12);
 
-    --color-error: #c93b3b;
+    --color-error: #ff4757;
     --color-error-foreground: #ffffff;
-    --color-error-light: #fdeaea;
+    --color-error-light: rgba(255, 71, 87, 0.12);
 
-    --color-destructive: #b52b2b;
+    --color-destructive: #ff4757;
     --color-destructive-foreground: #ffffff;
 
-    /* ── Brand clínico (para badges, highlights) ── */
-    --color-brand-primary: #7c5cbf;
-    --color-brand-secondary: #0e8a7a;
-    --color-brand-accent: #d08a00;
-    --color-brand-success: #0e9e6e;
+    /* ── Brand extras ── */
+    --color-brand-primary: #00f0ff;
+    --color-brand-secondary: #0091ff;
+    --color-brand-accent: #90007f;
+    --color-brand-success: #00f0ff;
 
     /* ── Tipografía ── */
-    --font-headline: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-body: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-headline: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-accent: "JetBrains Mono", "Courier New", monospace;
 
     /* ── Spacing (base 8px) ── */
@@ -78,16 +74,15 @@
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
 
-    /* ── Sombras — neutras, sin color de marca ── */
-    --shadow-sm: 0 1px 2px rgba(28, 23, 51, 0.05);
-    --shadow-md: 0 4px 12px rgba(28, 23, 51, 0.08);
-    --shadow-lg: 0 12px 24px rgba(28, 23, 51, 0.1);
-    --shadow-xl: 0 20px 40px rgba(28, 23, 51, 0.12);
+    /* ── Sombras oscuras ── */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.45);
 
-    /* ── Sombras clínicas con tinte de marca ── */
-    --shadow-clinical-sm: 0 1px 3px rgba(124, 92, 191, 0.08);
-    --shadow-clinical-md: 0 4px 12px rgba(124, 92, 191, 0.12);
-    --shadow-clinical-lg: 0 12px 24px rgba(124, 92, 191, 0.15);
+    --shadow-clinical-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-clinical-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-clinical-lg: 0 12px 24px rgba(0, 0, 0, 0.4);
 
     /* ── Transiciones ── */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -95,77 +90,17 @@
     --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* ═══════════════════════════════
-     DARK MODE — completo
-  ═══════════════════════════════ */
-  .dark {
-    --color-primary: #9d7fd4;
-    --color-primary-foreground: #ffffff;
-    --color-primary-light: #2a2050;
-    --color-primary-dark: #bba0e8;
-
-    --color-secondary: #8a97aa;
-    --color-secondary-foreground: #ffffff;
-
-    --color-accent: #2abfad;
-    --color-accent-foreground: #ffffff;
-
-    --color-background: #100e1e;
-    --color-foreground: #edeaf8;
-
-    --color-card: #1a1730;
-    --color-card-foreground: #edeaf8;
-
-    --color-popover: #1f1c35;
-    --color-popover-foreground: #edeaf8;
-
-    --color-muted: #252240;
-    --color-muted-foreground: #9d97b8;
-
-    --color-border: #2e2a4a;
-    --color-input: #252240;
-    --color-ring: #9d7fd4;
-
-    --color-success: #2abfa0;
-    --color-success-foreground: #ffffff;
-    --color-success-light: #0d2e28;
-
-    --color-warning: #f0aa30;
-    --color-warning-foreground: #1c1733;
-    --color-warning-light: #2e2210;
-
-    --color-error: #e05c5c;
-    --color-error-foreground: #ffffff;
-    --color-error-light: #2e1515;
-
-    --color-destructive: #c94444;
-    --color-destructive-foreground: #ffffff;
-
-    --color-brand-primary: #9d7fd4;
-    --color-brand-secondary: #2abfad;
-    --color-brand-accent: #f0aa30;
-    --color-brand-success: #2abfa0;
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
-    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.45);
-
-    --shadow-clinical-sm: 0 1px 3px rgba(157, 127, 212, 0.15);
-    --shadow-clinical-md: 0 4px 12px rgba(157, 127, 212, 0.2);
-    --shadow-clinical-lg: 0 12px 24px rgba(157, 127, 212, 0.25);
-  }
-
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    background: linear-gradient(135deg, #0d5c63 0%, #1f2438 50%, #33183b 100%);
+    background-attachment: fixed;
+    color: var(--color-foreground);
     font-family: var(--font-body);
-    font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
   }
 
   h1,
@@ -184,21 +119,32 @@
 }
 
 @layer components {
-  .data-halo {
-    box-shadow: 0 0 20px rgba(124, 92, 191, 0.2);
-    transition: box-shadow var(--transition-base);
+  .clinical-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
   }
-  .dark .data-halo {
-    box-shadow: 0 0 20px rgba(157, 127, 212, 0.25);
+  .clinical-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .data-halo {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    transition: box-shadow var(--transition-base);
   }
 
   .data-halo-urgent {
-    box-shadow: 0 0 20px rgba(201, 59, 59, 0.2);
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.2);
     transition: box-shadow var(--transition-base);
   }
 
   .data-halo-success {
-    box-shadow: 0 0 20px rgba(14, 158, 110, 0.2);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
     transition: box-shadow var(--transition-base);
   }
 
@@ -217,22 +163,8 @@
     }
   }
 
-  .clinical-card {
-    @apply bg-card rounded-lg border border-border;
-    box-shadow: var(--shadow-clinical-sm);
-    transition:
-      transform var(--transition-base),
-      box-shadow var(--transition-base);
-  }
-  .clinical-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-clinical-lg);
-  }
-
   .trust-hover {
-    transition:
-      transform var(--transition-base),
-      box-shadow var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
   }
   .trust-hover:hover {
     transform: translateY(-2px);
@@ -244,21 +176,19 @@
     transition: all var(--transition-slow);
   }
   .status-active {
-    @apply text-success;
+    color: #00f0ff;
   }
   .status-pending {
-    @apply text-warning;
+    color: #ff6b4a;
   }
   .status-critical {
-    @apply text-error;
+    color: #ff4757;
   }
 
   .reveal-content {
     max-height: 0;
     overflow: hidden;
-    transition:
-      max-height var(--transition-slow),
-      opacity var(--transition-slow);
+    transition: max-height var(--transition-slow), opacity var(--transition-slow);
     opacity: 0;
   }
   .reveal-content.active {
@@ -284,7 +214,7 @@
     height: 10px;
     border-radius: 50%;
     background: var(--color-primary);
-    border: 2px solid var(--color-background);
+    border: 2px solid rgba(13, 92, 99, 0.8);
   }
 }
 
@@ -307,12 +237,11 @@
   }
 
   .color-transition {
-    transition:
-      color var(--transition-slow),
-      background-color var(--transition-slow);
+    transition: color var(--transition-slow), background-color var(--transition-slow);
   }
 
   .focus-clinical:focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-ring ring-offset-2;
+    ring-offset-color: transparent;
   }
 }

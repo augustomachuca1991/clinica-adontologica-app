@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>Orion Software</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#b97beb" />
+    <meta name="theme-color" content="#0d5c63" />
     <meta name="description" content="Orion Software – Soluciones digitales para clínicas" />
     <meta
       http-equiv="Content-Security-Policy"
@@ -42,9 +42,7 @@
       (function () {
         try {
           var t = localStorage.getItem("orion_theme");
-          if (t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-            document.documentElement.classList.add("dark");
-          }
+          if (t !== "light") document.documentElement.classList.add("dark");
         } catch (e) {}
       })();
     </script>

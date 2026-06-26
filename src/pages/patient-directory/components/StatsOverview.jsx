@@ -1,31 +1,33 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Icon from "@/components/AppIcon";
 
 const StatsOverview = ({ stats }) => {
+  const { t } = useTranslation();
   const statCards = [
     {
-      label: "Total Patients",
+      label: t("directory.stats.total"),
       value: stats?.total,
       icon: "Users",
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
-      label: "Active Patients",
+      label: t("directory.stats.active"),
       value: stats?.active,
       icon: "UserCheck",
       color: "text-success",
       bgColor: "bg-success/10",
     },
     {
-      label: "Upcoming Appointments",
+      label: t("directory.stats.upcoming"),
       value: stats?.upcoming,
       icon: "Calendar",
       color: "text-warning",
       bgColor: "bg-warning/10",
     },
     {
-      label: "Overdue Treatments",
+      label: t("directory.stats.overdue"),
       value: stats?.overdue,
       icon: "AlertCircle",
       color: "text-error",

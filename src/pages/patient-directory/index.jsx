@@ -11,7 +11,6 @@ import AddPatientModal from "@/pages/patient-directory/components/AddPatientModa
 import { notifyError, notifyInfo, notifySuccess, notifyWarning } from "@/utils/notifications";
 import { usePatients } from "@/hooks/PatientsHooks";
 import Icon from "@/components/AppIcon";
-import StatsOverview from "@/pages/patient-directory/components/StatsOverview";
 import Skeleton, { SkeletonCard, SkeletonTable, SkeletonStatsRow } from "@/components/ui/Skeleton";
 
 const FILTERS = {

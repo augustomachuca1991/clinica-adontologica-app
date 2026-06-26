@@ -225,6 +225,12 @@
     "button": {
       "addNewPatient": "Add New Patient"
     },
+    "stats": {
+      "total": "Total Patients",
+      "active": "Active Patients",
+      "upcoming": "Upcoming Appointments",
+      "overdue": "Overdue Treatments"
+    },
     "panelFilter": {
       "title": "Search & Filter Patients",
       "searchPatientLabel": "Patient",
@@ -390,6 +396,17 @@
     "subtitle": "Comprehensive treatment history and documentation management",
     "button": {
       "newRecord": "New Record"
+    },
+    "stats": {
+      "total": "Total Records",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "planned": "Planned",
+      "trends": {
+        "thisMonth": "+{{percent}}% this month",
+        "positive": "+{{percent}}%",
+        "negative": "−{{percent}}%"
+      }
     },
     "panelFilter": {
       "title": "Filter Records",

@@ -123,7 +123,7 @@ const NoteForm = ({ initial = {}, onSubmit, onCancel, isSubmitting, onAutoSave }
         onClick={() => formik.setFieldValue("isPrivate", !formik.values.isPrivate)}
         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-sm font-medium ${
           formik.values.isPrivate
-            ? "bg-amber-50 border-amber-200 text-amber-700"
+            ? "bg-amber-500/10 border-amber-500/20 text-amber-300"
             : "bg-muted border-border text-muted-foreground hover:text-foreground"
         }`}
       >
@@ -138,7 +138,7 @@ const NoteForm = ({ initial = {}, onSubmit, onCancel, isSubmitting, onAutoSave }
           }`}
         >
           <span
-            className={`absolute top-0.5 w-3 h-3 rounded-full bg-white shadow transition-all ${
+            className={`absolute top-0.5 w-3 h-3 rounded-full bg-background shadow transition-all ${
               formik.values.isPrivate ? "left-4" : "left-0.5"
             }`}
           />

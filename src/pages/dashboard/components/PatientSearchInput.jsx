@@ -91,7 +91,7 @@ const PatientSearchInput = ({ value: selectedPatient, onChange, error }) => {
       <Input
         type="text"
         placeholder={t("appointment.patientPlaceholder")}
-        className={`pl-10 bg-white ${error ? "border-red-400 focus:ring-red-200" : ""}`}
+        className={`pl-10 ${error ? "border-red-400 focus:ring-red-200" : ""}`}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />

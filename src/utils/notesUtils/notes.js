@@ -3,12 +3,12 @@ import * as Yup from "yup";
 // ─── Tipos de nota ─────────────────────────────────────────────────────────────
 // Quitamos las etiquetas fijas (label) ya que las resolvemos dinámicamente con t()
 export const TYPE_CONFIG = {
-  treatment: { color: "bg-blue-50 text-blue-700 border-blue-200" },
-  diagnosis: { color: "bg-purple-50 text-purple-700 border-purple-200" },
-  followUp: { color: "bg-amber-50 text-amber-700 border-amber-200" },
-  prescription: { color: "bg-green-50 text-green-700 border-green-200" },
-  observation: { color: "bg-slate-50 text-slate-600 border-slate-200" },
-  progress: { color: "bg-teal-50 text-teal-700 border-teal-200" },
+  treatment: { color: "bg-blue-500/10 text-blue-300 border-blue-500/30" },
+  diagnosis: { color: "bg-purple-500/10 text-purple-300 border-purple-500/30" },
+  followUp: { color: "bg-amber-500/10 text-amber-300 border-amber-500/30" },
+  prescription: { color: "bg-green-500/10 text-green-300 border-green-500/30" },
+  observation: { color: "bg-slate-500/10 text-slate-300 border-slate-500/30" },
+  progress: { color: "bg-teal-500/10 text-teal-300 border-teal-500/30" },
 };
 
 // Generamos el mapeo usando el value (la clave del objeto) como etiqueta por defecto (fallback)

@@ -13,11 +13,11 @@ const AppointmentCard = ({ appointment, onViewDetails, onReschedule }) => {
   const getStatusColor = () => {
     switch (status) {
       case "confirmed":
-        return "bg-green-50 text-green-700 inset-ring-green-600/20";
+        return "bg-emerald-500/10 text-emerald-300 inset-ring-emerald-500/20";
       case "cancelled":
-        return "bg-red-50 text-red-700 inset-ring-red-600/10";
+        return "bg-red-500/10 text-red-300 inset-ring-red-500/10";
       default:
-        return "bg-gray-50 text-gray-600 inset-ring-green-500/10";
+        return "bg-muted text-muted-foreground inset-ring-muted-foreground/10";
     }
   };
 

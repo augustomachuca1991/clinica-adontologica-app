@@ -18,8 +18,8 @@ const NoteDetailModal = memo(({ note, open, onClose, onEdit, onDelete, onToggleP
             <span
               className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border ${
                 note.is_private
-                  ? "bg-amber-50 text-amber-700 border-amber-200"
-                  : "bg-slate-50 text-slate-600 border-slate-200"
+                  ? "bg-amber-500/10 text-amber-300 border-amber-500/20"
+                  : "bg-muted text-muted-foreground border-border"
               }`}
             >
               <Icon name={note.is_private ? "Lock" : "Unlock"} size={11} />

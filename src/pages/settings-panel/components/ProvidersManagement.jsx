@@ -16,7 +16,7 @@ const DeleteProviderModal = ({ provider, onClose, onConfirm, isDeleting }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
       <div className="bg-card border border-border rounded-xl shadow-xl w-full max-w-sm p-6 space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="Trash2" size={18} className="text-red-500" />
           </div>
           <div>
@@ -95,12 +95,12 @@ const ViewProviderModal = ({ provider, onClose, onEdit }) => {
           <span
             className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
               provider.is_active
-                ? "bg-green-100 text-green-700"
+                ? "bg-emerald-500/10 text-emerald-300"
                 : "bg-muted text-muted-foreground"
             }`}
           >
             <span
-              className={`w-1.5 h-1.5 rounded-full ${provider.is_active ? "bg-green-500" : "bg-muted-foreground"}`}
+              className={`w-1.5 h-1.5 rounded-full ${provider.is_active ? "bg-emerald-400" : "bg-muted-foreground"}`}
             />
             {provider.is_active
               ? t("common.status.active")
@@ -348,7 +348,7 @@ const ProvidersManagement = () => {
             label: t("common.status.active"),
             value: providers.filter((p) => p.is_active).length,
             icon: "UserCheck",
-            color: "text-green-600 bg-green-100",
+            color: "text-emerald-300 bg-emerald-500/10",
           },
           {
             label: t("common.status.inactive"),
@@ -457,7 +457,7 @@ const ProvidersManagement = () => {
                   }`}
                 >
                   <span
-                    className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                    className={`absolute top-0.5 left-0.5 w-4 h-4 bg-background rounded-full shadow transition-transform ${
                       formData.is_active ? "translate-x-5" : "translate-x-0"
                     }`}
                   />
@@ -520,7 +520,7 @@ const ProvidersManagement = () => {
                       <span
                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
                           provider.is_active
-                            ? "bg-green-100 text-green-700"
+                            ? "bg-emerald-500/10 text-emerald-300"
                             : "bg-muted text-muted-foreground"
                         }`}
                       >
@@ -603,11 +603,11 @@ const ProvidersManagement = () => {
                     size="icon"
                     iconName={provider.is_active ? "ToggleRight" : "ToggleLeft"}
                     onClick={() => toggleProviderStatus(provider.id, provider.is_active)}
-                    className={
-                      provider.is_active
-                        ? "text-green-600 hover:text-green-700 hover:bg-green-50"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                    }
+className={
+                       provider.is_active
+                         ? "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+                         : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                     }
                     title={
                       provider.is_active
                         ? t("providers.management.list.btnDeactivate")
@@ -619,7 +619,7 @@ const ProvidersManagement = () => {
                     size="icon"
                     iconName="Trash2"
                     onClick={() => setProviderToDelete(provider)}
-                    className="text-muted-foreground hover:text-red-500 hover:bg-red-50"
+                    className="text-muted-foreground hover:text-red-400 hover:bg-red-500/10"
                   />
                 </div>
               </div>

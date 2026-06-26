@@ -109,7 +109,7 @@ const CreateSubscriptionForm = ({ users, onSubmit }) => {
 
   return (
     <div className="bg-card border border-border rounded-xl p-5 space-y-4">
-      <div className="inline-block px-2 py-1 text-[11px] font-semibold rounded bg-[#EEEDFE] text-[#3C3489]">
+      <div className="inline-block px-2 py-1 text-[11px] font-semibold rounded bg-primary/10 text-primary">
         {t("admin.form.title")}
       </div>
 
@@ -168,8 +168,8 @@ const CreateSubscriptionForm = ({ users, onSubmit }) => {
           )}
 
           {formik.values.userId && (
-            <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
-              <p className="text-[11px] text-emerald-700 font-medium">✓ {formik.values.userName}</p>
+            <div className="flex items-center justify-between bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">
+              <p className="text-[11px] text-emerald-300 font-medium">✓ {formik.values.userName}</p>
               <button type="button" onClick={handleClearUser} className="text-[11px] text-red-500 hover:underline font-medium">
                 {t("admin.form.changeUser")}
               </button>

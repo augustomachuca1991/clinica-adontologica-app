@@ -154,7 +154,7 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
                 required
                 label={t("appointment.date")}
                 type="date"
-                className="pl-10 bg-white cursor-pointer"
+                className="pl-10 cursor-pointer"
                 {...formik.getFieldProps("date")}
                 error={formik.touched.date && formik.errors.date}
               />
@@ -168,7 +168,7 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
                 required
                 label={t("appointment.time")}
                 type="time"
-                className="pl-10 bg-white cursor-pointer"
+                className="pl-10 cursor-pointer"
                 {...formik.getFieldProps("time")}
                 error={formik.touched.time && formik.errors.time}
               />

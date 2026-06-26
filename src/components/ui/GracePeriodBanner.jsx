@@ -55,7 +55,7 @@ const GracePeriodBanner = () => {
 
             window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
           }}
-          className="bg-white text-orange-700 hover:bg-amber-50 transition-all text-xs font-semibold px-4 py-2 rounded-md shadow-sm whitespace-nowrap active:scale-95"
+          className="bg-background/90 text-orange-600 hover:bg-background transition-all text-xs font-semibold px-4 py-2 rounded-md shadow-sm whitespace-nowrap active:scale-95"
         >
           {t("subscription.gracePeriod.button")}
         </Button>

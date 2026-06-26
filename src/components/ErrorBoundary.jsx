@@ -25,7 +25,7 @@ class ErrorBoundaryInner extends React.Component {
 
     if (this.state?.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+        <div className="min-h-screen flex items-center justify-center bg-background">
           <div className="text-center p-8 max-w-md">
             <div className="flex justify-center items-center mb-2">
               <div className="p-4 bg-destructive/10 text-destructive rounded-2xl">
@@ -33,10 +33,10 @@ class ErrorBoundaryInner extends React.Component {
               </div>
             </div>
             <div className="flex flex-col gap-1 text-center">
-              <h1 className="text-2xl font-medium text-neutral-800">
+              <h1 className="text-2xl font-medium text-foreground">
                 {t("error_boundary.title")}
               </h1>
-              <p className="text-neutral-600 text-base w w-8/12 mx-auto">
+              <p className="text-muted-foreground text-base w w-8/12 mx-auto">
                 {t("error_boundary.description")}
               </p>
             </div>

@@ -717,6 +717,7 @@
     "msgSuccess": "Appointment scheduled successfully",
     "msgError": "Could not schedule the appointment",
     "msgSaveSuccess": "Appointment rescheduled",
+    "msgStatusUpdated": "Appointment status updated",
     "error": {
       "slotOccupied": "Time slot occupied: Patient {{patient}} already has an appointment at this time.",
       "insufficientTime": "Conflict: You only have {{available}} min available before the next appointment."
@@ -1090,7 +1091,9 @@
       "noShow": "No Show",
       "total": "Total",
       "in-progress": "In Progress",
-      "no-show": "No Show"
+      "no-show": "No Show",
+      "in_progress": "In Progress",
+      "no_show": "No Show"
     },
     "actions": {
       "save": "Save",

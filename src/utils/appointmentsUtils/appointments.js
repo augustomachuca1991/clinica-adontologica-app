@@ -73,6 +73,6 @@ export const mapInitialDataToValues = (initialData) => ({
   duration: initialData.duration?.toString().replace(" min", "") || "30",
   reason: initialData.treatment || "",
   notes: initialData.notes || "",
-  status: initialData.status || "scheduled",
+  status: (initialData.status || "scheduled").replace(/-/g, "_"),
   serviceId: initialData.serviceId ? Number(initialData.serviceId) : null,
 });

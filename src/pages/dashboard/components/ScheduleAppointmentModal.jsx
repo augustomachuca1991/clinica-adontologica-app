@@ -11,12 +11,12 @@ import PatientSearchInput from "@/pages/dashboard/components/PatientSearchInput"
 
 import {
   DURATION_OPTIONS,
-  getStatusOptions,
   getAppointmentSchema,
   getInitialFormValues,
   mapInitialDataToValues,
   buildAppointmentPayload,
 } from "@/utils/appointmentsUtils/appointments";
+import { ALLOWED_TRANSITIONS, STATUS_CONFIG } from "@/utils/appointmentStatuses";
 
 const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoading }) => {
   const { t } = useTranslation();
@@ -37,7 +37,16 @@ const ScheduleAppointmentModal = ({ isOpen, onClose, onSave, initialData, isLoad
     }));
   }, [services]);
 
-  const statusOptions = useMemo(() => getStatusOptions(t), [t]);
+  const statusOptions = useMemo(() => {
+    if (!isEditing || !initialData?.status) return [];
+    const current = initialData.status.replace(/-/g, "_");
+    const transitions = ALLOWED_TRANSITIONS[current] ?? [];
+    const options = [{ value: current, label: t(`common.status.${current}`), disabled: true }];
+    transitions.forEach((key) => {
+      options.push({ value: key, label: t(`common.status.${key}`) });
+    });
+    return options;
+  }, [t, isEditing, initialData?.status]);
 
   const validationSchema = useMemo(() => getAppointmentSchema(t), [t]);
 

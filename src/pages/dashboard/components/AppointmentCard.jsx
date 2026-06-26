@@ -38,7 +38,7 @@ const AppointmentCard = ({ appointment, onReschedule, onDelete, onStatusChange, 
         absolute left-0.5 right-0.5 top-0.5 rounded overflow-hidden z-10
         border-l-[3px] ${cfg.border} ${cfg.bg}
         ${status === "cancelled" ? "opacity-60" : ""}
-        ${status === "no-show" ? "opacity-50" : ""}
+        ${status === "no_show" ? "opacity-50" : ""}
         transition-all duration-150
         ${!isTerminal ? "cursor-pointer group/card" : "cursor-default"}
       `}

@@ -32,9 +32,9 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
     { value: "scheduled", label: t("common.status.scheduled") },
     { value: "confirmed", label: t("common.status.confirmed") },
     { value: "completed", label: t("common.status.completed") },
-    { value: "in-progress", label: t("common.status.inProgress") },
+    { value: "in_progress", label: t("common.status.inProgress") },
     { value: "cancelled", label: t("common.status.cancelled") },
-    { value: "no-show", label: t("common.status.noShow") },
+    { value: "no_show", label: t("common.status.noShow") },
   ];
 
   const insuranceOptions = [

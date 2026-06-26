@@ -684,7 +684,7 @@
       "scheduled": "Programado",
       "in-progress": "En curso",
       "completed": "Finalizado",
-      "no-show": "No asistió",
+      "no-show": "Ausente",
       "all": "Todos"
     },
     "priority": {
@@ -715,6 +715,7 @@
     "msgSuccess": "Cita agendada correctamente",
     "msgError": "No se pudo agendar la cita",
     "msgSaveSuccess": "Cita Reprogramada exitosamente",
+    "msgStatusUpdated": "Estado de la cita actualizado",
     "error": {
       "slotOccupied": "Horario ocupado: El paciente {{patient}} ya tiene turno a esa hora.",
       "insufficientTime": "Conflicto: Solo tienes {{available}} min disponibles antes del siguiente turno."
@@ -1084,10 +1085,12 @@
       "available": "Disponible",
       "all": "Todos",
       "confirmed": "Confirmado",
-      "noShow": "No Show",
+      "noShow": "Ausente",
       "total": "Total",
       "in-progress": "En curso",
-      "no-show": "No Show"
+      "no-show": "Ausente",
+      "in_progress": "En curso",
+      "no_show": "Ausente"
     },
     "actions": {
       "save": "Guardar",

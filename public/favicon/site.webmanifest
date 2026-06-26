@@ -4,8 +4,8 @@
   "description": "Sistema clínico odontológico",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#534AB7",
+  "background_color": "#0d5c63",
+  "theme_color": "#00f0ff",
   "icons": [
     {
       "src": "/favicon/favicon-16x16.png",

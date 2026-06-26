@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import Spinner from "@/components/ui/Spinner";
 import Image from "@/components/AppImage";
-import logo from "@/assets/images/orion-logotipo-claro.svg";
+import logo from "@/assets/images/dental_care_text_logo.svg";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";

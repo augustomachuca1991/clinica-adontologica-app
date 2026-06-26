@@ -6,7 +6,7 @@ import FooterLogin from "@/pages/login/components/FooterLogin";
 import { useTranslation } from "react-i18next";
 import LoadSending from "@/components/ui/LoadSending";
 import Image from "@/components/AppImage";
-import logo from "@/assets/images/orion-logotipo-claro.svg";
+import logo from "@/assets/images/dental_care_text_logo.svg";
 import { useAuthentication } from "@/hooks/AuthHooks";
 import { notifySuccess } from "@/utils/notifications";
 

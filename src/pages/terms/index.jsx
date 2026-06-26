@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/AppIcon";
 import Image from "@/components/AppImage";
-import logo from "@/assets/images/orion-logotipo-claro.svg";
+import logo from "@/assets/images/dental_care_text_logo.svg";
 
 const Terms = () => {
   const navigate = useNavigate();

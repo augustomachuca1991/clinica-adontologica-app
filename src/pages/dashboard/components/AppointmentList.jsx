@@ -1,4 +1,3 @@
-// pages/dashboard/components/AppointmentList.jsx
 import React, { memo } from "react";
 import AppointmentCard from "@/pages/dashboard/components/AppointmentCard";
 import AppointmentSkeleton from "@/pages/dashboard/components/AppointmentSkeleton";

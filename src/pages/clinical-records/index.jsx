@@ -22,7 +22,6 @@ const ClinicalRecords = () => {
     searchQuery: "",
     treatmentType: "all",
     status: "all",
-    provider: "all",
     dateFrom: "",
     dateTo: "",
   });
@@ -44,7 +43,6 @@ const ClinicalRecords = () => {
       searchQuery: "",
       treatmentType: "all",
       status: "all",
-      provider: "all",
       dateFrom: "",
       dateTo: "",
     });

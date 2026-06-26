@@ -1,4 +1,3 @@
-// pages/dashboard/components/RecentActivityList.jsx
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import RecentActivityItem from "@/pages/dashboard/components/RecentActivityItem";

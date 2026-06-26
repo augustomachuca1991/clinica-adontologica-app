@@ -24,7 +24,7 @@ export const useAppointments = () => {
         time: `${String(appointmentDate.getHours()).padStart(2, "0")}:${String(appointmentDate.getMinutes()).padStart(2, "0")}`,
         date: appointmentDate,
         duration: appt.duration_min,
-        status: appt.status || "confirmed",
+        status: (appt.status || "confirmed").replace(/-/g, "_"),
         priority: appt.priority || "medium",
         serviceId: appt.service_id,
         notes: appt.notes,

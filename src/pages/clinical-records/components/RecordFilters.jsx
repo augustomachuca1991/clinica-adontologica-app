@@ -1,38 +1,31 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Icon from "@/components/AppIcon";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
+import { useServices } from "@/hooks/ServiceCategoriesHooks";
 
 const RecordFilters = ({ filters, onFilterChange, onClearFilters }) => {
   const { t } = useTranslation();
+  const { categories } = useServices();
 
-  const treatmentTypeOptions = [
-    { value: "all", label: "All Treatments" },
-    { value: "preventive", label: "Preventive Care" },
-    { value: "restorative", label: "Restorative" },
-    { value: "endodontic", label: "Endodontic" },
-    { value: "periodontic", label: "Periodontic" },
-    { value: "orthodontic", label: "Orthodontic" },
-    { value: "prosthodontic", label: "Prosthodontic" },
-    { value: "oral-surgery", label: "Oral Surgery" },
-  ];
+  const treatmentTypeOptions = useMemo(() => {
+    const opts = [{ value: "all", label: t("records.panelFilter.treatmentTypeOptions.all") }];
+    if (categories?.length) {
+      categories.forEach((cat) => {
+        opts.push({ value: String(cat.id), label: cat.name });
+      });
+    }
+    return opts;
+  }, [categories, t]);
 
   const statusOptions = [
-    { value: "all", label: "All Status" },
-    { value: "completed", label: "Completed" },
-    { value: "in-progress", label: "In Progress" },
-    { value: "planned", label: "Planned" },
-    { value: "cancelled", label: "Cancelled" },
-  ];
-
-  const providerOptions = [
-    { value: "all", label: "All Providers" },
-    { value: "dr-johnson", label: "Dr. Sarah Johnson" },
-    { value: "dr-smith", label: "Dr. Michael Smith" },
-    { value: "dr-williams", label: "Dr. Emily Williams" },
-    { value: "dr-brown", label: "Dr. David Brown" },
+    { value: "all", label: t("records.panelFilter.treatmentStatusOptions.all") },
+    { value: "planned", label: t("records.panelFilter.treatmentStatusOptions.planned") },
+    { value: "inProgress", label: t("records.panelFilter.treatmentStatusOptions.inProgress") },
+    { value: "completed", label: t("records.panelFilter.treatmentStatusOptions.completed") },
+    { value: "cancelled", label: t("records.panelFilter.treatmentStatusOptions.cancelled") },
   ];
 
   return (
@@ -46,7 +39,7 @@ const RecordFilters = ({ filters, onFilterChange, onClearFilters }) => {
           {t("records.panelFilter.button.resetFilters")}
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Input
           type="search"
           label={t("records.panelFilter.searchPatientLabel")}
@@ -67,12 +60,6 @@ const RecordFilters = ({ filters, onFilterChange, onClearFilters }) => {
           options={statusOptions}
           value={filters?.status}
           onChange={(value) => onFilterChange("status", value)}
-        />
-        <Select
-          label={t("records.panelFilter.providerLabel")}
-          options={providerOptions}
-          value={filters?.provider}
-          onChange={(value) => onFilterChange("provider", value)}
         />
 
         <Input

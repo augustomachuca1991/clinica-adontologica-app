@@ -20,7 +20,7 @@ export const useGlobalClinicalRegistry = (filters) => {
           `
           *,
           patients (name, patient_id),
-          treatment_services (name),
+          treatment_services (name, category:service_categories(id, name)),
           providers (
             specialty,
             first_name,
@@ -55,6 +55,8 @@ export const useGlobalClinicalRegistry = (filters) => {
           patientName: item.patients?.name || "patient not found",
           patientId: item.patients?.patient_id || "N/A",
           treatmentName: item.treatment_services?.name || "treatment",
+          treatmentCategoryId: item.treatment_services?.category?.id ?? null,
+          treatmentCategoryName: item.treatment_services?.category?.name || null,
           formattedCost: formatCurrency(item.actual_cost),
           formattedDate: formatDateForUI(item.created_at),
           provider: providerName,
@@ -87,7 +89,7 @@ export const useGlobalClinicalRegistry = (filters) => {
         record.patientId?.toLowerCase().includes(searchLower) ||
         record.treatmentName?.toLowerCase().includes(searchLower);
 
-      const matchesType = filters.treatmentType === "all" || record.category === filters.treatmentType;
+      const matchesType = filters.treatmentType === "all" || String(record.treatmentCategoryId) === filters.treatmentType;
       const matchesStatus = filters.status === "all" || record.status === filters.status;
 
       return matchesSearch && matchesType && matchesStatus;
@@ -98,7 +100,7 @@ export const useGlobalClinicalRegistry = (filters) => {
     () => ({
       totalRecords: filteredRecords.length,
       completed: filteredRecords.filter((r) => r.status === "completed").length,
-      inProgress: filteredRecords.filter((r) => r.status === "in-progress" || r.status === "inProgress").length,
+      inProgress: filteredRecords.filter((r) => r.status === "in-progress" || r.status === "inProgress" || r.status === "in_progress").length,
       planned: filteredRecords.filter((r) => r.status === "planned").length,
     }),
     [filteredRecords]

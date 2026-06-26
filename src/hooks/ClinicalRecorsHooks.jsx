@@ -22,7 +22,7 @@ export const useClinicalRecords = () => {
 
       const stats = data.reduce(
         (acc, curr) => {
-          const key = curr.status === "in-progress" ? "inProgress" : curr.status;
+          const key = curr.status.replace(/-/g, "_") === "in_progress" ? "inProgress" : curr.status.replace(/-/g, "_");
           acc[key] = (acc[key] || 0) + 1;
           return acc;
         },

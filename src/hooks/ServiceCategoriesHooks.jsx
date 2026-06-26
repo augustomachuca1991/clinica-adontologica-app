@@ -1,5 +1,5 @@
 // src/hooks/ServiceCategoriesHooks.js
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
 export const useServices = () => {
@@ -23,6 +23,10 @@ export const useServices = () => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const createCategory = async ({ name, description }) => {
     setIsSubmitting(true);

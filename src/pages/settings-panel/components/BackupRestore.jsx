@@ -1,4 +1,3 @@
-// src/components/BackupRestore.jsx
 import React, { useState, useEffect } from "react";
 import Icon from "@/components/AppIcon";
 import Button from "@/components/ui/Button";
@@ -8,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useBackup, DATA_CATEGORIES } from "@/hooks/BackupHooks";
 import RestoreModal from "@/pages/settings-panel/components/RestoreModal";
 import DeleteBackupModal from "@/pages/settings-panel/components/DeleteBackupModal";
+import { notifySuccess, notifyError } from "@/utils/notifications";
 
 function formatDuration(ms) {
   if (!ms) return "-";
@@ -26,14 +26,8 @@ function formatDate(iso) {
 
 const BackupRestore = () => {
   const { t } = useTranslation();
-  const [backupFrequency, setBackupFrequency] = useState("daily");
-  const [retentionPeriod, setRetentionPeriod] = useState("30");
-
   const [showRestoreModal, setShowRestoreModal] = useState(false);
-
   const [backupToDelete, setBackupToDelete] = useState(null);
-
-  const [selectedCategories, setSelectedCategories] = useState(DATA_CATEGORIES.map((c) => c.id));
 
   const {
     createManualBackup,
@@ -51,15 +45,52 @@ const BackupRestore = () => {
     restoreSuccess,
     setRestoreSuccess,
     isDeleting,
+    config,
+    configLoading,
+    configError,
+    loadConfig,
+    saveConfig,
+    downloadFromStorage,
   } = useBackup();
 
-  // Cargar historial al montar
+  const [backupFrequency, setBackupFrequency] = useState("daily");
+  const [retentionPeriod, setRetentionPeriod] = useState("30");
+  const [selectedCategories, setSelectedCategories] = useState(DATA_CATEGORIES.map((c) => c.id));
+  const [savingConfig, setSavingConfig] = useState(false);
+
+  // Cargar config e historial al montar
   useEffect(() => {
     fetchBackupHistory();
-  }, [fetchBackupHistory]);
+    loadConfig();
+  }, [fetchBackupHistory, loadConfig]);
+
+  // Sincronizar estado local cuando se carga la config
+  useEffect(() => {
+    if (config) {
+      setBackupFrequency(config.frequency || "daily");
+      setRetentionPeriod(String(config.retention_days || 30));
+      setSelectedCategories(config.selected_categories || DATA_CATEGORIES.map((c) => c.id));
+    }
+  }, [config]);
 
   const lastBackup = backupHistory.find((b) => b.status === "completed");
   const lastBackupFormatted = lastBackup ? formatDate(lastBackup.created_at) : null;
+  const nextRunFormatted = config?.next_run ? formatDate(config.next_run) : null;
+
+  const handleSaveConfig = async () => {
+    setSavingConfig(true);
+    const result = await saveConfig({
+      frequency: backupFrequency,
+      retentionDays: retentionPeriod,
+      selectedCategories,
+    });
+    if (result.success) {
+      notifySuccess(t("backup.config.saved"));
+    } else {
+      notifyError(result.error || t("backup.config.saveError"));
+    }
+    setSavingConfig(false);
+  };
 
   const frequencyOptions = [
     { value: "hourly", label: t("backup.frequencies.hourly") },
@@ -130,9 +161,16 @@ const BackupRestore = () => {
               onChange={setRetentionPeriod}
               description={t("backup.config.retention_desc")}
             />
+            {configError && <p className="text-xs text-red-500">{configError}</p>}
             <div className="pt-2">
-              <Button variant="default" className="w-full" iconName="Save">
-                {t("backup.config.save_btn")}
+              <Button
+                variant="default"
+                className="w-full"
+                iconName="Save"
+                onClick={handleSaveConfig}
+                disabled={savingConfig || configLoading}
+              >
+                {savingConfig ? t("common.loading") : t("backup.config.save_btn")}
               </Button>
             </div>
           </div>
@@ -164,7 +202,9 @@ const BackupRestore = () => {
             </div>
             <div className="flex items-center justify-between py-2 border-b border-border">
               <span className="text-sm text-muted-foreground">{t("backup.status.next_scheduled")}</span>
-              <span className="text-sm font-medium text-foreground">-</span>
+              <span className="text-sm font-medium text-foreground">
+                {nextRunFormatted ? `${nextRunFormatted.date} ${nextRunFormatted.time}` : "-"}
+              </span>
             </div>
             <div className="flex items-center justify-between py-2">
               <span className="text-sm text-muted-foreground">{t("backup.status.total_backups")}</span>
@@ -317,7 +357,16 @@ const BackupRestore = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex gap-2">
-                          {isCompleted && <Button variant="ghost" size="icon" iconName="Download" />}
+                          {isCompleted && backup.storage_path ? (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              iconName="Download"
+                              onClick={() => downloadFromStorage(backup.storage_path)}
+                            />
+                          ) : isCompleted && !backup.storage_path ? (
+                            <Button variant="ghost" size="icon" iconName="Download" disabled />
+                          ) : null}
                           <Button
                             variant="ghost"
                             size="icon"

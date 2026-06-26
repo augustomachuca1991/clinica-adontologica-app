@@ -57,6 +57,31 @@ function getOrderedTables(selectedCategories) {
   return ORDERED_TABLES.filter((t) => selectedTables.has(t));
 }
 
+function calculateNextRun(frequency) {
+  const now = new Date();
+  switch (frequency) {
+    case "hourly":
+      now.setHours(now.getHours() + 1, 0, 0, 0);
+      break;
+    case "daily":
+      now.setDate(now.getDate() + 1);
+      now.setHours(2, 0, 0, 0);
+      break;
+    case "weekly":
+      now.setDate(now.getDate() + (7 - now.getDay()));
+      now.setHours(2, 0, 0, 0);
+      break;
+    case "monthly":
+      now.setMonth(now.getMonth() + 1, 1);
+      now.setHours(2, 0, 0, 0);
+      break;
+    default:
+      now.setDate(now.getDate() + 1);
+      now.setHours(2, 0, 0, 0);
+  }
+  return now.toISOString();
+}
+
 function formatSize(bytes) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -75,6 +100,10 @@ export const useBackup = () => {
   const [restoreSuccess, setRestoreSuccess] = useState(false);
 
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const [config, setConfig] = useState(null);
+  const [configLoading, setConfigLoading] = useState(false);
+  const [configError, setConfigError] = useState(null);
 
   const fetchBackupHistory = useCallback(async () => {
     setLoadingHistory(true);
@@ -263,6 +292,61 @@ export const useBackup = () => {
     return { success, errors, sizeBytes, duration };
   };
 
+  const loadConfig = useCallback(async () => {
+    setConfigLoading(true);
+    setConfigError(null);
+    const { data, error } = await supabase.from("backup_config").select("*").limit(1);
+    if (error) {
+      setConfigError(error.message);
+    } else {
+      setConfig(data?.[0] || null);
+    }
+    setConfigLoading(false);
+  }, []);
+
+  const saveConfig = useCallback(async (form) => {
+    setConfigError(null);
+    const payload = {
+      frequency: form.frequency,
+      retention_days: parseInt(form.retentionDays, 10),
+      selected_categories: form.selectedCategories,
+      next_run: calculateNextRun(form.frequency),
+      updated_at: new Date().toISOString(),
+    };
+
+    if (config?.id) {
+      const { error } = await supabase.from("backup_config").update(payload).eq("id", config.id);
+      if (error) {
+        setConfigError(error.message);
+        return { success: false, error: error.message };
+      }
+    } else {
+      const { data, error } = await supabase.from("backup_config").insert(payload).select().single();
+      if (error) {
+        setConfigError(error.message);
+        return { success: false, error: error.message };
+      }
+      setConfig(data);
+    }
+
+    await loadConfig();
+    return { success: true };
+  }, [config, loadConfig]);
+
+  const downloadFromStorage = useCallback(async (storagePath) => {
+    const { data, error } = await supabase.storage.from("backups").download(storagePath);
+    if (error) {
+      console.error("Error downloading backup:", error.message);
+      return;
+    }
+    const url = URL.createObjectURL(data);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = storagePath.split("/").pop();
+    a.click();
+    URL.revokeObjectURL(url);
+  }, []);
+
   const deleteBackupRecord = async (id) => {
     setIsDeleting(true);
     const { error } = await supabase.from("backup_history").delete().eq("id", id);
@@ -287,5 +371,11 @@ export const useBackup = () => {
     restoreSuccess,
     setRestoreSuccess,
     isDeleting,
+    config,
+    configLoading,
+    configError,
+    loadConfig,
+    saveConfig,
+    downloadFromStorage,
   };
 };

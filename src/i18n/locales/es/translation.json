@@ -1047,6 +1047,7 @@
   },
   "common": {
     "skipToContent": "Saltar al contenido",
+    "loading": "Cargando...",
     "cancel": "Cancelar",
     "edit": "Editar",
     "error": "Error",
@@ -1118,7 +1119,9 @@
       "id": "ID",
       "name": "Nombre",
       "description": "Descripción",
-      "patient": "Paciente"
+      "patient": "Paciente",
+      "automatic": "Automático",
+      "manual": "Manual"
     }
   },
   "roles": {
@@ -1229,7 +1232,9 @@
       "frequency_desc": "Qué tan seguido se crean las copias de seguridad",
       "retention_label": "Periodo de Retención",
       "retention_desc": "Cuánto tiempo se conservan los respaldos",
-      "save_btn": "Guardar Configuración"
+      "save_btn": "Guardar Configuración",
+      "saved": "Configuración guardada correctamente.",
+      "saveError": "Error al guardar la configuración."
     },
     "status": {
       "title": "Estado del Respaldo",

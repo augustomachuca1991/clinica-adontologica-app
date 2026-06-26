@@ -1049,6 +1049,7 @@
   },
   "common": {
     "skipToContent": "Skip to content",
+    "loading": "Loading...",
     "cancel": "Cancel",
     "edit": "Edit",
     "error": "Error",
@@ -1121,7 +1122,9 @@
       "id": "ID",
       "name": "Name",
       "description": "Description",
-      "patient": "Patient"
+      "patient": "Patient",
+      "automatic": "Automatic",
+      "manual": "Manual"
     }
   },
   "roles": {
@@ -1232,7 +1235,9 @@
       "frequency_desc": "How often backups are created",
       "retention_label": "Retention Period",
       "retention_desc": "How long backups are kept",
-      "save_btn": "Save Configuration"
+      "save_btn": "Save Configuration",
+      "saved": "Configuration saved successfully.",
+      "saveError": "Error saving configuration."
     },
     "status": {
       "title": "Backup Status",

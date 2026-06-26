@@ -53,7 +53,7 @@ const AdminPanel = () => {
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6 fade-in-up">
       <header>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{t("admin.header.title")}</h1>
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">{t("admin.header.title")}</h1>
         <p className="text-muted-foreground text-sm mt-0.5">{t("admin.header.subtitle")}</p>
       </header>
 

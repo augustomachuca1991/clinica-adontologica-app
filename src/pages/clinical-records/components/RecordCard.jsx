@@ -58,10 +58,10 @@ const RecordCard = ({ record, onViewDetails, onAddNote }) => {
 
   return (
     <div className="bg-card border border-border rounded-lg shadow-clinical-sm hover:shadow-clinical-md transition-all duration-base overflow-hidden h-fit">
-      <div className="p-4 md:p-6">
+      <div className="p-4 md:p-5">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-start gap-3 flex-1 min-w-0">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <Icon
                 name={getTreatmentIcon(record?.treatmentType)}
                 size={20}

@@ -106,8 +106,8 @@ const ToothChart = ({ selectedTeeth, onToothSelect, treatments }) => {
           </div>
         </div>
       </div>
-      <div className="bg-card border border-border rounded-lg p-4 md:p-6 lg:p-8">
-        <div className="space-y-6 md:space-y-8">
+      <div className="bg-card border border-border rounded-lg p-4 md:p-5 lg:p-8">
+        <div className="space-y-6">
           <div>
             <div className="text-xs md:text-sm text-muted-foreground mb-2 text-center">{t("treatment.upperJaw")}</div>
             <div className="flex justify-center gap-1 md:gap-2">

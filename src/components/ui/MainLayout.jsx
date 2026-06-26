@@ -25,12 +25,12 @@ const MainLayout = () => {
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={handleSidebarToggle} />
 
       <div
-        className={`transition-all duration-slow ${sidebarCollapsed ? "lg:ml-20" : "lg:ml-64"}`}
+        className={`transition-all duration-slow ${sidebarCollapsed ? "lg:ml-16" : "lg:ml-56"}`}
       >
         <Header sidebarCollapsed={sidebarCollapsed} />
 
-        <main id="main-content" tabIndex={-1} className="pt-16 focus:outline-none">
-          <div className="container mx-auto px-6 py-8">
+        <main id="main-content" tabIndex={-1} className="pt-14 focus:outline-none">
+          <div className="container mx-auto px-6 py-6">
             <Breadcrumbs />
             <Outlet />
           </div>

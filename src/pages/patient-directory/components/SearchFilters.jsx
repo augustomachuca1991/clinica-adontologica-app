@@ -65,7 +65,7 @@ const SearchFilters = ({ filters, onFilterChange, onReset, onSearch }) => {
   return (
     <div className="clinical-card p-4 md:p-5 lg:p-6 mb-6">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
-        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+        <h2 className="text-base md:text-lg font-headline font-semibold text-foreground">
           {t("directory.panelFilter.title")}
         </h2>
         <Button variant="outline" size="sm" onClick={onReset} iconName="RotateCcw" iconPosition="left">

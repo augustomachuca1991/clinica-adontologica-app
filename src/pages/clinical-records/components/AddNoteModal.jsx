@@ -34,7 +34,7 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
       <div className="bg-card border border-border rounded-lg shadow-clinical-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-card border-b border-border px-6 py-4 flex items-center justify-between">
           <div>
-            <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+            <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">
               {t("records.recordsModal.tabs.clinicalNotes.addClinicalNote")}
             </h3>
             <p className="text-sm text-muted-foreground mt-1">

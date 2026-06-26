@@ -48,13 +48,13 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="space-y-6 md:space-y-8">
+      <div className="space-y-6">
         <GracePeriodBanner />
 
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-1.5">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-headline font-bold text-foreground mb-1.5">
               {t("home.welcome", { name: fullname })}
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">{t("home.overview")}</p>
@@ -63,7 +63,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left column */}
           <div className="lg:col-span-2 space-y-6">
             <SectionCard

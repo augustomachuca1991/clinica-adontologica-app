@@ -26,7 +26,7 @@ const PatientHeader = ({ patient, onEdit, onSchedule, onMessage }) => {
   };
 
   return (
-    <div className="bg-card rounded-lg shadow-clinical-md border border-border p-4 md:p-6 lg:p-8 mb-6 md:mb-8">
+    <div className="bg-card rounded-lg shadow-clinical-md border border-border p-4 md:p-5 lg:p-8 mb-6 md:mb-8">
       <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
         <div className="flex-shrink-0">
           <div className="relative w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40">
@@ -45,7 +45,7 @@ const PatientHeader = ({ patient, onEdit, onSchedule, onMessage }) => {
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4 mb-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 md:gap-3 mb-2">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-semibold text-foreground truncate capitalize">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-headline font-semibold text-foreground truncate capitalize">
                   {patient?.name}
                 </h1>
                 <span

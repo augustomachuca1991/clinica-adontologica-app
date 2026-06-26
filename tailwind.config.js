@@ -69,10 +69,14 @@ module.exports = {
         },
       },
       fontFamily: {
-        headline: ["Inter", "sans-serif"],
-        body: ["Source Sans 3", "sans-serif"],
+        headline: ["Satoshi", "Inter", "sans-serif"],
+        body: ["Satoshi", "Source Sans 3", "sans-serif"],
         accent: ["JetBrains Mono", "monospace"],
-        sans: ["Source Sans 3", "sans-serif"],
+        sans: ["Satoshi", "Inter", "sans-serif"],
+      },
+      letterSpacing: {
+        cyber: "0.08em",
+        chip: "0.04em",
       },
       fontSize: {
         "responsive-sm": "clamp(0.875rem, 2vw, 1rem)",

@@ -152,10 +152,12 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
         className={cn(
           "fixed top-0 left-0 h-full transition-all duration-700 ease-in-out z-40",
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
-          isCollapsed ? "w-20" : "w-64"
+          isCollapsed ? "w-16" : "w-56"
         )}
         style={{
-          background: "rgba(255, 255, 255, 0.02)",
+          background: "rgba(13, 92, 99, 0.94)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
           borderRight: "1px solid rgba(255, 255, 255, 0.12)",
           borderRadius: "0 16px 16px 0",
           boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
@@ -163,13 +165,13 @@ const Sidebar = ({ isCollapsed = false, onToggle }) => {
       >
         {/* HEADER */}
         <div
-          className="relative flex items-center justify-center h-14 cursor-pointer"
+          className="relative flex items-center justify-center h-12 cursor-pointer"
           onClick={handleHomeClick}
           role="button"
           aria-label="Ir al inicio"
           style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}
         >
-          <Image src={isCollapsed ? logoIsotipo : logo} alt={`${APP_NAME} Logo`} className="h-12 w-auto" />
+          <Image src={isCollapsed ? logoIsotipo : logo} alt={`${APP_NAME} Logo`} className="h-10 w-auto" />
 
           {/* Botón X dentro del header, solo en mobile cuando está abierto */}
           <button

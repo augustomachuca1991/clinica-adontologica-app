@@ -53,12 +53,12 @@ const TimelineView = ({ records }) => {
   return (
     <div className="relative">
       <div className="absolute left-4 md:left-6 top-0 bottom-0 w-0.5 bg-border" />
-      <div className="space-y-6 md:space-y-8">
+      <div className="space-y-6">
         {records?.map((record, index) => (
           <div key={record?.id} className="relative pl-12 md:pl-16 fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
             <div className={`absolute left-2.5 md:left-4 top-2 w-4 h-4 rounded-full border-2 ${getStatusColor(record?.status)}`} />
 
-            <div className="bg-card border border-border rounded-lg p-4 md:p-6 shadow-clinical-sm hover:shadow-clinical-md transition-all duration-base">
+            <div className="bg-card border border-border rounded-lg p-4 md:p-5 shadow-clinical-sm hover:shadow-clinical-md transition-all duration-base">
               <div className="flex items-start justify-between gap-4 mb-3">
                 <div className="flex items-start gap-3 flex-1 min-w-0">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">

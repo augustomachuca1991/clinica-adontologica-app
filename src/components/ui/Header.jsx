@@ -53,8 +53,8 @@ const Header = ({ sidebarCollapsed = false }) => {
 
   return (
     <header
-      className={`fixed top-0 right-0 h-16 z-30 transition-all duration-slow ${
-        sidebarCollapsed ? "left-20" : "left-0 lg:left-64"
+      className={`fixed top-0 right-0 h-14 z-30 transition-all duration-slow ${
+        sidebarCollapsed ? "left-16" : "left-0 lg:left-56"
       }`}
       style={{
         background: "rgba(255, 255, 255, 0.02)",
@@ -63,7 +63,7 @@ const Header = ({ sidebarCollapsed = false }) => {
         borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
       }}
     >
-      <div className="h-full flex items-center justify-between px-6">
+      <div className="h-full flex items-center justify-between px-4">
         <div className="flex items-center gap-4 flex-1 max-w-2xl"></div>
         <div className="flex items-center gap-3">
           <LanguageSwitch />
@@ -73,7 +73,7 @@ const Header = ({ sidebarCollapsed = false }) => {
               className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg transition-colors duration-base"
               style={{ background: "rgba(255,255,255,0.04)" }}
             >
-              <div className="relative w-8 h-8 bg-muted rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="relative w-7 h-7 bg-muted rounded-full flex items-center justify-center flex-shrink-0">
                 <Icon name="User" size={16} color="var(--color-primary)" />
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-success rounded-full border-2" style={{ borderColor: "rgba(13,92,99,0.8)" }} />
               </div>
@@ -86,9 +86,9 @@ const Header = ({ sidebarCollapsed = false }) => {
 
             {showUserMenu && (
               <div
-                className="absolute right-0 top-full mt-2 w-56 overflow-hidden z-50"
+                className="absolute right-0 top-full mt-2 w-52 overflow-hidden z-50"
                 style={{
-                  background: "rgba(255, 255, 255, 0.06)",
+                  background: "rgba(13, 92, 99, 0.96)",
                   backdropFilter: "blur(16px)",
                   WebkitBackdropFilter: "blur(16px)",
                   border: "1px solid rgba(255, 255, 255, 0.15)",

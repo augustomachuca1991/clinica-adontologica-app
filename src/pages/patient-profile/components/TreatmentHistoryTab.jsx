@@ -26,12 +26,12 @@ const TreatmentHistoryTab = ({ treatments, loading }) => {
       <div className="relative pl-6 md:pl-8">
         {treatments?.map((treatment, index) => (
           <div key={index} className="timeline-item relative pb-6 md:pb-8 last:pb-0">
-            <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
+            <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
               <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground mb-2">{treatment?.procedure}</h3>
+                      <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-2">{treatment?.procedure}</h3>
                       <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-3">
                         <span className={`status-indicator ${getStatusColor(treatment?.status)} text-xs md:text-sm`}>
                           {treatment?.status}
@@ -42,7 +42,7 @@ const TreatmentHistoryTab = ({ treatments, loading }) => {
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="text-lg md:text-xl font-semibold text-foreground whitespace-nowrap">
+                      <p className="text-base md:text-lg font-semibold text-foreground whitespace-nowrap">
                         ${treatment?.cost?.toLocaleString()}
                       </p>
                       <p className="text-xs md:text-sm text-muted-foreground">{t("profile.tabs.treatmentHistory.section.treatmentCost")}</p>

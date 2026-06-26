@@ -120,7 +120,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
       <div className="bg-card border border-border rounded-lg shadow-clinical-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         <div className="bg-card border-b border-border px-6 py-4 flex items-center justify-between flex-shrink-0">
           <div>
-            <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">{record?.treatmentName}</h3>
+            <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">{record?.treatmentName}</h3>
             <p className="text-sm text-muted-foreground mt-1">
               {record?.patientName} • ID: {record?.patientId}
             </p>

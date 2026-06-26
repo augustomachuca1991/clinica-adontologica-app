@@ -109,11 +109,11 @@ export default function ClinicalNotesPage({ providerId }) {
   const detailNote = useMemo(() => notes.find((n) => n.id === detailNoteId) ?? null, [notes, detailNoteId]);
 
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-6">
       {/* ── Header ── */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-headline font-bold text-foreground mb-2">
             {t("clinicalNotes.title")}
           </h1>
           <p className="text-sm md:text-base text-muted-foreground">{t("clinicalNotes.subtitle")}</p>
@@ -134,10 +134,10 @@ export default function ClinicalNotesPage({ providerId }) {
       <NotesFilters search={filters.search} type={filters.type} privacy={filters.privacy} onChange={handleFilter} />
 
       {/* ── Lista ── */}
-      <div className="bg-card border border-border rounded-lg p-4 md:p-6 shadow-clinical-sm">
+      <div className="bg-card border border-border rounded-lg p-4 md:p-5 shadow-clinical-sm">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+            <h2 className="text-base md:text-lg font-headline font-semibold text-foreground">
               {t("clinicalNotes.listTitle")}
             </h2>
             <p className="text-sm text-muted-foreground mt-1">{t("clinicalNotes.count", { count: filtered.length })}</p>

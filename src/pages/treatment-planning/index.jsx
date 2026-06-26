@@ -213,10 +213,10 @@ const TreatmentPlanning = () => {
 
   return (
     <>
-      <div className="space-y-6 md:space-y-8">
+      <div className="space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">{t("treatment.title")}</h1>
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-headline font-bold text-foreground mb-2">{t("treatment.title")}</h1>
             <p className="text-sm md:text-base text-muted-foreground">{t("treatment.subtitle")}</p>
           </div>
 
@@ -236,7 +236,7 @@ const TreatmentPlanning = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-lg p-4 md:p-6">
+        <div className="bg-card border border-border rounded-lg p-4 md:p-5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div className="flex-1 max-w-md">
               <Select
@@ -305,14 +305,14 @@ const TreatmentPlanning = () => {
 
         {/* {showComparison && <TreatmentPlanComparison plans={treatmentPlans} onSelectPlan={handleSelectPlan} selectedPlanId={selectedPlanId} />} */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="space-y-6">
             <div className={editingTreatment ? "opacity-50 pointer-events-none transition-opacity" : "transition-opacity"}>
               <ToothChart selectedTeeth={selectedTeeth} onToothSelect={handleToothSelect} treatments={allTreatments} />
             </div>
 
             {(showTreatmentForm || editingTreatment) && (
-              <div className="bg-card border border-border rounded-lg p-4 md:p-6">
+              <div className="bg-card border border-border rounded-lg p-4 md:p-5">
                 <h3 className="text-base md:text-lg font-headline font-semibold text-foreground mb-4">
                   {editingTreatment ? t("treatment.editTreatment") : t("treatment.addTreatment")}
                 </h3>
@@ -347,7 +347,7 @@ const TreatmentPlanning = () => {
         <InsuranceVerification patientInsurance={patientInsurance} onVerify={handleInsuranceVerify} />
 
         {insuranceVerified && treatments?.length > 0 && (
-          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 md:p-6">
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 md:p-5">
             <div className="flex items-start gap-3">
               <Icon name="CheckCircle2" size={24} className="text-success flex-shrink-0 mt-1" />
               <div className="flex-1">

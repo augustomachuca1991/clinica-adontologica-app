@@ -86,7 +86,7 @@ const UserManagementCard = () => {
 
       {/* Formulario de Nuevo Usuario */}
       {showAddUser && (
-        <div className="bg-muted/50 border border-border rounded-lg p-4 md:p-6 space-y-4">
+        <div className="bg-muted/50 border border-border rounded-lg p-4 md:p-5 space-y-4">
           <div className="flex items-center justify-between">
             <h4 className="font-headline font-semibold text-base text-foreground">{t("users.form_title")}</h4>
             <Button variant="ghost" size="icon" iconName="X" onClick={() => setShowAddUser(false)} />
@@ -174,7 +174,7 @@ const UserManagementCard = () => {
                   <Image
                     src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.full_name || "")}&background=b97beb&color=fff`}
                     alt={user?.full_name || "User avatar"}
-                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover flex-shrink-0"
+                    className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">

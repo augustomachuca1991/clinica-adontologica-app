@@ -452,7 +452,7 @@ const PatientProfile = () => {
   };
 
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-6">
       {/* 1. ESTADO: CARGANDO */}
       {isPageLoading && id ? (
         <div className="flex flex-col items-center justify-center min-h-[40vh] animate-pulse">
@@ -523,7 +523,7 @@ const PatientProfile = () => {
               </nav>
             </div>
 
-            <div className="p-4 md:p-6 lg:p-8">{renderTabContent()}</div>
+            <div className="p-4 md:p-5 lg:p-8">{renderTabContent()}</div>
           </div>
         </div>
       )}

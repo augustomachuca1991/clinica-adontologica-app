@@ -144,7 +144,7 @@ const PatientDirectory = () => {
         </div>
         <Skeleton className="h-12 w-full rounded-lg" />
         {view === "grid" ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
             {Array.from({ length: 4 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
@@ -161,7 +161,7 @@ const PatientDirectory = () => {
       <div className="mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-headline font-bold text-foreground mb-2">
               {t("directory.title")}
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">{t("directory.subtitle")}</p>
@@ -193,7 +193,7 @@ const PatientDirectory = () => {
         </div>
 
         {view === "grid" ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
             {paginatedPatients?.map((patient) => (
               <PatientCard key={patient?.id} patient={patient} onQuickAction={handleQuickAction} />
             ))}

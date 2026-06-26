@@ -52,12 +52,12 @@ const CommunicationsTab = ({ communications }) => {
 
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="Send" size={20} color="var(--color-primary)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Send New Message</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Send New Message</h3>
         </div>
 
         <div className="space-y-4">
@@ -92,12 +92,12 @@ const CommunicationsTab = ({ communications }) => {
           </div>
         </div>
       </div>
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="MessageCircle" size={20} color="var(--color-secondary)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Communication History</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Communication History</h3>
         </div>
 
         <div className="space-y-3 md:space-y-4">
@@ -147,12 +147,12 @@ const CommunicationsTab = ({ communications }) => {
           ))}
         </div>
       </div>
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-warning/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="Bell" size={20} color="var(--color-warning)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Upcoming Reminders</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Upcoming Reminders</h3>
         </div>
 
         <div className="space-y-3">

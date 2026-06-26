@@ -25,9 +25,9 @@ const BillingTab = ({ billingInfo }) => {
   return (
     <div className="space-y-4 md:space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
+        <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-error/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-error/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <Icon name="DollarSign" size={20} color="var(--color-error)" />
             </div>
             <p className="text-sm text-muted-foreground">Outstanding Balance</p>
@@ -35,9 +35,9 @@ const BillingTab = ({ billingInfo }) => {
           <p className="text-2xl md:text-3xl font-headline font-bold text-foreground">${totalBalance?.toLocaleString()}</p>
         </div>
 
-        <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
+        <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <Icon name="CheckCircle" size={20} color="var(--color-success)" />
             </div>
             <p className="text-sm text-muted-foreground">Total Paid</p>
@@ -45,9 +45,9 @@ const BillingTab = ({ billingInfo }) => {
           <p className="text-2xl md:text-3xl font-headline font-bold text-foreground">${totalPaid?.toLocaleString()}</p>
         </div>
 
-        <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
+        <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <Icon name="CreditCard" size={20} color="var(--color-primary)" />
             </div>
             <p className="text-sm text-muted-foreground">Total Billed</p>
@@ -55,9 +55,9 @@ const BillingTab = ({ billingInfo }) => {
           <p className="text-2xl md:text-3xl font-headline font-bold text-foreground">${totalAmount?.toLocaleString()}</p>
         </div>
 
-        <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
+        <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <Icon name="FileText" size={20} color="var(--color-secondary)" />
             </div>
             <p className="text-sm text-muted-foreground">Total Invoices</p>
@@ -65,13 +65,13 @@ const BillingTab = ({ billingInfo }) => {
           <p className="text-2xl md:text-3xl font-headline font-bold text-foreground">{billingInfo?.invoices?.length}</p>
         </div>
       </div>
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 md:mb-6">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <Icon name="Receipt" size={20} color="var(--color-primary)" />
             </div>
-            <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Invoice History</h3>
+            <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Invoice History</h3>
           </div>
           <Button variant="outline" size="sm" iconName="Download" iconPosition="left">
             Export All
@@ -134,12 +134,12 @@ const BillingTab = ({ billingInfo }) => {
           </table>
         </div>
       </div>
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="CreditCard" size={20} color="var(--color-secondary)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Payment Methods</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Payment Methods</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">

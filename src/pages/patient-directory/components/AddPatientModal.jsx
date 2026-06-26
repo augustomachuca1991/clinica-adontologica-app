@@ -400,7 +400,7 @@ const AddPatientModal = ({ isOpen, onClose, onSave }) => {
   const isLastStep = step === stepsConfig.length - 1;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 md:p-6">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 md:p-5">
       <div className="bg-card rounded-2xl shadow-xl w-full max-w-2xl flex flex-col max-h-[92vh] border border-border overflow-hidden">
         <form onSubmit={formik.handleSubmit} className="flex flex-col h-full overflow-hidden">
           {/* HEADER */}

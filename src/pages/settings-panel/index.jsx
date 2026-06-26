@@ -117,7 +117,7 @@ const SettingsPanel = () => {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-headline font-bold text-foreground mb-2">
             {t("settings.header.title")}
           </h1>
           <p className="text-sm md:text-base text-muted-foreground">{t("settings.header.subtitle")}</p>
@@ -163,14 +163,14 @@ const SettingsPanel = () => {
         </div>
 
         {/* Tab Content Header & Body */}
-        <div className="p-4 md:p-6">
+        <div className="p-4 md:p-5">
           <div className="mb-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                 <Icon name={currentTab.icon || "Settings"} size={20} color="var(--color-primary)" />
               </div>
               <div>
-                <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{currentTab.label}</h2>
+                <h2 className="text-base md:text-lg font-headline font-semibold text-foreground">{currentTab.label}</h2>
                 <p className="text-xs md:text-sm text-muted-foreground">{currentTab.description}</p>
               </div>
             </div>

@@ -10,8 +10,8 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self';
         script-src 'self' 'unsafe-inline';
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-        font-src 'self' https://fonts.gstatic.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com;
+        font-src 'self' https://fonts.gstatic.com https://api.fontshare.com https://cdn.fontshare.com;
         connect-src 'self' https://itbgzglbjbiyljibchdf.supabase.co wss://itbgzglbjbiyljibchdf.supabase.co https://fonts.googleapis.com;
         img-src 'self' data: https://ui-avatars.com https://itbgzglbjbiyljibchdf.supabase.co;
         frame-src 'none';
@@ -19,16 +19,17 @@
         base-uri 'self';
         form-action 'self';"
     />
+    <link rel="preconnect" href="https://api.fontshare.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Sans+3:wght@400;500&family=JetBrains+Mono:wght@400&display=swap"
+      href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Sans+3:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" />
+      <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&display=swap" />
     </noscript>
     <!-- Favicon -->
     <link rel="icon" href="/favicon/favicon.ico" sizes="any" />

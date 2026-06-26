@@ -17,12 +17,12 @@ const MedicalHistoryTab = ({ medicalHistory }) => {
 
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-error/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-error/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="AlertTriangle" size={20} color="var(--color-error)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Allergies & Sensitivities</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Allergies & Sensitivities</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {medicalHistory?.allergies?.map((allergy, index) => (
@@ -39,12 +39,12 @@ const MedicalHistoryTab = ({ medicalHistory }) => {
           ))}
         </div>
       </div>
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-warning/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="Activity" size={20} color="var(--color-warning)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Medical Conditions</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Medical Conditions</h3>
         </div>
         <div className="space-y-3 md:space-y-4">
           {medicalHistory?.conditions?.map((condition, index) => (
@@ -76,12 +76,12 @@ const MedicalHistoryTab = ({ medicalHistory }) => {
           ))}
         </div>
       </div>
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="Pill" size={20} color="var(--color-primary)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Current Medications</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Current Medications</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {medicalHistory?.medications?.map((medication, index) => (
@@ -101,12 +101,12 @@ const MedicalHistoryTab = ({ medicalHistory }) => {
           ))}
         </div>
       </div>
-      <div className="bg-card rounded-lg border border-border p-4 md:p-6 clinical-card">
-        <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="bg-card rounded-lg border border-border p-4 md:p-5 clinical-card">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="Stethoscope" size={20} color="var(--color-secondary)" />
           </div>
-          <h3 className="text-lg md:text-xl font-headline font-semibold text-foreground">Previous Surgeries</h3>
+          <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">Previous Surgeries</h3>
         </div>
         <div className="space-y-3 md:space-y-4">
           {medicalHistory?.surgeries?.map((surgery, index) => (

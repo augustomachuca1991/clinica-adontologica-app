@@ -42,28 +42,28 @@ const PatientPresentationMode = ({ treatmentPlan, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-background z-50 flex flex-col">
-      <div className="flex items-center justify-between p-4 md:p-6 border-b border-border bg-card">
-        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">Treatment Plan Presentation</h2>
+      <div className="flex items-center justify-between p-4 md:p-5 border-b border-border bg-card">
+        <h2 className="text-base md:text-lg font-headline font-semibold text-foreground">Treatment Plan Presentation</h2>
         <Button variant="ghost" size="icon" onClick={onClose} iconName="X" aria-label="Close presentation" />
       </div>
       <div className="flex-1 flex items-center justify-center p-4 md:p-8">
         <div className="max-w-4xl w-full">
           <div className="bg-card border border-border rounded-lg p-6 md:p-12 shadow-clinical-xl">
-            <div className="text-center space-y-6 md:space-y-8">
+            <div className="text-center space-y-6">
               <div className="flex justify-center">
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center">
                   <Icon name={slides?.[currentSlide]?.icon} size={32} color="var(--color-primary)" />
                 </div>
               </div>
 
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground">{slides?.[currentSlide]?.title}</h3>
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-headline font-bold text-foreground">{slides?.[currentSlide]?.title}</h3>
 
               <p className="text-base md:text-lg lg:text-xl text-muted-foreground whitespace-pre-line max-w-2xl mx-auto">
                 {slides?.[currentSlide]?.content}
               </p>
 
               {currentSlide === slides?.length - 1 && (
-                <div className="bg-muted/50 rounded-lg p-4 md:p-6 space-y-3">
+                <div className="bg-muted/50 rounded-lg p-4 md:p-5 space-y-3">
                   <div className="flex items-center justify-between text-sm md:text-base">
                     <span className="text-muted-foreground">Total Cost</span>
                     <span className="font-semibold text-foreground">${treatmentPlan?.totalCost?.toLocaleString()}</span>

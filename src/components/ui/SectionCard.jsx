@@ -15,9 +15,9 @@ import Button from "@/components/ui/Button";
  */
 const SectionCard = memo(({ title, actionLabel, actionIcon, onAction, children, className = "" }) => {
   return (
-    <div className={`clinical-card p-4 md:p-6 ${className}`}>
-      <div className="flex items-center justify-between mb-4 md:mb-6">
-        <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">{title}</h2>
+    <div className={`clinical-card p-4 md:p-5 ${className}`}>
+      <div className="flex items-center justify-between mb-4 md:mb-5">
+        <h2 className="text-base md:text-lg font-headline font-semibold text-foreground">{title}</h2>
         {actionLabel && onAction && (
           <Button
             variant="ghost"

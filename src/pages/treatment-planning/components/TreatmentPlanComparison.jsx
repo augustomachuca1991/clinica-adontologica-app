@@ -24,7 +24,7 @@ const TreatmentPlanComparison = ({ plans, onSelectPlan, selectedPlanId }) => {
                 : "border-border hover:border-primary/50 hover:shadow-clinical-md"
             }`}
           >
-            <div className={`p-4 md:p-6 ${plan?.recommended ? "bg-primary/5" : "bg-muted/30"}`}>
+            <div className={`p-4 md:p-5 ${plan?.recommended ? "bg-primary/5" : "bg-muted/30"}`}>
               <div className="flex items-start justify-between mb-2">
                 <h4 className="text-base md:text-lg font-headline font-semibold text-foreground">{plan?.name}</h4>
                 {plan?.recommended && (
@@ -34,7 +34,7 @@ const TreatmentPlanComparison = ({ plans, onSelectPlan, selectedPlanId }) => {
               <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{plan?.description}</p>
             </div>
 
-            <div className="p-4 md:p-6 space-y-4">
+            <div className="p-4 md:p-5 space-y-4">
               <div>
                 <div className="text-2xl md:text-3xl font-headline font-bold text-foreground">${plan?.totalCost?.toLocaleString()}</div>
                 <div className="text-xs md:text-sm text-muted-foreground mt-1">{plan?.duration} treatment duration</div>

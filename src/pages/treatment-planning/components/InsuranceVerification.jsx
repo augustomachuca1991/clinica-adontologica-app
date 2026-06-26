@@ -42,7 +42,7 @@ const InsuranceVerification = ({ patientInsurance, onVerify }) => {
           </span>
         )}
       </div>
-      <div className="bg-card border border-border rounded-lg p-4 md:p-6 space-y-4">
+      <div className="bg-card border border-border rounded-lg p-4 md:p-5 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input label="Insurance Provider" type="text" value={patientInsurance?.provider} disabled />
           <Input label="Policy Number" type="text" value={patientInsurance?.policyNumber} disabled />
@@ -70,19 +70,19 @@ const InsuranceVerification = ({ patientInsurance, onVerify }) => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               <div className="bg-muted/50 rounded-lg p-3">
                 <div className="text-xs text-muted-foreground mb-1">Coverage</div>
-                <div className="text-lg md:text-xl font-headline font-bold text-foreground">{verificationResult?.coveragePercentage}%</div>
+                <div className="text-base md:text-lg font-headline font-bold text-foreground">{verificationResult?.coveragePercentage}%</div>
               </div>
               <div className="bg-muted/50 rounded-lg p-3">
                 <div className="text-xs text-muted-foreground mb-1">Annual Max</div>
-                <div className="text-lg md:text-xl font-headline font-bold text-foreground">${verificationResult?.annualMaximum}</div>
+                <div className="text-base md:text-lg font-headline font-bold text-foreground">${verificationResult?.annualMaximum}</div>
               </div>
               <div className="bg-muted/50 rounded-lg p-3">
                 <div className="text-xs text-muted-foreground mb-1">Remaining</div>
-                <div className="text-lg md:text-xl font-headline font-bold text-primary">${verificationResult?.remainingBenefit}</div>
+                <div className="text-base md:text-lg font-headline font-bold text-primary">${verificationResult?.remainingBenefit}</div>
               </div>
               <div className="bg-muted/50 rounded-lg p-3">
                 <div className="text-xs text-muted-foreground mb-1">Deductible</div>
-                <div className="text-lg md:text-xl font-headline font-bold text-foreground">
+                <div className="text-base md:text-lg font-headline font-bold text-foreground">
                   ${verificationResult?.deductibleMet}/${verificationResult?.deductible}
                 </div>
               </div>

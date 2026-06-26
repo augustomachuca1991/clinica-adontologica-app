@@ -29,8 +29,8 @@ const RecordFilters = ({ filters, onFilterChange, onClearFilters }) => {
   ];
 
   return (
-    <div className="bg-card border border-border rounded-lg p-4 md:p-6 shadow-clinical-sm">
-      <div className="flex items-center justify-between mb-4 md:mb-6">
+    <div className="bg-card border border-border rounded-lg p-4 md:p-5 shadow-clinical-sm">
+      <div className="flex items-center justify-between mb-4">
         <h3 className="text-base md:text-lg font-headline font-semibold text-foreground flex items-center gap-2">
           <Icon name="Filter" size={20} color="var(--color-primary)" />
           {t("records.panelFilter.title")}

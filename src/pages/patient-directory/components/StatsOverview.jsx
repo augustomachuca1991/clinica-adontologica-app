@@ -36,11 +36,11 @@ const StatsOverview = ({ stats }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-6">
       {statCards?.map((stat, index) => (
         <div key={index} className="clinical-card p-4 md:p-5 lg:p-6 fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
           <div className="flex items-start justify-between mb-3">
-            <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg ${stat?.bgColor} flex items-center justify-center`}>
+            <div className={`w-10 h-10 rounded-lg ${stat?.bgColor} flex items-center justify-center`}>
               <Icon name={stat?.icon} size={20} className={stat?.color} />
             </div>
           </div>

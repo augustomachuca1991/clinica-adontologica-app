@@ -83,10 +83,10 @@ const ClinicalRecords = () => {
 
   return (
     <>
-      <div className="space-y-6 md:space-y-8">
+      <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-headline font-bold text-foreground mb-2">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-headline font-bold text-foreground mb-2">
               {t("records.title")}
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">{t("records.subtitle")}</p>
@@ -118,10 +118,10 @@ const ClinicalRecords = () => {
 
         <RecordFilters filters={filters} onFilterChange={handleFilterChange} onClearFilters={handleClearFilters} />
 
-        <div className="bg-card border border-border rounded-lg p-4 md:p-6 shadow-clinical-sm">
+        <div className="bg-card border border-border rounded-lg p-4 md:p-5 shadow-clinical-sm">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg md:text-xl font-headline font-semibold text-foreground">
+              <h2 className="text-base md:text-lg font-headline font-semibold text-foreground">
                 {t("records.treatmentHistoryList.title")}
               </h2>
               <p className="text-sm text-muted-foreground mt-1">

@@ -183,9 +183,7 @@ const PatientCard = memo(({ patient, onQuickAction }) => {
         <div className="px-4 md:px-5 pb-4 md:pb-5 mt-auto">
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/40 border border-border/60">
             <Icon name="CalendarOff" size={13} className="text-muted-foreground/50 flex-shrink-0" />
-            <span className="text-xs text-muted-foreground/60">
-              {t("noAppointmentScheduled") ?? "Sin próxima cita"}
-            </span>
+            <span className="text-xs text-muted-foreground/60">{t("patientCard.noAppointmentScheduled")}</span>
           </div>
         </div>
       )}

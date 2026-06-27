@@ -292,7 +292,8 @@
       "active": "Active",
       "inactive": "Inactive"
     },
-    "dob": "DOB"
+    "dob": "DOB",
+    "noAppointmentScheduled": "No upcoming appointment"
   },
   "patientTable": {
     "noPatients": "No patients found",

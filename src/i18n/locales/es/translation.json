@@ -292,7 +292,8 @@
       "active": "Activo",
       "inactive": "Inactivo"
     },
-    "dob": "Nacimiento"
+    "dob": "Nacimiento",
+    "noAppointmentScheduled": "Sin próxima cita"
   },
   "patientTable": {
     "noPatients": "No se encontraron pacientes",

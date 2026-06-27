@@ -1,6 +1,6 @@
 import React from "react";
-import * as LucideIcons from "lucide-react";
-import { HelpCircle } from "lucide-react";
+import * as LucideIcons from "@/components/iconMap";
+import { HelpCircle } from "@/components/iconMap";
 
 function Icon({ name, size = 24, color = "currentColor", className = "", strokeWidth = 2, ...props }) {
   const IconComponent = LucideIcons?.[name];

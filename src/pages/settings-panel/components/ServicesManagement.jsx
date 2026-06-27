@@ -243,7 +243,7 @@ const ServicesManagement = () => {
       {/* Estado vacío */}
       {filteredCategories.length === 0 && (
         <div className="text-center py-12">
-          <Icon name="FolderOff" size={48} className="mx-auto text-muted-foreground mb-4" />
+          <Icon name="FolderClosed" size={48} className="mx-auto text-muted-foreground mb-4" />
           <p className="text-muted-foreground">
             {searchQuery ? t("services.management.list.emptySearch") : t("services.management.list.emptyDefault")}
           </p>

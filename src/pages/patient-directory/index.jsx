@@ -144,7 +144,7 @@ const PatientDirectory = () => {
         </div>
         <Skeleton className="h-12 w-full rounded-lg" />
         {view === "grid" ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
             {Array.from({ length: 4 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
@@ -193,7 +193,7 @@ const PatientDirectory = () => {
         </div>
 
         {view === "grid" ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
             {paginatedPatients?.map((patient) => (
               <PatientCard key={patient?.id} patient={patient} onQuickAction={handleQuickAction} />
             ))}

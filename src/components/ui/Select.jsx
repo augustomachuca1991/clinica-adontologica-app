@@ -1,5 +1,6 @@
 // components/ui/Select.jsx - Shadcn style Select
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { ChevronDown, Check, Search, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import Button from "@/components/ui/Button";
@@ -33,61 +34,90 @@ const Select = React.forwardRef(
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [dropdownStyle, setDropdownStyle] = useState({});
+    const buttonRef = useRef(null);
+    const dropdownRef = useRef(null);
     const { t } = useTranslation();
 
-    const finalPlaceholder =
-      placeholder || t("selectAnOption") || "Select option...";
+    const finalPlaceholder = placeholder || t("selectAnOption") || "Select option...";
 
-    // Generate unique ID if not provided
-    const selectId =
-      id || `select-${Math.random()?.toString(36)?.substr(2, 9)}`;
+    const selectId = id || `select-${Math.random()?.toString(36)?.substr(2, 9)}`;
 
-    // Filter options based on search
+    // Calcula posición del dropdown relativa al botón trigger
+    const updateDropdownPosition = () => {
+      if (!buttonRef.current) return;
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      const dropdownHeight = 260; // max-h-60 = 240px + search ~40px
+
+      const openUpward = spaceBelow < dropdownHeight && spaceAbove > spaceBelow;
+
+      setDropdownStyle({
+        position: "fixed",
+        left: rect.left,
+        width: rect.width,
+        zIndex: 9999,
+        ...(openUpward ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
+      });
+    };
+
+    // Cierra al hacer click fuera
+    useEffect(() => {
+      if (!isOpen) return;
+      const handleClick = (e) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(e.target) &&
+          buttonRef.current &&
+          !buttonRef.current.contains(e.target)
+        ) {
+          setIsOpen(false);
+          onOpenChange?.(false);
+          setSearchTerm("");
+        }
+      };
+      const handleScroll = () => {
+        updateDropdownPosition();
+      };
+      document.addEventListener("mousedown", handleClick);
+      window.addEventListener("scroll", handleScroll, true);
+      return () => {
+        document.removeEventListener("mousedown", handleClick);
+        window.removeEventListener("scroll", handleScroll, true);
+      };
+    }, [isOpen]);
+
     const filteredOptions =
       searchable && searchTerm
         ? options?.filter(
             (option) =>
-              option?.label
-                ?.toLowerCase()
-                ?.includes(searchTerm?.toLowerCase()) ||
-              (option?.value &&
-                option?.value
-                  ?.toString()
-                  ?.toLowerCase()
-                  ?.includes(searchTerm?.toLowerCase()))
+              option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
+              (option?.value && option?.value?.toString()?.toLowerCase()?.includes(searchTerm?.toLowerCase()))
           )
         : options;
 
-    // Get selected option(s) for display
     const getSelectedDisplay = () => {
       if (!value) return finalPlaceholder;
-
       if (multiple) {
-        const selectedOptions = options?.filter((opt) =>
-          value?.includes(opt?.value)
-        );
+        const selectedOptions = options?.filter((opt) => value?.includes(opt?.value));
         if (selectedOptions?.length === 0) return finalPlaceholder;
         if (selectedOptions?.length === 1) return selectedOptions?.[0]?.label;
-        return (
-          t("itemsSelected", { count: selectedOptions?.length }) ||
-          `${selectedOptions?.length} items selected`
-        );
+        return t("itemsSelected", { count: selectedOptions?.length }) || `${selectedOptions?.length} items selected`;
       }
-
       const selectedOption = options?.find((opt) => opt?.value === value);
       return selectedOption ? selectedOption?.label : finalPlaceholder;
     };
 
     const handleToggle = (e) => {
-      e.preventDefault(); // <-- Agrega esto
-      e.stopPropagation(); // <-- Agrega esto
+      e.preventDefault();
+      e.stopPropagation();
       if (!disabled) {
         const newIsOpen = !isOpen;
+        if (newIsOpen) updateDropdownPosition();
         setIsOpen(newIsOpen);
         onOpenChange?.(newIsOpen);
-        if (!newIsOpen) {
-          setSearchTerm("");
-        }
+        if (!newIsOpen) setSearchTerm("");
       }
     };
 
@@ -110,20 +140,12 @@ const Select = React.forwardRef(
       onChange?.(multiple ? [] : "");
     };
 
-    const handleSearchChange = (e) => {
-      setSearchTerm(e?.target?.value);
-    };
-
     const isSelected = (optionValue) => {
-      if (multiple) {
-        return value?.includes(optionValue) || false;
-      }
+      if (multiple) return value?.includes(optionValue) || false;
       return value === optionValue;
     };
 
-    const hasValue = multiple
-      ? value?.length > 0
-      : value !== undefined && value !== "";
+    const hasValue = multiple ? value?.length > 0 : value !== undefined && value !== "";
 
     return (
       <div className={cn("relative", className)}>
@@ -139,9 +161,14 @@ const Select = React.forwardRef(
             {required && <span className="text-destructive ml-1">*</span>}
           </label>
         )}
+
         <div className="relative">
           <button
-            ref={ref}
+            ref={(node) => {
+              buttonRef.current = node;
+              if (typeof ref === "function") ref(node);
+              else if (ref) ref.current = node;
+            }}
             id={selectId}
             type="button"
             className={cn(
@@ -156,7 +183,6 @@ const Select = React.forwardRef(
             {...props}
           >
             <span className="truncate">{getSelectedDisplay()}</span>
-
             <div className="flex items-center gap-1">
               {loading && (
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
@@ -176,32 +202,20 @@ const Select = React.forwardRef(
                   />
                 </svg>
               )}
-
               {clearable && hasValue && !loading && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-4 w-4"
-                  onClick={handleClear}
-                >
+                <Button variant="ghost" size="icon" className="h-4 w-4" onClick={handleClear}>
                   <X className="h-3 w-3" />
                 </Button>
               )}
-
-              <ChevronDown
-                className={cn(
-                  "h-4 w-4 transition-transform",
-                  isOpen && "rotate-180"
-                )}
-              />
+              <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
             </div>
           </button>
 
-          {/* Hidden native select for form submission */}
+          {/* Native select oculto para form submission */}
           <select
             name={name}
             value={value || ""}
-            onChange={() => {}} // Controlled by our custom logic
+            onChange={() => {}}
             className="sr-only"
             tabIndex={-1}
             multiple={multiple}
@@ -214,24 +228,29 @@ const Select = React.forwardRef(
               </option>
             ))}
           </select>
+        </div>
 
-          {/* Dropdown */}
-          {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-popover text-popover-foreground border border-border rounded-md shadow-md">
+        {/* Dropdown via portal → se renderiza en document.body, sin limitaciones de overflow ni z-index */}
+        {isOpen &&
+          createPortal(
+            <div
+              ref={dropdownRef}
+              style={dropdownStyle}
+              className="bg-popover text-popover-foreground border border-border rounded-md shadow-md"
+            >
               {searchable && (
-                <div className="p-2 border-b">
+                <div className="p-2 border-b border-border">
                   <div className="relative">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder={t("searchOption")}
                       value={searchTerm}
-                      onChange={handleSearchChange}
+                      onChange={(e) => setSearchTerm(e?.target?.value)}
                       className="pl-8"
                     />
                   </div>
                 </div>
               )}
-
               <div className="py-1 max-h-60 overflow-auto">
                 {filteredOptions?.length === 0 ? (
                   <div className="px-3 py-2 text-sm text-muted-foreground">
@@ -243,33 +262,25 @@ const Select = React.forwardRef(
                       key={option?.value}
                       className={cn(
                         "relative flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground",
-                        isSelected(option?.value) &&
-                          "bg-primary text-primary-foreground",
+                        isSelected(option?.value) && "bg-primary text-primary-foreground",
                         option?.disabled && "pointer-events-none opacity-50"
                       )}
-                      onClick={() =>
-                        !option?.disabled && handleOptionSelect(option)
-                      }
+                      onClick={() => !option?.disabled && handleOptionSelect(option)}
                     >
                       <span className="flex-1">{option?.label}</span>
-                      {multiple && isSelected(option?.value) && (
-                        <Check className="h-4 w-4" />
-                      )}
+                      {multiple && isSelected(option?.value) && <Check className="h-4 w-4" />}
                       {option?.description && (
-                        <span className="text-xs text-muted-foreground ml-2">
-                          {option?.description}
-                        </span>
+                        <span className="text-xs text-muted-foreground ml-2">{option?.description}</span>
                       )}
                     </div>
                   ))
                 )}
               </div>
-            </div>
+            </div>,
+            document.body
           )}
-        </div>
-        {description && !error && (
-          <p className="text-sm text-muted-foreground mt-1">{description}</p>
-        )}
+
+        {description && !error && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
         {error && <p className="text-sm text-destructive mt-1">{error}</p>}
       </div>
     );

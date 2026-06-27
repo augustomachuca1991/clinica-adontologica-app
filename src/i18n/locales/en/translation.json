@@ -293,6 +293,8 @@
       "inactive": "Inactive"
     },
     "dob": "DOB",
+    "reason": "Reason",
+    "treatment": "Treatment",
     "noAppointmentScheduled": "No upcoming appointment"
   },
   "patientTable": {

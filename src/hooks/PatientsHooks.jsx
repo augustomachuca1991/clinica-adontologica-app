@@ -90,7 +90,11 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
 
       const formatted = data.map((p) => {
         const nextApp = p.appointments
-          ?.filter((a) => new Date(a.appointment_date) > new Date())
+          ?.filter((a) => {
+            const apptDate = new Date(a.appointment_date);
+            const today = new Date();
+            return apptDate >= new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          })
           .sort((a, b) => new Date(a.appointment_date) - new Date(b.appointment_date))[0];
 
         return {
@@ -103,6 +107,14 @@ export const usePatients = (filters = {}, sortConfig = { column: "name", directi
           age: calculateAge(p.date_of_birth),
           avatarAlt: p.avatar_alt || `Perfil de ${p.name}`,
           nextAppointment: nextApp?.appointment_date || null,
+          nextAppointmentData: nextApp
+            ? {
+                date: nextApp.appointment_date,
+                status: nextApp.status,
+                reason: nextApp.reason,
+                treatment: nextApp.treatment_services?.name,
+              }
+            : null,
           appointmentStatus: nextApp?.status || "none",
         };
       });

@@ -293,6 +293,8 @@
       "inactive": "Inactivo"
     },
     "dob": "Nacimiento",
+    "reason": "Motivo",
+    "treatment": "Tratamiento",
     "noAppointmentScheduled": "Sin próxima cita"
   },
   "patientTable": {

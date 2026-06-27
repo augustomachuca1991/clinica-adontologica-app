@@ -33,13 +33,24 @@ const STATUS_BADGE = {
 
 // ── Estilos de próxima cita ──────────────────────────────────────────────────
 const APPOINTMENT_STYLE = {
-  upcoming: { wrapper: "bg-primary/5 border border-primary/15", icon: "text-primary", text: "text-primary" },
-  overdue: {
+  scheduled: { wrapper: "bg-primary/5 border border-primary/15", icon: "text-primary", text: "text-primary" },
+  confirmed: { wrapper: "bg-primary/5 border border-primary/15", icon: "text-primary", text: "text-primary" },
+  in_progress: {
+    wrapper: "bg-warning/5 border border-warning/15",
+    icon: "text-warning",
+    text: "text-warning",
+  },
+  completed: { wrapper: "bg-success/5 border border-success/15", icon: "text-success", text: "text-success" },
+  cancelled: {
+    wrapper: "bg-muted/50 border border-border",
+    icon: "text-muted-foreground",
+    text: "text-muted-foreground",
+  },
+  no_show: {
     wrapper: "bg-destructive/5 border border-destructive/15",
     icon: "text-destructive",
     text: "text-destructive",
   },
-  completed: { wrapper: "bg-success/5 border border-success/15", icon: "text-success", text: "text-success" },
   default: {
     wrapper: "bg-muted/50 border border-border",
     icon: "text-muted-foreground",
@@ -167,15 +178,36 @@ const PatientCard = memo(({ patient, onQuickAction }) => {
       </div>
 
       {/* ── Footer: próxima cita ── */}
-      {patient?.nextAppointment ? (
+      {patient?.nextAppointmentData ? (
         <div className="px-4 md:px-5 pb-4 md:pb-5 mt-auto">
-          <div className={cn("flex items-center gap-2 px-3 py-2 rounded-lg", apptStyle.wrapper)}>
-            <Icon name="Clock" size={13} className={cn("flex-shrink-0", apptStyle.icon)} />
-            <span className={cn("text-xs font-medium flex-1", apptStyle.text)}>
-              {t("next")}: {patient.nextAppointment}
-            </span>
-            {patient.appointmentStatus === "overdue" && (
-              <span className="text-[10px] font-semibold text-destructive">{t("appointment.overdue")}</span>
+          <div className={cn("px-3 py-2.5 rounded-lg", apptStyle.wrapper)}>
+            <div className="flex items-center gap-2">
+              <Icon name="Clock" size={13} className={cn("flex-shrink-0", apptStyle.icon)} />
+              <span className={cn("text-xs font-medium flex-1", apptStyle.text)}>
+                {formatDateForUI(patient.nextAppointmentData.date)}
+              </span>
+              <span
+                className={cn(
+                  "inline-flex items-center h-[18px] px-2 rounded-full text-[10px] font-semibold",
+                  apptStyle.text === "text-primary" && "bg-primary/10 text-primary",
+                  apptStyle.text === "text-warning" && "bg-warning/10 text-warning",
+                  apptStyle.text === "text-success" && "bg-success/10 text-success",
+                  apptStyle.text === "text-destructive" && "bg-destructive/10 text-destructive",
+                  apptStyle.text === "text-muted-foreground" && "bg-muted/50 text-muted-foreground"
+                )}
+              >
+                {t(`appointment.status.${patient.nextAppointmentData.status.replace(/_/g, "-")}`)}
+              </span>
+            </div>
+            {patient.nextAppointmentData.reason && (
+              <div className="mt-1.5 text-xs font-medium text-foreground/80 leading-tight">
+                {patient.nextAppointmentData.reason}
+              </div>
+            )}
+            {patient.nextAppointmentData.treatment && (
+              <div className="mt-0.5 text-[11px] text-muted-foreground/60 leading-tight">
+                {patient.nextAppointmentData.treatment}
+              </div>
             )}
           </div>
         </div>

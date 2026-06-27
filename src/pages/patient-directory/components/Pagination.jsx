@@ -5,7 +5,7 @@ import Select from "@/components/ui/Select";
 
 const Pagination = ({ currentPage, totalPages, pageSize, onPageChange, onPageSizeChange }) => {
   const { t } = useTranslation();
-  const pageSizeOptions = [10, 25, 50, 100].map((size) => ({
+  const pageSizeOptions = [6, 12, 24, 28].map((size) => ({
     value: String(size),
     label: t("pagination.perPage", { count: size }),
   }));

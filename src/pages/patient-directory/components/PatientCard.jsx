@@ -200,13 +200,15 @@ const PatientCard = memo(({ patient, onQuickAction }) => {
               </span>
             </div>
             {patient.nextAppointmentData.reason && (
-              <div className="mt-1.5 text-xs font-medium text-foreground/80 leading-tight">
-                {patient.nextAppointmentData.reason}
+              <div className="mt-1.5 text-xs leading-tight">
+                <span className="font-medium text-foreground/80">{t("patientCard.reason")}: </span>
+                <span className="text-muted-foreground/70">{patient.nextAppointmentData.reason}</span>
               </div>
             )}
             {patient.nextAppointmentData.treatment && (
-              <div className="mt-0.5 text-[11px] text-muted-foreground/60 leading-tight">
-                {patient.nextAppointmentData.treatment}
+              <div className="mt-0.5 text-[11px] leading-tight">
+                <span className="font-medium text-foreground/60">{t("patientCard.treatment")}: </span>
+                <span className="text-muted-foreground/50">{patient.nextAppointmentData.treatment}</span>
               </div>
             )}
           </div>

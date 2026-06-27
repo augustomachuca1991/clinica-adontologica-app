@@ -48,7 +48,7 @@ const Login = () => {
         {/* Header */}
         <div className="text-center mb-6">
           <div className="mx-auto mb-3 flex items-center justify-center rounded-xl ">
-            <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" />
+            <Image src={logo} alt="App Logo" className="h-14 md:h-18 w-auto object-contain" fetchpriority="high" loading="eager" />
           </div>
         </div>
 

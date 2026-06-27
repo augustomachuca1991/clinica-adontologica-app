@@ -10,11 +10,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ["react", "react-dom", "react-router-dom"],
+          vendor: ["react", "react-dom", "react-router-dom", "formik", "yup"],
           supabase: ["@supabase/supabase-js"],
           charts: ["recharts"],
           i18n: ["i18next", "react-i18next"],
-          forms: ["formik", "yup"],
+
           icons: ["lucide-react"],
           notifications: ["sonner"],
           utils: ["clsx", "tailwind-merge", "class-variance-authority"],

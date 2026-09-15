@@ -110,6 +110,8 @@
       }
     },
     "editTitle": "Edit Patient",
+    "newTitle": "New Patient",
+    "submitNew": "Save Patient",
     "avatarAlt": "Profile",
     "stepIndicator": "Step {{current}} of {{total}} · {{label}}",
     "steps": {
@@ -133,7 +135,8 @@
       "zipCode": "Zip/Postal Code",
       "insurance": "Medical Insurance",
       "allergies": "Allergies",
-      "status": "Status"
+      "status": "Status",
+      "avatar": "Avatar"
     },
     "placeholders": {
       "fullName": "eg: María García",
@@ -175,7 +178,37 @@
       "bloodType": "Blood Type"
     },
     "errors": {
-      "imageSize": "Image too large (max 2MB)"
+      "imageSize": "Image too large (max 2MB)",
+      "required": "This field is required",
+      "invalidEmail": "Invalid email address",
+      "nameRequired": "Full name is required",
+      "birthDateRequired": "Date of birth is required",
+      "genderRequired": "Gender is required",
+      "bloodTypeRequired": "Blood type is required",
+      "emailRequired": "Email is required",
+      "phoneMin": "Phone must have at least 6 digits",
+      "phoneRequired": "Phone is required",
+      "addressRequired": "Address is required",
+      "cityRequired": "City is required",
+      "insuranceRequired": "Insurance is required",
+      "emergencyNameRequired": "Emergency contact name is required",
+      "emergencyPhoneRequired": "Emergency contact phone is required"
+    },
+    "avatarUploader": {
+      "title": "Upload a photo",
+      "meta": "JPG or PNG · up to 2 MB",
+      "change": "Change photo",
+      "upload": "Upload photo"
+    },
+    "tags": {
+      "title": "Patient Tags",
+      "items": {
+        "vip": "VIP",
+        "recommended": "Recommended",
+        "new": "New",
+        "family": "Family",
+        "other": "Other"
+      }
     }
   },
   "dashboard": {
@@ -295,7 +328,9 @@
     "dob": "DOB",
     "reason": "Reason",
     "treatment": "Treatment",
-    "noAppointmentScheduled": "No upcoming appointment"
+    "noAppointmentScheduled": "No upcoming appointment",
+    "call": "Call",
+    "email": "Email"
   },
   "patientTable": {
     "noPatients": "No patients found",
@@ -400,6 +435,9 @@
     "button": {
       "newRecord": "New Record"
     },
+    "notes": {
+      "saveSuccess": "Note added successfully"
+    },
     "stats": {
       "total": "Total Records",
       "completed": "Completed",
@@ -443,7 +481,8 @@
       "title": "Treatment History",
       "button": {
         "export": "Export",
-        "clearAll": "Clear Filters"
+        "clearAll": "Clear Filters",
+        "resetFilters": "Reset Filters"
       },
       "foundRecords_one": "{{count}} record found",
       "foundRecords_other": "{{count}} records found",
@@ -729,15 +768,23 @@
     "duration": "Duration",
     "selectService": "Select a service",
     "loadingServices": "Loading services...",
+    "addService": "Add service",
+    "statusPlaceholder": "Select status",
     "confirm": "Confirm Appointment",
     "scheduling": "Scheduling...",
     "notes": "Additional Notes",
     "notesPlaceholder": "E.g., Allergic to anesthesia, bring X-rays...",
     "errorNoPatient": "Please select a patient",
+    "errorNoDate": "Please select a date",
+    "errorNoTime": "Please select a time",
+    "errorNoDuration": "Please select a duration",
+    "errorNoService": "Please select a service",
+    "errorNoReason": "Please enter a reason",
     "msgSuccess": "Appointment scheduled successfully",
     "msgError": "Could not schedule the appointment",
     "msgSaveSuccess": "Appointment rescheduled",
     "msgStatusUpdated": "Appointment status updated",
+    "msgUpdateSuccess": "Appointment updated successfully",
     "error": {
       "slotOccupied": "Time slot occupied: Patient {{patient}} already has an appointment at this time.",
       "insufficientTime": "Conflict: You only have {{available}} min available before the next appointment."
@@ -870,7 +917,11 @@
       }
     }
   },
-  "404": {
+  "patientAlert": {
+    "viewPatient": "View Patient",
+    "dismiss": "Dismiss"
+  },
+  "error": {
     "404_title": "Page Not Found",
     "404_description": "We're sorry, the page you're looking for doesn't exist or has been moved.",
     "go_back": "Go Back",
@@ -986,7 +1037,8 @@
     },
     "alerts": {
       "renewError": "Error renewing subscription: ",
-      "createSuccess": "Subscription created successfully!"
+      "createSuccess": "Subscription created successfully!",
+      "renewSuccess": "Subscription renewed successfully"
     },
     "table": {
       "loading": "Loading users...",
@@ -1078,6 +1130,7 @@
     "saving": "Saving...",
     "delete": "Delete",
     "unknown": "Unknown",
+    "notAvailable": "N/A",
     "all": "All",
     "loading": "Loading notes...",
     "clearFilter": "Clear filters",
@@ -1144,7 +1197,8 @@
       "description": "Description",
       "patient": "Patient",
       "automatic": "Automatic",
-      "manual": "Manual"
+      "manual": "Manual",
+      "total": "Total"
     }
   },
   "roles": {
@@ -1187,7 +1241,9 @@
       "email": "Enter email",
       "role": "Select role",
       "phone": "Enter phone number"
-    }
+    },
+    "created_title": "User Created",
+    "created_desc": "A recovery email was sent to"
   },
   "notifications": {
     "delivery_title": "Notification Delivery",

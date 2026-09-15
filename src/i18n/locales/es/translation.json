@@ -110,6 +110,8 @@
       }
     },
     "editTitle": "Editar paciente",
+    "newTitle": "Nuevo Paciente",
+    "submitNew": "Guardar Paciente",
     "avatarAlt": "Perfil",
     "stepIndicator": "Paso {{current}} de {{total}} · {{label}}",
     "steps": {
@@ -133,7 +135,8 @@
       "zipCode": "Cód. postal",
       "insurance": "Cobertura médica",
       "allergies": "Alergias",
-      "status": "Estado"
+      "status": "Estado",
+      "avatar": "Foto"
     },
     "placeholders": {
       "fullName": "Ej: María García",
@@ -175,7 +178,37 @@
       "bloodType": "Grupo sang."
     },
     "errors": {
-      "imageSize": "Imagen demasiado grande (máx 2MB)"
+      "imageSize": "Imagen demasiado grande (máx 2MB)",
+      "required": "Este campo es obligatorio",
+      "invalidEmail": "Email inválido",
+      "nameRequired": "El nombre y apellido son obligatorios",
+      "birthDateRequired": "La fecha de nacimiento es obligatoria",
+      "genderRequired": "El sexo es obligatorio",
+      "bloodTypeRequired": "El grupo sanguíneo es obligatorio",
+      "emailRequired": "El email es obligatorio",
+      "phoneMin": "El teléfono debe tener al menos 6 dígitos",
+      "phoneRequired": "El teléfono es obligatorio",
+      "addressRequired": "La dirección es obligatoria",
+      "cityRequired": "La localidad es obligatoria",
+      "insuranceRequired": "La cobertura es obligatoria",
+      "emergencyNameRequired": "El nombre del contacto de emergencia es obligatorio",
+      "emergencyPhoneRequired": "El teléfono del contacto de emergencia es obligatorio"
+    },
+    "avatarUploader": {
+      "title": "Subir una foto",
+      "meta": "JPG o PNG · hasta 2 MB",
+      "change": "Cambiar foto",
+      "upload": "Subir foto"
+    },
+    "tags": {
+      "title": "Etiquetas",
+      "items": {
+        "vip": "VIP",
+        "recommended": "Recomendado",
+        "new": "Nuevo",
+        "family": "Familiar",
+        "other": "Otro"
+      }
     }
   },
   "dashboard": {
@@ -295,7 +328,9 @@
     "dob": "Nacimiento",
     "reason": "Motivo",
     "treatment": "Tratamiento",
-    "noAppointmentScheduled": "Sin próxima cita"
+    "noAppointmentScheduled": "Sin próxima cita",
+    "call": "Llamar",
+    "email": "Correo"
   },
   "patientTable": {
     "noPatients": "No se encontraron pacientes",
@@ -333,6 +368,9 @@
     "subtitle": "Historial de tratamientos completo y gestión de documentación",
     "button": {
       "newRecord": "Nuevo Registro"
+    },
+    "notes": {
+      "saveSuccess": "Nota agregada"
     },
     "stats": {
       "total": "Total registros",
@@ -377,7 +415,8 @@
       "title": "Historial de Tratamientos",
       "button": {
         "export": "Exportar",
-        "clearAll": "Limpiar Filtros"
+        "clearAll": "Limpiar Filtros",
+        "resetFilters": "Limpiar Filtros"
       },
       "foundRecords_one": "{{count}} registro encontrado",
       "foundRecords_other": "{{count}} registros encontrados",
@@ -727,15 +766,23 @@
     "duration": "Duración",
     "selectService": "Seleccione un servicio",
     "loadingServices": "Cargando servicios...",
+    "addService": "Agregar servicio",
+    "statusPlaceholder": "Seleccioná el estado",
     "confirm": "Confirmar Cita",
     "scheduling": "Agendando...",
     "notes": "Notas Adicionales",
     "notesPlaceholder": "Ej: Alérgico a la anestesia, traer radiografías...",
     "errorNoPatient": "Por favor selecciona un paciente",
+    "errorNoDate": "Por favor selecciona una fecha",
+    "errorNoTime": "Por favor selecciona una hora",
+    "errorNoDuration": "Por favor selecciona una duración",
+    "errorNoService": "Por favor selecciona un servicio",
+    "errorNoReason": "Por favor ingresa el motivo",
     "msgSuccess": "Cita agendada correctamente",
     "msgError": "No se pudo agendar la cita",
     "msgSaveSuccess": "Cita Reprogramada exitosamente",
     "msgStatusUpdated": "Estado de la cita actualizado",
+    "msgUpdateSuccess": "Cita actualizada correctamente",
     "error": {
       "slotOccupied": "Horario ocupado: El paciente {{patient}} ya tiene turno a esa hora.",
       "insufficientTime": "Conflicto: Solo tienes {{available}} min disponibles antes del siguiente turno."
@@ -868,7 +915,11 @@
       }
     }
   },
-  "404": {
+  "patientAlert": {
+    "viewPatient": "Ver paciente",
+    "dismiss": "Descartar"
+  },
+  "error": {
     "404_title": "Página no encontrada",
     "404_description": "Lo sentimos, la página que buscas no existe o ha sido movida.",
     "go_back": "Volver atrás",
@@ -984,7 +1035,8 @@
     },
     "alerts": {
       "renewError": "Error al renovar: ",
-      "createSuccess": "¡Suscripción creada exitosamente!"
+      "createSuccess": "¡Suscripción creada exitosamente!",
+      "renewSuccess": "Suscripción renovada exitosamente"
     },
     "table": {
       "loading": "Cargando usuarios...",
@@ -1076,6 +1128,7 @@
     "saving": "Guardando...",
     "delete": "Eliminar",
     "unknown": "Desconocido",
+    "notAvailable": "No disponible",
     "all": "Todos",
     "loading": "Cargando notas...",
     "clearFilter": "Limpiar filtros",
@@ -1084,6 +1137,7 @@
     "saveChanges": "Guardar cambios",
     "close": "Cerrar",
     "deleting": "Eliminando...",
+    "configure": "Configurar",
     "errors": {
       "required": "Este campo es obligatorio"
     },
@@ -1141,7 +1195,8 @@
       "description": "Descripción",
       "patient": "Paciente",
       "automatic": "Automático",
-      "manual": "Manual"
+      "manual": "Manual",
+      "total": "Total"
     }
   },
   "roles": {
@@ -1184,7 +1239,9 @@
       "email": "Ingresa el correo electrónico",
       "role": "Selecciona un rol",
       "phone": "Ingresa el número de teléfono"
-    }
+    },
+    "created_title": "Usuario creado",
+    "created_desc": "Se envió un correo de recuperación a"
   },
   "notifications": {
     "delivery_title": "Entrega de Notificaciones",
@@ -1565,7 +1622,8 @@
       "deleteError": "Error al eliminar la nota.",
       "saveSuccess": "Nota guardada exitosamente.",
       "saveError": "Error al guardar la nota.",
-      "updateSuccess": "Nota actualizada exitosamente."
+      "updateSuccess": "Nota actualizada exitosamente.",
+      "updateError": "Error al actualizar la nota."
     }
   },
 

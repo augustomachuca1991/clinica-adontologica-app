@@ -254,7 +254,7 @@ const Select = React.forwardRef(
               <div className="py-1 max-h-60 overflow-auto">
                 {filteredOptions?.length === 0 ? (
                   <div className="px-3 py-2 text-sm text-muted-foreground">
-                    {searchTerm ? t("NoOptionsFound") : t("noOptionsAvailable")}
+                    {searchTerm ? t("noOptionsFound") : t("noOptionsAvailable")}
                   </div>
                 ) : (
                   filteredOptions?.map((option) => (

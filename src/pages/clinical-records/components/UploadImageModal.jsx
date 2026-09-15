@@ -48,7 +48,7 @@ const UploadImageModal = ({ isOpen, onClose, onUploadSuccess, recordId }) => {
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[120] flex items-center justify-center p-4">
-      <div className="bg-card border border-border rounded-xl shadow-clinical-xl w-full max-w-md p-6">
+      <div className="bg-background border border-border rounded-xl shadow-clinical-xl w-full max-w-md p-6">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-semibold">{t("records.recordsModal.tabs.images.button.uploadImage")}</h3>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">

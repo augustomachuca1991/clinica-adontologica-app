@@ -14,7 +14,7 @@ const DeleteProviderModal = ({ provider, onClose, onConfirm, isDeleting }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-card border border-border rounded-xl shadow-xl w-full max-w-sm p-6 space-y-4">
+      <div className="bg-background border border-border rounded-xl shadow-xl w-full max-w-sm p-6 space-y-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
             <Icon name="Trash2" size={18} className="text-red-500" />
@@ -75,7 +75,7 @@ const ViewProviderModal = ({ provider, onClose, onEdit }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-card border border-border rounded-xl shadow-xl w-full max-w-lg p-6 space-y-5">
+      <div className="bg-background border border-border rounded-xl shadow-xl w-full max-w-lg p-6 space-y-5">
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">

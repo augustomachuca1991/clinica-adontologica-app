@@ -31,8 +31,8 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card border border-border rounded-lg shadow-clinical-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-card border-b border-border px-6 py-4 flex items-center justify-between">
+      <div className="bg-background border border-border rounded-lg shadow-clinical-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-background border-b border-border px-6 py-4 flex items-center justify-between">
           <div>
             <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">
               {t("records.recordsModal.tabs.clinicalNotes.addClinicalNote")}
@@ -209,7 +209,7 @@ const AddNoteModal = ({ record, onClose, onSave }) => {
           </div> */}
         </div>
 
-        <div className="sticky bottom-0 bg-card border-t border-border px-6 py-4 flex items-center justify-end gap-3">
+        <div className="sticky bottom-0 bg-background border-t border-border px-6 py-4 flex items-center justify-end gap-3">
           <Button variant="outline" onClick={onClose}>
             {t("common.actions.cancel")}
           </Button>

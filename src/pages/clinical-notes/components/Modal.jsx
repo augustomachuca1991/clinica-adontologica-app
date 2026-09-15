@@ -40,7 +40,7 @@ const Modal = ({ open, onClose, title, children, maxWidth = "max-w-lg" }) => {
 
       {/* Contenedor del Modal */}
       <div
-        className={`relative z-10 w-full ${maxWidth} bg-card border border-border rounded-xl shadow-2xl`}
+        className={`relative z-10 w-full ${maxWidth} bg-background border border-border rounded-xl shadow-2xl`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

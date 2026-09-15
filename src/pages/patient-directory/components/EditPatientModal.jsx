@@ -370,10 +370,10 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 md:p-5">
-      <div className="bg-card rounded-2xl shadow-xl w-full max-w-2xl flex flex-col max-h-[92vh] border border-border overflow-hidden">
+      <div className="bg-background rounded-2xl shadow-xl w-full max-w-2xl flex flex-col max-h-[92vh] border border-border overflow-hidden">
         <form onSubmit={(e) => e.preventDefault()} className="flex flex-col h-full overflow-hidden">
           {/* HEADER */}
-          <div className="px-6 pt-6 pb-0 bg-background/60 border-b border-border">
+          <div className="px-6 pt-6 pb-0 bg-background border-b border-border">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-primary/10 rounded-xl flex items-center justify-center">
@@ -411,7 +411,7 @@ const EditPatientModal = ({ patient, onClose, onSave }) => {
           </div>
 
           {/* FOOTER */}
-          <div className="px-6 py-4 border-t border-border bg-background/60 flex items-center justify-between gap-3">
+          <div className="px-6 py-4 border-t border-border bg-background flex items-center justify-between gap-3">
             <div className="flex gap-1.5">
               {stepsConfig.map((_, i) => (
                 <div

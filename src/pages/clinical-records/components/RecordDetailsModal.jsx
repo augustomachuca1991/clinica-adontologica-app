@@ -117,8 +117,8 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card border border-border rounded-lg shadow-clinical-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="bg-card border-b border-border px-6 py-4 flex items-center justify-between flex-shrink-0">
+      <div className="bg-background border border-border rounded-lg shadow-clinical-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="bg-background border-b border-border px-6 py-4 flex items-center justify-between flex-shrink-0">
           <div>
             <h3 className="text-base md:text-lg font-headline font-semibold text-foreground">{record?.treatmentName}</h3>
             <p className="text-sm text-muted-foreground mt-1">
@@ -391,7 +391,7 @@ const RecordDetailsModal = ({ record, onClose, onAddNote }) => {
           )}
         </div>
 
-        <div className="bg-card border-t border-border px-6 py-4 flex items-center justify-end gap-3 flex-shrink-0">
+        <div className="bg-background border-t border-border px-6 py-4 flex items-center justify-end gap-3 flex-shrink-0">
           <Button variant="outline" iconName="Download" iconPosition="left" onClick={handlePrint}>
             {t("records.recordsModal.button.exportPDF")}
           </Button>
